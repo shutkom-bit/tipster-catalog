@@ -1328,7 +1328,7 @@ window.fbRegister = async function() {
   const errEl   = document.getElementById('fb-reg-error');
   errEl.style.display = 'none';
   if (!name || !email || !pass || !phone) {
-    errEl.textContent = '⚠️ Заповніть всі обов'язкові поля'; errEl.style.display='block'; return;
+    errEl.textContent = '⚠️ Заповніть всі обов\'язкові поля'; errEl.style.display='block'; return;
   }
   if (pass.length < 6) { errEl.textContent = '⚠️ Пароль мінімум 6 символів'; errEl.style.display='block'; return; }
   const btn = document.getElementById('fb-reg-btn');
@@ -2155,7 +2155,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
   </div><!-- /page -->
 </div><!-- /main -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js"></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  DATA
