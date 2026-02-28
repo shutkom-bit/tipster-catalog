@@ -1260,10 +1260,17 @@ function updateAuthHeader() {
 
 // ── Auth state listener ───────────────────────────────────
 onAuthStateChanged(auth, async (user) => {
+  // Завжди очищаємо localStorage — доступ тільки через Firestore
+  localStorage.removeItem('navixy_partner_access');
+  localStorage.removeItem('catalog_role');
   if (user) {
     window._fbUser = user;
     try {
-      const snap = await getDoc(doc(db, 'users', user.uid));
+      let snap = await getDoc(doc(db, 'users', user.uid));
+      if (!snap.exists()) {
+        await new Promise(r => setTimeout(r, 1500));
+        snap = await getDoc(doc(db, 'users', user.uid));
+      }
       if (snap.exists()) {
         const data = snap.data();
         const role = data.role || 'pending';
@@ -1382,7 +1389,7 @@ window.fbGoogleLogin = async function() {
     const user = result.user;
     const snap = await getDoc(doc(db, 'users', user.uid));
     if (!snap.exists()) {
-      // Перший вхід через Google — зберігаємо як pending
+      // Перший вхід через Google — чекаємо setDoc
       await setDoc(doc(db, 'users', user.uid), {
         name: user.displayName || '',
         email: user.email,
@@ -1391,17 +1398,22 @@ window.fbGoogleLogin = async function() {
         requestedRole: 'partner',
         createdAt: serverTimestamp()
       });
-      const tgMsg = `🆕 *Google реєстрація — TIPSTER*
-👤 ${user.displayName}
-📧 ${user.email}`;
+      const tgMsg = '🆕 *Google реєстрація — TIPSTER*\n👤 ' + user.displayName + '\n📧 ' + user.email + '\n\n_Підтвердіть: Firebase → Firestore → users_';
       fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
         method: 'POST', headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
       }).catch(()=>{});
+      showOverlay('pending-overlay');
+    } else {
+      const role = snap.data().role || 'pending';
+      if (role === 'pending') { showOverlay('pending-overlay'); }
+      else { applyRole(role); }
     }
   } catch(e) {
     console.error('Google login error:', e);
-    alert('Помилка Google входу: ' + e.message);
+    if (e.code !== 'auth/popup-closed-by-user') {
+      alert('Помилка Google входу: ' + e.message);
+    }
   }
 };
 
@@ -3186,7 +3198,7 @@ if (_ws) _ws.classList.remove('open');
   }
 
   // --- ФІНАЛЬНА ЛОГІКА ПЕРЕВІРКИ ПАРОЛЯ (fallback) ---
-  const SECRET_PASS = "1234";
+  const SECRET_PASS = null; // Firebase Auth only
 
   function checkAuth() {
     const passEl = document.getElementById('partner-pass');
