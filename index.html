@@ -1131,7 +1131,9 @@ body {
 /* ── Ролі: ціни ── */
 /* Клієнт/pending — ховаємо партнерські колонки */
 body[data-role="client"] .cell-partner { display: none !important; }
+body[data-role="client"] th.cell-partner { display: none !important; }
 body[data-role="client"] .cell-price-eur { display: none !important; }
+body[data-role="client"] th.cell-price-eur { display: none !important; }
 /* Партнер — показуємо все */
 body[data-role="partner"] .cell-partner,
 body[data-role="partner"] .cell-retail,
@@ -2630,10 +2632,10 @@ function buildTable(items, urlMap, showSpec) {
       <th>Код</th>
       <th>Артикул</th>
       <th>Серія</th>
-      <th>Партнер (${items[0].currency})</th>
-      <th>РРЦ (${items[0].currency})</th>
-      <th>Партнер (₴)</th>
-      <th>РРЦ (₴)</th>
+      <th class="cell-partner">Партнер (${items[0].currency})</th>
+      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
+      <th class="cell-partner">Партнер (₴)</th>
+      <th class="cell-retail">РРЦ (₴)</th>
     </tr></thead>
     <tbody>
       ${items.map(p => {
@@ -3029,8 +3031,8 @@ function renderConfigurator() {
       <th>Програма</th>
       <th>Інтерфейси та особливості</th>
       <th>Партнер</th>
-      <th>Партнер ₴</th>
-      <th>РРЦ ₴</th>
+      <th class="cell-partner">Партнер ₴</th>
+      <th class="cell-retail">РРЦ ₴</th>
     </tr></thead>
     <tbody>
       ${items.map(p => {
@@ -3724,10 +3726,10 @@ buildTable = function(items, urlMap, showSpec) {
       <th>Код</th>
       <th>Артикул</th>
       <th>Серія</th>
-      <th>Партнер (${items[0].currency})</th>
+      <th class="cell-partner">Партнер (${items[0].currency})</th>
       <th>РРЦ (${items[0].currency})</th>
-      <th>Партнер (₴)</th>
-      <th>РРЦ (₴)</th>
+      <th class="cell-partner">Партнер (₴)</th>
+      <th class="cell-retail">РРЦ (₴)</th>
       <th></th>
     </tr></thead>
     <tbody>
