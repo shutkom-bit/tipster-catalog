@@ -1130,10 +1130,12 @@ body {
 
 /* ── Ролі: ціни ── */
 /* Клієнт/pending — ховаємо партнерські колонки */
-body[data-role="client"] .cell-partner { display: none !important; }
-body[data-role="client"] th.cell-partner { display: none !important; }
-body[data-role="client"] .cell-price-eur { display: none !important; }
+body[data-role="client"] .cell-partner,
+body[data-role="client"] th.cell-partner,
+body[data-role="client"] .cell-price-eur,
 body[data-role="client"] th.cell-price-eur { display: none !important; }
+body[data-role="client"] .cell-retail,
+body[data-role="client"] th.cell-retail { display: table-cell !important; }
 /* Партнер — показуємо все */
 body[data-role="partner"] .cell-partner,
 body[data-role="partner"] .cell-retail,
@@ -3246,6 +3248,16 @@ if (_ws) _ws.classList.remove('open');
     setTimeout(() => {
       const el = document.getElementById('pending-email-link');
       if (el) el.innerHTML = '<a href="mailto:office@trackauto.com.ua" style="color:var(--accent)">office@trackauto.com.ua</a>';
+      const el2 = document.getElementById('login-email-contact');
+      if (el2) {
+        const a2 = document.createElement('a');
+        a2.href = 'mailto:office@trackauto.com.ua';
+        a2.textContent = '✉️ office@trackauto.com.ua';
+        a2.style.cssText = 'color:rgba(255,255,255,0.45);text-decoration:none;font-size:12px;transition:color 0.15s';
+        a2.onmouseover = () => { a2.style.color = '#fff'; };
+        a2.onmouseout  = () => { a2.style.color = 'rgba(255,255,255,0.45)'; };
+        el2.appendChild(a2);
+      }
     }, 500);
 
     const passInput = document.getElementById('partner-pass');
@@ -3822,29 +3834,112 @@ onRateChange = function() {
 
 <!-- 1. LOGIN -->
 <div id="login-overlay">
-  <div class="auth-box">
-    <div class="auth-logo">
-      <span style="font-size:32px">🛰️</span>
-      <div style="text-align:left">
-        <div class="auth-title">TIPSTER</div>
-        <div class="auth-subtitle">Партнерський портал</div>
+  <div style="display:flex;width:100%;max-width:1100px;min-height:100vh;margin:0 auto">
+
+    <!-- ЛІВА ЧАСТИНА — лендінг -->
+    <div style="flex:1;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(145deg,#0a0e1a 0%,#0f1628 50%,#0d1a2e 100%);position:relative;overflow:hidden">
+      <!-- Декоративний фон -->
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 40%,rgba(37,99,235,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 80%,rgba(16,185,129,0.08) 0%,transparent 60%);pointer-events:none"></div>
+      <div style="position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:rgba(37,99,235,0.06);filter:blur(60px)"></div>
+
+      <!-- Логотип -->
+      <div style="position:relative">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:56px">
+          <span style="font-size:28px">🛰️</span>
+          <div>
+            <div style="font-weight:900;font-size:24px;color:#fff;letter-spacing:2px">TIPSTER</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.12em;text-transform:uppercase">GPS Партнерський портал</div>
+          </div>
+        </div>
+
+        <!-- Заголовок -->
+        <div style="margin-bottom:40px">
+          <h1 style="font-size:42px;font-weight:900;color:#fff;line-height:1.15;margin:0 0 16px;letter-spacing:-1px">
+            Прайс-каталог<br>
+            <span style="background:linear-gradient(90deg,#3b82f6,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent">GPS обладнання</span>
+          </h1>
+          <p style="color:rgba(255,255,255,0.55);font-size:15px;line-height:1.7;max-width:420px">
+            Партнерські та роздрібні ціни на трекери Teltonika, Bitrek. Інтеграція з платформою моніторингу <b style="color:rgba(255,255,255,0.8)">NAVIXY</b>.
+          </p>
+        </div>
+
+        <!-- Переваги -->
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:40px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📦</div>
+            <div>
+              <div style="color:#fff;font-size:13.5px;font-weight:600">107 позицій обладнання</div>
+              <div style="color:rgba(255,255,255,0.4);font-size:12px">Teltonika, Bitrek, CAN-адаптери, сенсори</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">💱</div>
+            <div>
+              <div style="color:#fff;font-size:13.5px;font-weight:600">Курс НБУ в реальному часі</div>
+              <div style="color:rgba(255,255,255,0.4);font-size:12px">Ціни автоматично перераховуються в гривні</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🛒</div>
+            <div>
+              <div style="color:#fff;font-size:13.5px;font-weight:600">Замовлення через Telegram</div>
+              <div style="color:rgba(255,255,255,0.4);font-size:12px">Оформлення замовлення за 1 хвилину</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🏷️</div>
+            <div>
+              <div style="color:#fff;font-size:13.5px;font-weight:600">Тарифи Navixy</div>
+              <div style="color:rgba(255,255,255,0.4);font-size:12px">Базовий · Про · Експерт</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Контакти внизу -->
+      <div style="position:relative;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px">
+        <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center">
+          <a href="tel:+380956546644" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color 0.15s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+            📱 +38 (095) 654-66-44
+          </a>
+          <a href="tel:+380444526617" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;display:flex;align-items:center;gap:6px" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+            ☎️ +38 (044) 452-66-17
+          </a>
+          <span id="login-email-contact" style="color:rgba(255,255,255,0.5);font-size:12px"></span>
+          <a href="https://tipster.ua" target="_blank" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none" onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+            🌐 tipster.ua ↗
+          </a>
+        </div>
       </div>
     </div>
-    <p style="color:var(--text-2);font-size:13px;margin-bottom:20px;line-height:1.6;text-align:center">
-      Доступ до цін на GPS-обладнання та інтеграцій з платформою <b style="color:var(--text)">NAVIXY</b>
-    </p>
-    <input class="auth-input" type="email"    id="fb-login-email" placeholder="Email" autocomplete="email">
-    <input class="auth-input" type="password" id="fb-login-pass"  placeholder="Пароль" autocomplete="current-password"
-           onkeypress="if(event.key==='Enter') fbLogin()">
-    <div class="auth-error" id="fb-login-error"></div>
-    <button class="auth-btn" id="fb-login-btn" onclick="fbLogin()">Увійти →</button>
-    <div class="auth-divider">або</div>
-    <button class="auth-btn-google" onclick="fbGoogleLogin()">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.34-8.16 2.34-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      Увійти через Google
-    </button>
-    <div class="auth-switch">
-      Немає акаунту? <a onclick="showRegister()">Зареєструватись</a>
+
+    <!-- ПРАВА ЧАСТИНА — форма входу -->
+    <div style="width:400px;flex-shrink:0;padding:48px 40px;display:flex;flex-direction:column;justify-content:center;background:var(--sidebar-bg);border-left:1px solid var(--border)">
+      <div style="margin-bottom:32px">
+        <div style="font-weight:800;font-size:22px;color:var(--text);margin-bottom:6px">Вхід до каталогу</div>
+        <div style="font-size:13px;color:var(--text-3)">Введіть email та пароль або увійдіть через Google</div>
+      </div>
+      <input class="auth-input" type="email"    id="fb-login-email" placeholder="Email" autocomplete="email">
+      <input class="auth-input" type="password" id="fb-login-pass"  placeholder="Пароль" autocomplete="current-password"
+             onkeypress="if(event.key==='Enter') fbLogin()">
+      <div class="auth-error" id="fb-login-error"></div>
+      <button class="auth-btn" id="fb-login-btn" onclick="fbLogin()" style="margin-top:4px">Увійти →</button>
+      <div class="auth-divider">або</div>
+      <button class="auth-btn-google" onclick="fbGoogleLogin()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.34-8.16 2.34-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Увійти через Google
+      </button>
+      <div class="auth-switch" style="margin-top:20px">
+        Немає акаунту? <a onclick="showRegister()">Зареєструватись безкоштовно</a>
+      </div>
+
+      <!-- Мобільні контакти -->
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-size:11.5px;color:var(--text-3);text-align:center;line-height:1.8">
+        <div style="margin-bottom:4px;font-weight:600;color:var(--text-2)">Потрібна допомога?</div>
+        <a href="tel:+380956546644" style="color:var(--accent);text-decoration:none">+38 (095) 654-66-44</a>
+        &nbsp;·&nbsp;
+        <a href="tel:+380664501306" style="color:var(--accent);text-decoration:none">+38 (066) 950-13-06</a>
+      </div>
     </div>
   </div>
 </div>
@@ -3870,7 +3965,7 @@ onRateChange = function() {
     </select>
     <input class="auth-input" type="text"     id="fb-reg-name"    placeholder="Ім'я та прізвище *">
     <input class="auth-input" type="text"     id="fb-reg-company" placeholder="Компанія / ФОП">
-    <input class="auth-input" type="tel"      id="fb-reg-phone"   placeholder="Телефон * (+38...)">
+    <input class="auth-input" type="tel" id="fb-reg-phone" placeholder="Телефон * (+380...)" pattern="[+]?[0-9\s\-()]{10,15}" required>
     <input class="auth-input" type="email"    id="fb-reg-email"   placeholder="Email *">
     <input class="auth-input" type="password" id="fb-reg-pass"    placeholder="Пароль (мін. 6 символів) *">
     <div id="client-info" style="display:none;background:#e8f4fd;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:12.5px;color:#1a6a9a;border:1px solid #bee3f8">
