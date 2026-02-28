@@ -1226,21 +1226,16 @@ function hideOverlays() {
 // ── Застосувати роль (ціни + UI) ──────────────────────────
 function applyRole(role) {
   window._fbRole = role;
-  // Партнер бачить партнерські ціни, клієнт — РРЦ
-  // Зберігаємо в localStorage для сумісності з існуючим кодом
+  // partner/admin — партнерські ціни
+  // client/pending — РРЦ ціни (pending бачить тільки РРЦ до підтвердження)
   if (role === 'partner' || role === 'admin') {
-    localStorage.setItem('navixy_partner_access', 'true');
-    localStorage.setItem('catalog_role', role);
-    document.body.setAttribute('data-role', role);
-  } else if (role === 'client') {
-    localStorage.setItem('navixy_partner_access', 'true');
-    localStorage.setItem('catalog_role', 'client');
+    document.body.setAttribute('data-role', 'partner');
+  } else {
+    // client або pending — РРЦ
     document.body.setAttribute('data-role', 'client');
   }
   hideOverlays();
-  // Оновити header — показати ім'я та кнопку виходу
   updateAuthHeader();
-  // Перерендерити таблиці з правильними цінами
   if (typeof renderAll === 'function') renderAll();
 }
 
@@ -1249,11 +1244,15 @@ function updateAuthHeader() {
   const role = window._fbRole;
   const bar  = document.getElementById('auth-user-bar');
   if (!bar || !user) return;
-  const roleLabel = { partner: '🤝 Партнер', client: '👤 Клієнт', admin: '⭐ Адмін', pending: '⏳ Очікує' };
+  const roleLabel = { partner: '🤝 Партнер', client: '👤 Клієнт', admin: '⭐ Адмін', pending: '⏳ На розгляді' };
+  const pendingBanner = role === 'pending'
+    ? '<span style="font-size:11px;background:#fff3cd;color:#856404;padding:3px 10px;border-radius:10px;font-weight:600;border:1px solid #ffc107">⏳ Заявка на розгляді — ви бачите РРЦ ціни. Після підтвердження відкриються партнерські.</span>'
+    : '';
   bar.innerHTML = `
     <span style="font-size:12px;color:var(--text-2)">${user.email}</span>
     <span style="font-size:11px;background:var(--accent-bg);color:var(--accent);padding:2px 8px;border-radius:10px;font-weight:600">${roleLabel[role]||role}</span>
-    <button onclick="fbSignOut()" style="font-size:11px;padding:3px 10px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;color:var(--text-2);font-family:'IBM Plex Sans',sans-serif">Вийти</button>
+    ${pendingBanner}
+    <button onclick="fbSignOut()" style="font-size:11px;padding:3px 10px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;color:var(--text-2);font-family:'IBM Plex Sans',sans-serif;margin-left:auto">Вийти</button>
   `;
   bar.style.display = 'flex';
 }
@@ -1274,11 +1273,8 @@ onAuthStateChanged(auth, async (user) => {
       if (snap.exists()) {
         const data = snap.data();
         const role = data.role || 'pending';
-        if (role === 'pending') {
-          showOverlay('pending-overlay');
-        } else {
-          applyRole(role);
-        }
+        // pending — пускаємо в каталог але тільки з РРЦ цінами
+        applyRole(role);
       } else {
         // Новий користувач без профілю — показати pending
         showOverlay('pending-overlay');
@@ -3866,11 +3862,17 @@ onRateChange = function() {
     <input class="auth-input" type="tel"      id="fb-reg-phone"   placeholder="Телефон * (+38...)">
     <input class="auth-input" type="email"    id="fb-reg-email"   placeholder="Email *">
     <input class="auth-input" type="password" id="fb-reg-pass"    placeholder="Пароль (мін. 6 символів) *">
-    <div id="client-info" style="display:none;background:var(--tag-blue);border-radius:6px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:var(--tag-blue-text)">
-      👤 Клієнт бачить РРЦ ціни на обладнання та тарифи на абонплату Navixy
+    <div id="client-info" style="display:none;background:#e8f4fd;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:12.5px;color:#1a6a9a;border:1px solid #bee3f8">
+      <b>👤 Клієнт</b><br>
+      • Бачить РРЦ ціни на обладнання<br>
+      • Тарифи на абонплату Navixy<br>
+      • Доступ одразу після реєстрації
     </div>
-    <div id="partner-info" style="background:var(--tag-green);border-radius:6px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:var(--tag-green-text)">
-      🤝 Партнер бачить оптові ціни. Заявка буде розглянута менеджером TIPSTER
+    <div id="partner-info" style="background:#e8f8e8;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:12.5px;color:#1a6a2a;border:1px solid #b8e6b8">
+      <b>🤝 Партнер</b><br>
+      • Партнерські (оптові) ціни<br>
+      • До підтвердження — РРЦ ціни<br>
+      • Заявка розглядається до 24 год
     </div>
     <div class="auth-error" id="fb-reg-error"></div>
     <button class="auth-btn" id="fb-reg-btn" onclick="fbRegister()">Зареєструватись →</button>
