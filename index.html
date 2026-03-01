@@ -1128,13 +1128,18 @@ body {
 }
 
 /* ── Ролі: ціни ── */
-/* Клієнт/pending — ховаємо партнерські колонки */
+/* Клієнт/pending — ховаємо партнерські, показуємо РРЦ */
 body[data-role="client"] .cell-partner,
 body[data-role="client"] th.cell-partner,
+body[data-role="client"] .cell-price-eur,
+body[data-role="client"] th.cell-price-eur { display: none !important; }
 body[data-role="client"] .cell-retail,
 body[data-role="client"] th.cell-retail { display: table-cell !important; }
 /* Партнер — показуємо все */
 body[data-role="partner"] .cell-partner,
+body[data-role="partner"] th.cell-partner,
+body[data-role="partner"] .cell-price-eur,
+body[data-role="partner"] th.cell-price-eur,
 body[data-role="partner"] .cell-retail,
 
 
@@ -2630,6 +2635,8 @@ function buildTable(items, urlMap, showSpec) {
       <th>Код</th>
       <th>Артикул</th>
       <th>Серія</th>
+      <th class="cell-partner">Партнер (${items[0].currency})</th>
+      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-partner">Партнер (₴)</th>
       <th class="cell-retail">РРЦ (₴)</th>
     </tr></thead>
@@ -2650,6 +2657,8 @@ function buildTable(items, urlMap, showSpec) {
           <td class="cell-code">${p.code}</td>
           <td class="cell-article">${p.article || '—'}</td>
           <td><span class="tag ${tagClass}">${p.program || p.series}</span></td>
+          <td class="cell-partner" style="color:var(--tag-blue-text);font-weight:500">${p.partnerPrice.toFixed(2)} ${p.currency}</td>
+          <td class="cell-price-eur">${p.retailPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-partner">${fmt(partner)} ₴</td>
           <td class="cell-retail">${fmt(retail)} ₴</td>
         </tr>`;
@@ -3024,6 +3033,7 @@ function renderConfigurator() {
       <th>Бренд / Серія</th>
       <th>Програма</th>
       <th>Інтерфейси та особливості</th>
+      <th class="cell-partner">Партнер (${items[0].currency})</th>
       <th class="cell-partner">Партнер ₴</th>
       <th class="cell-retail">РРЦ ₴</th>
     </tr></thead>
@@ -3048,6 +3058,7 @@ function renderConfigurator() {
           <td>${gen4g} <span class="tag tag-gray" style="font-size:10px">${p.series}</span></td>
           <td><span class="tag ${tagClass}">${p.program}</span></td>
           <td style="min-width:180px">${badges || '<span style="color:var(--text-3);font-size:11px">—</span>'}</td>
+          <td class="cell-partner" style="color:var(--tag-blue-text);font-weight:500;white-space:nowrap">${p.partnerPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-partner" style="white-space:nowrap">${fmt(partner)} ₴</td>
           <td class="cell-retail" style="white-space:nowrap">${fmt(retail)} ₴</td>
         </tr>`;
