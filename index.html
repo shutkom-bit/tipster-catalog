@@ -2632,7 +2632,6 @@ function buildTable(items, urlMap, showSpec) {
   return `<div class="db-table-wrap"><table class="db-table">
     <thead><tr>
       <th>Назва${showSpec ? ' / Характеристики':''}</th>
-      <th>Код</th>
       <th>Артикул</th>
       <th>Серія</th>
       <th class="cell-partner">Партнер (${items[0].currency})</th>
@@ -2654,7 +2653,6 @@ function buildTable(items, urlMap, showSpec) {
             <div class="cell-name-top">${nameHtml}</div>
             ${specHtml}
           </td>
-          <td class="cell-code">${p.code}</td>
           <td class="cell-article">${p.article || '—'}</td>
           <td><span class="tag ${tagClass}">${p.program || p.series}</span></td>
           <td class="cell-partner" style="color:var(--tag-blue-text);font-weight:500">${p.partnerPrice.toFixed(2)} ${p.currency}</td>
@@ -3743,7 +3741,6 @@ buildTable = function(items, urlMap, showSpec) {
   return `<div class="db-table-wrap"><table class="db-table">
     <thead><tr>
       <th>Назва${showSpec ? ' / Характеристики':''}</th>
-      <th>Код</th>
       <th>Артикул</th>
       <th>Серія</th>
       <th class="cell-partner">Партнер (₴)</th>
@@ -3767,7 +3764,6 @@ buildTable = function(items, urlMap, showSpec) {
             <div class="cell-name-top">${nameHtml}</div>
             ${specHtml}
           </td>
-          <td class="cell-code">${p.code}</td>
           <td class="cell-article">${p.article || '—'}</td>
           <td><span class="tag ${tagClass}">${p.program || p.series}</span></td>
           <td class="cell-partner">${fmt(partner)} ₴</td>
