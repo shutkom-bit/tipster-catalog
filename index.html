@@ -1141,6 +1141,7 @@ body[data-role="partner"] th.cell-partner,
 body[data-role="partner"] .cell-price-eur,
 body[data-role="partner"] th.cell-price-eur,
 body[data-role="partner"] .cell-retail,
+body[data-role="partner"] th.cell-retail { display: table-cell !important; }
 
 
 .cat-chips-label {
@@ -3032,6 +3033,7 @@ function renderConfigurator() {
       <th>Програма</th>
       <th>Інтерфейси та особливості</th>
       <th class="cell-partner">Партнер (${items[0].currency})</th>
+      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-partner">Партнер ₴</th>
       <th class="cell-retail">РРЦ ₴</th>
     </tr></thead>
@@ -3057,6 +3059,7 @@ function renderConfigurator() {
           <td><span class="tag ${tagClass}">${p.program}</span></td>
           <td style="min-width:180px">${badges || '<span style="color:var(--text-3);font-size:11px">—</span>'}</td>
           <td class="cell-partner" style="color:var(--tag-blue-text);font-weight:500;white-space:nowrap">${p.partnerPrice.toFixed(2)} ${p.currency}</td>
+          <td class="cell-price-eur" style="white-space:nowrap">${p.retailPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-partner" style="white-space:nowrap">${fmt(partner)} ₴</td>
           <td class="cell-retail" style="white-space:nowrap">${fmt(retail)} ₴</td>
         </tr>`;
@@ -3743,6 +3746,8 @@ buildTable = function(items, urlMap, showSpec) {
       <th>Назва${showSpec ? ' / Характеристики':''}</th>
       <th>Артикул</th>
       <th>Серія</th>
+      <th class="cell-partner">Партнер (${items[0].currency})</th>
+      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-partner">Партнер (₴)</th>
       <th class="cell-retail">РРЦ (₴)</th>
       <th></th>
@@ -3766,6 +3771,8 @@ buildTable = function(items, urlMap, showSpec) {
           </td>
           <td class="cell-article">${p.article || '—'}</td>
           <td><span class="tag ${tagClass}">${p.program || p.series}</span></td>
+          <td class="cell-partner" style="color:var(--tag-blue-text);font-weight:500">${p.partnerPrice.toFixed(2)} ${p.currency}</td>
+          <td class="cell-price-eur">${p.retailPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-partner">${fmt(partner)} ₴</td>
           <td class="cell-retail">${fmt(retail)} ₴</td>
           <td style="white-space:nowrap">
