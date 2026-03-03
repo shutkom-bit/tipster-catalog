@@ -134,9 +134,13 @@ body {
 
 .sidebar-rates {
   margin-top: auto;
-  padding: 12px 12px;
+  padding: 12px;
   border-top: 1px solid var(--border);
   font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: static !important;
 }
 .rates-title {
   font-weight: 600;
@@ -150,7 +154,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
 }
 .rate-label { color: var(--text-2); }
 .rate-input-wrap {
@@ -1107,12 +1110,14 @@ body {
 .btn-add-cart {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
+  gap: 5px;
+  padding: 4px 10px;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 6px;
   background: var(--bg);
   font-family: 'IBM Plex Sans', sans-serif;
+  transition: all 0.15s;
+  margin-top: 8px;
   font-size: 11px;
   color: var(--text-2);
   cursor: pointer;
@@ -1723,10 +1728,10 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
 
         <div class="section">
           <div class="section-title">📚 Wiki / База знань</div>
-          <div class="section-desc">Документація, ПЗ та корисні посилання для роботи з обладнанням і платформою Navixy.</div>
+          <div class="section-desc">Документація, ПЗ та корисні посилання для роботи з обладнанням і платформою TIPSTER.</div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('wiki')">Відкрити базу знань →</button>
-            <button class="tb-btn" style="border:1px solid var(--border)" onclick="window.open('https://www.navixy.com/docs/','_blank')">Документація Navixy ↗</button>
+            <button class="tb-btn" style="border:1px solid var(--border)" onclick="window.open('https://www.navixy.com/docs/','_blank')">Документація TIPSTER / Navixy ↗</button>
             <button class="tb-btn" style="border:1px solid var(--border)" onclick="window.open('https://wiki.teltonika-gps.com/view/Main_Page','_blank')">Wiki Teltonika ↗</button>
           </div>
         </div>
@@ -1964,7 +1969,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                     <li>Моніторинг маршрутів та зупинок</li>
                     <li>Сповіщення: швидкість, геозони</li>
                     <li>Звіти по пробігу та рухам</li>
-                    <li>Платформа NAVIXY</li>
+                    <li>Платформа TIPSTER</li>
                   </ul>
                   <button class="tb-btn primary" style="margin-top:auto;width:100%;font-size:10.5px;flex-shrink:0;padding:4px 0" onclick="event.stopPropagation();addToCartById('TARIFF_BASE')">🛒 Замовити тариф</button>
                 </div>
@@ -2414,7 +2419,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         <div class="page-header">
           <span class="page-emoji">📚</span>
           <div class="page-title">Wiki / База знань</div>
-          <div class="page-subtitle">Документація, інструменти та корисні ресурси для роботи з GPS-обладнанням і платформою Navixy.</div>
+          <div class="page-subtitle">Документація, інструменти та корисні ресурси для роботи з GPS-обладнанням і платформою TIPSTER.</div>
         </div>
 
         <div class="callout callout-blue">
@@ -2466,7 +2471,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
               <div class="card" style="cursor:pointer;display:flex;align-items:center;gap:14px;padding:16px 20px">
                 <div style="width:40px;height:40px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🌐</div>
                 <div>
-                  <div class="card-title" style="color:var(--accent);margin-bottom:3px">Документація Navixy ↗</div>
+                  <div class="card-title" style="color:var(--accent);margin-bottom:3px">Документація TIPSTER / Navixy ↗</div>
                   <div class="card-spec">Офіційна документація платформи Navixy: API, налаштування, інтеграції, звіти.</div>
                 </div>
               </div>
@@ -3596,6 +3601,7 @@ function onRateChange() {
 //  INIT
 // ════════════════════════════════════════════════════════
 showSection('overview');
+cartLoadLS(); // відновити кошик з localStorage
 // Auto-fetch NBU on load
 fetchNBURates();
 // Wiki submenu starts closed
@@ -3699,6 +3705,48 @@ let cart = {};
 // Реєстр товарів: { id → item } — для onclick без JSON.stringify
 const cartRegistry = new Map();
 
+// ── localStorage helpers ──────────────────────────────────
+const CART_LS_KEY = 'tipster_cart_v2';
+
+function cartSaveLS() {
+  try {
+    // Зберігаємо лише серіалізовані дані (без функцій)
+    const saved = {};
+    Object.entries(cart).forEach(([id, entry]) => {
+      const item = entry.item;
+      saved[id] = {
+        qty: entry.qty,
+        item: {
+          name: item.name || item.code || id,
+          article: item.article || item.code || '',
+          partnerPrice: item.partnerPrice,
+          retailPrice: item.retailPrice,
+          price_usd: item.price_usd,
+          rrp_usd: item.rrp_usd,
+          _uah: item._uah,
+          currency: item.currency || 'USD',
+          note: item.note,
+          spec: item.spec || '',
+        }
+      };
+    });
+    localStorage.setItem(CART_LS_KEY, JSON.stringify(saved));
+  } catch(e) {}
+}
+
+function cartLoadLS() {
+  try {
+    const raw = localStorage.getItem(CART_LS_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    Object.entries(saved).forEach(([id, entry]) => {
+      cart[id] = entry;
+      // Також зареєструємо в registry для зворотньої сумісності
+      cartRegistry.set(id, entry.item);
+    });
+  } catch(e) {}
+}
+
 
 // ── Тарифи та SIM-карти в кошику ──────────────────────────
 const tariffItems = [
@@ -3769,6 +3817,7 @@ function addToCart(item) {
     cart[id] = { item, qty: 1 };
   }
   cartRender();
+  cartSaveLS();
   cartShowToast('✅ ' + (item.name || item.code) + ' — додано в кошик');
   // Оновити всі кнопки з цим id
   document.querySelectorAll(`.btn-add-cart[data-cart-id="${id}"]`).forEach(btn => {
@@ -3780,9 +3829,10 @@ function addToCart(item) {
 function cartRemove(id) {
   delete cart[id];
   cartRender();
+  cartSaveLS();
   document.querySelectorAll(`.btn-add-cart[data-cart-id="${id}"]`).forEach(btn => {
     btn.classList.remove('in-cart');
-    btn.innerHTML = '+ В кошик';
+    btn.innerHTML = '🛒 + Кошик';
   });
 }
 
@@ -3790,14 +3840,16 @@ function cartSetQty(id, delta) {
   if (!cart[id]) return;
   cart[id].qty = Math.max(1, cart[id].qty + delta);
   cartRender();
+  cartSaveLS();
 }
 
 function cartClear() {
   cart = {};
   cartRender();
+  cartSaveLS();
   document.querySelectorAll('.btn-add-cart').forEach(btn => {
     btn.classList.remove('in-cart');
-    btn.innerHTML = '+ В кошик';
+    btn.innerHTML = '🛒 + Кошик';
   });
 }
 
@@ -4136,7 +4188,7 @@ function cartResetAfterSend(btn, txt, label) {
     cartRender();
     cartClose();
     document.querySelectorAll('.btn-add-cart').forEach(b => {
-      b.classList.remove('in-cart'); b.innerHTML = '+ В кошик';
+      b.classList.remove('in-cart'); b.innerHTML = '🛒 + Кошик';
     });
     btn.disabled = false;
     txt.textContent = label;
@@ -4199,7 +4251,7 @@ buildTable = function(items, urlMap, showSpec) {
         const specHtml = (showSpec && p.spec) ? `<div class="cell-spec">${p.spec}</div>` : '';
         const cid = registerCartItem(p);
         const inCart = cart[cid] ? 'in-cart' : '';
-        const btnTxt = cart[cid] ? '✓ В кошику' : '+ В кошик';
+        const btnTxt = cart[cid] ? '✓ В кошику' : '🛒 + Кошик';
         return `<tr>
           <td class="cell-name">
             <div class="cell-name-top">${nameHtml}</div>
@@ -4248,7 +4300,7 @@ makeCard = function(item, currency) {
          </div>`);
   const cid = registerCartItem(item);
   const inCart = cart[cid] ? 'in-cart' : '';
-  const btnTxt = cart[cid] ? '✓ В кошику' : '+ В кошик';
+  const btnTxt = cart[cid] ? '✓ В кошику' : '🛒 + Кошик';
   const cartBtn = (item.price_usd && item.price_usd > 0)
     ? `<button class="btn-add-cart ${inCart}" data-cart-id="${cid}" style="margin-top:8px"
         onclick="addToCartById('${cid}')">${btnTxt}</button>`
@@ -4313,7 +4365,7 @@ onRateChange = function() {
 
         <!-- Підзаголовок -->
         <p style="color:rgba(255,255,255,0.52);font-size:15px;line-height:1.75;max-width:460px;margin:0 0 40px">
-          Офіційні ціни на GPS-трекери <b style="color:rgba(255,255,255,0.75)">Teltonika</b> та <b style="color:rgba(255,255,255,0.75)">Bitrek</b> для автопарків, логістики та корпоративного транспорту. Партнерські та РРЦ тарифи з інтеграцією <b style="color:rgba(255,255,255,0.75)">NAVIXY</b>.
+          Офіційні ціни на GPS-трекери <b style="color:rgba(255,255,255,0.75)">Teltonika</b> та <b style="color:rgba(255,255,255,0.75)">Bitrek</b> для автопарків, логістики та корпоративного транспорту. Партнерські та РРЦ тарифи з платформою <b style="color:rgba(255,255,255,0.75)">TIPSTER</b>.
         </p>
 
         <!-- Переваги -->
@@ -4346,7 +4398,7 @@ onRateChange = function() {
           <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px 16px">
             <div style="width:38px;height:38px;border-radius:9px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.25);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">🏷️</div>
             <div>
-              <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:3px">Тарифи NAVIXY</div>
+              <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:3px">Тарифи TIPSTER</div>
               <div style="color:rgba(255,255,255,0.38);font-size:11.5px;line-height:1.5">Базовий · Про · Експерт</div>
             </div>
           </div>
@@ -4355,7 +4407,7 @@ onRateChange = function() {
         <!-- SEO блок -->
         <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px 20px;max-width:540px">
           <p style="color:rgba(255,255,255,0.35);font-size:11.5px;line-height:1.8;margin:0">
-            <b style="color:rgba(255,255,255,0.5)">TIPSTER</b> — офіційний постачальник GPS-трекерів для моніторингу транспорту по всій Україні. Працюємо з автопарками, логістикою та корпоративним транспортом. GPS-контроль авто від 1 до 1000+ одиниць. Технічна підтримка та налаштування NAVIXY.
+            <b style="color:rgba(255,255,255,0.5)">TIPSTER</b> — офіційний постачальник GPS-трекерів для моніторингу транспорту по всій Україні. Працюємо з автопарками, логістикою та корпоративним транспортом. GPS-контроль авто від 1 до 1000+ одиниць. Технічна підтримка та налаштування TIPSTER.
           </p>
         </div>
       </div>
