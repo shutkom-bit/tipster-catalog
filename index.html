@@ -1854,7 +1854,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         <div class="page-header">
           <span class="page-emoji">🔌</span>
           <div class="page-title">Аксесуари</div>
-          <div class="page-subtitle">Додаткові аксесуари для GPS-трекерів: кабелі, антени, адаптери, SIM-карти та монтажне обладнання.</div>
+          <div class="page-subtitle">Додаткові аксесуари для GPS-трекерів: кабелі, антени та SIM-карти.</div>
         </div>
 
         <div class="section">
@@ -1867,28 +1867,6 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
           <div class="card-grid" id="acc-power"></div>
         </div>
 
-        <div class="section">
-          <div class="section-title">🔩 Монтажне приладдя</div>
-          <div class="card-grid" id="acc-mount"></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">🚗 CAN-Control — адаптери керування</div>
-          <div class="section-desc">Адаптери CAN-Control від Teltonika для читання та керування через CAN-шину. Ціни в USD (партнер без ПДВ / РРЦ без ПДВ).</div>
-          <div class="card-grid" id="acc-can-control"></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">📡 CAN-адаптери (ALL-CAN / LV-CAN / ECAN)</div>
-          <div class="section-desc">Адаптери для зчитування даних з CAN-шини легкових і вантажних авто. Ціни в USD (партнер без ПДВ / РРЦ без ПДВ).</div>
-          <div class="card-grid" id="acc-can-adapters"></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">👁 EYE Beacon / EYE Sensor — BLE сенсори</div>
-          <div class="section-desc">Bluetooth Low Energy сенсори Teltonika для моніторингу температури, вологості та ATEX-зон. Ціни в USD (партнер без ПДВ / РРЦ без ПДВ).</div>
-          <div class="card-grid" id="acc-eye-sensors"></div>
-        </div>
       </div>
 
       <!-- ══════════ EXTRA EQUIPMENT ══════════ -->
@@ -1912,6 +1890,30 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         <div class="section">
           <div class="section-title">🆘 Кнопки та сигналізація</div>
           <div class="card-grid" id="extra-sos"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">🔩 Монтажне приладдя</div>
+          <div class="section-desc">Кріплення, корпуси та монтажні комплекти для GPS-трекерів.</div>
+          <div class="card-grid" id="acc-mount"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">🚗 CAN-Control — адаптери керування</div>
+          <div class="section-desc">Адаптери CAN-Control від Teltonika для читання та керування через CAN-шину. Ціни в USD (партнер / РРЦ з ПДВ).</div>
+          <div class="card-grid" id="acc-can-control"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">📡 CAN-адаптери (ALL-CAN / LV-CAN / ECAN)</div>
+          <div class="section-desc">Адаптери для зчитування даних з CAN-шини легкових і вантажних авто. Ціни в USD (партнер / РРЦ з ПДВ).</div>
+          <div class="card-grid" id="acc-can-adapters"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">👁 EYE Beacon / EYE Sensor — BLE сенсори</div>
+          <div class="section-desc">Bluetooth Low Energy сенсори Teltonika для моніторингу температури, вологості та ATEX-зон. Ціни в USD (партнер / РРЦ з ПДВ).</div>
+          <div class="card-grid" id="acc-eye-sensors"></div>
         </div>
 
       </div>
@@ -1952,6 +1954,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                     <li>Звіти по пробігу та рухам</li>
                     <li>Платформа NAVIXY</li>
                   </ul>
+                  <button class="tb-btn primary" style="margin-top:10px;width:100%;font-size:11px" onclick="event.stopPropagation();addToCartById('TARIFF_BASE')">🛒 Замовити тариф</button>
                 </div>
               </div>
             </div>
@@ -1976,6 +1979,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                     <li>Звіти по заправках та зливах</li>
                     <li>Моніторинг моточасів</li>
                   </ul>
+                  <button class="tb-btn primary" style="margin-top:10px;width:100%;font-size:11px" onclick="event.stopPropagation();addToCartById('TARIFF_FUELCAN')">🛒 Замовити тариф</button>
                 </div>
               </div>
             </div>
@@ -2000,6 +2004,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                     <li>Сповіщення про несанкціоновані від'їзди</li>
                     <li>Звіти по клієнтах/орендах</li>
                   </ul>
+                  <button class="tb-btn primary" style="margin-top:10px;width:100%;font-size:11px" onclick="event.stopPropagation();addToCartById('TARIFF_RENT')">🛒 Замовити тариф</button>
                 </div>
               </div>
             </div>
@@ -2027,6 +2032,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                     <a class="store-btn" href="https://apps.apple.com/us/app/x-gps-tracker/id1612047534" target="_blank">🍎 App Store</a>
                     <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker" target="_blank">🤖 Google Play</a>
                   </div>
+                  <button class="tb-btn primary" style="margin-top:10px;width:100%;font-size:11px" onclick="event.stopPropagation();addToCartById('TARIFF_PERSONAL')">🛒 Замовити тариф</button>
                 </div>
               </div>
             </div>
@@ -2051,6 +2057,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                     <li>Ідеально для міжнародних рейсів</li>
                     <li>Все включено з тарифу Base</li>
                   </ul>
+                  <button class="tb-btn primary" style="margin-top:10px;width:100%;font-size:11px" onclick="event.stopPropagation();addToCartById('TARIFF_ROAMING')">🛒 Замовити тариф</button>
                 </div>
               </div>
             </div>
@@ -2075,6 +2082,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                     <li>Рідкісні оновлення (економія заряду)</li>
                     <li>Сповіщення про переміщення</li>
                   </ul>
+                  <button class="tb-btn primary" style="margin-top:10px;width:100%;font-size:11px" onclick="event.stopPropagation();addToCartById('TARIFF_TIPSTER')">🛒 Замовити тариф</button>
                 </div>
               </div>
             </div>
@@ -2099,6 +2107,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                     <li>Відновлення в будь-який момент</li>
                     <li>Мінімальна абонплата</li>
                   </ul>
+                  <button class="tb-btn primary" style="margin-top:10px;width:100%;font-size:11px" onclick="event.stopPropagation();addToCartById('TARIFF_HOLD')">🛒 Замовити тариф</button>
                 </div>
               </div>
             </div>
@@ -2116,18 +2125,21 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
               <div class="sim-card-title">📱 SIM-карта M2M (Kyivstar)</div>
               <div class="sim-card-price">50 ₴</div>
               <div class="sim-card-note">M2M SIM · Тариф для IoT · Мінімальний трафік 24 MB/міс · Формат 3-в-1 · Вартість сплачується один раз при замовленні</div>
+              <button class="tb-btn primary" style="margin-top:8px;width:100%;font-size:11px" onclick="addToCartById('SIM_KS')">🛒 У кошик</button>
             </div>
 
             <div class="sim-card">
               <div class="sim-card-title">📱 SIM-карта M2M (Vodafone)</div>
               <div class="sim-card-price">50 ₴</div>
               <div class="sim-card-note">M2M SIM · Тариф для IoT · Мінімальний трафік 24 MB/міс · Формат 3-в-1 · Вартість сплачується один раз при замовленні</div>
+              <button class="tb-btn primary" style="margin-top:8px;width:100%;font-size:11px" onclick="addToCartById('SIM_VF')">🛒 У кошик</button>
             </div>
 
             <div class="sim-card">
               <div class="sim-card-title">🌍 SIM Roaming</div>
               <div class="sim-card-price">250 ₴</div>
-              <div class="sim-card-note">Для роботи в Україні та країнах ЄС · Тарифний план «Україна 30» · Мінімальний трафік 24 MB/міс</div>
+              <div class="sim-card-note">Для роботи в Україні та країнах ЄС · 3 MB · Вартість SIM-карти сплачується один раз при замовленні</div>
+              <button class="tb-btn primary" style="margin-top:8px;width:100%;font-size:11px" onclick="addToCartById('SIM_ROAMING')">🛒 У кошик</button>
             </div>
 
           </div>
@@ -3664,6 +3676,34 @@ if (_ws) _ws.classList.remove('open');
 let cart = {};
 // Реєстр товарів: { id → item } — для onclick без JSON.stringify
 const cartRegistry = new Map();
+
+
+// ── Тарифи та SIM-карти в кошику ──────────────────────────
+const tariffItems = [
+  { article:'TARIFF_BASE',     name:'Тариф Base',        note:'300 ₴/міс', price_usd:0, rrp_usd:0, _uah:300,  spec:'Базовий тариф GPS-моніторингу' },
+  { article:'TARIFF_FUELCAN',  name:'Тариф Fuel-Can',    note:'330 ₴/міс', price_usd:0, rrp_usd:0, _uah:330,  spec:'ДРП / КАН моніторинг' },
+  { article:'TARIFF_RENT',     name:'Тариф Rent',         note:'460 ₴/міс', price_usd:0, rrp_usd:0, _uah:460,  spec:'Оренда транспорту' },
+  { article:'TARIFF_PERSONAL', name:'Тариф Personal',     note:'250 ₴/міс', price_usd:0, rrp_usd:0, _uah:250,  spec:'Особистий трекер / X-GPS Tracker' },
+  { article:'TARIFF_ROAMING',  name:'Тариф Roaming',      note:'400 ₴/міс', price_usd:0, rrp_usd:0, _uah:400,  spec:'Україна 30 + країни ЄС' },
+  { article:'TARIFF_TIPSTER',  name:'Тариф Tipster',      note:'140 ₴/міс', price_usd:0, rrp_usd:0, _uah:140,  spec:'Автономний маяк' },
+  { article:'TARIFF_HOLD',     name:'Тариф Hold',         note:'90 \u20B4/\u043C\u0456\u0441',  price_usd:0, rrp_usd:0, _uah:90,   spec:'Пауза / збереження об\u02BCєкта' },
+  { article:'SIM_KS',          name:'SIM M2M Kyivstar',   note:'50 ₴',      price_usd:0, rrp_usd:0, _uah:50,   spec:'M2M SIM · IoT · 24 MB/міс · 3-в-1' },
+  { article:'SIM_VF',          name:'SIM M2M Vodafone',   note:'50 ₴',      price_usd:0, rrp_usd:0, _uah:50,   spec:'M2M SIM · IoT · 24 MB/міс · 3-в-1' },
+  { article:'SIM_ROAMING',     name:'SIM Roaming',        note:'250 ₴',     price_usd:0, rrp_usd:0, _uah:250,  spec:'Україна + ЄС · 3 MB · одноразова оплата' },
+];
+tariffItems.forEach(item => cartRegistry.set(item.article, item));
+
+// Перевизначити cartItemPrice для UAH-товарів
+const _origCartItemPrice = cartItemPrice;
+// Патч — UAH-товари мають _uah поле
+const _patchedCartItemPrice = function(item) {
+  if (item._uah !== undefined) {
+    return { usdVal: item._uah, uahVal: item._uah, currency: 'UAH', isUAH: true };
+  }
+  return _origCartItemPrice(item);
+};
+// Замінити глобально
+Object.defineProperty(window, 'cartItemPrice', { value: _patchedCartItemPrice, writable: true, configurable: true });
 
 function addToCartById(id) {
   const item = cartRegistry.get(id);
