@@ -1738,6 +1738,17 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
             <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('bitrek'); filterBitrekSeries('Відео')">Відео</button>
           </div>
         </div>
+
+        <div class="section">
+          <div class="section-title">📲 Мобільні додатки</div>
+          <div class="section-desc">Офіційні додатки для моніторингу транспорту та персоналу.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <a href="https://apps.apple.com/us/app/x-gps-tracker/id1612047534" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:6px 12px;color:var(--text);text-decoration:none">🍎 X-GPS Tracker — App Store</a>
+            <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:6px 12px;color:var(--text);text-decoration:none">🤖 X-GPS Tracker — Google Play</a>
+            <a href="https://apps.apple.com/us/app/x-gps-mobile/id6739621705" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:6px 12px;color:var(--text);text-decoration:none">🍎 X-GPS Mobile — App Store</a>
+            <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.client.app" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:6px 12px;color:var(--text);text-decoration:none">🤖 X-GPS Mobile — Google Play</a>
+          </div>
+        </div>
       </div>
 
       <!-- ══════════ TELTONIKA ══════════ -->
@@ -1854,11 +1865,6 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         <div class="section">
           <div class="section-title">🔋 Харчування та кабелі</div>
           <div class="card-grid" id="acc-power"></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">🪪 SIM-карти та зв'язок</div>
-          <div class="card-grid" id="acc-sim"></div>
         </div>
 
         <div class="section">
@@ -2103,63 +2109,25 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         <!-- SIM-КАРТИ -->
         <div class="section">
           <div class="section-title">📶 SIM-карти</div>
-          <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Вартість SIM-карти сплачується один раз, при замовленні. Формат 3-в-1 (Nano / Micro / Standard).</div>
+          <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Вартість SIM-карти сплачується один раз, при замовленні. Формат 3-в-1 (Nano / Micro / Standard). З ПДВ.</div>
           <div class="sim-card-grid">
 
             <div class="sim-card">
-              <div class="sim-card-title">📱 Київстар — фізична SIM</div>
+              <div class="sim-card-title">📱 SIM-карта M2M (Kyivstar)</div>
               <div class="sim-card-price">50 ₴</div>
-              <div class="sim-card-note">Формат 3-в-1 · Вартість сплачується один раз при замовленні</div>
+              <div class="sim-card-note">M2M SIM · Тариф для IoT · Мінімальний трафік 24 MB/міс · Формат 3-в-1 · Вартість сплачується один раз при замовленні</div>
             </div>
 
             <div class="sim-card">
-              <div class="sim-card-title">📱 Vodafone — фізична SIM</div>
+              <div class="sim-card-title">📱 SIM-карта M2M (Vodafone)</div>
               <div class="sim-card-price">50 ₴</div>
-              <div class="sim-card-note">Формат 3-в-1 · Вартість сплачується один раз при замовленні</div>
+              <div class="sim-card-note">M2M SIM · Тариф для IoT · Мінімальний трафік 24 MB/міс · Формат 3-в-1 · Вартість сплачується один раз при замовленні</div>
             </div>
 
             <div class="sim-card">
               <div class="sim-card-title">🌍 SIM Roaming</div>
               <div class="sim-card-price">250 ₴</div>
-              <div class="sim-card-note">Для роботи в Україні та країнах ЄС · Тарифний план «Україна 30»</div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- ДОДАТКИ -->
-        <div class="section">
-          <div class="section-title">📲 Мобільні додатки</div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
-
-            <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg);min-width:200px;flex:1">
-              <div style="font-size:13px;font-weight:700;margin-bottom:4px">X-GPS Tracker</div>
-              <div style="font-size:11px;color:var(--text-3);margin-bottom:10px">Додаток для відстеження особистих пристроїв (Personal тариф)</div>
-              <div style="display:flex;gap:6px;flex-wrap:wrap">
-                <a href="https://apps.apple.com/us/app/x-gps-tracker/id1612047534" target="_blank"
-                   style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">
-                  🍎 App Store
-                </a>
-                <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker" target="_blank"
-                   style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">
-                  🤖 Google Play
-                </a>
-              </div>
-            </div>
-
-            <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg);min-width:200px;flex:1">
-              <div style="font-size:13px;font-weight:700;margin-bottom:4px">X-GPS Mobile</div>
-              <div style="font-size:11px;color:var(--text-3);margin-bottom:10px">Повноцінний моніторинг транспорту з мобільного пристрою</div>
-              <div style="display:flex;gap:6px;flex-wrap:wrap">
-                <a href="https://apps.apple.com/us/app/x-gps-mobile/id6739621705" target="_blank"
-                   style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">
-                  🍎 App Store
-                </a>
-                <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.client.app" target="_blank"
-                   style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">
-                  🤖 Google Play
-                </a>
-              </div>
+              <div class="sim-card-note">Для роботи в Україні та країнах ЄС · Тарифний план «Україна 30» · Мінімальний трафік 24 MB/міс</div>
             </div>
 
           </div>
@@ -2437,7 +2405,34 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
           <div class="card-grid" id="wiki-software"></div>
         </div>
 
-                <!-- Зовнішні ресурси -->
+        <!-- Мобільні додатки -->
+        <div class="section" id="wiki-section-apps">
+          <div class="section-title">📲 Мобільні додатки</div>
+          <div class="section-desc">Офіційні мобільні додатки для моніторингу та відстеження.</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+
+            <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg);min-width:200px;flex:1">
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px">X-GPS Tracker</div>
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:10px">Додаток для відстеження особистих пристроїв (Personal тариф)</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <a href="https://apps.apple.com/us/app/x-gps-tracker/id1612047534" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">🍎 App Store</a>
+                <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">🤖 Google Play</a>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg);min-width:200px;flex:1">
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px">X-GPS Mobile</div>
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:10px">Повноцінний моніторинг транспорту з мобільного пристрою</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <a href="https://apps.apple.com/us/app/x-gps-mobile/id6739621705" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">🍎 App Store</a>
+                <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.client.app" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">🤖 Google Play</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Зовнішні ресурси -->
         <div class="section">
           <div class="section-title">🌐 Зовнішні ресурси</div>
           <div class="section-desc">Офіційна документація партнерів.</div>
@@ -4405,6 +4400,13 @@ onRateChange = function() {
               <span style="margin-left:auto;font-size:11px;background:rgba(16,185,129,0.2);color:#6ee7b7;padding:2px 8px;border-radius:20px;font-weight:600">РРЦ ціни</span>
             </div>
             <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6">Автопарки, логістика, корпоративний транспорт. Доступ до РРЦ цін одразу після реєстрації.</div>
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08)">
+              <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Мобільні додатки</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <a href="https://apps.apple.com/us/app/x-gps-mobile/id6739621705" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:5px 10px;color:rgba(255,255,255,0.7);text-decoration:none">🍎 X-GPS Mobile</a>
+                <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.client.app" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:5px 10px;color:rgba(255,255,255,0.7);text-decoration:none">🤖 X-GPS Mobile</a>
+              </div>
+            </div></div>
           </div>
         </div>
       </div>
