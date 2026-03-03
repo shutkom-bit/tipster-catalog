@@ -1635,9 +1635,12 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
       <!-- ══════════ TELTONIKA ══════════ -->
       <div class="page-section" id="sec-teltonika">
         <div class="page-header">
-          <span class="page-emoji">📦</span>
-          <div class="page-title">Teltonika</div>
-          <div class="page-subtitle">GPS-трекери для транспорту та IoT. Ціни в EUR (без ПДВ / РРЦ). <a href="https://teltonika-gps.com/products/trackers" target="_blank" style="color:var(--accent)">teltonika-gps.com ↗</a></div>
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:12px">
+            <img src="https://wiki.teltonika-gps.com/images/thumb/9/9a/Teltonika_logo_2023.png/320px-Teltonika_logo_2023.png"
+                 alt="Teltonika" style="height:32px;object-fit:contain"
+                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Teltonika_logo.svg/320px-Teltonika_logo.svg.png';this.onerror=null">
+          </div>
+          <div class="page-subtitle" style="margin-top:4px">GPS-трекери для транспорту та IoT. Ціни в USD (з ПДВ / РРЦ ціна рекомендована але не обов'язкова). <a href="https://teltonika-gps.com/products/trackers" target="_blank" style="color:var(--accent)">teltonika-gps.com ↗</a></div>
         </div>
         <!-- BY CATEGORY chips -->
         <div style="margin-bottom:6px">
@@ -2330,8 +2333,8 @@ const products = [
   { mode:"fixed", code:"FMB125E", article:"FMB125BJOB01", name:"FMB125 External GPS",         currency:"USD", partnerPrice:52.20, retailPrice:56.90, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" },
   { mode:"fixed", code:"FMB125I", article:"FMB125BRRB01", name:"FMB125 Internal GPS",         currency:"USD", partnerPrice:49.50, retailPrice:53.96, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" },
   { mode:"fixed", code:"FMB225",  article:"FMB225BR2X01", name:"FMB225 IP67",                 currency:"USD", partnerPrice:57.60, retailPrice:62.78, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" },
-  { mode:"fixed", code:"ALLCAN3", article:"—",             name:"ALLCAN300 Оновлення",          currency:"USD", partnerPrice:66.00, retailPrice:72.00, series:"2G", program:"Оновлення",   brand:"Teltonika" },
-  { mode:"fixed", code:"EXTEND",  article:"—",             name:"Extended Оновлення",           currency:"USD", partnerPrice:50.05, retailPrice:54.00, series:"2G", program:"Оновлення",   brand:"Teltonika" },
+  { mode:"fixed", code:"ALLCAN3", article:"—",             name:"ALLCAN300 Оновлення",          currency:"USD", partnerPrice:79.20, retailPrice:93.00, series:"2G", program:"Оновлення",   brand:"Teltonika" },
+  { mode:"fixed", code:"EXTEND",  article:"—",             name:"Extended Оновлення",           currency:"USD", partnerPrice:59.94, retailPrice:71.00, series:"2G", program:"Оновлення",   brand:"Teltonika" },
   // TELTONIKA 4G
   { mode:"fixed", code:"FMC920",  article:"FMC9202MC01",  name:"FMC920 CAT1",                 currency:"USD", partnerPrice:43.56, retailPrice:47.92,  series:"4G", program:"BASIC",       brand:"Teltonika" },
   { mode:"fixed", code:"FMC880",  article:"FMC880LOFD01", name:"FMC880 CAT1",                 currency:"USD", partnerPrice:81.90, retailPrice:90.09,  series:"4G", program:"FAST&EASY",   brand:"Teltonika" },
@@ -2637,8 +2640,8 @@ function buildTable(items, urlMap, showSpec) {
       <th>Артикул</th>
       <th>Серія</th>
       <th class="cell-partner">Партнер (${items[0].currency})</th>
-      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-partner">Партнер (₴)</th>
+      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-retail">РРЦ (₴)</th>
     </tr></thead>
     <tbody>
@@ -3034,8 +3037,8 @@ function renderConfigurator() {
       <th>Програма</th>
       <th>Інтерфейси та особливості</th>
       <th class="cell-partner">Партнер (${items[0].currency})</th>
-      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-partner">Партнер ₴</th>
+      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-retail">РРЦ ₴</th>
     </tr></thead>
     <tbody>
@@ -3060,8 +3063,8 @@ function renderConfigurator() {
           <td><span class="tag ${tagClass}">${p.program}</span></td>
           <td style="min-width:180px">${badges || '<span style="color:var(--text-3);font-size:11px">—</span>'}</td>
           <td class="cell-partner" style="color:var(--tag-blue-text);font-weight:500;white-space:nowrap">${p.partnerPrice.toFixed(2)} ${p.currency}</td>
-          <td class="cell-price-eur" style="white-space:nowrap">${p.retailPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-partner" style="white-space:nowrap">${fmt(partner)} ₴</td>
+          <td class="cell-price-eur" style="white-space:nowrap">${p.retailPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-retail" style="white-space:nowrap">${fmt(retail)} ₴</td>
         </tr>`;
       }).join('')}
@@ -3748,8 +3751,8 @@ buildTable = function(items, urlMap, showSpec) {
       <th>Артикул</th>
       <th>Серія</th>
       <th class="cell-partner">Партнер (${items[0].currency})</th>
-      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-partner">Партнер (₴)</th>
+      <th class="cell-price-eur">РРЦ (${items[0].currency})</th>
       <th class="cell-retail">РРЦ (₴)</th>
       <th></th>
     </tr></thead>
@@ -3773,8 +3776,8 @@ buildTable = function(items, urlMap, showSpec) {
           <td class="cell-article">${p.article || '—'}</td>
           <td><span class="tag ${tagClass}">${p.program || p.series}</span></td>
           <td class="cell-partner" style="color:var(--tag-blue-text);font-weight:500">${p.partnerPrice.toFixed(2)} ${p.currency}</td>
-          <td class="cell-price-eur">${p.retailPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-partner">${fmt(partner)} ₴</td>
+          <td class="cell-price-eur">${p.retailPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-retail">${fmt(retail)} ₴</td>
           <td style="white-space:nowrap">
             <button class="btn-add-cart ${inCart}" data-cart-id="${cid}"
