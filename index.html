@@ -1194,6 +1194,111 @@ body[data-role="partner"] th.cell-retail { display: table-cell !important; }
   color: var(--text-3);
 }
 
+
+/* ── Тарифні flip-картки ── */
+.tariff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.tariff-card {
+  perspective: 900px;
+  height: 210px;
+  cursor: pointer;
+}
+.tariff-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+  border-radius: 12px;
+}
+.tariff-card.flipped .tariff-inner { transform: rotateY(180deg); }
+.tariff-front, .tariff-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 18px 16px 14px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+.tariff-front {
+  background: var(--bg);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.tariff-back {
+  background: var(--sidebar);
+  transform: rotateY(180deg);
+  justify-content: flex-start;
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.tariff-emoji { font-size: 34px; margin-bottom: 8px; }
+.tariff-name  { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.tariff-type  { font-size: 11px; color: var(--text-3); margin-bottom: 10px; }
+.tariff-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.tariff-period { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+.tariff-flip-hint {
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: auto;
+  text-align: center;
+}
+.tariff-back-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.tariff-back ul {
+  margin: 0; padding-left: 14px;
+  list-style: none;
+}
+.tariff-back ul li { padding: 2px 0; }
+.tariff-back ul li::before { content:"✓ "; color: var(--accent); font-size: 10px; }
+.tariff-back .store-links { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.tariff-back .store-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 600;
+  background: var(--hover); border: 1px solid var(--border);
+  border-radius: 6px; padding: 4px 8px;
+  color: var(--text); text-decoration: none;
+  white-space: nowrap;
+}
+.tariff-back .store-btn:hover { border-color: var(--accent); color: var(--accent); }
+.sim-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.sim-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--bg);
+}
+.sim-card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.sim-card-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px; font-weight: 700; color: var(--accent);
+}
+.sim-card-note { font-size: 11px; color: var(--text-3); margin-top: 4px; line-height: 1.5; }
+
 </style>
 <script type="module">
 // ══════════════════════════════════════════════════════════
@@ -1472,6 +1577,9 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
       </div>
       <div class="nav-item" onclick="showSection('extra')">
         <span class="icon">➕</span> Додаткове обладнання
+      </div>
+      <div class="nav-item" onclick="showSection('tariffs')">
+        <span class="icon">💳</span> Тарифи
       </div>
       <div class="nav-item" onclick="showSection('drp')">
         <span class="icon">⛽</span> ДРП
@@ -1802,6 +1910,262 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
 
       </div>
 
+
+
+      <!-- ══════════ ТАРИФИ ══════════ -->
+      <div class="page-section" id="sec-tariffs">
+        <div class="page-header">
+          <span class="page-emoji">💳</span>
+          <div class="page-title">Тарифи</div>
+          <div class="page-subtitle">Тарифні плани на моніторинг транспорту, персоналу та майна. Натисніть на картку — побачите деталі тарифу.</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:4px">Тарифи вказані з урахуванням ПДВ. Оплата щомісячна.</div>
+        </div>
+
+        <!-- ТАРИФНІ ПЛАНИ -->
+        <div class="section">
+          <div class="section-title">📡 Тарифні плани моніторингу</div>
+          <div class="tariff-grid">
+
+            <!-- Base -->
+            <div class="tariff-card" onclick="this.classList.toggle('flipped')">
+              <div class="tariff-inner">
+                <div class="tariff-front">
+                  <div class="tariff-emoji">🗺️</div>
+                  <div class="tariff-name">Тариф Base</div>
+                  <div class="tariff-type">Базовий</div>
+                  <div class="tariff-price">300 ₴</div>
+                  <div class="tariff-period">/ міс</div>
+                  <div class="tariff-flip-hint">↩ деталі</div>
+                </div>
+                <div class="tariff-back">
+                  <div class="tariff-back-title">🗺️ Тариф Base — 300 ₴/міс</div>
+                  <ul>
+                    <li>GPS/ГЛОНАСС відстеження в реал-часі</li>
+                    <li>Моніторинг маршрутів та зупинок</li>
+                    <li>Сповіщення: швидкість, геозони</li>
+                    <li>Звіти по пробігу та рухам</li>
+                    <li>Платформа NAVIXY</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fuel-Can -->
+            <div class="tariff-card" onclick="this.classList.toggle('flipped')">
+              <div class="tariff-inner">
+                <div class="tariff-front">
+                  <div class="tariff-emoji">⛽</div>
+                  <div class="tariff-name">Тариф Fuel-Can</div>
+                  <div class="tariff-type">ДРП / КАН</div>
+                  <div class="tariff-price">330 ₴</div>
+                  <div class="tariff-period">/ міс</div>
+                  <div class="tariff-flip-hint">↩ деталі</div>
+                </div>
+                <div class="tariff-back">
+                  <div class="tariff-back-title">⛽ Тариф Fuel-Can — 330 ₴/міс</div>
+                  <ul>
+                    <li>Все включено з тарифу Base</li>
+                    <li>Контроль рівня палива (ДРП)</li>
+                    <li>Зчитування даних з CAN-шини</li>
+                    <li>Звіти по заправках та зливах</li>
+                    <li>Моніторинг моточасів</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rent -->
+            <div class="tariff-card" onclick="this.classList.toggle('flipped')">
+              <div class="tariff-inner">
+                <div class="tariff-front">
+                  <div class="tariff-emoji">🚗</div>
+                  <div class="tariff-name">Тариф Rent</div>
+                  <div class="tariff-type">Оренда</div>
+                  <div class="tariff-price">460 ₴</div>
+                  <div class="tariff-period">/ міс</div>
+                  <div class="tariff-flip-hint">↩ деталі</div>
+                </div>
+                <div class="tariff-back">
+                  <div class="tariff-back-title">🚗 Тариф Rent — 460 ₴/міс</div>
+                  <ul>
+                    <li>Все включено з тарифу Base</li>
+                    <li>Контроль передачі авто орендарю</li>
+                    <li>Обмеження зони використання</li>
+                    <li>Сповіщення про несанкціоновані від'їзди</li>
+                    <li>Звіти по клієнтах/орендах</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Personal -->
+            <div class="tariff-card" onclick="this.classList.toggle('flipped')">
+              <div class="tariff-inner">
+                <div class="tariff-front">
+                  <div class="tariff-emoji">👤</div>
+                  <div class="tariff-name">Тариф Personal</div>
+                  <div class="tariff-type">Особистий</div>
+                  <div class="tariff-price">250 ₴</div>
+                  <div class="tariff-period">/ міс</div>
+                  <div class="tariff-flip-hint">↩ деталі</div>
+                </div>
+                <div class="tariff-back">
+                  <div class="tariff-back-title">👤 Тариф Personal — 250 ₴/міс</div>
+                  <ul>
+                    <li>Моніторинг персоналу / маяків</li>
+                    <li>Додаток X-GPS Tracker</li>
+                    <li>Спільний доступ до локації</li>
+                    <li>Сповіщення по геозонах</li>
+                  </ul>
+                  <div class="store-links">
+                    <a class="store-btn" href="https://apps.apple.com/us/app/x-gps-tracker/id1612047534" target="_blank">🍎 App Store</a>
+                    <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker" target="_blank">🤖 Google Play</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Roaming -->
+            <div class="tariff-card" onclick="this.classList.toggle('flipped')">
+              <div class="tariff-inner">
+                <div class="tariff-front">
+                  <div class="tariff-emoji">🌍</div>
+                  <div class="tariff-name">Тариф Roaming</div>
+                  <div class="tariff-type">Роумінг</div>
+                  <div class="tariff-price">400 ₴</div>
+                  <div class="tariff-period">/ міс</div>
+                  <div class="tariff-flip-hint">↩ деталі</div>
+                </div>
+                <div class="tariff-back">
+                  <div class="tariff-back-title">🌍 Тариф Roaming — 400 ₴/міс</div>
+                  <ul>
+                    <li>Тарифний план «Україна 30»</li>
+                    <li>Підтримка країн ЄС</li>
+                    <li>Відстеження за кордоном</li>
+                    <li>Ідеально для міжнародних рейсів</li>
+                    <li>Все включено з тарифу Base</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tipster -->
+            <div class="tariff-card" onclick="this.classList.toggle('flipped')">
+              <div class="tariff-inner">
+                <div class="tariff-front">
+                  <div class="tariff-emoji">📍</div>
+                  <div class="tariff-name">Тариф Tipster</div>
+                  <div class="tariff-type">Автономний маяк</div>
+                  <div class="tariff-price">140 ₴</div>
+                  <div class="tariff-period">/ міс</div>
+                  <div class="tariff-flip-hint">↩ деталі</div>
+                </div>
+                <div class="tariff-back">
+                  <div class="tariff-back-title">📍 Тариф Tipster — 140 ₴/міс</div>
+                  <ul>
+                    <li>Для автономних GPS-маяків</li>
+                    <li>TAT100 / TAT140 / GH5200</li>
+                    <li>Відстеження майна та вантажів</li>
+                    <li>Рідкісні оновлення (економія заряду)</li>
+                    <li>Сповіщення про переміщення</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hold -->
+            <div class="tariff-card" onclick="this.classList.toggle('flipped')">
+              <div class="tariff-inner">
+                <div class="tariff-front">
+                  <div class="tariff-emoji">⏸️</div>
+                  <div class="tariff-name">Тариф Hold</div>
+                  <div class="tariff-type">Пауза</div>
+                  <div class="tariff-price">90 ₴</div>
+                  <div class="tariff-period">/ міс</div>
+                  <div class="tariff-flip-hint">↩ деталі</div>
+                </div>
+                <div class="tariff-back">
+                  <div class="tariff-back-title">⏸️ Тариф Hold — 90 ₴/міс</div>
+                  <ul>
+                    <li>Збереження пристрою в системі</li>
+                    <li>Об'єкт не активний / на стоянці</li>
+                    <li>Без передачі даних</li>
+                    <li>Відновлення в будь-який момент</li>
+                    <li>Мінімальна абонплата</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /tariff-grid -->
+        </div><!-- /section -->
+
+        <!-- SIM-КАРТИ -->
+        <div class="section">
+          <div class="section-title">📶 SIM-карти</div>
+          <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">Вартість SIM-карти сплачується один раз, при замовленні. Формат 3-в-1 (Nano / Micro / Standard).</div>
+          <div class="sim-card-grid">
+
+            <div class="sim-card">
+              <div class="sim-card-title">📱 Київстар — фізична SIM</div>
+              <div class="sim-card-price">50 ₴</div>
+              <div class="sim-card-note">Формат 3-в-1 · Вартість сплачується один раз при замовленні</div>
+            </div>
+
+            <div class="sim-card">
+              <div class="sim-card-title">📱 Vodafone — фізична SIM</div>
+              <div class="sim-card-price">50 ₴</div>
+              <div class="sim-card-note">Формат 3-в-1 · Вартість сплачується один раз при замовленні</div>
+            </div>
+
+            <div class="sim-card">
+              <div class="sim-card-title">🌍 SIM Roaming</div>
+              <div class="sim-card-price">250 ₴</div>
+              <div class="sim-card-note">Для роботи в Україні та країнах ЄС · Тарифний план «Україна 30»</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ДОДАТКИ -->
+        <div class="section">
+          <div class="section-title">📲 Мобільні додатки</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+
+            <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg);min-width:200px;flex:1">
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px">X-GPS Tracker</div>
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:10px">Додаток для відстеження особистих пристроїв (Personal тариф)</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <a href="https://apps.apple.com/us/app/x-gps-tracker/id1612047534" target="_blank"
+                   style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">
+                  🍎 App Store
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker" target="_blank"
+                   style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">
+                  🤖 Google Play
+                </a>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg);min-width:200px;flex:1">
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px">X-GPS Mobile</div>
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:10px">Повноцінний моніторинг транспорту з мобільного пристрою</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <a href="https://apps.apple.com/us/app/x-gps-mobile/id6739621705" target="_blank"
+                   style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">
+                  🍎 App Store
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.client.app" target="_blank"
+                   style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);text-decoration:none">
+                  🤖 Google Play
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /sec-tariffs -->
 
       <!-- ══════════ ДРП ══════════ -->
       <div class="page-section" id="sec-drp">
@@ -2558,7 +2922,7 @@ function fmt(n) { return new Intl.NumberFormat('uk-UA').format(Math.round(n)); }
 // ════════════════════════════════════════════════════════
 const SECTION_LABELS = {
   overview:'Огляд', teltonika:'Teltonika', bitrek:'Bitrek',
-  accessories:'Аксесуари', extra:'Додаткове обладнання', drp:'ДРП',
+  tariffs:'Тарифи', accessories:'Аксесуари', extra:'Додаткове обладнання', drp:'ДРП',
   configurator:'Конфігуратор', export:'Експорт',
   wiki:'Wiki / База знань', contacts:'Контакти'
 };
