@@ -1609,7 +1609,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
       </div>
       <div id="wiki-submenu" class="wiki-submenu">
         <div class="nav-item nav-sub" onclick="showSection('wiki'); scrollToWikiSection('software')">
-          <span class="icon">🖥</span> Програмне забезпечення
+          <span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span> Програмне забезпечення
         </div>
         <div class="nav-item nav-sub" onclick="window.open('https://www.navixy.com/docs/','_blank')">
           <span class="icon">🌐</span> Документація Navixy <span style="font-size:9px;color:var(--text-3)">↗</span>
@@ -1641,7 +1641,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
     </div>
     <!-- NBU source badge -->
     <div id="nbu-source-badge" style="display:none;background:var(--accent-bg);border:1px solid #c3d9f7;border-radius:4px;padding:4px 8px;margin-bottom:8px;font-size:10px;color:var(--tag-blue-text);display:flex;align-items:center;gap:5px">
-      <span>🏦</span>
+      <span>НБУ</span>
       <span id="nbu-date-label">НБУ — оновлено</span>
     </div>
 
@@ -1731,7 +1731,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
           <div class="section-desc">Документація, ПЗ та корисні посилання для роботи з обладнанням і платформою TIPSTER.</div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('wiki')">Відкрити базу знань →</button>
-            <button class="tb-btn" style="border:1px solid var(--border)" onclick="window.open('https://www.navixy.com/docs/','_blank')">Документація TIPSTER / Navixy ↗</button>
+            <button class="tb-btn" style="border:1px solid var(--border)" onclick="window.open('https://www.navixy.com/docs/','_blank')">Документація Navixy (TIPSTER) ↗</button>
             <button class="tb-btn" style="border:1px solid var(--border)" onclick="window.open('https://wiki.teltonika-gps.com/view/Main_Page','_blank')">Wiki Teltonika ↗</button>
           </div>
         </div>
@@ -1749,7 +1749,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         </div>
 
         <div class="section">
-          <div class="section-title">📲 Мобільні додатки</div>
+          <div class="section-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1"/></svg> Мобільні додатки</div>
           <div class="section-desc">Офіційні додатки для моніторингу транспорту та персоналу.</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <a href="https://apps.apple.com/us/app/x-gps-tracker/id1612047534" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;background:var(--hover);border:1px solid var(--border);border-radius:7px;padding:6px 12px;color:var(--text);text-decoration:none">🍎 X-GPS Tracker — App Store</a>
@@ -1905,8 +1905,10 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         </div>
 
         <div class="section">
-          <div class="section-title">🆘 Кнопки та сигналізація</div>
+          <div class="section-title">🆘 Кнопки, сигналізація та BLE-сенсори</div>
+          <div class="section-desc">Кнопки SOS, сигналізація та Bluetooth Low Energy сенсори Teltonika для температури, вологості та ATEX-зон.</div>
           <div class="card-grid" id="extra-sos"></div>
+          <div class="card-grid" id="acc-eye-sensors" style="margin-top:10px"></div>
         </div>
 
         <div class="section">
@@ -1925,12 +1927,6 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
           <div class="section-title">📡 CAN-адаптери (ALL-CAN / LV-CAN / ECAN)</div>
           <div class="section-desc">Адаптери для зчитування даних з CAN-шини легкових і вантажних авто. Ціни в USD (партнер / РРЦ з ПДВ).</div>
           <div class="card-grid" id="acc-can-adapters"></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">👁 EYE Beacon / EYE Sensor — BLE сенсори</div>
-          <div class="section-desc">Bluetooth Low Energy сенсори Teltonika для моніторингу температури, вологості та ATEX-зон. Ціни в USD (партнер / РРЦ з ПДВ).</div>
-          <div class="card-grid" id="acc-eye-sensors"></div>
         </div>
 
       </div>
@@ -2429,14 +2425,14 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
 
         <!-- Програмне забезпечення -->
         <div class="section" id="wiki-section-software">
-          <div class="section-title">🖥 Програмне забезпечення</div>
+          <div class="section-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Програмне забезпечення</div>
           <div class="section-desc">Платформи та інструменти для налаштування і моніторингу.</div>
           <div class="card-grid" id="wiki-software"></div>
         </div>
 
         <!-- Мобільні додатки -->
         <div class="section" id="wiki-section-apps">
-          <div class="section-title">📲 Мобільні додатки</div>
+          <div class="section-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1"/></svg> Мобільні додатки</div>
           <div class="section-desc">Офіційні мобільні додатки для моніторингу та відстеження.</div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
 
@@ -2471,7 +2467,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
               <div class="card" style="cursor:pointer;display:flex;align-items:center;gap:14px;padding:16px 20px">
                 <div style="width:40px;height:40px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🌐</div>
                 <div>
-                  <div class="card-title" style="color:var(--accent);margin-bottom:3px">Документація TIPSTER / Navixy ↗</div>
+                  <div class="card-title" style="color:var(--accent);margin-bottom:3px">Документація Navixy (TIPSTER) ↗</div>
                   <div class="card-spec">Офіційна документація платформи Navixy: API, налаштування, інтеграції, звіти.</div>
                 </div>
               </div>
@@ -3198,6 +3194,9 @@ function renderExtra() {
   document.getElementById('extra-can').innerHTML      = extraEquipment.can.map(i=>makeCard(i)).join('');
   document.getElementById('extra-rfid').innerHTML     = extraEquipment.rfid.map(i=>makeCard(i)).join('');
   document.getElementById('extra-sos').innerHTML      = extraEquipment.sos.map(i=>makeCard(i)).join('');
+  // EYE Beacon/Sensor перенесено в розділ Додаткове обладнання
+  const eyeEl = document.getElementById('acc-eye-sensors');
+  if (eyeEl) eyeEl.innerHTML = tltAccessories.eyeSensors.map(i=>makeCard(i)).join('');
 }
 
 // ════════════════════════════════════════════════════════
@@ -3556,7 +3555,7 @@ async function fetchNBURates() {
     const rateEUR = dataEUR[0].rate;
     const dateStr = dataUSD[0].exchangedate || '';
 
-    applyRates(rateUSD, rateEUR, dateStr, '🏦 НБУ');
+    applyRates(rateUSD, rateEUR, dateStr, 'НБУ');
     setNBUStatus('ok', 'НБУ · ' + dateStr);
 
     // Зберегти в localStorage
@@ -3763,17 +3762,7 @@ const tariffItems = [
 ];
 tariffItems.forEach(item => cartRegistry.set(item.article, item));
 
-// Перевизначити cartItemPrice для UAH-товарів
-const _origCartItemPrice = cartItemPrice;
-// Патч — UAH-товари мають _uah поле
-const _patchedCartItemPrice = function(item) {
-  if (item._uah !== undefined) {
-    return { usdVal: item._uah, uahVal: item._uah, currency: 'UAH', isUAH: true };
-  }
-  return _origCartItemPrice(item);
-};
-// Замінити глобально
-Object.defineProperty(window, 'cartItemPrice', { value: _patchedCartItemPrice, writable: true, configurable: true });
+// UAH support вбудовано в cartItemPrice нижче
 
 function addToCartById(id) {
   const item = cartRegistry.get(id);
@@ -3793,15 +3782,18 @@ function cartId(item) {
 }
 
 function cartItemPrice(item) {
-  // Повертає партнерську ціну в USD
+  // UAH-товари (тарифи, SIM) — мають _uah поле
+  if (item._uah !== undefined) {
+    return { usdVal: item._uah, uahVal: item._uah, currency: 'UAH', isUAH: true };
+  }
+  // products[] — трекери в EUR або USD
   if (item.partnerPrice !== undefined) {
-    // products[] — EUR або USD трекери
     const { eur, usd } = getRates();
     const rate = item.currency === 'EUR' ? eur : usd;
     return { usdVal: item.partnerPrice, uahVal: item.partnerPrice * rate, currency: item.currency };
   }
-  if (item.price_usd !== undefined) {
-    // extraEquipment / accessories — завжди USD
+  // accessories / extraEquipment — ціна в USD
+  if (item.price_usd !== undefined && item.price_usd > 0) {
     const { usd } = getRates();
     return { usdVal: item.price_usd, uahVal: item.price_usd * usd, currency: 'USD' };
   }
@@ -3897,8 +3889,8 @@ function cartRender() {
       <div class="cart-item-info">
         <div class="cart-item-name" title="${item.name}">${item.name}</div>
         ${articleHtml}
-        <div class="cart-item-price">${usdVal.toFixed(2)} ${currency} / шт.</div>
-        <div class="cart-item-price-uah">≈ ${fmt(uahVal)} ₴ / шт.</div>
+        <div class="cart-item-price">${currency === 'UAH' ? fmt(usdVal)+' ₴' : usdVal.toFixed(2)+' '+currency} / шт.</div>
+        ${currency !== 'UAH' ? `<div class="cart-item-price-uah">≈ ${fmt(uahVal)} ₴ / шт.</div>` : ''}
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
         <button class="cart-item-del" onclick="cartRemove('${id}')" title="Видалити">✕</button>
@@ -3935,6 +3927,7 @@ function cartToggle() {
   if (panel.classList.contains('open')) {
     cartClose();
   } else {
+    cartRender(); // завжди перемалювати перед відкриттям
     panel.classList.add('open');
     overlay.classList.add('open');
   }
