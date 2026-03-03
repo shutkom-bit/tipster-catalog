@@ -1474,7 +1474,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         <span class="icon">➕</span> Додаткове обладнання
       </div>
       <div class="nav-item" onclick="showSection('drp')">
-        <span class="icon">⛽</span> ДРП — Датчики палива
+        <span class="icon">⛽</span> ДРП
       </div>
       <div class="nav-item" onclick="showSection('configurator')">
         <span class="icon">⚙️</span> Конфігуратор
@@ -1640,7 +1640,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
                  alt="Teltonika" style="height:32px;object-fit:contain"
                  onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Teltonika_logo.svg/320px-Teltonika_logo.svg.png';this.onerror=null">
           </div>
-          <div class="page-subtitle" style="margin-top:4px">GPS-трекери для транспорту та IoT. Ціни в USD (з ПДВ / РРЦ ціна рекомендована але не обов'язкова). <a href="https://teltonika-gps.com/products/trackers" target="_blank" style="color:var(--accent)">teltonika-gps.com ↗</a></div>
+          <div class="page-subtitle" style="margin-top:4px">GPS-трекери та супутні товари. Ціни в USD (з ПДВ / РРЦ ціна рекомендована, але не обов'язкова). <a href="https://teltonika-gps.com/products/trackers" target="_blank" style="color:var(--accent)">teltonika-gps.com ↗</a></div>
         </div>
         <!-- BY CATEGORY chips -->
         <div style="margin-bottom:6px">
@@ -1698,7 +1698,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         <div class="page-header">
           <span class="page-emoji">🔹</span>
           <div class="page-title">Bitrek</div>
-          <div class="page-subtitle">Українські GPS-трекери, датчики, відеосистеми. Ціни в USD (з ПДВ / РРЦ ціна рекомендована але не обов'язкова). <a href="https://bitrek.ua" target="_blank" style="color:var(--accent)">bitrek.ua ↗</a></div>
+          <div class="page-subtitle">GPS-трекери та супутні товари. Ціни в USD (з ПДВ / РРЦ ціна рекомендована, але не обов'язкова). <a href="https://bitrek.ua" target="_blank" style="color:var(--accent)">bitrek.ua ↗</a></div>
         </div>
         <div class="filters-row">
           <div class="search-box">
@@ -1795,7 +1795,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
       <div class="page-section" id="sec-drp">
         <div class="page-header">
           <span class="page-emoji">⛽</span>
-          <div class="page-title">ДРП — Датчики рівня палива</div>
+          <div class="page-title">ДРП</div>
           <div class="page-subtitle">Провідні та бездротові датчики рівня палива для інтеграції з GPS-трекерами. Підтримка RS485, 1-Wire, BLE та аналогового виходу.</div>
         </div>
 
@@ -1805,7 +1805,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
         </div>
 
         <div class="section">
-          <div class="section-title">🔹 Bitrek — Датчики палива</div>
+          <div class="section-title">🔹 Bitrek — ДРП</div>
           <div class="section-desc">Провідні та бездротові датчики Bitrek. Ціни в USD (партнер без ПДВ / РРЦ з ПДВ).</div>
           <div id="drp-bitrek-table"></div>
         </div>
@@ -2381,12 +2381,12 @@ const products = [
   { mode:"fixed", code:"BI 820 TREK",     article:"BI820TREK",    name:"BI 820 TREK",          currency:"USD", partnerPrice:93.50,  retailPrice:96.00,  series:"Трекери", program:"Standard", brand:"Bitrek", spec:"Вбудовані GPS/GSM антени; RS485; SIM:1, D_high:1, D_low:2, AIN:2, DOUT:1, АКБ:1000 mAh" },
   { mode:"fixed", code:"BI 868 TREK",     article:"BI868", name:"BI 868 TREK v10",      currency:"USD", partnerPrice:70.4,  retailPrice:82.0,  series:"Трекери", program:"BLE",      brand:"Bitrek", spec:"Вбудовані GPS/GSM антени; SIM:1, D_high:1, D_low:1, AIN:1, DOUT:1, АКБ:1000 mAh, BLE 4.0" },
   { mode:"fixed", code:"BI 522 L TREK",   article:"BI522",   name:"BI 522 L TREK",        currency:"USD", partnerPrice:35.2,  retailPrice:50.0,  series:"Трекери", program:"CAN BLE",      brand:"Bitrek", spec:"Вбудовані GPS/GSM антени; SIM:1, AIN:1, D_high:1, D_low:1, DOUT:1, АКБ:130 mAh, BLE 4.0, RS232" },
-  { mode:"fixed", code:"BI 530 R TREK",   article:"BI530К", name:"BI 530 R TREK v3",     currency:"USD", partnerPrice:44.0,  retailPrice:80.0,  series:"Трекери", program:"CAN BLE",brand:"Bitrek", spec:"Вбудовані GPS/GSM антени; 1-Wire; RS485, SIM:1, D_low:2, AIN:2, DOUT:2, АКБ:130 mAh, BLE 4.0" },
-  { mode:"fixed", code:"BI 530 C TREK",   article:"BI530С", name:"BI 530 C TREK v3",     currency:"USD", partnerPrice:85.8,  retailPrice:90.0,  series:"4G Трекери", program:"4G BLE",  brand:"Bitrek", spec:"CAN 29bit(FMS,j1939)/11bit, 1-Wire, RS485, RS232, SIM:1, D_low:1, AIN:2, DOUT:1, АКБ:130 mAh, BLE 4.0" },
-  { mode:"fixed", code:"BI 310 Cicada",   article:"BI310",name:"BI 310 Cicada v.2",    currency:"USD", partnerPrice:73.7,  retailPrice:72.0,  series:"Трекери", program:"Автономний маяк",  brand:"Bitrek", spec:"Зовнішні GPS/GSM антени; SIM:1; CAN (Connect-Bus); АКБ:1000 mAh" },
+  { mode:"fixed", code:"BI 530 R TREK",   article:"BI530К", name:"BI 530 R TREK v3",     currency:"USD", partnerPrice:44.0,  retailPrice:80.0,  series:"Трекери", program:"BLE RS485",brand:"Bitrek", spec:"Вбудовані GPS/GSM антени; 1-Wire; RS485, SIM:1, D_low:2, AIN:2, DOUT:2, АКБ:130 mAh, BLE 4.0" },
+  { mode:"fixed", code:"BI 530 C TREK",   article:"BI530С", name:"BI 530 C TREK v3",     currency:"USD", partnerPrice:85.8,  retailPrice:90.0,  series:"Трекери", program:"CAN BLE",  brand:"Bitrek", spec:"CAN 29bit(FMS,j1939)/11bit, 1-Wire, RS485, RS232, SIM:1, D_low:1, AIN:2, DOUT:1, АКБ:130 mAh, BLE 4.0" },
+  { mode:"fixed", code:"BI 310 Cicada",   article:"BI310",name:"BI 310 Cicada v.2",    currency:"USD", partnerPrice:73.7,  retailPrice:72.0,  series:"Трекери", program:"CAN OBD",  brand:"Bitrek", spec:"Зовнішні GPS/GSM антени; SIM:1; CAN (Connect-Bus); АКБ:1000 mAh" },
   // BITREK 4G
-  { mode:"fixed", code:"BI 420 TREK",     article:"BI420",  name:"BI 420 TREK (4G)",     currency:"USD", partnerPrice:83.6,  retailPrice:92.0,  series:"Трекери", program:"BLE", brand:"Bitrek", spec:"2G/4G LTE Cat 1, SIM:1, D_high:1, D_low:1, AIN:1, DOUT:1, АКБ:1000 mAh, BLE 4.0" },
-  { mode:"fixed", code:"BI 410 TREK",     article:"BI410",  name:"BI 410 TREK (4G) NEW!",currency:"USD", partnerPrice:44.0,  retailPrice:65.0,  series:"Трекери", program:"BLE RS485", brand:"Bitrek", spec:"2G/4G LTE Cat 1, SIM:1, AIN:1, DOUT:1, АКБ:130 mAh, BLE 4.0, RS232 CanLog" },
+  { mode:"fixed", code:"BI 420 TREK",     article:"BI420",  name:"BI 420 TREK (4G)",     currency:"USD", partnerPrice:83.6,  retailPrice:92.0,  series:"4G Трекери", program:"4G BLE", brand:"Bitrek", spec:"2G/4G LTE Cat 1, SIM:1, D_high:1, D_low:1, AIN:1, DOUT:1, АКБ:1000 mAh, BLE 4.0" },
+  { mode:"fixed", code:"BI 410 TREK",     article:"BI410",  name:"BI 410 TREK (4G) NEW!",currency:"USD", partnerPrice:44.0,  retailPrice:65.0,  series:"4G Трекери", program:"4G BLE", brand:"Bitrek", spec:"2G/4G LTE Cat 1, SIM:1, AIN:1, DOUT:1, АКБ:130 mAh, BLE 4.0, RS232 CanLog" },
   { mode:"fixed", code:"BI 450 TREK",     article:"BI4504G",  name:"BI 450 TREK (4G)",     currency:"USD", partnerPrice:112.2, retailPrice:120.0, series:"4G Трекери", program:"4G BLE", brand:"Bitrek", spec:"2G/4G LTE Cat 1, CAN:2, 1-Wire, RS485, RS232, SIM:1, D_high:1, D_low:2, AIN:2, DOUT:2, АКБ:130 mAh, BLE 4.0, Tachograph" },
   // BITREK BLE
   { mode:"fixed", code:"BLE-TAG",         article:"BLETAG",       name:"Мітка BLE",             currency:"USD", partnerPrice:48.4, retailPrice:55.0, series:"BLE", program:"Мітки", brand:"Bitrek", spec:"Вбудована батарея; Автономність до 2 років" },
@@ -2547,7 +2547,7 @@ function fmt(n) { return new Intl.NumberFormat('uk-UA').format(Math.round(n)); }
 // ════════════════════════════════════════════════════════
 const SECTION_LABELS = {
   overview:'Огляд', teltonika:'Teltonika', bitrek:'Bitrek',
-  accessories:'Аксесуари', extra:'Додаткове обладнання', drp:'ДРП — Датчики палива',
+  accessories:'Аксесуари', extra:'Додаткове обладнання', drp:'ДРП',
   configurator:'Конфігуратор', export:'Експорт',
   wiki:'Wiki / База знань', contacts:'Контакти'
 };
