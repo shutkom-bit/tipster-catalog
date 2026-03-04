@@ -1583,6 +1583,178 @@ body[data-role="partner"] th.cell-retail { display: table-cell !important; }
   width: auto;
 }
 
+
+/* ── Navixy Platform — partner-only ─────────────── */
+.partner-only { display: none !important; }
+body[data-role="partner"] .partner-only { display: flex !important; }
+body[data-role="admin"]   .partner-only { display: flex !important; }
+/* nav-item uses flex */
+.nav-item.partner-only { display: none !important; }
+body[data-role="partner"] .nav-item.partner-only { display: flex !important; }
+body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
+
+/* ── Navixy pricing cards ───────────────────────── */
+.nvx-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.nvx-plan-card {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 22px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.nvx-plan-card:hover { border-color: var(--accent); }
+.nvx-plan-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.nvx-plan-card .plan-badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.nvx-plan-card .plan-name {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.03em;
+}
+.nvx-plan-card .plan-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.nvx-plan-card .plan-price span {
+  font-size: 13px;
+  color: var(--text-3);
+  font-weight: 400;
+}
+.nvx-plan-card .plan-desc {
+  font-size: 11.5px;
+  color: var(--text-2);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+.nvx-feature-list {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.nvx-feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+.nvx-feature-list li svg { flex-shrink: 0; color: var(--accent); }
+
+/* ── Volume table ──────────────────────────────── */
+.nvx-vol-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.nvx-vol-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+.nvx-vol-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text);
+}
+.nvx-vol-table td.mono {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+}
+.nvx-vol-table tr:hover td { background: var(--row-hover); }
+.nvx-vol-table tr.highlight td {
+  background: var(--accent-bg);
+  font-weight: 600;
+}
+
+/* ── Checkbox module list ──────────────────────── */
+.nvx-modules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.nvx-module-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  font-size: 12.5px;
+  color: var(--text-2);
+  user-select: none;
+}
+.nvx-module-item:hover { background: var(--hover); }
+.nvx-module-item input[type=checkbox] {
+  accent-color: var(--accent);
+  width: 13px; height: 13px;
+  flex-shrink: 0;
+}
+.nvx-module-item input:checked ~ span { color: var(--text); font-weight: 500; }
+
+/* ── Info chips ────────────────────────────────── */
+.nvx-info-box {
+  background: var(--accent-bg);
+  border: 1px solid rgba(37,113,208,0.18);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.nvx-info-box b { color: var(--accent); }
+.nvx-warn-box {
+  background: var(--tag-orange);
+  border: 1px solid rgba(178,94,9,0.2);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--tag-orange-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
 </style>
 <script type="module">
 // ══════════════════════════════════════════════════════════
@@ -1924,6 +2096,11 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
       </div>
       <div class="nav-item" onclick="showSection('export')">
         <span class="icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M3 12v2h10v-2"/><path d="M8 1v9"/><polyline points="5,4 8,1 11,4"/></svg></span> Експорт
+      </div>
+    </div>
+
+      <div class="nav-item partner-only" onclick="showSection('navixy')" style="color:var(--accent);font-weight:600">
+        <span class="icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/><circle cx="12" cy="10" r="1" fill="currentColor"/></svg></span> Navixy Platform
       </div>
     </div>
 
@@ -3039,6 +3216,188 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
 
       </div><!-- /sec-install -->
 
+
+      <!-- ══════════ NAVIXY PLATFORM ══════════ -->
+      <div class="page-section" id="sec-navixy">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent)">B2B · Partner</span>
+            <span style="font-family:'IBM Plex Sans',sans-serif;font-size:24px;font-weight:800;letter-spacing:-0.04em;color:var(--text)">Navixy Platform</span>
+          </div>
+          <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;margin-bottom:6px;max-width:680px">
+            Platform as a Service (PaaS) — повнофункціональна платформа GPS-моніторингу з миттєвими оновленнями.
+            Модель оплати: <b style="color:var(--text)">Pay-as-you-Go</b> — тільки за активні юніти поточного місяця.
+          </div>
+        </div>
+
+        <!-- Одноразова активація -->
+        <div class="section">
+          <div class="section-title"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="6" cy="8" r="3"/><line x1="8.5" y1="8" x2="14" y2="8"/><line x1="12" y1="8" x2="12" y2="10"/></svg> Одноразова активація</div>
+          <div style="display:flex;align-items:center;gap:20px;padding:16px;background:var(--bg);border:1px solid var(--border);border-radius:6px;max-width:560px">
+            <div style="flex:1">
+              <div style="font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px">Активація платформи</div>
+              <div style="font-size:11.5px;color:var(--text-3)">Одноразова передоплата для підключення партнерського облікового запису</div>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:var(--text);white-space:nowrap">$500</div>
+            <button class="btn-add-cart" onclick="nvxAddActivation()" style="white-space:nowrap">+ Кошик</button>
+          </div>
+        </div>
+
+        <!-- Місячні плани -->
+        <div class="section">
+          <div class="section-title"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="3" width="12" height="4" rx="1"/><rect x="2" y="9" width="12" height="4" rx="1"/><circle cx="13" cy="5" r="1" fill="currentColor"/><circle cx="13" cy="11" r="1" fill="currentColor"/></svg> Щомісячні плани — ціна за юніт</div>
+
+          <div class="nvx-warn-box">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L15 14H1z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12.5" r=".5" fill="currentColor"/></svg>
+            <span>Мінімальна щомісячна плата — <b>$150</b>. Застосовується якщо загальна сума менша за цей поріг.</span>
+          </div>
+
+          <div class="nvx-plan-grid">
+
+            <!-- Premium -->
+            <div class="nvx-plan-card selected" data-plan="premium" onclick="nvxSelectPlan('premium')">
+              <span class="plan-badge" style="background:var(--accent-bg);color:var(--accent)">Рекомендовано</span>
+              <div class="plan-name">Navixy Premium</div>
+              <div class="plan-price">$3.00<span> /міс за юніт</span></div>
+              <div class="plan-desc">4 модулі + Premium GIS (Google Maps)</div>
+              <ul class="nvx-feature-list">
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Track&amp;Trace</li>
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Reports (Звіти)</li>
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Fleet Management</li>
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Field Service Management</li>
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Premium GIS (Google Maps)</li>
+              </ul>
+            </div>
+
+            <!-- Basic -->
+            <div class="nvx-plan-card" data-plan="basic" onclick="nvxSelectPlan('basic')">
+              <span class="plan-badge" style="background:var(--tag-gray);color:var(--tag-gray-text)">Базовий</span>
+              <div class="plan-name">Navixy Basic</div>
+              <div class="plan-price">$2.80<span> /міс за юніт</span></div>
+              <div class="plan-desc">4 модулі + Basic GIS (OpenStreetMap)</div>
+              <ul class="nvx-feature-list">
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Track&amp;Trace</li>
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Reports (Звіти)</li>
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Fleet Management</li>
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Field Service Management</li>
+                <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><line x1="2" y1="8" x2="14" y2="8"/></svg> Premium GIS — недоступно</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- Кнопка кошик для плану -->
+          <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+            <button id="nvx-cart-btn" class="tb-btn primary" onclick="nvxAddToCart()" style="gap:7px;padding:8px 18px;font-size:13px">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M2 3h2l2 7h7l1.5-4H6"/><circle cx="9" cy="13" r="1" fill="currentColor"/><circle cx="13" cy="13" r="1" fill="currentColor"/></svg> Додати обраний план в кошик
+            </button>
+            <span style="font-size:11.5px;color:var(--text-3)">Обрано: <b id="nvx-plan-label" style="color:var(--text)">Premium (Google Maps)</b></span>
+          </div>
+        </div>
+
+        <!-- Volume Discounts таблиця -->
+        <div class="section">
+          <div class="section-title"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="1,12 5,7 9,9 13,4"/><line x1="1" y1="14" x2="15" y2="14"/></svg> Знижки за об'ємом (Premium)</div>
+          <div class="section-desc">Ціна за юніт автоматично зменшується зі зростанням кількості активних пристроїв на місяць.</div>
+          <div class="db-table-wrap" style="max-width:500px">
+            <table class="nvx-vol-table">
+              <thead><tr>
+                <th>Юніти</th>
+                <th>Ціна / юніт</th>
+                <th>Разом / міс</th>
+              </tr></thead>
+              <tbody id="nvx-vol-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Додаткові послуги -->
+        <div class="section">
+          <div class="section-title"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polygon points="8,2 10,6 14,6.5 11,9.5 11.5,14 8,12 4.5,14 5,9.5 2,6.5 6,6"/></svg> Додаткові послуги</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;max-width:640px">
+            <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:6px">
+              <div style="font-size:12px;color:var(--text-3);margin-bottom:4px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em">Технічна підтримка</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:var(--accent)">$50<span style="font-size:12px;font-weight:400;color:var(--text-3)">/міс</span></div>
+              <div style="font-size:11.5px;color:var(--text-2);margin-top:5px">Пріоритетна підтримка від команди TIPSTER</div>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:6px">
+              <div style="font-size:12px;color:var(--text-3);margin-bottom:4px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em">Навчання</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:var(--accent)">$90<span style="font-size:12px;font-weight:400;color:var(--text-3)">/год</span></div>
+              <div style="font-size:11.5px;color:var(--text-2);margin-top:5px">Індивідуальне навчання роботі з платформою</div>
+            </div>
+          </div>
+          <div class="nvx-info-box" style="margin-top:14px;max-width:640px">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg> &nbsp;<b>Безкоштовна документація:</b> Самостійне вивчення платформи через
+            <a href="https://docs.navixy.com" target="_blank" style="color:var(--accent);font-weight:500">Navixy Docs ↗</a>
+            — API-довідник, керівництва з налаштування, приклади інтеграцій.
+          </div>
+        </div>
+
+        <!-- Що включено — модулі -->
+        <div class="section">
+          <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Що включено у платформу</div>
+          <div class="section-desc">Відмітьте модулі, які потрібні вашому клієнту:</div>
+
+          <div class="nvx-modules-grid">
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-smartair" checked>
+          <span>SmartAir™ для IoT пристроїв</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-xgps" checked>
+          <span>X-GPS мобільні додатки</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-email" checked>
+          <span>Email-шлюз (висока надійність)</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-sms" checked>
+          <span>SMS-шлюз (зовнішній)</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-api" checked>
+          <span>Admin Panel API</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-dealer" checked>
+          <span>Dealer Management</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-whitelabel" checked>
+          <span>White Label (веб-інтерфейс)</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-branding" checked>
+          <span>Брендування мобільних додатків</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-usermgmt" checked>
+          <span>Управління користувачами</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-plans" checked>
+          <span>Конфігуратор тарифів</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-history" checked>
+          <span>1 рік зберігання історії</span>
+        </label>
+            <label class="nvx-module-item">
+          <input type="checkbox" id="nvx-mod-sla" checked>
+          <span>SLA 99.7%</span>
+        </label>
+          </div>
+
+          <div class="nvx-info-box" style="margin-top:14px;max-width:640px">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="3" width="12" height="4" rx="1"/><rect x="2" y="9" width="12" height="4" rx="1"/><circle cx="13" cy="5" r="1" fill="currentColor"/><circle cx="13" cy="11" r="1" fill="currentColor"/></svg> &nbsp;Щомісячний рахунок формується <b>1-го числа</b> за попередній місяць і має бути сплачений
+            до <b>9-го числа</b>. При несплаті до 10-го — тимчасове блокування Admin Panel.
+            При несплаті до 15-го — повне відключення від платформи.
+          </div>
+        </div>
+
+      </div><!-- /sec-navixy -->
+
       <!-- ══════════ CONTACTS ══════════ -->
       <div class="page-section" id="sec-contacts">
         <div class="page-header">
@@ -3547,9 +3906,108 @@ const SECTION_LABELS = {
   overview:'Огляд', teltonika:'Teltonika', bitrek:'Bitrek',
   install:'Монтаж та сервіс', tariffs:'Тарифи', accessories:'Аксесуари', extra:'Додаткове обладнання', drp:'ДРП',
   configurator:'Конфігуратор', export:'Експорт',
-  wiki:'Wiki / База знань', contacts:'Контакти'
+  navixy:'Navixy Platform', wiki:'Wiki / База знань', contacts:'Контакти'
 };
 
+
+// ══════════════════════════════════════════════════════════
+// NAVIXY PLATFORM — Partner B2B Pricing
+// ══════════════════════════════════════════════════════════
+const NAVIXY_VOLUME = [
+  { units: 500,  price: 3.00 },
+  { units: 700,  price: 2.99 },
+  { units: 900,  price: 2.98 },
+  { units: 1000, price: 2.97 },
+  { units: 1200, price: 2.96 },
+  { units: 1300, price: 2.95 },
+  { units: 1400, price: 2.94 },
+  { units: 1500, price: 2.93 },
+];
+
+let _nvxPlan = 'premium'; // 'premium' | 'basic'
+let _nvxCartAdded = false;
+
+function nvxSelectPlan(plan) {
+  _nvxPlan = plan;
+  const lbl = document.getElementById('nvx-plan-label');
+  if (lbl) lbl.textContent = plan === 'premium' ? 'Premium (Google Maps)' : 'Basic (OpenStreetMap)';
+  document.querySelectorAll('.nvx-plan-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.plan === plan);
+  });
+  nvxUpdateCart();
+}
+
+function nvxUpdateCart() {
+  const btn = document.getElementById('nvx-cart-btn');
+  if (!btn) return;
+  const planName = _nvxPlan === 'premium' ? 'Navixy Premium (Google Maps)' : 'Navixy Basic';
+  const price   = _nvxPlan === 'premium' ? 3.00 : 2.80;
+  btn.dataset.plan  = planName;
+  btn.dataset.price = price;
+}
+
+function nvxAddToCart() {
+  const planName = _nvxPlan === 'premium' ? 'Navixy Premium (Google Maps)' : 'Navixy Basic';
+  const price    = _nvxPlan === 'premium' ? 3.00 : 2.80;
+  const article  = _nvxPlan === 'premium' ? 'NVX-PREMIUM' : 'NVX-BASIC';
+
+  // Register in cartRegistry
+  const item = {
+    article, name: planName,
+    spec: 'Місячна ліцензія Navixy Platform / 1 юніт',
+    _uah: 0, price_usd: price, rrp_usd: price,
+    note: `$${price.toFixed(2)}/міс за юніт`
+  };
+  cartRegistry.set(article, item);
+
+  const cid = registerCartItem(item);
+  addToCartById(cid);
+
+  const btn = document.getElementById('nvx-cart-btn');
+  if (btn) {
+    btn.textContent = '✓ Додано';
+    btn.classList.add('in-cart');
+    setTimeout(() => {
+      btn.innerHTML = '+ Додати в кошик';
+      btn.classList.remove('in-cart');
+    }, 2000);
+  }
+}
+
+// Activation fee cart item
+function nvxAddActivation() {
+  const item = {
+    article: 'NVX-ACTIVATION',
+    name: 'Navixy — Активація платформи',
+    spec: 'Одноразова передоплата (One-time fee)',
+    _uah: 0, price_usd: 500, rrp_usd: 500,
+    note: '$500 (одноразово)'
+  };
+  cartRegistry.set('NVX-ACTIVATION', item);
+  const cid = registerCartItem(item);
+  addToCartById(cid);
+  cartShowToast('Активацію додано в кошик');
+}
+
+let _nvxRendered = false;
+function renderNavixy() {
+  if (_nvxRendered) return;
+  _nvxRendered = true;
+
+  // Volume table
+  const tbody = document.getElementById('nvx-vol-tbody');
+  if (tbody) {
+    tbody.innerHTML = NAVIXY_VOLUME.map((row, i) => {
+      const total = (row.units * row.price).toFixed(0);
+      const hi = i === 0 ? ' class="highlight"' : '';
+      return `<tr${hi}>
+        <td class="mono">${row.units}</td>
+        <td class="mono">$${row.price.toFixed(2)}</td>
+        <td class="mono">$${Number(total).toLocaleString('uk-UA')}</td>
+      </tr>`;
+    }).join('');
+  }
+}
 
 // ── Рендер таблиці послуг ──────────────────────────────
 function makeServiceRow(item) {
@@ -3606,6 +4064,7 @@ function showSection(id) {
   if (id === 'bitrek')       renderBitrek();
   if (id === 'accessories')  renderAccessories();
   if (id === 'install')       renderInstall();
+  if (id === 'navixy')        renderNavixy();
   if (id === 'extra')        renderExtra();
   if (id === 'drp')          renderDRP();
   if (id === 'configurator') renderConfigurator();
@@ -4225,6 +4684,7 @@ function onRateChange() {
   if (id === 'bitrek')       renderBitrek();
   if (id === 'accessories')  renderAccessories();
   if (id === 'install')       renderInstall();
+  if (id === 'navixy')        renderNavixy();
   if (id === 'extra')        renderExtra();
   if (id === 'drp')          renderDRP();
   if (id === 'configurator') renderConfigurator();
