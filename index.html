@@ -2254,8 +2254,18 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       <!-- ══════════ TELTONIKA ══════════ -->
       <div class="page-section" id="sec-teltonika">
         <div class="page-header">
-          <div class="page-title">Teltonika</div>
-          <div class="page-subtitle">GPS-трекери для транспорту та IoT. Партнерська ціна — без ПДВ, РРЦ — з ПДВ. <a href="https://teltonika-gps.com/products/trackers" target="_blank" style="color:var(--accent)">teltonika-gps.com ↗</a></div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:#0054A6">TELTONIKA</span>
+            <span style="background:#e8f0fb;color:#0054A6;border:1px solid #b3cdf5;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap">✓ Офіційний партнер</span>
+          </div>
+          <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
+            <strong>ТРЕКАВТО</strong> — офіційний партнер та реселер компанії
+            <a href="https://teltonika-gps.com" target="_blank" style="color:#0054A6;font-weight:600">Teltonika</a>
+            — лідера у виробництві обладнання для GPS-моніторингу та телематики.
+            У каталозі представлені сертифіковані GPS-трекери та супутні аксесуари з <strong>гарантією якості 24 місяці</strong>.
+            Пропонуємо надійні рішення для контролю транспорту, персоналу та майна з функціоналом безпеки.
+          </div>
+          <div style="margin-top:7px;font-size:11px;color:var(--text-3)">Ціни вказані в USD за курсом НБУ (з ПДВ / РРЦ).</div>
         </div>
         <div class="filters-row">
           <div class="search-box">
@@ -2287,8 +2297,17 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       <!-- ══════════ BITREK ══════════ -->
       <div class="page-section" id="sec-bitrek">
         <div class="page-header">
-          <div class="page-title">Bitrek</div>
-          <div class="page-subtitle">Українські GPS-трекери, датчики, відеосистеми. Партнерська ціна — без ПДВ, РРЦ — з ПДВ. <a href="https://bitrek.ua" target="_blank" style="color:var(--accent)">bitrek.ua ↗</a></div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:#1a3a6b">BITREK</span>
+            <span style="background:#eaf0f8;color:#1a3a6b;border:1px solid #a8bed8;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap">✓ Офіційний партнер</span>
+          </div>
+          <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
+            <strong>ТРЕКАВТО</strong> — офіційний партнер та реселер компанії
+            <a href="https://bitrek.ua" target="_blank" style="color:#1a3a6b;font-weight:600">Bitrek</a>,
+            національного виробника GPS-обладнання, вже протягом <strong>15 років</strong>.
+            У каталозі представлені сертифіковані GPS-трекери та аксесуари з <strong>гарантією якості 24 місяці</strong>.
+          </div>
+          <div style="margin-top:7px;font-size:11px;color:var(--text-3)">Ціни вказані в USD за курсом НБУ (з ПДВ / РРЦ).</div>
         </div>
         <div class="filters-row">
           <div class="search-box">
@@ -3542,9 +3561,9 @@ const accessories = {
     { name:"Запобіжник 2A + тримач",          spec:"Стандартний запобіжник для захисту живлення трекера",      price_usd:1.50, rrp_usd:3.00,  url:null },
   ],
   sim: [
-    { name:"SIM-карта M2M (Kyivstar)",        spec:"M2M SIM, тариф для IoT, мінімальний трафік 24MB/міс",      price_usd:3.00, rrp_usd:5.00,  url:null },
-    { name:"SIM-карта M2M (Vodafone)",        spec:"M2M SIM, тариф для IoT, мінімальний трафік 24MB/міс",      price_usd:3.00, rrp_usd:5.00,  url:null },
-    { name:"Мультиоператорна SIM (EU)",       spec:"Multi-IMSI SIM, автовибір оператора, 30+ країн",          price_usd:8.00, rrp_usd:12.00, url:null },
+    { code:'SIM-KS',  name:"SIM-карта Kyivstar (3-в-1)",   spec:"Фізична SIM-карта формату 3-в-1 (nano/micro/standard). Вартість сплачується один раз при замовленні.",     price_uah:50,  url:null },
+    { code:'SIM-VF',  name:"SIM-карта Vodafone (3-в-1)",   spec:"Фізична SIM-карта формату 3-в-1 (nano/micro/standard). Вартість сплачується один раз при замовленні.",     price_uah:50,  url:null },
+    { code:'SIM-EU',  name:"SIM Roaming (EU+UA)",           spec:"Multi-IMSI SIM, автовибір оператора, 30+ країн ЄС. Тарифний план Україна 30 + Країни ЄС.",               price_uah:250, url:null },
   ],
   mount: [
     { name:"Кронштейн DIN для трекера",       spec:"Металевий кронштейн на DIN-рейку для монтажу в щиток",    price_usd:5.00, rrp_usd:8.00,  url:null },
@@ -3776,6 +3795,23 @@ function makeCard(item, currency='USD') {
   const nameHtml = item.url
     ? `<a href="${item.url}" target="_blank">${item.name} <span class="link-icon">↗</span></a>`
     : item.name;
+  // Якщо є price_uah — SIM-картка з фіксованою ціною в грн
+  if (item.price_uah !== undefined) {
+    const cartCode = item.code || ('SIM-' + item.name.replace(/[^a-zA-Z0-9]/g,'').slice(0,8));
+    cartRegistry.set(cartCode, { article: cartCode, name: item.name, spec: item.spec, _uah: item.price_uah, note: item.price_uah + ' ₴ (разова оплата)' });
+    return `<div class="card">
+      <div class="card-title">${nameHtml}</div>
+      <div class="card-spec">${item.spec}</div>
+      <div class="card-prices">
+        <div>
+          <div class="card-price-label">Вартість</div>
+          <div class="card-price-val retail" style="color:var(--accent)">${fmt(item.price_uah)} ₴</div>
+          <div class="card-price-eur">разова оплата</div>
+        </div>
+      </div>
+      <button class="btn-add-cart" style="margin-top:10px;width:100%;justify-content:center" onclick="addToCartById('${cartCode}')">+ У кошик</button>
+    </div>`;
+  }
   const priceHtml = item.note
     ? `<div style="font-size:12px;color:var(--text-3)">${item.note}</div>`
     : (item.price_usd === 0
@@ -4663,8 +4699,10 @@ const TARIFFS_DATA = [
   { code:'TAR-BASE',    name:'Base 300',     price:300,  period:'міс', spec:'300 МБ трафік, Kyivstar/Vodafone, GPS тільки трафік' },
   { code:'TAR-FUEL',    name:'Fuel-Can 330', price:330,  period:'міс', spec:'330 МБ трафік + CAN-дані, ДВРП підтримка' },
   { code:'TAR-RENT',    name:'Rent 460',     price:460,  period:'міс', spec:'460 МБ, 2 SIM + роумінг EU, оренда трекера включена' },
-  { code:'TAR-PERS',    name:'Personal 250', price:250,  period:'міс', spec:'250 МБ, базовий трекінг, 1 SIM' },
-  { code:'TAR-ROAM',    name:'Roaming 400',  price:400,  period:'міс', spec:'400 МБ, міжнародний роумінг EU + UA' },
+  { code:'TAR-PERS',    name:'Personal 250', price:250,  period:'міс', spec:'250 МБ, базовий трекінг, 1 SIM. Мобільний додаток X-GPS Tracker.',
+    appIos:'https://apps.apple.com/us/app/x-gps-tracker/id1612047534',
+    appAndroid:'https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker' },
+  { code:'TAR-ROAM',    name:'Roaming 400',  price:400,  period:'міс', spec:'Тарифний план "Україна 30" + Країни ЄС. Роумінг EU + UA.' },
   { code:'TAR-TIPS',    name:'Tipster 140',  price:140,  period:'міс', spec:'140 МБ, TIPSTER фіксований IP, M2M' },
   { code:'TAR-HOLD',    name:'Hold 90',      price:90,   period:'міс', spec:'Режим утримання, мінімальний трафік, без авто-оновлень' },
 ];
@@ -4695,6 +4733,14 @@ function renderTariffs() {
                 <div class="tariff-back-name">${t.name}</div>
                 <div class="tariff-back-spec">${t.spec}</div>
                 <div class="tariff-back-price">${t.price} ₴/${t.period}</div>
+                ${t.appIos || t.appAndroid ? `<div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
+                  ${t.appIos ? `<a href="${t.appIos}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.18);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.35)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    App Store</a>` : ''}
+                  ${t.appAndroid ? `<a href="${t.appAndroid}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.18);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.35)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.341L5.42 2.065a1.5 1.5 0 00-2.419 1.77l6.108 8.386-6.108 8.385a1.5 1.5 0 002.419 1.77l12.103-13.276a1.5 1.5 0 000-3.759z"/></svg>
+                    Google Play</a>` : ''}
+                </div>` : ''}
                 <button class="btn-add-cart tariff-back-cta" onclick="event.stopPropagation();addToCartById('${t.code}')">+ Додати в кошик</button>
               </div>
             </div>
@@ -4705,9 +4751,13 @@ function renderTariffs() {
     ${simItems.length ? `
     <div class="section" style="margin-top:28px">
       <div class="section-title">SIM-картки</div>
-      <div class="section-desc">M2M SIM-картки для GPS-трекерів. Ціни вказані з ПДВ.</div>
+      <div class="section-desc">
+        Фізичні SIM-картки формату 3-в-1 для GPS-трекерів.
+        Вартість SIM-карти сплачується <strong>один раз</strong> при замовленні.
+        Тарифи вказані з урахуванням ПДВ.
+      </div>
       <div class="card-grid">
-        ${simItems.map(s => makeCard(s,'USD')).join('')}
+        ${simItems.map(s => makeCard(s,'UAH')).join('')}
       </div>
     </div>` : ''}
   `;
