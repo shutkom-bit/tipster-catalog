@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GPS Обладнання: Прайс - каталог</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -1327,7 +1327,7 @@ body[data-role="partner"] th.cell-retail { display: table-cell !important; }
   position: fixed; top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 9999;
-  display: flex;
+  display: none;
   align-items: stretch;
   justify-content: center;
   font-family: 'IBM Plex Sans', sans-serif;
@@ -1755,249 +1755,198 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
   margin-bottom: 16px;
 }
 
+
+/* ── Wiki Cards Grid ── */
+.wiki-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.wiki-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg);
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.wiki-card:hover {
+  box-shadow: 0 4px 16px rgba(37,113,208,0.12);
+  transform: translateY(-2px);
+}
+.wiki-card-header {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+}
+.wiki-card-brand {
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: -0.2px;
+}
+.wiki-card-body {
+  padding: 16px 20px 20px;
+}
+.wiki-card-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+.wiki-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wiki-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: opacity 0.15s, transform 0.1s;
+  cursor: pointer;
+}
+.wiki-card-link:hover { opacity: 0.82; transform: translateY(-1px); }
+.wiki-card-link.primary {
+  background: var(--accent);
+  color: #fff;
+}
+.wiki-card-link.secondary {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid #c3d9f7;
+}
+
+/* ── Wiki External Links ── */
+.wiki-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.wiki-ext-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 13.5px;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  max-width: 560px;
+}
+.wiki-ext-link:hover {
+  background: var(--accent-bg);
+  border-color: #c3d9f7;
+  box-shadow: 0 2px 8px rgba(37,113,208,0.08);
+}
+.wiki-ext-icon {
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.wiki-ext-title {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.wiki-ext-url {
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ── Contacts Layout ── */
+.contacts-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 820px;
+}
+@media (max-width: 700px) {
+  .contacts-layout { grid-template-columns: 1fr; }
+  .wiki-cards-grid { grid-template-columns: 1fr; }
+}
+.contacts-card-main {
+  background: var(--bg);
+  border: 1.5px solid var(--accent);
+  border-radius: 12px;
+  padding: 24px 28px;
+  box-shadow: 0 2px 12px rgba(37,113,208,0.08);
+}
+.contacts-card-info {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+}
+.contacts-info-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.contacts-info-text {
+  font-size: 13.5px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+.contacts-info-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.contacts-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+.contacts-hours {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.contacts-hours-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.contacts-hours-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-2);
+  padding: 3px 0;
+}
+.contacts-hours-time {
+  font-weight: 600;
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
 </style>
-<script type="module">
-// ══════════════════════════════════════════════════════════
-//  FIREBASE — Auth + Firestore
-// ══════════════════════════════════════════════════════════
-import { initializeApp }                        from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword,
-         createUserWithEmailAndPassword,
-         signOut, onAuthStateChanged,
-         GoogleAuthProvider, signInWithPopup }  from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-import { getFirestore, doc, setDoc,
-         getDoc, serverTimestamp }              from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey:            "AIzaSyBpfhJQwc762p_W6VqxgdBSDr1913fcV70",
-  authDomain:        "tipster-catalog.firebaseapp.com",
-  projectId:         "tipster-catalog",
-  storageBucket:     "tipster-catalog.firebasestorage.app",
-  messagingSenderId: "504782897234",
-  appId:             "1:504782897234:web:b6de297da9624d67821f8b"
-};
-
-const app  = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db   = getFirestore(app);
-
-// ── Глобальний стан ───────────────────────────────────────
-window._fbUser = null;
-window._fbRole = null; // 'partner' | 'client' | 'admin' | 'pending'
-
-// ── Показати правильний overlay ───────────────────────────
-function showOverlay(id) {
-  ['login-overlay','register-overlay','pending-overlay'].forEach(oid => {
-    const el = document.getElementById(oid);
-    if (el) el.style.display = oid === id ? 'flex' : 'none';
-  });
-}
-function hideOverlays() {
-  ['login-overlay','register-overlay','pending-overlay'].forEach(oid => {
-    const el = document.getElementById(oid);
-    if (el) el.style.display = 'none';
-  });
-}
-
-// ── Застосувати роль (ціни + UI) ──────────────────────────
-function applyRole(role) {
-  window._fbRole = role;
-  // partner/admin — партнерські ціни
-  // client/pending — РРЦ ціни (pending бачить тільки РРЦ до підтвердження)
-  if (role === 'partner' || role === 'admin') {
-    document.body.setAttribute('data-role', 'partner');
-  } else {
-    // client або pending — РРЦ
-    document.body.setAttribute('data-role', 'client');
-  }
-  hideOverlays();
-  updateAuthHeader();
-  if (typeof renderAll === 'function') renderAll();
-}
-
-function updateAuthHeader() {
-  const user = window._fbUser;
-  const role = window._fbRole;
-  const bar  = document.getElementById('auth-user-bar');
-  if (!bar || !user) return;
-  const roleLabel = { partner: '🤝 Партнер', client: '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> Клієнт', admin: '⭐ Адмін', pending: '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M4 2h8M4 14h8"/><path d="M5 2v3l3 3-3 3v3"/><path d="M11 2v3l-3 3 3 3v3"/></svg> На розгляді' };
-  const pendingBanner = role === 'pending'
-    ? '<span style="font-size:11px;background:#fff3cd;color:#856404;padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #ffc107;white-space:nowrap"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M4 2h8M4 14h8"/><path d="M5 2v3l3 3-3 3v3"/><path d="M11 2v3l-3 3 3 3v3"/></svg> На розгляді — РРЦ ціни</span>'
-    : '';
-  bar.innerHTML = `
-    <span style="font-size:12px;color:var(--text-2)">${user.email}</span>
-    <span style="font-size:11px;background:var(--accent-bg);color:var(--accent);padding:2px 8px;border-radius:10px;font-weight:600">${roleLabel[role]||role}</span>
-    ${pendingBanner}
-    <button onclick="fbSignOut()" style="font-size:11px;padding:3px 10px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;color:var(--text-2);font-family:'IBM Plex Sans',sans-serif;margin-left:auto">Вийти</button>
-  `;
-  bar.style.display = 'flex';
-}
-
-// ── Auth state listener ───────────────────────────────────
-onAuthStateChanged(auth, async (user) => {
-  // Завжди очищаємо localStorage — доступ тільки через Firestore
-  localStorage.removeItem('navixy_partner_access');
-  localStorage.removeItem('catalog_role');
-  if (user) {
-    window._fbUser = user;
-    try {
-      let snap = await getDoc(doc(db, 'users', user.uid));
-      if (!snap.exists()) {
-        await new Promise(r => setTimeout(r, 1500));
-        snap = await getDoc(doc(db, 'users', user.uid));
-      }
-      if (snap.exists()) {
-        const data = snap.data();
-        const role = data.role || 'pending';
-        // pending — пускаємо в каталог але тільки з РРЦ цінами
-        applyRole(role);
-      } else {
-        // Новий користувач без профілю — показати pending
-        showOverlay('pending-overlay');
-      }
-    } catch(e) {
-      console.error('Firestore read error:', e);
-      showOverlay('login-overlay');
-    }
-  } else {
-    window._fbUser = null;
-    window._fbRole = null;
-    localStorage.removeItem('navixy_partner_access');
-    localStorage.removeItem('catalog_role');
-    document.body.removeAttribute('data-role');
-    showOverlay('login-overlay');
-    const bar = document.getElementById('auth-user-bar');
-    if (bar) bar.style.display = 'none';
-  }
-});
-
-// ── Вхід email/password ───────────────────────────────────
-window.fbLogin = async function() {
-  const email = document.getElementById('fb-login-email').value.trim();
-  const pass  = document.getElementById('fb-login-pass').value;
-  const errEl = document.getElementById('fb-login-error');
-  errEl.style.display = 'none';
-  if (!email || !pass) { errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Введіть email та пароль'; errEl.style.display='block'; return; }
-  const btn = document.getElementById('fb-login-btn');
-  btn.disabled = true; btn.textContent = 'Входимо…';
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-    // onAuthStateChanged спрацює автоматично
-  } catch(e) {
-    const msgs = {
-      'auth/user-not-found':  '✕ Користувача не знайдено',
-      'auth/wrong-password':  '✕ Невірний пароль',
-      'auth/invalid-email':   '✕ Невірний формат email',
-      'auth/invalid-credential': '✕ Невірний email або пароль',
-      'auth/too-many-requests':'<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Забагато спроб, спробуйте пізніше',
-    };
-    errEl.textContent = msgs[e.code] || ('✕ ' + e.message);
-    errEl.style.display = 'block';
-  } finally { btn.disabled = false; btn.textContent = 'Увійти →'; }
-};
-
-// ── Реєстрація ────────────────────────────────────────────
-window.fbRegister = async function() {
-  const name    = document.getElementById('fb-reg-name').value.trim();
-  const company = document.getElementById('fb-reg-company').value.trim();
-  const phone   = document.getElementById('fb-reg-phone').value.trim();
-  const email   = document.getElementById('fb-reg-email').value.trim();
-  const pass    = document.getElementById('fb-reg-pass').value;
-  const role    = document.getElementById('fb-reg-role').value;
-  const errEl   = document.getElementById('fb-reg-error');
-  errEl.style.display = 'none';
-  if (!name || !email || !pass || !phone) {
-    errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Заповніть всі обов\'язкові поля'; errEl.style.display='block'; return;
-  }
-  if (pass.length < 6) { errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Пароль мінімум 6 символів'; errEl.style.display='block'; return; }
-  const btn = document.getElementById('fb-reg-btn');
-  btn.disabled = true; btn.textContent = 'Реєструємо…';
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    await setDoc(doc(db, 'users', cred.user.uid), {
-      name, company: company||'—', phone, email,
-      role: 'pending',
-      requestedRole: role,
-      createdAt: serverTimestamp()
-    });
-    // Сповіщення в Telegram
-    const tgMsg = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="1" y="4" width="14" height="8" rx="1"/><path d="M4 10V6l2 2 2-2v4"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="8" x2="13" y2="8"/></svg> *Нова реєстрація — TIPSTER Каталог*
-
-` +
-      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> *Ім'я:* ${name}
-<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="3" y="2" width="10" height="13" rx="0.5"/><rect x="5" y="4" width="2" height="2"/><rect x="9" y="4" width="2" height="2"/><rect x="5" y="8" width="2" height="2"/><rect x="9" y="8" width="2" height="2"/><rect x="6" y="11" width="4" height="4"/></svg> *Компанія:* ${company||'—'}
-<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="4" y="1" width="8" height="14" rx="1.5"/><circle cx="8" cy="12" r="0.75" fill="currentColor"/></svg> *Телефон:* ${phone}
-` +
-      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> *Email:* ${email}
-<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M2 6c0-1.7 6-4 6-4s6 2.3 6 4c0 6-6 8-6 8S2 12 2 6z"/></svg> *Роль:* ${role === 'partner' ? '🤝 Партнер' : '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> Клієнт'}
-` +
-      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="1"/><line x1="2" y1="7" x2="14" y2="7"/><line x1="5" y1="1" x2="5" y2="5"/><line x1="11" y1="1" x2="11" y2="5"/></svg> *Дата:* ${new Date().toLocaleString('uk-UA')}
-
-` +
-      `_Підтвердьте в Firebase Console → Firestore → users_`;
-    fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
-    }).catch(()=>{});
-    // Показати pending overlay
-    showOverlay('pending-overlay');
-  } catch(e) {
-    const msgs = {
-      'auth/email-already-in-use': '✕ Цей email вже зареєстрований',
-      'auth/invalid-email': '✕ Невірний формат email',
-      'auth/weak-password': '✕ Пароль занадто слабкий',
-    };
-    errEl.textContent = msgs[e.code] || ('✕ ' + e.message);
-    errEl.style.display = 'block';
-  } finally { btn.disabled = false; btn.textContent = 'Зареєструватись →'; }
-};
-
-// ── Google Sign-In ────────────────────────────────────────
-window.fbGoogleLogin = async function() {
-  const provider = new GoogleAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    const snap = await getDoc(doc(db, 'users', user.uid));
-    if (!snap.exists()) {
-      // Перший вхід через Google — чекаємо setDoc
-      await setDoc(doc(db, 'users', user.uid), {
-        name: user.displayName || '',
-        email: user.email,
-        company: '—', phone: '—',
-        role: 'pending',
-        requestedRole: 'partner',
-        createdAt: serverTimestamp()
-      });
-      const tgMsg = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="1" y="4" width="14" height="8" rx="1"/><path d="M4 10V6l2 2 2-2v4"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="8" x2="13" y2="8"/></svg> *Google реєстрація — TIPSTER*\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> ' + user.displayName + '\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> ' + user.email + '\n\n_Підтвердіть: Firebase → Firestore → users_';
-      fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
-      }).catch(()=>{});
-      showOverlay('pending-overlay');
-    } else {
-      const role = snap.data().role || 'pending';
-      if (role === 'pending') { showOverlay('pending-overlay'); }
-      else { applyRole(role); }
-    }
-  } catch(e) {
-    console.error('Google login error:', e);
-    if (e.code !== 'auth/popup-closed-by-user') {
-      alert('Помилка Google входу: ' + e.message);
-    }
-  }
-};
-
-// ── Вихід ─────────────────────────────────────────────────
-window.fbSignOut = async function() {
-  await signOut(auth);
-};
-
-// ── Перемикач форм ────────────────────────────────────────
-window.showRegister = function() { showOverlay('register-overlay'); };
-window.showLogin    = function() { showOverlay('login-overlay'); };
-</script>
 </head>
 <body>
 
@@ -2165,6 +2114,8 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M2 8a6 6 0 0111-4l1-2"/><path d="M14 8a6 6 0 01-11 4l-1 2"/><polyline points="14,2 14,4 12,4"/><polyline points="2,14 2,12 4,12"/></svg> Оновити курс НБУ
     </button>
 </div>
+</div><!-- /nav-wrap -->
+</div><!-- /sidebar -->
 
 <div id="main">
   <!-- Top bar -->
@@ -2821,97 +2772,274 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
       <div class="page-section" id="sec-wiki">
         <div class="page-inner">
           <div class="page-header">
-            <div class="page-title">База знань</div>
-            <div class="page-subtitle">Документація, посібники та технічні ресурси.</div>
+            <div class="page-title">Wiki / База знань</div>
+            <div class="page-subtitle">Документація, посібники та технічні ресурси для роботи з обладнанням та платформами.</div>
           </div>
-          <div id="wiki-content">
-            <div class="section" id="wiki-software">
-              <div class="section-title">Програмне забезпечення</div>
-              <div class="section-desc">Платформи та мобільні додатки для GPS-моніторингу транспорту.</div>
-              <div class="callout callout-blue">
-                <span class="callout-icon"><?xml version="1.0"?></span>
-                <div>
-                  <b>Navixy Platform</b> — провідна платформа GPS-моніторингу. REST API, White Label, Admin Panel.<br>
-                  <a href="https://docs.navixy.com" target="_blank" style="color:var(--accent)">docs.navixy.com ↗</a>
+
+          <!-- Програмне забезпечення -->
+          <div class="section" id="wiki-software">
+            <div class="section-title">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);vertical-align:-2px;margin-right:6px"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 13h8M12 9v8"/><rect x="1" y="2" width="14" height="10" rx="1.5"/><path d="M4 6l2 2-2 2"/><path d="M8 10h3"/></svg>
+              Програмне забезпечення
+            </div>
+            <div class="section-desc">Платформи та мобільні додатки для GPS-моніторингу транспорту.</div>
+
+            <div class="wiki-cards-grid">
+              <!-- Navixy -->
+              <div class="wiki-card">
+                <div class="wiki-card-header" style="background:linear-gradient(135deg,#2571d0 0%,#1a5ab8 100%)">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 010 20M2 12h20"/></svg>
+                  <span class="wiki-card-brand">Navixy Platform</span>
+                </div>
+                <div class="wiki-card-body">
+                  <p class="wiki-card-desc">Провідна платформа GPS-моніторингу. REST API, White Label, Admin Panel. Понад 1000 моделей трекерів.</p>
+                  <div class="wiki-card-links">
+                    <a href="https://www.navixy.com/docs/" target="_blank" class="wiki-card-link primary">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h8M8 4l4 4-4 4"/></svg>
+                      Документація Navixy
+                    </a>
+                    <a href="https://docs.navixy.com" target="_blank" class="wiki-card-link secondary">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 7h6M5 10h4"/></svg>
+                      API Docs
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Teltonika -->
+              <div class="wiki-card">
+                <div class="wiki-card-header" style="background:linear-gradient(135deg,#003087 0%,#0050b3 100%)">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M7 15a6 6 0 0110 0"/><path d="M4 19a10 10 0 0116 0"/></svg>
+                  <span class="wiki-card-brand">Teltonika</span>
+                </div>
+                <div class="wiki-card-body">
+                  <p class="wiki-card-desc">Офіційна Wiki Teltonika — документація по всім моделям GPS-трекерів, схеми підключення, прошивки.</p>
+                  <div class="wiki-card-links">
+                    <a href="https://wiki.teltonika-gps.com/view/Main_Page" target="_blank" class="wiki-card-link primary" style="background:var(--accent);color:#fff">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h8M8 4l4 4-4 4"/></svg>
+                      Wiki Teltonika
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- X-GPS -->
+              <div class="wiki-card">
+                <div class="wiki-card-header" style="background:linear-gradient(135deg,#1d6f42 0%,#2e8b57 100%)">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+                  <span class="wiki-card-brand">X-GPS Monitor</span>
+                </div>
+                <div class="wiki-card-body">
+                  <p class="wiki-card-desc">Мобільний додаток для моніторингу транспорту на базі платформи Navixy. iOS та Android.</p>
+                  <div class="wiki-card-links">
+                    <a href="https://apps.apple.com/app/x-gps-monitor/id1042680097" target="_blank" class="wiki-card-link secondary">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2a2 2 0 001.5-.7A2 2 0 008 .5a2 2 0 00-1.5.8A2 2 0 008 2zM6 3c-1.5 0-3 1-3 3.5 0 3.5 2.5 7.5 3.5 7.5.5 0 1-.5 1.5-.5s1 .5 1.5.5C10.5 14 13 10 13 6.5 13 4 11.5 3 10 3c-.8 0-1.4.5-2 .5S6.8 3 6 3z"/></svg>
+                      App Store
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=ru.navixy.xgps.monitor" target="_blank" class="wiki-card-link secondary">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l5 5-5 5V2zM14 8l-5-3v6l5-3z"/></svg>
+                      Google Play
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- X-GPS Tracker -->
+              <div class="wiki-card">
+                <div class="wiki-card-header" style="background:linear-gradient(135deg,#7c3aed 0%,#5b21b6 100%)">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-5-8-12a8 8 0 0116 0c0 7-8 12-8 12z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span class="wiki-card-brand">X-GPS Tracker</span>
+                </div>
+                <div class="wiki-card-body">
+                  <p class="wiki-card-desc">Мобільний трекер — перетворює смартфон на GPS-пристрій з відстеженням маршруту та SOS.</p>
+                  <div class="wiki-card-links">
+                    <a href="https://apps.apple.com/app/x-gps-tracker/id504418007" target="_blank" class="wiki-card-link secondary">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2a2 2 0 001.5-.7A2 2 0 008 .5a2 2 0 00-1.5.8A2 2 0 008 2zM6 3c-1.5 0-3 1-3 3.5 0 3.5 2.5 7.5 3.5 7.5.5 0 1-.5 1.5-.5s1 .5 1.5.5C10.5 14 13 10 13 6.5 13 4 11.5 3 10 3c-.8 0-1.4.5-2 .5S6.8 3 6 3z"/></svg>
+                      App Store
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=ru.navixy.xgps.tracker" target="_blank" class="wiki-card-link secondary">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l5 5-5 5V2zM14 8l-5-3v6l5-3z"/></svg>
+                      Google Play
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Зовнішні ресурси -->
+          <div class="section" id="wiki-links" style="margin-top:32px">
+            <div class="section-title">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);vertical-align:-2px;margin-right:6px"><path d="M7 9a3 3 0 004.24.14l2-2a3 3 0 00-4.24-4.24l-1 1"/><path d="M9 7a3 3 0 00-4.24-.14l-2 2a3 3 0 004.24 4.24l1-1"/></svg>
+              Корисні посилання
+            </div>
+            <div class="wiki-links-list">
+              <a href="https://www.navixy.com/docs/" target="_blank" class="wiki-ext-link">
+                <div class="wiki-ext-icon" style="background:#e9f2ff">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#2571d0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg>
+                </div>
+                <div>
+                  <div class="wiki-ext-title">Документація Navixy</div>
+                  <div class="wiki-ext-url">navixy.com/docs</div>
+                </div>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-left:auto;color:var(--text-3)"><path d="M6 3h7v7M4 12L13 3"/></svg>
+              </a>
+              <a href="https://wiki.teltonika-gps.com/view/Main_Page" target="_blank" class="wiki-ext-link">
+                <div class="wiki-ext-icon" style="background:#e8f0fe">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#003087" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="10" r="2"/><path d="M5 7a4 4 0 016 0"/><path d="M3 5a7 7 0 0110 0"/></svg>
+                </div>
+                <div>
+                  <div class="wiki-ext-title">Wiki Teltonika GPS</div>
+                  <div class="wiki-ext-url">wiki.teltonika-gps.com</div>
+                </div>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-left:auto;color:var(--text-3)"><path d="M6 3h7v7M4 12L13 3"/></svg>
+              </a>
+              <a href="https://docs.navixy.com" target="_blank" class="wiki-ext-link">
+                <div class="wiki-ext-icon" style="background:#e9f2ff">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#2571d0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="M5 6h6M5 9h4"/></svg>
+                </div>
+                <div>
+                  <div class="wiki-ext-title">Navixy API Docs</div>
+                  <div class="wiki-ext-url">docs.navixy.com</div>
+                </div>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-left:auto;color:var(--text-3)"><path d="M6 3h7v7M4 12L13 3"/></svg>
+              </a>
+              <a href="https://wiki.teltonika-gps.com/view/FMB920_Manual" target="_blank" class="wiki-ext-link">
+                <div class="wiki-ext-icon" style="background:#e8f0fe">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#003087" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="1" width="10" height="14" rx="1"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>
+                </div>
+                <div>
+                  <div class="wiki-ext-title">FMB920 Manual</div>
+                  <div class="wiki-ext-url">wiki.teltonika-gps.com</div>
+                </div>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-left:auto;color:var(--text-3)"><path d="M6 3h7v7M4 12L13 3"/></svg>
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
       <!-- ══ CONTACTS ══ -->
       <div class="page-section" id="sec-contacts">
-        <div class="page-inner" id="contacts-page-inner">
+        <div class="page-inner">
           <div class="page-header">
             <div class="page-title">Контакти</div>
-            <div class="page-subtitle">Зв'яжіться з командою TIPSTER.</div>
+            <div class="page-subtitle">Зв'яжіться з командою TrackAuto &amp; Tipster.</div>
           </div>
-          <div class="contacts-grid" id="contacts-grid">
-            <div class="contacts-card">
+
+          <div class="contacts-layout">
+
+            <!-- Головна картка компанії -->
+            <div class="contacts-card contacts-card-main">
               <div class="contacts-brand">
-                <div class="contacts-brand-logo"><svg style="height:28px;width:auto;display:block" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1201 256" xml:space="preserve"><path fill="#FF512F" d="M1174.2,124.3c0.7,0.7,1.1,1.4,1.7,1.5c16.3,5.3,20.4,18.2,21.1,33.4c0.3,6.9,0.7,13.8,1.3,20.7
-	c0.3,2.9,1.7,5.6,2.2,8.5c1,4.7,1,9.1-6,8.9c-8-0.3-9.6-1.4-10.1-9.9c-0.6-9.4-1.3-18.7-1.7-28.1c0-7.5-2.8-14.8-7.7-20.4
-	c-3.4-3.6-9.1-4.9-14-6.9c-2.3-0.9-4.8-1.3-7.3-1.2c-16.6,0-33.2,0-49.8-0.1c-4.4,0-4.2,2.7-4.2,5.6c0,17.7,0,35.4,0,53.1
-	c0,7.3-0.7,8-8,8c-4.2,0-5.9-1.9-5.9-6c0-46.2,0-92.4,0-138.6c0-3.3,1.1-4.3,4.3-4.3c23.8,0,47.5-0.3,71.3,0.2
-	c6.1-0.1,12.1,1.3,17.6,4c5.5,2.7,10.2,6.6,13.9,11.4c2.8,4.4,4.8,9.4,5.9,14.5c1.6,6.1,1.6,12.5,0.2,18.6
-	c-0.9,5.8-3.4,11.3-7.1,15.8c-3.8,4.6-8.6,8-14.2,10.1C1176.6,123.2,1175.6,123.7,1174.2,124.3z M1099.6,89.8c0,8,0.1,15.9,0,23.9
-	c0,4,1.3,5.5,5.5,5.5c9.8-0.3,19.6,0,29.3-0.2c8.8-0.2,17.6-0.6,26.3-1.7c8.7-1.1,16.9-4.3,20.8-12.6c9.7-20.4,1.4-42.9-25.5-43.8
-	c-17.1-0.6-34.2,0-51.4-0.2c-4.2,0-5.1,1.7-5.1,5.3C1099.7,73.9,1099.7,81.8,1099.6,89.8L1099.6,89.8z"/>
-<path fill="#FF512F" d="M961,122.2c0-22.4,0-44.7,0-67.1c0-6.2,0.6-6.8,6.8-6.8c30.1,0,60.2,0,90.3,0c4.4,0,7,1,6.9,5.9
-	c-0.2,5-1.7,6.5-7.2,6.5h-75.2c-6.6,0-6.8,0.2-6.8,6.6c0,13.4,0.2,26.8,0,40.3c0,4.9,1.3,6.6,6.4,6.6c23.3-0.3,46.5,0,69.8,0
-	c6.3,0,7.4,0.9,7.3,5.9c-0.1,5-1.8,6.5-7.7,6.5c-23.4,0-46.9,0-70.3,0c-4,0-5.6,1.1-5.5,5.3c0.2,15.6,0,31.1,0,46.7
-	c0,4.7,1.9,6.4,6.6,6.4c25.6-0.1,51.2,0,76.8,0c5.8,0,6.4,0.9,6.5,6.7c0,4.8-2.4,5.8-6.6,5.8c-28.4,0-56.8,0-85.2,0h-5.5
-	c-6.1,0-7.1-1.1-7.1-7.3c0-16.9,0-33.8,0-50.7L961,122.2z"/>
-<path fill="#FF512F" d="M880.9,128.3V68.2c0-7.4,0-7.4-7.2-7.5c-12.6,0-25.3,0-37.9,0c-6.6,0-7.6-1.4-7.4-7.5c0.2-3.6,1.7-4.9,5.3-4.9
-	c36.2,0,72.4,0,108.7,0c3.1,0,5.2,0.9,5.3,4.4c0.2,3.5,0.5,6.9-4.2,7.6c-1.6,0.3-3.3,0.4-4.9,0.4h-36.1c-7.1,0-7.1,0-7.1,6.9
-	c0,40.3-0.1,80.5,0,120.7c0,9.5-2.7,9.2-11.2,8.6c-3.3-0.2-3.4-3-3.4-5.6c0-14.4,0-28.8,0-43.2L880.9,128.3z"/>
-<path fill="#FF512F" d="M762.3,45c13,0.2,25.5,2.1,36.6,9.6c5.2,3.4,9.5,8,12.5,13.5c3,5.4,4.6,11.5,4.7,17.7c0.2,3.8-1.9,5.5-5.3,5.7
-	c-3.4,0.3-7.2-0.4-8.3-4.5c-5.7-21-16.5-29.4-38.5-29.2c-5.8-0.2-11.6,0.2-17.3,1.2c-16.7,3.6-25.1,16.1-21.5,32.7
-	c2.1,9.6,10.3,13.6,18.6,16.1c13.2,3.8,26.6,6.4,39.9,9.9c9.1,2.4,18.1,5.3,25.7,11.3c4.8,3.6,8.3,8.5,10.3,14.2
-	c3.3,9.4,3.1,19.6-0.7,28.8c-3.8,9.2-10.9,16.7-19.8,21c-13.4,7-27.9,7.6-42.6,6.5c-10.6-0.4-21-3.6-30-9.3
-	c-14.2-9.4-20.7-23-21.3-39.8c0-1.2,2.1-3.3,3.4-3.4c8.5-1,9.5,0.2,11.2,8.9c3.3,16.6,12.2,26.5,30.4,30.5
-	c11.2,2.5,22.8,2.3,33.9-0.7c16.9-4.7,25.8-17,22.7-34.5c-0.8-3.8-2.6-7.4-5.4-10.2c-2.7-2.8-6.2-4.8-10.1-5.7
-	c-16.2-4.8-32.5-8.9-48.6-13.9c-7.2-2-14-5-20.3-8.9c-10.5-7.3-12.9-18.6-12.1-30.8c1.3-20,17.3-32.1,35.8-35.2
-	C751.7,45.7,757.1,45.5,762.3,45z"/>
-<path fill="#FF512F" d="M596.3,133.7c0,18.6,0,36.8,0,55c0,7.6-5.3,11.1-12.3,8c-1.4-0.8-2.4-2.2-2.9-3.7c-0.4-1.6-0.5-3.3-0.3-4.9
-	c0-44.4,0-88.8,0-133.2c0-6.5,0-6.5,6.6-6.5c21.3,0,42.9-0.3,64.3,0c15.1,0.3,28,6,35.7,19.6c6.3,11.1,6,23.3,3.4,35.2
-	c-3.3,15-13.3,24.1-28,27.6c-6.6,1.5-13.3,2.4-20,2.7c-13.6,0.4-27.3,0-40.9,0C599.9,133.5,598.1,133.7,596.3,133.7z M596.3,121.3
-	c0.7,0.2,1.4,0.4,2.2,0.5c17.1-0.2,34.3,0.7,51.3-1.2c14.2-1.6,25.9-7.6,27.9-25.3c2.2-20.4-8.9-33.5-28.9-34.5
-	c-13.9-0.6-27.9,0-41.9,0h-10.5V121.3z"/>
-<path fill="#FF512F" d="M549.5,122.6c0,22.5,0,45.1,0,67.6c0,6-0.9,6.9-6.3,7c-6.8,0-8.2-0.9-8.2-6.8c0-45.3,0-90.7,0-136.1
-	c0-5.6,0.9-5.8,8.2-6.1c4.8-0.2,6.4,1.6,6.4,6.3C549.4,77.2,549.5,99.9,549.5,122.6z"/>
-<path fill="#FF512F" d="M467.6,129.4c0,20.2,0,40.4,0,60.6c0,2.2-1,5.9-2.3,6.3c-3.2,0.8-6.5,0.7-9.6-0.3c-1-0.3-1.7-3.7-1.7-5.7
-	c0-22.7,0-45.4,0-68.1c0-17.9,0-35.8,0-53.7c0-7.3-0.7-8-8-8c-12.5,0-25,0-37.3,0c-3.8,0-7.4-0.5-7.5-5.7c-0.1-5.2,0.7-6.6,6.5-6.6
-	c35.7,0,71.5,0,107.2,0c3.6,0,6.1,0.2,5.9,5c-0.2,6.3-0.6,7.4-5.9,7.4c-13.5,0-26.9,0-40.4,0c-5.8,0-6.7,0.9-6.7,6.6
-	C467.6,88.1,467.6,108.8,467.6,129.4z"/>
-<path fill="none" stroke="#FF512F" stroke-width="16" stroke-linecap="round" d="M283,145.5C283,69.6,221.4,8,145.5,8C69.6,8,8,69.6,8,145.5"/>
-<path fill="none" stroke="#FF512F" stroke-width="16" stroke-linecap="round" d="M168.8,245.3c24.6-5.7,46.2-20.3,60.7-41c14.5-20.7,20.8-46,17.8-71c-3-25.1-15.2-48.1-34.1-64.8
-	S169.7,42.7,144.4,43c-25.2,0.3-49.5,9.8-68.1,26.9c-18.6,17-30.3,40.4-32.8,65.5c-2.5,25.1,4.4,50.3,19.3,70.7
-	c14.9,20.4,36.8,34.5,61.5,39.7"/>
-<path fill="none" stroke="#FF512F" stroke-width="16" stroke-linecap="round" d="M122.8,79.1c-11.2,4-21.2,10.8-29,19.6c-7.9,8.9-13.4,19.6-16,31.2c-2.6,11.6-2.3,23.6,1,35
-	c3.3,11.4,9.4,21.8,17.8,30.2"/>
-<path fill="none" stroke="#FF512F" stroke-width="16" stroke-linecap="round" d="M196.7,194.5c8.3-8.5,14.3-18.9,17.5-30.4c3.2-11.4,3.4-23.5,0.7-35.1s-8.3-22.2-16.3-31.1
-	c-8-8.8-18-15.5-29.2-19.4"/>
-<circle fill="#FF512F" cx="146" cy="75" r="8"/>
-<circle fill="#FF512F" cx="146" cy="248" r="8"/>
-<path fill="#FF512F" d="M189,142.9c0,17.9-7.5,29.7-20.7,38.7c-3.2,2.8-5.9,6.2-7.9,10c-3.1,4.8-5.8,10-8.7,14.8
-	c-0.7,1.4-1.8,2.5-3.1,3.3c-1.3,0.8-2.9,1.2-4.4,1.2c-1.5,0-3.1-0.5-4.4-1.3c-1.3-0.8-2.4-2-3-3.4c-4.2-7-7.9-14.2-12.2-21.1
-	c-2-3.1-4.5-6-7.3-8.4c-23.1-20.6-17.2-60.6,13.1-72.8c5.7-2.2,11.8-3.2,17.9-2.8c6.1,0.3,12.1,2,17.5,4.8
-	c5.4,2.8,10.2,6.7,14.1,11.5c3.8,4.8,6.7,10.3,8.2,16.3C188.7,136.7,189,139.8,189,142.9L189,142.9z M144.6,184.7
-	c0.9-1.7,1.8-3.3,2.9-4.9c2.9-3.8,5.2-8.7,9-11c13.6-7.6,19-20.8,13-34.9c-1.8-4.9-5.2-9-9.5-11.9c-4.3-2.8-9.5-4.2-14.6-3.9
-	c-5-0.1-9.9,1.3-14,4.1c-4.2,2.7-7.5,6.7-9.4,11.3c-2.3,4.9-3,10.5-2,15.9c1,5.4,3.8,10.3,7.8,14c4.5,4.5,8.5,9.5,12.5,14.6
-	C141.8,180,143.3,182.3,144.6,184.7L144.6,184.7z"/></svg></div>
+                <div class="contacts-brand-logo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+                </div>
+                <div>
+                  <div class="contacts-brand-name">TrackAuto &amp; Tipster</div>
+                  <div class="contacts-brand-sub">GPS-моніторинг транспорту · м. Київ, Україна</div>
+                </div>
               </div>
-              <div class="contacts-info">
-                <div class="contacts-name">TIPSTER / ТРЕКАВТО</div>
-                <div class="contacts-detail">
-                  <a href="tel:+380956546644" style="color:var(--accent)">+38 (095) 654-66-44</a><br>
-                  <a href="tel:+380444526617" style="color:var(--accent)">+38 (044) 452-66-17</a><br>
-                  <a href="https://tipster.ua" target="_blank" style="color:var(--accent)">tipster.ua ↗</a>
+
+              <!-- Телефони -->
+              <div class="contacts-row">
+                <div class="contacts-icon">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2a1 1 0 011-1h2l1 3-1.5 1.5a10 10 0 005 5L12 9l3 1v2a1 1 0 01-1 1C6.1 13 3 9.9 3 2z"/></svg>
+                </div>
+                <div>
+                  <div class="contacts-label">Телефони</div>
+                  <div class="contacts-value">
+                    <a href="tel:+380956546644">+3(8095) 654-66-44</a><br>
+                    <a href="tel:+380444526617">+3(8044) 452-66-17</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="contacts-row">
+                <div class="contacts-icon">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4l7 5 7-5"/></svg>
+                </div>
+                <div>
+                  <div class="contacts-label">Email</div>
+                  <div class="contacts-value">
+                    <a href="mailto:shutko@trackauto.com.ua">shutko@trackauto.com.ua</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Адреса -->
+              <div class="contacts-row">
+                <div class="contacts-icon">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1a5 5 0 015 5c0 4-5 9-5 9S3 10 3 6a5 5 0 015-5z"/><circle cx="8" cy="6" r="1.5"/></svg>
+                </div>
+                <div>
+                  <div class="contacts-label">Адреса</div>
+                  <div class="contacts-value">04050, м. Київ, Україна</div>
+                </div>
+              </div>
+
+              <!-- Швидкі посилання -->
+              <div class="contacts-links">
+                <a href="https://tipster.ua" target="_blank" class="contacts-link-btn primary">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg>
+                  WEB
+                </a>
+                <a href="https://demo.navixy.com" target="_blank" class="contacts-link-btn secondary">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5,3 14,8 5,13"/></svg>
+                  DEMO
+                </a>
+                <a href="https://www.facebook.com/tipster.ua" target="_blank" class="contacts-link-btn facebook">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                  FACEBOOK
+                </a>
+              </div>
+            </div>
+
+            <!-- Додаткова інфо-картка -->
+            <div class="contacts-card contacts-card-info">
+              <div class="contacts-info-title">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><circle cx="8" cy="8" r="6"/><path d="M8 6v4M8 4.5v.5"/></svg>
+                Про компанію
+              </div>
+              <p class="contacts-info-text">
+                <strong>TrackAuto</strong> та <strong>Tipster</strong> — офіційний дистриб'ютор GPS-обладнання Teltonika та Bitrek в Україні. Постачання, монтаж та технічна підтримка систем GPS-моніторингу.
+              </p>
+              <div class="contacts-info-badges">
+                <div class="contacts-badge">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13,2 6,9 3,6"/></svg>
+                  Офіційний дилер Teltonika
+                </div>
+                <div class="contacts-badge">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13,2 6,9 3,6"/></svg>
+                  Партнер Navixy Platform
+                </div>
+                <div class="contacts-badge">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13,2 6,9 3,6"/></svg>
+                  Монтаж та сервіс
+                </div>
+                <div class="contacts-badge">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13,2 6,9 3,6"/></svg>
+                  Технічна підтримка 24/7
+                </div>
+              </div>
+
+              <!-- Робочий час -->
+              <div class="contacts-hours">
+                <div class="contacts-hours-title">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--text-2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-1px"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg>
+                  Графік роботи
+                </div>
+                <div class="contacts-hours-row">
+                  <span>Пн — Пт</span><span class="contacts-hours-time">09:00 — 18:00</span>
+                </div>
+                <div class="contacts-hours-row">
+                  <span>Сб — Нд</span><span class="contacts-hours-time" style="color:var(--tag-orange-text)">Вихідний</span>
                 </div>
               </div>
             </div>
-          </div>
+
+          </div><!-- /contacts-layout -->
         </div>
       </div>
     </div><!-- /page-inner -->
@@ -3088,7 +3216,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
 </div>
 
 
-<div id="register-overlay">
+<div id="register-overlay" style="display:none">
   <div style="display:flex;width:100%;min-height:100vh;margin:0 auto;max-width:1160px">
     <div class="auth-left-panel">
       <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">
@@ -3307,7 +3435,7 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  DATA
@@ -3636,28 +3764,63 @@ function fmt(n) { return new Intl.NumberFormat('uk-UA').format(Math.round(n)); }
 // ════════════════════════════════════════════════════════
 const SECTION_LABELS = {
   overview:'Огляд', teltonika:'Teltonika', bitrek:'Bitrek',
-  accessories:'Аксесуари', extra:'Додаткове обладнання', drp:'ДРП — Датчики палива', configurator:'Конфігуратор', export:'Експорт'
+  accessories:'Аксесуари', extra:'Додаткове обладнання',
+  tariffs:'Тарифи', install:'Монтаж та сервіс',
+  drp:'ДРП — Датчики палива', configurator:'Конфігуратор',
+  export:'Експорт', navixy:'Navixy Platform',
+  wiki:'Wiki / База знань', contacts:'Контакти'
 };
+
+// Fallback for hideOverlays (overridden by Firebase module when loaded)
+function hideOverlays() {
+  ['login-overlay','register-overlay','pending-overlay'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+}
 
 function showSection(id) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('sec-' + id).classList.add('active');
+  const sec = document.getElementById('sec-' + id);
+  if (!sec) { console.warn('showSection: section not found:', id); return; }
+  sec.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => {
-    if (n.textContent.trim().toLowerCase().includes(SECTION_LABELS[id]?.toLowerCase().slice(0,6)||'')) {
+    const label = SECTION_LABELS[id] || '';
+    if (label && n.textContent.trim().toLowerCase().includes(label.toLowerCase().slice(0, 6))) {
       n.classList.add('active');
     }
   });
-  document.getElementById('breadcrumb-current').textContent = SECTION_LABELS[id] || id;
-  if (id === 'teltonika') renderTeltonika();
-  if (id === 'bitrek') renderBitrek();
-  if (id === 'accessories') renderAccessories();
-  if (id === 'extra') renderExtra();
-  if (id === 'drp') renderDRP();
+  const bc = document.getElementById('breadcrumb-current');
+  if (bc) bc.textContent = SECTION_LABELS[id] || id;
+  // Render on demand
+  if (id === 'teltonika')    renderTeltonika();
+  if (id === 'bitrek')       renderBitrek();
+  if (id === 'accessories')  renderAccessories();
+  if (id === 'extra')        renderExtra();
+  if (id === 'drp')          renderDRP();
   if (id === 'configurator') renderConfigurator();
-  if (id === 'overview') renderOverview();
+  if (id === 'overview')     renderOverview();
+  if (id === 'install')      renderInstall();
+  if (id === 'tariffs')      renderTariffs();
+  if (id === 'navixy')       renderNavixy();
 }
 
+
+
+function scrollToWikiSection(id) {
+  const el = document.getElementById('wiki-' + id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleWikiMenu() {
+  const sub  = document.getElementById('wiki-submenu');
+  const arrow = document.getElementById('wiki-arrow');
+  if (!sub) return;
+  const open = sub.style.display === 'block';
+  sub.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.textContent = open ? '›' : '‹';
+}
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed');
 }
@@ -4352,23 +4515,7 @@ fetchNBURates();
   }
 
   // Перевірка при завантаженні
-  document.addEventListener('DOMContentLoaded', () => {
-    const isAuth = localStorage.getItem('navixy_partner_access') === 'true' || 
-                   localStorage.getItem('navixy_auth_status') === 'granted';
-    
-    if (isAuth) {
-      const overlay = document.getElementById('login-overlay');
-      if (overlay) overlay.style.display = 'none';
-    }
-
-    // Вхід через Enter
-    const passInput = document.getElementById('partner-pass');
-    if (passInput) {
-      passInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') checkAuth();
-      });
-    }
-  });
+;
 
 // ══════════════════════════════════════════════════════════
 // SECTION LABELS
@@ -4775,19 +4922,6 @@ function selectRole(role) {
 }
 
 // showSection extended
-const _origShowSection = showSection;
-showSection = function(id) {
-  _origShowSection(id);
-  if (id==='install')  renderInstall();
-  if (id==='tariffs')  renderTariffs();
-  if (id==='navixy')   renderNavixy();
-  // Update SECTION_LABELS breadcrumb
-  const label = SECTION_LABELS[id];
-  if (label) {
-    const bc = document.getElementById('breadcrumb-current');
-    if (bc) bc.textContent = label;
-  }
-};
 </script>
 
 <!-- ══ CART PANEL ══ -->
@@ -4812,5 +4946,258 @@ showSection = function(id) {
   </button>
 </div>
 
+<script type="module">
+// ══════════════════════════════════════════════════════════
+//  FIREBASE — Auth + Firestore
+// ══════════════════════════════════════════════════════════
+import { initializeApp }                        from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword,
+         createUserWithEmailAndPassword,
+         signOut, onAuthStateChanged,
+         GoogleAuthProvider, signInWithPopup }  from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+import { getFirestore, doc, setDoc,
+         getDoc, serverTimestamp }              from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyBpfhJQwc762p_W6VqxgdBSDr1913fcV70",
+  authDomain:        "tipster-catalog.firebaseapp.com",
+  projectId:         "tipster-catalog",
+  storageBucket:     "tipster-catalog.firebasestorage.app",
+  messagingSenderId: "504782897234",
+  appId:             "1:504782897234:web:b6de297da9624d67821f8b"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── Глобальний стан ───────────────────────────────────────
+window._fbUser = null;
+window._fbRole = null; // 'partner' | 'client' | 'admin' | 'pending'
+
+// ── Показати правильний overlay ───────────────────────────
+function showOverlay(id) {
+  ['login-overlay','register-overlay','pending-overlay'].forEach(oid => {
+    const el = document.getElementById(oid);
+    if (el) el.style.display = oid === id ? 'flex' : 'none';
+  });
+}
+function hideOverlays() {
+  ['login-overlay','register-overlay','pending-overlay'].forEach(oid => {
+    const el = document.getElementById(oid);
+    if (el) el.style.display = 'none';
+  });
+}
+
+// ── Застосувати роль (ціни + UI) ──────────────────────────
+// renderAll — оновлює всі вже відрендерені секції після зміни курсу/ролі
+function renderAll() {
+  // Якщо секція вже відображалась — перерендерити з новими цінами
+  if (typeof renderOverview  === 'function') try { renderOverview();  } catch(e){}
+  if (typeof renderTeltonika === 'function') try { renderTeltonika(); } catch(e){}
+  if (typeof renderBitrek    === 'function') try { renderBitrek();    } catch(e){}
+  if (typeof renderAccessories==='function') try { renderAccessories(); } catch(e){}
+  if (typeof renderExtra     === 'function') try { renderExtra();     } catch(e){}
+}
+
+function applyRole(role) {
+  window._fbRole = role;
+  // partner/admin — партнерські ціни
+  // client/pending — РРЦ ціни (pending бачить тільки РРЦ до підтвердження)
+  if (role === 'partner' || role === 'admin') {
+    document.body.setAttribute('data-role', 'partner');
+  } else {
+    // client або pending — РРЦ
+    document.body.setAttribute('data-role', 'client');
+  }
+  hideOverlays();
+  updateAuthHeader();
+  if (typeof renderAll === 'function') renderAll();
+}
+
+function updateAuthHeader() {
+  const user = window._fbUser;
+  const role = window._fbRole;
+  const bar  = document.getElementById('auth-user-bar');
+  if (!bar || !user) return;
+  const roleLabel = { partner: '🤝 Партнер', client: '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> Клієнт', admin: '⭐ Адмін', pending: '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M4 2h8M4 14h8"/><path d="M5 2v3l3 3-3 3v3"/><path d="M11 2v3l-3 3 3 3v3"/></svg> На розгляді' };
+  const pendingBanner = role === 'pending'
+    ? '<span style="font-size:11px;background:#fff3cd;color:#856404;padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #ffc107;white-space:nowrap"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M4 2h8M4 14h8"/><path d="M5 2v3l3 3-3 3v3"/><path d="M11 2v3l-3 3 3 3v3"/></svg> На розгляді — РРЦ ціни</span>'
+    : '';
+  bar.innerHTML = `
+    <span style="font-size:12px;color:var(--text-2)">${user.email}</span>
+    <span style="font-size:11px;background:var(--accent-bg);color:var(--accent);padding:2px 8px;border-radius:10px;font-weight:600">${roleLabel[role]||role}</span>
+    ${pendingBanner}
+    <button onclick="fbSignOut()" style="font-size:11px;padding:3px 10px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;color:var(--text-2);font-family:'IBM Plex Sans',sans-serif;margin-left:auto">Вийти</button>
+  `;
+  bar.style.display = 'flex';
+}
+
+// ── Auth state listener ───────────────────────────────────
+onAuthStateChanged(auth, async (user) => {
+  // Завжди очищаємо localStorage — доступ тільки через Firestore
+  localStorage.removeItem('navixy_partner_access');
+  localStorage.removeItem('catalog_role');
+  if (user) {
+    window._fbUser = user;
+    try {
+      let snap = await getDoc(doc(db, 'users', user.uid));
+      if (!snap.exists()) {
+        await new Promise(r => setTimeout(r, 1500));
+        snap = await getDoc(doc(db, 'users', user.uid));
+      }
+      if (snap.exists()) {
+        const data = snap.data();
+        const role = data.role || 'pending';
+        // pending — пускаємо в каталог але тільки з РРЦ цінами
+        applyRole(role);
+      } else {
+        // Новий користувач без профілю — показати pending
+        showOverlay('pending-overlay');
+      }
+    } catch(e) {
+      console.error('Firestore read error:', e);
+      showOverlay('login-overlay');
+    }
+  } else {
+    window._fbUser = null;
+    window._fbRole = null;
+    localStorage.removeItem('navixy_partner_access');
+    localStorage.removeItem('catalog_role');
+    document.body.removeAttribute('data-role');
+    showOverlay('login-overlay');
+    const bar = document.getElementById('auth-user-bar');
+    if (bar) bar.style.display = 'none';
+  }
+});
+
+// ── Вхід email/password ───────────────────────────────────
+window.fbLogin = async function() {
+  const email = document.getElementById('fb-login-email').value.trim();
+  const pass  = document.getElementById('fb-login-pass').value;
+  const errEl = document.getElementById('fb-login-error');
+  errEl.style.display = 'none';
+  if (!email || !pass) { errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Введіть email та пароль'; errEl.style.display='block'; return; }
+  const btn = document.getElementById('fb-login-btn');
+  btn.disabled = true; btn.textContent = 'Входимо…';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    // onAuthStateChanged спрацює автоматично
+  } catch(e) {
+    const msgs = {
+      'auth/user-not-found':  '✕ Користувача не знайдено',
+      'auth/wrong-password':  '✕ Невірний пароль',
+      'auth/invalid-email':   '✕ Невірний формат email',
+      'auth/invalid-credential': '✕ Невірний email або пароль',
+      'auth/too-many-requests':'<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Забагато спроб, спробуйте пізніше',
+    };
+    errEl.textContent = msgs[e.code] || ('✕ ' + e.message);
+    errEl.style.display = 'block';
+  } finally { btn.disabled = false; btn.textContent = 'Увійти →'; }
+};
+
+// ── Реєстрація ────────────────────────────────────────────
+window.fbRegister = async function() {
+  const name    = document.getElementById('fb-reg-name').value.trim();
+  const company = document.getElementById('fb-reg-company').value.trim();
+  const phone   = document.getElementById('fb-reg-phone').value.trim();
+  const email   = document.getElementById('fb-reg-email').value.trim();
+  const pass    = document.getElementById('fb-reg-pass').value;
+  const role    = document.getElementById('fb-reg-role').value;
+  const errEl   = document.getElementById('fb-reg-error');
+  errEl.style.display = 'none';
+  if (!name || !email || !pass || !phone) {
+    errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Заповніть всі обов\'язкові поля'; errEl.style.display='block'; return;
+  }
+  if (pass.length < 6) { errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Пароль мінімум 6 символів'; errEl.style.display='block'; return; }
+  const btn = document.getElementById('fb-reg-btn');
+  btn.disabled = true; btn.textContent = 'Реєструємо…';
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await setDoc(doc(db, 'users', cred.user.uid), {
+      name, company: company||'—', phone, email,
+      role: 'pending',
+      requestedRole: role,
+      createdAt: serverTimestamp()
+    });
+    // Сповіщення в Telegram
+    const tgMsg = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="1" y="4" width="14" height="8" rx="1"/><path d="M4 10V6l2 2 2-2v4"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="8" x2="13" y2="8"/></svg> *Нова реєстрація — TIPSTER Каталог*
+
+` +
+      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> *Ім'я:* ${name}
+<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="3" y="2" width="10" height="13" rx="0.5"/><rect x="5" y="4" width="2" height="2"/><rect x="9" y="4" width="2" height="2"/><rect x="5" y="8" width="2" height="2"/><rect x="9" y="8" width="2" height="2"/><rect x="6" y="11" width="4" height="4"/></svg> *Компанія:* ${company||'—'}
+<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="4" y="1" width="8" height="14" rx="1.5"/><circle cx="8" cy="12" r="0.75" fill="currentColor"/></svg> *Телефон:* ${phone}
+` +
+      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> *Email:* ${email}
+<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M2 6c0-1.7 6-4 6-4s6 2.3 6 4c0 6-6 8-6 8S2 12 2 6z"/></svg> *Роль:* ${role === 'partner' ? '🤝 Партнер' : '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> Клієнт'}
+` +
+      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="1"/><line x1="2" y1="7" x2="14" y2="7"/><line x1="5" y1="1" x2="5" y2="5"/><line x1="11" y1="1" x2="11" y2="5"/></svg> *Дата:* ${new Date().toLocaleString('uk-UA')}
+
+` +
+      `_Підтвердьте в Firebase Console → Firestore → users_`;
+    fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
+    }).catch(()=>{});
+    // Показати pending overlay
+    showOverlay('pending-overlay');
+  } catch(e) {
+    const msgs = {
+      'auth/email-already-in-use': '✕ Цей email вже зареєстрований',
+      'auth/invalid-email': '✕ Невірний формат email',
+      'auth/weak-password': '✕ Пароль занадто слабкий',
+    };
+    errEl.textContent = msgs[e.code] || ('✕ ' + e.message);
+    errEl.style.display = 'block';
+  } finally { btn.disabled = false; btn.textContent = 'Зареєструватись →'; }
+};
+
+// ── Google Sign-In ────────────────────────────────────────
+window.fbGoogleLogin = async function() {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (!snap.exists()) {
+      // Перший вхід через Google — чекаємо setDoc
+      await setDoc(doc(db, 'users', user.uid), {
+        name: user.displayName || '',
+        email: user.email,
+        company: '—', phone: '—',
+        role: 'pending',
+        requestedRole: 'partner',
+        createdAt: serverTimestamp()
+      });
+      const tgMsg = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="1" y="4" width="14" height="8" rx="1"/><path d="M4 10V6l2 2 2-2v4"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="8" x2="13" y2="8"/></svg> *Google реєстрація — TIPSTER*\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> ' + user.displayName + '\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> ' + user.email + '\n\n_Підтвердіть: Firebase → Firestore → users_';
+      fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
+      }).catch(()=>{});
+      showOverlay('pending-overlay');
+    } else {
+      const role = snap.data().role || 'pending';
+      if (role === 'pending') { showOverlay('pending-overlay'); }
+      else { applyRole(role); }
+    }
+  } catch(e) {
+    console.error('Google login error:', e);
+    if (e.code !== 'auth/popup-closed-by-user') {
+      alert('Помилка Google входу: ' + e.message);
+    }
+  }
+};
+
+// ── Вихід ─────────────────────────────────────────────────
+window.fbSignOut = async function() {
+  await signOut(auth);
+};
+
+// ── Перемикач форм ────────────────────────────────────────
+window.showRegister = function() { showOverlay('register-overlay'); };
+window.showLogin    = function() { showOverlay('login-overlay'); };
+window.hideOverlays = hideOverlays;
+</script>
 </body>
 </html>
