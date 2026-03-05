@@ -2230,6 +2230,10 @@ window.showLogin    = function() { showOverlay('login-overlay'); };
       <button class="tb-btn" onclick="exportExcel()">⬇ Excel</button>
       <button class="tb-btn" onclick="exportPDF()">⬇ PDF</button>
       <button class="tb-btn primary" onclick="showSection('export')">📤 Експорт</button>
+      <button class="tb-btn" onclick="cartOpen()" style="position:relative;padding:6px 10px" title="Кошик">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span id="cart-badge" class="hidden" style="position:absolute;top:-4px;right:-4px;background:#eb5757;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--bg);font-family:'IBM Plex Mono',monospace">0</span>
+      </button>
     </div>
   </div>
 
@@ -4364,7 +4368,10 @@ fetchNBURates();
         if (e.key === 'Enter') checkAuth();
       });
     }
-  });
+  })
+  cartLoadLS();
+});
+;
 
 // ══════════════════════════════════════════════════════════
 // SECTION LABELS
@@ -4374,50 +4381,242 @@ fetchNBURates();
 // ══════════════════════════════════════════════════════════
 // CART SYSTEM
 // ══════════════════════════════════════════════════════════
+// Сховище кошика: { id → { item, qty } }
+let cart = {};
+// Реєстр товарів: { id → item }
 const cartRegistry = new Map();
-let _cartItems = {};
-let _cartTotal = 0;
+
+// ── localStorage ─────────────────────────────────────
+const CART_LS_KEY = 'tipster_cart_v2';
+
+function cartSaveLS() {
+  try {
+    const saved = {};
+    Object.entries(cart).forEach(([id, entry]) => {
+      const item = entry.item;
+      saved[id] = { qty: entry.qty, item: {
+        name: item.name || id, article: item.article || '',
+        partnerPrice: item.partnerPrice, retailPrice: item.retailPrice,
+        price_usd: item.price_usd, rrp_usd: item.rrp_usd,
+        _uah: item._uah, currency: item.currency || 'USD',
+        note: item.note, spec: item.spec || '',
+      }};
+    });
+    localStorage.setItem(CART_LS_KEY, JSON.stringify(saved));
+  } catch(e) {}
+}
+
+function cartLoadLS() {
+  try {
+    const raw = localStorage.getItem(CART_LS_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    Object.entries(saved).forEach(([id, entry]) => {
+      cart[id] = entry;
+      cartRegistry.set(id, entry.item);
+    });
+  } catch(e) {}
+}
+
+// ── Utilities ────────────────────────────────────────
+function cartId(item) {
+  return (item.article || item.code || item.name || '').replace(/\s+/g, '_');
+}
+
+function cartItemPrice(item) {
+  const { eur, usd } = getRates();
+  if (item._uah !== undefined && item._uah > 0) {
+    return { uahVal: item._uah, label: item._uah.toLocaleString('uk-UA') + ' ₴' };
+  }
+  if (item.partnerPrice !== undefined) {
+    const rate = item.currency === 'EUR' ? eur : usd;
+    return { uahVal: item.partnerPrice * rate, label: fmt(item.partnerPrice * rate) + ' ₴' };
+  }
+  if (item.price_usd) {
+    return { uahVal: item.price_usd * usd, label: fmt(item.price_usd * usd) + ' ₴' };
+  }
+  return { uahVal: 0, label: item.note || '—' };
+}
 
 function registerCartItem(item) {
-  const id = item.article || ('ITEM-' + Math.random().toString(36).slice(2,7).toUpperCase());
+  const id = cartId(item);
   cartRegistry.set(id, item);
   return id;
 }
 
 function addToCartById(id) {
   const item = cartRegistry.get(id);
-  if (!item) return;
-  if (_cartItems[id]) { _cartItems[id].qty++; }
-  else { _cartItems[id] = { ...item, qty: 1 }; }
-  updateCartBadge();
-  cartShowToast(item.name);
+  if (item) addToCart(item);
 }
 
-function removeFromCart(id) {
-  delete _cartItems[id];
-  updateCartBadge();
+// ── Add to cart ───────────────────────────────────────
+function addToCart(item) {
+  const id = cartId(item);
+  if (cart[id]) { cart[id].qty += 1; }
+  else { cart[id] = { item, qty: 1 }; }
+  cartRender();
+  cartSaveLS();
+  cartShowToast((item.name || item.code || '') + ' — додано');
+  document.querySelectorAll(`.btn-add-cart[data-cart-id="${id}"]`).forEach(btn => {
+    btn.classList.add('in-cart');
+    btn.textContent = '✓ В кошику';
+  });
 }
 
-function updateCartBadge() {
-  const total = Object.values(_cartItems).reduce((s,i)=>s+i.qty,0);
+function cartRemove(id) {
+  delete cart[id];
+  cartRender();
+  cartSaveLS();
+  document.querySelectorAll(`.btn-add-cart[data-cart-id="${id}"]`).forEach(btn => {
+    btn.classList.remove('in-cart');
+    btn.textContent = '+ В кошик';
+  });
+}
+
+function cartChangeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id].qty = Math.max(1, cart[id].qty + delta);
+  cartRender();
+  cartSaveLS();
+}
+
+function cartClear() {
+  cart = {};
+  cartRender();
+  cartSaveLS();
+  document.querySelectorAll('.btn-add-cart').forEach(btn => {
+    btn.classList.remove('in-cart');
+    btn.textContent = '+ В кошик';
+  });
+}
+
+// ── Render cart panel ─────────────────────────────────
+function cartRender() {
+  const items = Object.entries(cart);
   const badge = document.getElementById('cart-badge');
-  if (badge) { badge.textContent = total; badge.style.display = total ? 'flex' : 'none'; }
+  const totalQty = items.reduce((s, [,e]) => s + e.qty, 0);
+  if (badge) {
+    badge.textContent = totalQty;
+    badge.classList.toggle('hidden', totalQty === 0);
+  }
+
+  const container = document.getElementById('cart-items');
+  if (!container) return;
+
+  if (!items.length) {
+    container.innerHTML = `<div class="cart-empty">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3)"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span>Кошик порожній</span>
+    </div>`;
+    const totalRow = document.getElementById('cart-total-row');
+    if (totalRow) totalRow.style.display = 'none';
+    const sendBtn = document.getElementById('cart-send-btn');
+    if (sendBtn) sendBtn.disabled = true;
+    return;
+  }
+
+  const { usd } = getRates();
+  let totalUAH = 0;
+
+  container.innerHTML = items.map(([id, entry]) => {
+    const { item, qty } = entry;
+    const { uahVal, label } = cartItemPrice(item);
+    totalUAH += uahVal * qty;
+    const rowTotal = uahVal > 0 ? fmt(uahVal * qty) + ' ₴' : label;
+    return `<div class="cart-item-row">
+      <div class="cart-item-name">${item.name || id}</div>
+      <div class="cart-item-qty" style="grid-row:1;grid-column:2;justify-content:flex-end">
+        <button onclick="cartChangeQty('${id}', -1)">−</button>
+        <span>${qty}</span>
+        <button onclick="cartChangeQty('${id}', +1)">+</button>
+        <button class="cart-item-remove" onclick="cartRemove('${id}')" title="Видалити">✕</button>
+      </div>
+      <div class="cart-item-spec">${item.spec || item.note || ''}</div>
+      <div class="cart-item-price" style="grid-column:2">${rowTotal}</div>
+    </div>`;
+  }).join('');
+
+  const totalRow = document.getElementById('cart-total-row');
+  if (totalRow) {
+    totalRow.style.display = 'flex';
+    const tv = totalRow.querySelector('.cart-total-val');
+    if (tv) tv.textContent = totalUAH > 0 ? fmt(totalUAH) + ' ₴' : '—';
+  }
+  const sendBtn = document.getElementById('cart-send-btn');
+  if (sendBtn) sendBtn.disabled = false;
 }
 
-function cartShowToast(name) {
+// ── Open / Close ──────────────────────────────────────
+function cartOpen() {
+  document.getElementById('cart-panel')?.classList.add('open');
+  document.getElementById('cart-overlay')?.classList.add('open');
+  cartRender();
+}
+
+function cartClose() {
+  document.getElementById('cart-panel')?.classList.remove('open');
+  document.getElementById('cart-overlay')?.classList.remove('open');
+}
+
+// ── Send order to Telegram ────────────────────────────
+async function sendOrder() {
+  const items = Object.entries(cart);
+  if (!items.length) return;
+
+  const btn = document.getElementById('cart-send-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Надсилаємо…'; }
+
+  const { eur, usd } = getRates();
+  const user = window._fbUser;
+  const role = document.body.getAttribute('data-role') || 'client';
+
+  let lines = ['🛒 *Нове замовлення TIPSTER*', ''];
+  items.forEach(([id, { item, qty }]) => {
+    const { label } = cartItemPrice(item);
+    const article = item.article ? `[${item.article}] ` : '';
+    lines.push(`• ${article}*${item.name}* × ${qty} — ${label}`);
+    if (item.spec) lines.push(`  _${item.spec}_`);
+  });
+  lines.push('');
+  lines.push(`💱 EUR: ${eur} ₴ | USD: ${usd} ₴`);
+  lines.push(`👤 ${user?.email || 'анонім'} (${role})`);
+  lines.push(`🕐 ${new Date().toLocaleString('uk-UA')}`);
+
+  const text = lines.join('
+');
+
+  try {
+    const resp = await fetch(
+      'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage',
+      { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: '69110103', text, parse_mode: 'Markdown' }) }
+    );
+    if (resp.ok) {
+      cartClear();
+      cartClose();
+      cartShowToast('✅ Замовлення відправлено!');
+    } else {
+      throw new Error('HTTP ' + resp.status);
+    }
+  } catch(e) {
+    cartShowToast('❌ Помилка: ' + e.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '📩 Надіслати замовлення'; }
+  }
+}
+
+function cartShowToast(msg) {
   let t = document.getElementById('cart-toast');
-  if (!t) { t = document.createElement('div'); t.id='cart-toast';
-    t.style.cssText='position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;z-index:9990;opacity:0;transition:opacity 0.2s';
-    document.body.appendChild(t); }
-  t.textContent = '+ ' + (name || 'Додано');
-  t.style.opacity='1';
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'cart-toast';
+    t.style.cssText = 'position:fixed;bottom:80px;right:24px;background:var(--text);color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;z-index:9999;opacity:0;transition:opacity 0.2s;pointer-events:none;max-width:300px';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
   clearTimeout(t._tm);
-  t._tm = setTimeout(()=>{ t.style.opacity='0'; }, 2000);
-}
-
-function btn_add_cart_click(article) {
-  const item = cartRegistry.get(article);
-  if (item) addToCartById(article);
+  t._tm = setTimeout(() => { t.style.opacity = '0'; }, 2500);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -4594,5 +4793,28 @@ showSection = function(id) {
   }
 };
 </script>
+
+<!-- ══ CART PANEL ══ -->
+<div id="cart-overlay" onclick="cartClose()"></div>
+<div id="cart-panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0">
+    <div style="font-size:14px;font-weight:700;color:var(--text)">Кошик</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button onclick="cartClear()" style="font-size:11px;color:var(--text-3);background:none;border:none;cursor:pointer;padding:3px 6px;border-radius:3px" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='var(--text-3)'">Очистити</button>
+      <button onclick="cartClose()" style="background:none;border:none;cursor:pointer;color:var(--text-2);padding:4px;border-radius:4px;line-height:1" onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='none'">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="14" y2="14"/><line x1="14" y1="2" x2="2" y2="14"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="cart-items"></div>
+  <div id="cart-total-row" class="cart-total-row" style="display:none">
+    <span>Разом:</span>
+    <span class="cart-total-val">0 ₴</span>
+  </div>
+  <button id="cart-send-btn" class="cart-send-btn" onclick="sendOrder()" disabled>
+    📩 Надіслати замовлення
+  </button>
+</div>
+
 </body>
 </html>
