@@ -2336,17 +2336,20 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
         <div class="section">
           <div class="section-title">Антени</div>
-          <div class="card-grid" id="acc-antennas"></div>
+          <div class="section-desc">GPS, GSM та комбіновані антени для трекерів. Ціни в USD з ПДВ.</div>
+          <div id="acc-antennas"></div>
         </div>
 
         <div class="section">
           <div class="section-title">Живлення та кабелі</div>
-          <div class="card-grid" id="acc-power"></div>
+          <div class="section-desc">Кабелі живлення, батареї та запобіжники для серій FMB/FMC. Ціни в USD з ПДВ.</div>
+          <div id="acc-power"></div>
         </div>
 
         <div class="section">
           <div class="section-title">Монтажне приладдя</div>
-          <div class="card-grid" id="acc-mount"></div>
+          <div class="section-desc">Кронштейни, скотч, термоусадка та герметичні коробки. Ціни в USD з ПДВ.</div>
+          <div id="acc-mount"></div>
         </div>
       </div>
 
@@ -2404,8 +2407,8 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
         <div class="section">
           <div class="section-title">Bitrek — Датчики палива</div>
-          <div class="section-desc">Провідні та бездротові датчики Bitrek. Ціни в USD (партнер з ПДВ / РРЦ з ПДВ).</div>
-          <div id="drp-bitrek-table"></div>
+          <div class="section-desc" style="margin-bottom:0">Провідні та бездротові датчики Bitrek. Ціни в USD (партнер з ПДВ / РРЦ з ПДВ).</div>
+          <div id="drp-bitrek-table" style="margin-top:0"></div>
         </div>
 
         <div class="section" style="margin-top:0">
@@ -2903,18 +2906,15 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
             <!-- Продажі -->
             <div class="contacts-card">
-              <div class="contacts-brand">
-                <div class="contacts-brand-logo"><svg style="height:28px;width:auto;display:block" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1201 256" xml:space="preserve"><path fill="#FF512F" d="M1174.2,124.3c0.7,0.7,1.1,1.4,1.7,1.5c16.3,5.3,20.4,18.2,21.1,33.4c0.3,6.9,0.7,13.8,1.3,20.7&#10;	c0.3,2.9,1.7,5.6,2.2,8.5c1,4.7,1,9.1-6,8.9c-8-0.3-9.6-1.4-10.1-9.9c-0.6-9.4-1.3-18.7-1.7-28.1c0-7.5-2.8-14.8-7.7-20.4&#10;	c-3.4-3.6-9.1-4.9-14-6.9c-2.3-0.9-4.8-1.3-7.3-1.2c-16.6,0-33.2,0-49.8-0.1c-4.4,0-4.2,2.7-4.2,5.6c0,17.7,0,35.4,0,53.1&#10;	c0,7.3-0.7,8-8,8c-4.2,0-5.9-1.9-5.9-6c0-46.2,0-92.4,0-138.6c0-3.3,1.1-4.3,4.3-4.3c23.8,0,47.5-0.3,71.3,0.2&#10;	c6.1-0.1,12.1,1.3,17.6,4c5.5,2.7,10.2,6.6,13.9,11.4c2.8,4.4,4.8,9.4,5.9,14.5c1.6,6.1,1.6,12.5,0.2,18.6&#10;	c-0.9,5.8-3.4,11.3-7.1,15.8c-3.8,4.6-8.6,8-14.2,10.1C1176.6,123.2,1175.6,123.7,1174.2,124.3z"/><circle fill="#FF512F" cx="146" cy="75" r="8"/><circle fill="#FF512F" cx="146" cy="248" r="8"/></svg></div>
-              </div>
               <div class="contacts-info">
-                <div class="contacts-name">Продажі TIPSTER / ТРЕКАВТО</div>
-                <div class="contacts-detail">
-                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380956546644" style="color:var(--accent)">+38 (095) 654-66-44</a></div>
-                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444526617" style="color:var(--accent)">+38 (044) 452-66-17</a></div>
-                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:shutko@trackauto.com.ua" style="color:var(--accent)">shutko@trackauto.com.ua</a></div>
-                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:info@tipster.ua" style="color:var(--accent)">info@tipster.ua</a></div>
-                  <div style="display:flex;align-items:center;gap:7px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> <span>04050 Київ, вул. Білоруська, 30</span></div>
-                </div>
+                <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">ТОВ ТРЕКАВТО</div>
+                <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ 38872343</div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> <span style="color:var(--text-2)">04050 Київ, вул.&nbsp;Білоруська,&nbsp;30</span></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:14px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:info@tipster.ua" style="color:var(--accent)">info@tipster.ua</a></div>
+                <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Продажі</div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380956546644" style="color:var(--accent)">+38&nbsp;(095)&nbsp;654-66-44</a></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444526617" style="color:var(--accent)">+38&nbsp;(044)&nbsp;452-66-17</a></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:shutko@trackauto.com.ua" style="color:var(--accent)">shutko@trackauto.com.ua</a></div>
               </div>
             </div>
 
@@ -2924,7 +2924,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
                 <div class="contacts-name">Документи, рахунки, договори</div>
                 <div class="contacts-detail">
                   <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0116 0"/></svg> <strong>Горбань Марія</strong></div>
-                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:office@trackauto.com.ua" style="color:var(--accent)">office@trackauto.com.ua</a></div>
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="/cdn-cgi/l/email-protection#6f000909060c0a2f1b1d0e0c040e1a1b00410c0002411a0e" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="472821212e242207333526242c263233286924282a693226">[email&#160;protected]</span></a></div>
                   <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380669501306" style="color:var(--accent)">+38 (066) 950-13-06</a></div>
                   <div style="display:flex;align-items:center;gap:7px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444526617" style="color:var(--accent)">+38 (044) 452-66-17</a></div>
                 </div>
@@ -2936,12 +2936,6 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
               <div class="contacts-info" style="padding-top:4px">
                 <div class="contacts-name">Веб-ресурси та соцмережі</div>
                 <div class="contacts-detail">
-                  <div style="margin-bottom:14px">
-                    <a href="https://www.tagps.com.ua" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;color:var(--accent);text-decoration:none;font-weight:600;font-size:13.5px"
-                       onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 010 20M2 12h20"/><path d="M4.93 4.93a15 15 0 0114.14 0M4.93 19.07a15 15 0 0114.14 0"/></svg> www.tagps.com.ua ↗
-                    </a>
-                  </div>
                   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
                     <a href="https://www.instagram.com/tipster.ua?igsh=bXdqd3dtYmUwMmVu" target="_blank" rel="noopener"
                        style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-size:13px;font-weight:500;transition:all .15s"
@@ -3051,7 +3045,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
         <div style="display:flex;flex-wrap:wrap;gap:4px 16px;align-items:center">
           <a href="tel:+380956546644" style="color:rgba(255,255,255,0.32);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;display:flex;align-items:center;gap:5px" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.32)'"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="4" y="1" width="8" height="14" rx="1.5"/><circle cx="8" cy="12" r=".75" fill="currentColor"/></svg> 095 654-66-44</a>
           <a href="tel:+380444526617" style="color:rgba(255,255,255,0.32);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;display:flex;align-items:center;gap:5px" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.32)'"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="4" y="1" width="8" height="14" rx="1.5"/><circle cx="8" cy="12" r=".75" fill="currentColor"/></svg> 044 452-66-17</a>
-          <a href="mailto:info@tipster.ua" style="color:rgba(255,255,255,0.32);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;display:flex;align-items:center;gap:5px" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.32)'"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> info@tipster.ua</a>
+          <a href="/cdn-cgi/l/email-protection#147d7a727b54607d64676071663a6175" style="color:rgba(255,255,255,0.32);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;display:flex;align-items:center;gap:5px" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.32)'"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> <span class="__cf_email__" data-cfemail="9ef7f0f8f1deeaf7eeedeafbecb0ebff">[email&#160;protected]</span></a>
           <a href="https://www.tagps.com.ua" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.28);font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-decoration:none;margin-left:auto;display:flex;align-items:center;gap:4px" onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='rgba(255,255,255,0.28)'"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg> tagps.com.ua</a>
         </div>
       </div>
@@ -3131,7 +3125,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
         <span style="color:var(--border);padding:0 7px">·</span>
         <a href="tel:+380444526617" style="color:var(--accent);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600">044 452-66-17</a>
         <br style="margin-bottom:4px">
-        <a href="mailto:info@tipster.ua" style="color:var(--accent);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;margin-top:5px;display:inline-block">info@tipster.ua</a>
+        <a href="/cdn-cgi/l/email-protection#2f464149406f5b465f5c5b4a5d015a4e" style="color:var(--accent);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;margin-top:5px;display:inline-block"><span class="__cf_email__" data-cfemail="a3cacdc5cce3d7cad3d0d7c6d18dd6c2">[email&#160;protected]</span></a>
       </div>
     </div>
   </div>
@@ -3357,7 +3351,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  DATA
@@ -3479,6 +3473,10 @@ const PROGRAM_TAG = {
   "EYE SENSORS": "tag-orange",
   "RFID":        "tag-orange",
   "SOS":         "tag-red",
+  "Антена":      "tag-blue",
+  "Кабель":      "tag-gray",
+  "Батарея":     "tag-orange",
+  "Монтаж":      "tag-gray",
 };
 
 const products = [
@@ -3614,17 +3612,17 @@ const products = [
 // ── Accessories data ────────────────────────────────────────
 const accessories = {
   antennas: [
-    { name:"GPS антена зовнішня (SMA)",       spec:"Магнітна основа, кабель 3м, SMA роз'єм, 3-5dBi",          price_usd:8.50, rrp_usd:12.00, url:null },
-    { name:"GSM антена зовнішня (SMA)",       spec:"2G/3G/4G, магнітна основа, кабель 2м, SMA роз'єм, 3dBi", price_usd:7.00, rrp_usd:10.00, url:null },
-    { name:"GPS/GSM комбо антена",            spec:"Комбінована GPS+GSM антена, SMA/SMA, кабель 3м",          price_usd:12.00,rrp_usd:16.00, url:null },
-    { name:"Антена 4G LTE (SMA, 5dBi)",       spec:"LTE Cat 1/4/M1, SMA, кабель 2м, для FMC/FTC серій",      price_usd:9.50, rrp_usd:14.00, url:null },
+    { code:"ACC-ANT-GPS",    article:"ANT-GPS-SMA",    name:"GPS антена зовнішня (SMA)",     program:"Антена",  series:"Антени",  brand:"Аксесуар", currency:"USD", partnerPrice:8.50,  retailPrice:12.00, spec:"Магнітна основа, кабель 3м, SMA роз'єм, 3-5dBi" },
+    { code:"ACC-ANT-GSM",    article:"ANT-GSM-SMA",    name:"GSM антена зовнішня (SMA)",     program:"Антена",  series:"Антени",  brand:"Аксесуар", currency:"USD", partnerPrice:7.00,  retailPrice:10.00, spec:"2G/3G/4G, магнітна основа, кабель 2м, SMA роз'єм, 3dBi" },
+    { code:"ACC-ANT-COMBO",  article:"ANT-COMBO-SMA",  name:"GPS/GSM комбо антена",          program:"Антена",  series:"Антени",  brand:"Аксесуар", currency:"USD", partnerPrice:12.00, retailPrice:16.00, spec:"Комбінована GPS+GSM антена, SMA/SMA, кабель 3м" },
+    { code:"ACC-ANT-4G",     article:"ANT-4G-SMA5DBI", name:"Антена 4G LTE (SMA, 5dBi)",    program:"Антена",  series:"Антени",  brand:"Аксесуар", currency:"USD", partnerPrice:9.50,  retailPrice:14.00, spec:"LTE Cat 1/4/M1, SMA, кабель 2м, для FMC/FTC серій" },
   ],
   power: [
-    { name:"Кабель живлення 4-pin (1.5м)",    spec:"4-pin Molex → голі дроти. Для FMB/FMC серій Teltonika",   price_usd:4.50, rrp_usd:7.00,  url:null },
-    { name:"Кабель живлення 6-pin (1.5м)",    spec:"6-pin Molex → голі дроти. Для FMB серій з IO",             price_usd:5.50, rrp_usd:8.00,  url:null },
-    { name:"Кабель OBD2 для FMB001/003",      spec:"OBD2-16 → вилка для підключення FMB001/FMB003",           price_usd:8.00, rrp_usd:12.00, url:null },
-    { name:"Резервна батарея 3.7V 1000mAh",   spec:"Li-Ion, 3.7V 1000mAh, замінна батарея для трекерів",      price_usd:9.00, rrp_usd:14.00, url:null },
-    { name:"Запобіжник 2A + тримач",          spec:"Стандартний запобіжник для захисту живлення трекера",      price_usd:1.50, rrp_usd:3.00,  url:null },
+    { code:"ACC-CBL-4P",     article:"CBL-4PIN-1M5",   name:"Кабель живлення 4-pin (1.5м)", program:"Кабель",  series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:4.50,  retailPrice:7.00,  spec:"4-pin Molex → голі дроти. Для FMB/FMC серій Teltonika" },
+    { code:"ACC-CBL-6P",     article:"CBL-6PIN-1M5",   name:"Кабель живлення 6-pin (1.5м)", program:"Кабель",  series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:5.50,  retailPrice:8.00,  spec:"6-pin Molex → голі дроти. Для FMB серій з IO" },
+    { code:"ACC-CBL-OBD",    article:"CBL-OBD2-FMB",   name:"Кабель OBD2 для FMB001/003",   program:"Кабель",  series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:8.00,  retailPrice:12.00, spec:"OBD2-16 → вилка для підключення FMB001/FMB003" },
+    { code:"ACC-BAT-1000",   article:"BAT-LION-1000",   name:"Резервна батарея 3.7V 1000mAh",program:"Батарея", series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:9.00,  retailPrice:14.00, spec:"Li-Ion, 3.7V 1000mAh, замінна батарея для трекерів" },
+    { code:"ACC-FUSE-2A",    article:"FUSE-2A-HOLD",    name:"Запобіжник 2A + тримач",       program:"Кабель",  series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:1.50,  retailPrice:3.00,  spec:"Стандартний запобіжник для захисту живлення трекера" },
   ],
   sim: [
     { code:'SIM-KS',  name:"SIM-карта Kyivstar 24 МБ Multi",
@@ -3638,10 +3636,10 @@ const accessories = {
       price_uah:250, url:null, brand:'roaming' },
   ],
   mount: [
-    { name:"Кронштейн DIN для трекера",       spec:"Металевий кронштейн на DIN-рейку для монтажу в щиток",    price_usd:5.00, rrp_usd:8.00,  url:null },
-    { name:"Двосторонній скотч 3M (5шт)",     spec:"3M VHB, 25x50mm, для монтажу трекера на кузов",           price_usd:3.00, rrp_usd:5.00,  url:null },
-    { name:"Термоусадка + стяжки (набір)",    spec:"Асорті термоусадки 2-6mm + 50шт кабельних стяжок",        price_usd:4.00, rrp_usd:6.00,  url:null },
-    { name:"Коробка з'єднань IP67",           spec:"Герметична коробка для з'єднань проводів поза кабіною",   price_usd:6.00, rrp_usd:9.00,  url:null },
+    { code:"ACC-MNT-DIN",  article:"MNT-DIN-RAIL",   name:"Кронштейн DIN для трекера",     program:"Монтаж",  series:"Монтаж",  brand:"Аксесуар", currency:"USD", partnerPrice:5.00, retailPrice:8.00,  spec:"Металевий кронштейн на DIN-рейку для монтажу в щиток" },
+    { code:"ACC-MNT-3M",   article:"MNT-3M-VHB",     name:"Двосторонній скотч 3M (5шт)",   program:"Монтаж",  series:"Монтаж",  brand:"Аксесуар", currency:"USD", partnerPrice:3.00, retailPrice:5.00,  spec:"3M VHB, 25x50mm, для монтажу трекера на кузов" },
+    { code:"ACC-MNT-HS",   article:"MNT-HEATSHRINK", name:"Термоусадка + стяжки (набір)",  program:"Монтаж",  series:"Монтаж",  brand:"Аксесуар", currency:"USD", partnerPrice:4.00, retailPrice:6.00,  spec:"Асорті термоусадки 2-6mm + 50шт кабельних стяжок" },
+    { code:"ACC-MNT-BOX",  article:"MNT-BOX-IP67",   name:"Коробка з'єднань IP67",         program:"Монтаж",  series:"Монтаж",  brand:"Аксесуар", currency:"USD", partnerPrice:6.00, retailPrice:9.00,  spec:"Герметична коробка для з'єднань проводів поза кабіною" },
   ]
 };
 
@@ -3955,9 +3953,9 @@ function makeCard(item, currency='USD') {
 }
 
 function renderAccessories() {
-  document.getElementById('acc-antennas').innerHTML = accessories.antennas.map(i=>makeCard(i)).join('');
-  document.getElementById('acc-power').innerHTML    = accessories.power.map(i=>makeCard(i)).join('');
-  document.getElementById('acc-mount').innerHTML    = accessories.mount.map(i=>makeCard(i)).join('');
+  document.getElementById('acc-antennas').innerHTML = buildTable(accessories.antennas, {}, false);
+  document.getElementById('acc-power').innerHTML    = buildTable(accessories.power,    {}, false);
+  document.getElementById('acc-mount').innerHTML    = buildTable(accessories.mount,    {}, false);
 }
 
 function renderExtra() {
@@ -5263,23 +5261,4 @@ window.fbGoogleLogin = async function() {
       if (role === 'pending') { showOverlay('pending-overlay'); }
       else { applyRole(role); }
     }
-  } catch(e) {
-    console.error('Google login error:', e);
-    if (e.code !== 'auth/popup-closed-by-user') {
-      alert('Помилка Google входу: ' + e.message);
-    }
-  }
-};
-
-// ── Вихід ─────────────────────────────────────────────────
-window.fbSignOut = async function() {
-  await signOut(auth);
-};
-
-// ── Перемикач форм ────────────────────────────────────────
-window.showRegister = function() { showOverlay('register-overlay'); };
-window.showLogin    = function() { showOverlay('login-overlay'); };
-window.hideOverlays = hideOverlays;
-</script>
-</body>
-</html>
+  } ca
