@@ -2358,8 +2358,21 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
         </div>
 
         <div class="section">
-          <div class="section-title">CAN-адаптери та шини</div>
-          <div class="card-grid" id="extra-can"></div>
+          <div class="section-title">CAN-модулі</div>
+          <div class="section-desc">CAN-адаптери та модулі для зчитування даних шини. Ціни з ПДВ. <span style="font-size:11px;color:var(--text-3)">* DTC — діагностика кодів несправностей &nbsp;&nbsp;** IMMO — модуль іммобілайзера</span></div>
+          <div id="extra-can"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">EYE Сенсори</div>
+          <div class="section-desc">BLE-маяки та сенсори для відстеження активів і моніторингу умов транспортування. Ціни з ПДВ.</div>
+          <div id="extra-sensors"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">EYE Сенсори ATEX / EN12830</div>
+          <div class="section-desc">Сенсори для вибухонебезпечних зон та харчової промисловості (ATEX/IECEx/EN12830). Ціни з ПДВ.</div>
+          <div id="extra-eye"></div>
         </div>
 
         <div class="section">
@@ -2389,11 +2402,11 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
         <div class="section">
           <div class="section-title">Bitrek — Датчики палива</div>
-          <div class="section-desc">Провідні та бездротові датчики Bitrek. Ціни в USD (партнер без ПДВ / РРЦ з ПДВ).</div>
+          <div class="section-desc">Провідні та бездротові датчики Bitrek. Ціни в USD (партнер з ПДВ / РРЦ з ПДВ).</div>
           <div id="drp-bitrek-table"></div>
         </div>
 
-        <div class="section">
+        <div class="section" style="margin-top:0">
           <div class="section-title">Порівняльна таблиця ДРП</div>
           <div class="section-desc">Ключові характеристики датчиків для вибору оптимальної моделі.</div>
           <table class="db-table">
@@ -2416,7 +2429,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
           <div class="callout" style="margin-bottom:16px">
             <span class="callout-icon">ℹ️</span>
-            <div>Ціни вказано в USD з партнерською націнкою 5% (партнер без ПДВ / РРЦ з ПДВ). Оригінальні ціни виробника — в гривнях UAH.</div>
+            <div>Ціни вказано в USD з партнерською націнкою 5% (партнер з ПДВ / РРЦ з ПДВ). Оригінальні ціни виробника — в гривнях UAH.</div>
           </div>
 
           <!-- Порівняльна таблиця датчиків ДВРП -->
@@ -3463,6 +3476,8 @@ const PROGRAM_TAG = {
   "Мітки":       "tag-orange",
   "CAN":         "tag-purple",
   "Форсунки":    "tag-gray",
+  "SENSORS":     "tag-blue",
+  "EYE SENSORS": "tag-orange",
 };
 
 const products = [
@@ -3632,10 +3647,23 @@ const accessories = {
 // ── Extra equipment data ─────────────────────────────────────
 const extraEquipment = {
   can: [
-    { name:"LV-CAN200", spec:"CAN-шина зчитувач для легкових авто; підтримка 800+ моделей; RS232/RS485 вихід",               price_usd:38.00, rrp_usd:52.00, url:"https://teltonika-gps.com/products/accessories/lv-can200" },
-    { name:"ALL-CAN300", spec:"Універсальний CAN-зчитувач; підтримка 2600+ моделей авто та вантажівок; OBD2 або прямий",      price_usd:55.00, rrp_usd:75.00, url:"https://teltonika-gps.com/products/accessories/all-can300" },
-    { name:"ECAN01",    spec:"Адаптер CAN-шини для вантажівок Euro 6 FMS; підключення до FMB/FMC серій",                      price_usd:28.00, rrp_usd:38.00, url:null },
-    { name:"CAN-LOG 01", spec:"Логгер CAN-шини для збору даних від двигуна, витрати палива, обертів",                         price_usd:22.00, rrp_usd:30.00, url:null },
+    { code:'EXT-CANCTL',    name:"CAN-CONTROL",              program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:102.96, retailPrice:85.80,   spec:"Модуль зчитування CAN-даних; підключення до шини CAN" },
+    { code:'EXT-CANCTL-D',  name:"CAN-CONTROL + DTC*",       program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:118.80, retailPrice:99.00,   spec:"CAN-CONTROL з читанням кодів несправностей DTC" },
+    { code:'EXT-CANCTL-I',  name:"CAN-CONTROL + IMMO**",     program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:145.73, retailPrice:121.44,  spec:"CAN-CONTROL з функцією іммобілайзера IMMO" },
+    { code:'EXT-CANCTL-DI', name:"CAN-CONTROL + DTC + IMMO", program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:163.15, retailPrice:135.96,  spec:"CAN-CONTROL повна версія: DTC + іммобілайзер" },
+    { code:'EXT-ALC300',    name:"ALL-CAN300",                program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:137.81, retailPrice:114.84,  spec:"Універсальний CAN-зчитувач; підтримка 2600+ моделей авто та вантажівок" },
+    { code:'EXT-LVC200',    name:"LV-CAN200",                 program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:69.70,  retailPrice:58.08,   spec:"CAN зчитувач для легкових авто; підтримка 800+ моделей; RS232/RS485" },
+    { code:'EXT-LVC200D',   name:"LV-CAN200 + DTC",          program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:80.78,  retailPrice:67.32,   spec:"LV-CAN200 з читанням кодів несправностей DTC" },
+    { code:'EXT-ECAN02',    name:"ECAN02",                    program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:23.76,  retailPrice:19.80,   spec:"Компактний адаптер CAN-шини для вантажівок Euro 6 FMS" },
+  ],
+  sensors: [
+    { code:'EXT-EYEBCN',    name:"EYE BEACON",               program:"SENSORS", series:"SENSORS", brand:"Extra", currency:"USD", partnerPrice:23.76,  retailPrice:19.80,   spec:"BLE-маяк для відстеження активів; BLE 5.0; IP67" },
+    { code:'EXT-EYESNSR',   name:"EYE SENSOR",               program:"SENSORS", series:"SENSORS", brand:"Extra", currency:"USD", partnerPrice:30.10,  retailPrice:25.08,   spec:"BLE сенсор температури/вологості; BLE 5.0; IP67" },
+  ],
+  eyeSensors: [
+    { code:'EXT-EYEBATX',   name:"EYE BEACON ATEX",          program:"EYE SENSORS", series:"EYE SENSORS", brand:"Extra", currency:"USD", partnerPrice:34.85,  retailPrice:29.04,   spec:"EYE BEACON для вибухонебезпечних зон; ATEX/IECEx сертифікований" },
+    { code:'EXT-EYESATX',   name:"EYE SENSOR ATEX",          program:"EYE SENSORS", series:"EYE SENSORS", brand:"Extra", currency:"USD", partnerPrice:41.18,  retailPrice:34.32,   spec:"EYE SENSOR для вибухонебезпечних зон; ATEX/IECEx сертифікований" },
+    { code:'EXT-EYESE12',   name:"EYE SENSOR EN12830",       program:"EYE SENSORS", series:"EYE SENSORS", brand:"Extra", currency:"USD", partnerPrice:36.43,  retailPrice:30.36,   spec:"EYE SENSOR сертифікований EN12830 для харчової промисловості" },
   ],
   rfid: [
     { name:"Dallas iButton DS1990A", spec:"1-Wire RFID ключ для ідентифікації водія; сталь; IP67",                             price_usd:2.50,  rrp_usd:4.00,  url:null },
@@ -3780,9 +3808,9 @@ function buildTable(items, urlMap, showSpec) {
       <th>Код</th>
       <th>Артикул</th>
       <th>Серія</th>
-      <th>Партнер (${items[0].currency}) <span style="font-weight:400;font-size:10px;opacity:0.7">без ПДВ</span></th>
+      <th>Партнер (${items[0].currency}) <span style="font-weight:400;font-size:10px;opacity:0.7">з ПДВ</span></th>
       <th>РРЦ (${items[0].currency}) <span style="font-weight:400;font-size:10px;opacity:0.7">з ПДВ</span></th>
-      <th>Партнер (₴) <span style="font-weight:400;font-size:10px;opacity:0.7">без ПДВ</span></th>
+      <th>Партнер (₴) <span style="font-weight:400;font-size:10px;opacity:0.7">з ПДВ</span></th>
       <th>РРЦ (₴) <span style="font-weight:400;font-size:10px;opacity:0.7">з ПДВ</span></th>
       <th></th>
     </tr></thead>
@@ -3892,12 +3920,12 @@ function makeCard(item, currency='USD') {
     : (item.price_usd === 0
       ? `<div class="card-price-val partner">Безкоштовно</div>`
       : `<div>
-          <div class="card-price-label">Партнер</div>
+          <div class="card-price-label">Партнер з ПДВ</div>
           <div class="card-price-val partner">${pUAH} ₴</div>
           <div class="card-price-eur">$${item.price_usd?.toFixed(2)}</div>
          </div>
          <div>
-          <div class="card-price-label">РРЦ</div>
+          <div class="card-price-label">РРЦ з ПДВ</div>
           <div class="card-price-val retail">${rUAH} ₴</div>
           <div class="card-price-eur">$${item.rrp_usd?.toFixed(2)}</div>
          </div>`);
@@ -3928,9 +3956,12 @@ function renderAccessories() {
 }
 
 function renderExtra() {
-  document.getElementById('extra-can').innerHTML  = extraEquipment.can.map(i=>makeCard(i)).join('');
-  document.getElementById('extra-rfid').innerHTML = extraEquipment.rfid.map(i=>makeCard(i)).join('');
-  document.getElementById('extra-sos').innerHTML  = extraEquipment.sos.map(i=>makeCard(i)).join('');
+  // CAN-модулі — таблиця (партнер+РРЦ у USD/UAH, кошик)
+  document.getElementById('extra-can').innerHTML     = buildTable(extraEquipment.can, {}, true);
+  document.getElementById('extra-rfid').innerHTML    = extraEquipment.rfid.map(i=>makeCard(i)).join('');
+  document.getElementById('extra-sos').innerHTML     = extraEquipment.sos.map(i=>makeCard(i)).join('');
+  document.getElementById('extra-sensors').innerHTML = buildTable(extraEquipment.sensors, {}, false);
+  document.getElementById('extra-eye').innerHTML     = buildTable(extraEquipment.eyeSensors, {}, false);
 }
 
 // ════════════════════════════════════════════════════════
