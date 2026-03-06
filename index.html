@@ -2259,11 +2259,11 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
             <span style="background:#e8f0fb;color:#0054A6;border:1px solid #b3cdf5;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap">✓ Офіційний партнер</span>
           </div>
           <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
-            <strong>ТРЕКАВТО</strong> — офіційний партнер та реселер компанії
-            <a href="https://teltonika-gps.com" target="_blank" style="color:#0054A6;font-weight:600">Teltonika</a>
+            <strong>ТРЕКАВТО — офіційний партнер та реселер компанії
+            <a href="https://teltonika-gps.com" target="_blank" style="color:#0054A6;font-weight:600">Teltonika</a></strong>
             — лідера у виробництві обладнання для GPS-моніторингу та телематики.
-            У каталозі представлені сертифіковані GPS-трекери та супутні аксесуари з <strong>гарантією якості 24 місяці</strong>.
-            Пропонуємо надійні рішення для контролю транспорту, персоналу та майна з функціоналом безпеки.
+            У нашому каталозі представлені сертифіковані GPS-трекери та супутні аксесуари з <strong>гарантією якості 24 місяці</strong>.
+            Ми пропонуємо надійні рішення для контролю транспорту, персоналу та майна з <strong>розширеним функціоналом безпеки</strong>.
           </div>
           <div style="margin-top:7px;font-size:11px;color:var(--text-3)">Ціни вказані в USD за курсом НБУ (з ПДВ / РРЦ).</div>
         </div>
@@ -2302,8 +2302,8 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
             <span style="background:#eaf0f8;color:#1a3a6b;border:1px solid #a8bed8;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap">✓ Офіційний партнер</span>
           </div>
           <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
-            <strong>ТРЕКАВТО</strong> — офіційний партнер та реселер компанії
-            <a href="https://bitrek.ua" target="_blank" style="color:#1a3a6b;font-weight:600">Bitrek</a>,
+            <strong>ТРЕКАВТО — офіційний партнер та реселер компанії
+            <a href="https://bitrek.ua" target="_blank" style="color:#1a3a6b;font-weight:600">Bitrek</a></strong>,
             національного виробника GPS-обладнання, вже протягом <strong>15 років</strong>.
             У каталозі представлені сертифіковані GPS-трекери та аксесуари з <strong>гарантією якості 24 місяці</strong>.
           </div>
@@ -3611,9 +3611,15 @@ const accessories = {
     { name:"Запобіжник 2A + тримач",          spec:"Стандартний запобіжник для захисту живлення трекера",      price_usd:1.50, rrp_usd:3.00,  url:null },
   ],
   sim: [
-    { code:'SIM-KS',  name:"SIM-карта Kyivstar (3-в-1)",   spec:"Фізична SIM-карта формату 3-в-1 (nano/micro/standard). Вартість сплачується один раз при замовленні.",     price_uah:50,  url:null },
-    { code:'SIM-VF',  name:"SIM-карта Vodafone (3-в-1)",   spec:"Фізична SIM-карта формату 3-в-1 (nano/micro/standard). Вартість сплачується один раз при замовленні.",     price_uah:50,  url:null },
-    { code:'SIM-EU',  name:"SIM Roaming (EU+UA)",           spec:"Multi-IMSI SIM, автовибір оператора, 30+ країн ЄС. Тарифний план Україна 30 + Країни ЄС.",               price_uah:250, url:null },
+    { code:'SIM-KS',  name:"SIM-карта Kyivstar 24 МБ Multi",
+      spec:"Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.",
+      price_uah:35, url:null, brand:'kyivstar' },
+    { code:'SIM-VF',  name:"SIM-карта Vodafone 24 МБ Multi",
+      spec:"Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.",
+      price_uah:35, url:null, brand:'vodafone' },
+    { code:'SIM-EU',  name:"SIM Roaming (EU+UA)",
+      spec:"Фізична SIM (EU+UA) Multi-IMSI SIM, автовибір. Тарифний план \"Україна 30\" + Країни ЄС.",
+      price_uah:250, url:null, brand:'roaming' },
   ],
   mount: [
     { name:"Кронштейн DIN для трекера",       spec:"Металевий кронштейн на DIN-рейку для монтажу в щиток",    price_usd:5.00, rrp_usd:8.00,  url:null },
@@ -3832,7 +3838,7 @@ function renderBitrek() {
   const items = products.filter(p => p.brand === 'Bitrek')
     .filter(p => !series || p.series === series)
     .filter(p => !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || (p.article||'').toLowerCase().includes(q));
-  document.getElementById('bit-table-wrap').innerHTML = buildTable(items, BITREK_URL, true);
+  document.getElementById('bit-table-wrap').innerHTML = buildTable(items, BITREK_URL, false);
 }
 
 // ════════════════════════════════════════════════════════
@@ -3849,6 +3855,25 @@ function makeCard(item, currency='USD') {
   if (item.price_uah !== undefined) {
     const cartCode = item.code || ('SIM-' + item.name.replace(/[^a-zA-Z0-9]/g,'').slice(0,8));
     cartRegistry.set(cartCode, { article: cartCode, name: item.name, spec: item.spec, _uah: item.price_uah, note: item.price_uah + ' ₴ (разова оплата)' });
+    // Корпоративні кольори операторів
+    const brandStyles = {
+      kyivstar: { bg:'linear-gradient(135deg,#003087 0%,#0050A0 100%)', accent:'#FFD700', btn:'background:#FFD700;color:#003087;border:none;font-weight:700' },
+      vodafone: { bg:'linear-gradient(135deg,#E60000 0%,#cc0000 100%)', accent:'#fff',    btn:'background:#fff;color:#E60000;border:none;font-weight:700' },
+      roaming:  { bg:'linear-gradient(135deg,#1a6b3a 0%,#155c30 100%)', accent:'#fff',    btn:'background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.5);font-weight:700' },
+    };
+    const bs = brandStyles[item.brand] || null;
+    if (bs) {
+      return `<div class="card sim-brand-card" style="background:${bs.bg};border:none;color:#fff;position:relative;overflow:hidden">
+        <div style="font-size:13.5px;font-weight:700;color:#fff;margin-bottom:6px">${item.name}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.82);line-height:1.55;margin-bottom:12px">${item.spec}</div>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:14px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:700;color:${bs.accent}">${fmt(item.price_uah)}</span>
+          <span style="font-size:14px;color:${bs.accent}">₴</span>
+          <span style="font-size:11px;color:rgba(255,255,255,.65)">разова оплата</span>
+        </div>
+        <button class="btn-add-cart" style="width:100%;justify-content:center;${bs.btn}" onclick="addToCartById('${cartCode}')">+ У кошик</button>
+      </div>`;
+    }
     return `<div class="card">
       <div class="card-title">${nameHtml}</div>
       <div class="card-spec">${item.spec}</div>
@@ -4813,9 +4838,7 @@ function renderTariffs() {
     <div class="section" style="margin-top:28px">
       <div class="section-title">SIM-картки</div>
       <div class="section-desc">
-        Фізичні SIM-картки формату 3-в-1 для GPS-трекерів.
-        Вартість SIM-карти сплачується <strong>один раз</strong> при замовленні.
-        Тарифи вказані з урахуванням ПДВ.
+        Тарифи вказані з урахуванням ПДВ. Вартість SIM-карти сплачується <strong>один раз</strong> при замовленні.
       </div>
       <div class="card-grid">
         ${simItems.map(s => makeCard(s,'UAH')).join('')}
