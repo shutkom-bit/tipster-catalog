@@ -1995,13 +1995,11 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       <div class="nav-item" onclick="showSection('configurator')">
         Конфігуратор
       </div>
-      <div class="nav-item" onclick="showSection('export')">
-        Експорт
-      </div>
+
     </div>
 
     <div style="padding:2px 8px 6px">
-      <div class="nav-item partner-only" onclick="showSection('navixy')" style="color:var(--accent);font-weight:600">
+      <div class="nav-item" onclick="showSection('navixy')" style="color:var(--accent);font-weight:600">
         Navixy Platform
       </div>
   
@@ -2613,50 +2611,8 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       </div>
 
       <!-- ══════════ EXPORT ══════════ -->
-      <div class="page-section" id="sec-export">
-        <div class="page-header">
-          <div class="page-title">Експорт прайсу</div>
-          <div class="page-subtitle">Вивантажте актуальний прайс з поточним курсом валют.</div>
-        </div>
-        <div class="callout">
-          <span class="callout-icon">ℹ️</span>
-          <div>Перед експортом переконайтесь, що курс EUR та USD встановлено правильно в бічній панелі.</div>
-        </div>
-        <div class="card-grid" style="max-width:600px">
-          <div class="card" onclick="exportExcel()" style="cursor:pointer">
-            <div class="card-title">⬇ Завантажити Excel (.xlsx)</div>
-            <div class="card-spec">Повний прайс-лист всіх брендів у форматі Excel. Включає артикули, ціни в EUR/USD та гривнях.</div>
-          </div>
-          <div class="card" onclick="exportPDF()" style="cursor:pointer">
-            <div class="card-title">⬇ Завантажити PDF</div>
-            <div class="card-spec">Прайс-лист у форматі PDF для друку або відправки клієнту.</div>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- ══ TARIFFS ══ -->
-      <div class="page-section" id="sec-tariffs">
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-title">Тарифи TIPSTER</div>
-            <div class="page-subtitle">Оберіть тариф підключення SIM-карти до платформи GPS-моніторингу.</div>
-          </div>
-          <div id="tariffs-container"></div>
-        </div>
-      </div>
-      <!-- ══ INSTALL ══ -->
-      <div class="page-section" id="sec-install">
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-title">Монтаж та сервіс</div>
-            <div class="page-subtitle">Послуги встановлення, налаштування та технічного обслуговування GPS-обладнання.</div>
-          </div>
-          <div id="install-container"></div>
-        </div>
-      </div>
-      <!-- ══════════ NAVIXY PLATFORM ══════════ -->
       <div class="page-section" id="sec-navixy">
+
         <div class="page-inner">
           <div class="page-header">
             <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap">
@@ -2795,6 +2751,28 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
         </div>
       </div><!-- /sec-navixy -->
+
+      <!-- ══ TARIFFS ══ -->
+      <div class="page-section" id="sec-tariffs">
+        <div class="page-inner">
+          <div class="page-header">
+            <div class="page-title">Тарифи TIPSTER</div>
+            <div class="page-subtitle">Оберіть тариф підключення SIM-карти до платформи GPS-моніторингу.</div>
+          </div>
+          <div id="tariffs-container"></div>
+        </div>
+      </div>
+      <!-- ══ INSTALL ══ -->
+      <div class="page-section" id="sec-install">
+        <div class="page-inner">
+          <div class="page-header">
+            <div class="page-title">Монтаж та сервіс</div>
+            <div class="page-subtitle">Послуги встановлення, налаштування та технічного обслуговування GPS-обладнання.</div>
+          </div>
+          <div id="install-container"></div>
+        </div>
+      </div>
+      <!-- ══════════ NAVIXY PLATFORM ══════════ -->
       <!-- ══ WIKI ══ -->
       <div class="page-section" id="sec-wiki">
         <div class="page-inner">
@@ -2904,30 +2882,26 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
           </div>
           <div class="contacts-grid" id="contacts-grid">
 
-            <!-- Продажі -->
+            <!-- Продажі / сервіс -->
             <div class="contacts-card">
               <div class="contacts-info">
                 <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">ТОВ ТРЕКАВТО</div>
                 <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ 38872343</div>
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> <span style="color:var(--text-2)">04050 Київ, вул.&nbsp;Білоруська,&nbsp;30</span></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:14px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="/cdn-cgi/l/email-protection#4f262129200f3b263f3c3b2a3d613a2e" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="6c05020a032c18051c1f18091e42190d">[email&#160;protected]</span></a></div>
-                <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Продажі</div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:14px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:info@tipster.ua" style="color:var(--accent)">info@tipster.ua</a></div>
+                <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Продажі / сервіс</div>
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380956546644" style="color:var(--accent)">+38&nbsp;(095)&nbsp;654-66-44</a></div>
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444526617" style="color:var(--accent)">+38&nbsp;(044)&nbsp;452-66-17</a></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="/cdn-cgi/l/email-protection#52213a2726393d1226203331393327263d7c313d3f7c2733" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="e3908b9697888ca397918280888296978ccd808c8ecd9682">[email&#160;protected]</span></a></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:shutko@trackauto.com.ua" style="color:var(--accent)">shutko@trackauto.com.ua</a></div>
               </div>
             </div>
 
-            <!-- Документи / офіс -->
+            <!-- Документи / рахунки / договори -->
             <div class="contacts-card">
               <div class="contacts-info" style="padding-top:4px">
-                <div class="contacts-name">Документи, рахунки, договори</div>
-                <div class="contacts-detail">
-                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0116 0"/></svg> <strong>Горбань Марія</strong></div>
-                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="/cdn-cgi/l/email-protection#6f000909060c0a2f1b1d0e0c040e1a1b00410c0002411a0e" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="472821212e242207333526242c263233286924282a693226">[email&#160;protected]</span></a></div>
-                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380669501306" style="color:var(--accent)">+38 (066) 950-13-06</a></div>
-                  <div style="display:flex;align-items:center;gap:7px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444526617" style="color:var(--accent)">+38 (044) 452-66-17</a></div>
-                </div>
+                <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
+                <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ТРЕКАВТО</div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:office@trackauto.com.ua" style="color:var(--accent)">office@trackauto.com.ua</a></div>
               </div>
             </div>
 
@@ -2955,10 +2929,9 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
           </div>
         </div>
       </div>
-    </div><!-- /page-inner -->
-  </div><!-- /page -->
-</div><!-- /main -->
-
+    </div>
+  </div>
+</div>
 <div id="login-overlay">
   <div style="display:flex;width:100%;min-height:100vh;margin:0 auto;max-width:1160px">
     <!-- Ліва панель -->
@@ -3712,7 +3685,7 @@ const SECTION_LABELS = {
   accessories:'Аксесуари', extra:'Додаткове обладнання',
   tariffs:'Тарифи', install:'Монтаж та сервіс',
   drp:'ДРП — Датчики палива', configurator:'Конфігуратор',
-  export:'Експорт', navixy:'Navixy Platform',
+  navixy:'Navixy Platform',
   wiki:'Wiki / База знань', contacts:'Контакти'
 };
 
