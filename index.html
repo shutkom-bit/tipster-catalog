@@ -1144,6 +1144,7 @@ body {
 }
 
 /* ── Ролі: ціни ── */
+/* Дефолт (без ролі) — все видиме (до логіну) */
 /* Клієнт/pending — ховаємо партнерські, показуємо РРЦ */
 body[data-role="client"] .cell-partner,
 body[data-role="client"] th.cell-partner,
@@ -1158,6 +1159,13 @@ body[data-role="partner"] .cell-price-eur,
 body[data-role="partner"] th.cell-price-eur,
 body[data-role="partner"] .cell-retail,
 body[data-role="partner"] th.cell-retail { display: table-cell !important; }
+/* Адмін — показуємо все (як партнер) */
+body[data-role="admin"] .cell-partner,
+body[data-role="admin"] th.cell-partner,
+body[data-role="admin"] .cell-price-eur,
+body[data-role="admin"] th.cell-price-eur,
+body[data-role="admin"] .cell-retail,
+body[data-role="admin"] th.cell-retail { display: table-cell !important; }
 
 
 .cat-chips-label {
@@ -2877,7 +2885,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
                 <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ 38872343</div>
                 
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444526617" style="color:var(--accent)">+38&nbsp;(044)&nbsp;452-66-17</a></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="navigator.clipboard.writeText('shutko@trackauto.com.ua')" title="Копіювати"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d0a3b8a5a4bbbf90a4a2b1b3bbb1a5a4bffeb3bfbdfea5b1">[email&#160;protected]</a></span></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="navigator.clipboard.writeText('shutko@trackauto.com.ua')" title="Копіювати">shutko@trackauto.com.ua</span></div>
               </div>
             </div>
 
@@ -2886,7 +2894,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
               <div class="contacts-info" style="padding-top:4px">
                 <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
                 <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ТРЕКАВТО</div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="navigator.clipboard.writeText('office@trackauto.com.ua')" title="Копіювати"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c3aca5a5aaa0a683b7b1a2a0a8a2b6b7aceda0acaeedb6a2">[email&#160;protected]</a></span></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="navigator.clipboard.writeText('office@trackauto.com.ua')" title="Копіювати">office@trackauto.com.ua</span></div>
               </div>
             </div>
 
@@ -3309,7 +3317,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
 
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  DATA
@@ -4297,9 +4305,9 @@ function renderConfigurator() {
       <th>Бренд / Серія</th>
       <th>Програма</th>
       <th>Інтерфейси та особливості</th>
-      <th>Партнер</th>
-      <th>Партнер ₴</th>
-      <th>РРЦ ₴</th>
+      <th class="cell-partner">ПАРТНЕР</th>
+      <th class="cell-partner">ПАРТНЕР ₴</th>
+      <th class="cell-retail">РРЦ ₴</th>
     </tr></thead>
     <tbody>
       ${items.map(p => {
