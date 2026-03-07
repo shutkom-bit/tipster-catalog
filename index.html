@@ -5030,6 +5030,15 @@ function hideOverlays() {
   });
 }
 
+// ── Вихід з акаунту ──────────────────────────────────────
+window.fbSignOut = async function() {
+  try {
+    await signOut(auth);
+  } catch(e) {
+    console.error('Sign out error:', e);
+  }
+};
+
 // ── Застосувати роль (ціни + UI) ──────────────────────────
 // renderAll — оновлює всі вже відрендерені секції після зміни курсу/ролі
 function renderAll() {
@@ -5071,7 +5080,7 @@ function updateAuthHeader() {
     ${pendingBanner}
     <button onclick="fbSignOut()" style="font-size:11px;padding:3px 12px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;color:var(--text-2);font-family:'IBM Plex Sans',sans-serif;white-space:nowrap;flex-shrink:0">Вийти</button>
   `;
-  bar.style.cssText = 'display:flex!important;align-items:center;gap:6px;flex-shrink:0;font-family:"IBM Plex Sans",sans-serif;white-space:nowrap;position:fixed;top:0;right:12px;height:var(--header-h);z-index:200;background:var(--bg);padding:0 8px;border-left:1px solid var(--border)';
+  bar.style.cssText = 'display:flex!important;align-items:center;gap:6px;flex-shrink:0;font-family:"IBM Plex Sans",sans-serif';
 }
 
 // ── Auth state listener ───────────────────────────────────
