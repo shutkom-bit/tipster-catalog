@@ -202,15 +202,19 @@ body {
   gap: 6px;
   font-size: 13px;
   color: var(--text-2);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
-.topbar-breadcrumb .current { color: var(--text); font-weight: 500; }
-.topbar-breadcrumb .sep { color: var(--text-3); }
+.topbar-breadcrumb .current { color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar-breadcrumb .sep { color: var(--text-3); flex-shrink: 0; }
 
 .topbar-actions {
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0;
 }
   #login-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -2129,16 +2133,13 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
   <span class="current" id="breadcrumb-current">Огляд</span>
 </div>
     <div class="topbar-actions">
-      <button class="tb-btn" onclick="exportExcel()">⬇ Excel</button>
-      <button class="tb-btn" onclick="exportPDF()">⬇ PDF</button>
-      <button class="tb-btn primary" onclick="showSection('export')">📤 Експорт</button>
+
       <button class="tb-btn" onclick="cartOpen()" style="position:relative;padding:6px 10px" title="Кошик">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span id="cart-badge" class="hidden" style="position:absolute;top:-4px;right:-4px;background:#eb5757;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--bg);font-family:'IBM Plex Mono',monospace">0</span>
       </button>
+      <div id="auth-user-bar" style="display:none;align-items:center;gap:6px;flex-shrink:0;font-family:'IBM Plex Sans',sans-serif;white-space:nowrap"></div>
     </div>
-  
-  <div id="auth-user-bar" style="display:none;align-items:center;gap:8px;margin-left:auto;padding:0 12px;font-family:'IBM Plex Sans',sans-serif;flex-shrink:0;min-width:0"></div>
 </div>
 
   <!-- Page -->
@@ -2409,22 +2410,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
           <div id="drp-bitrek-table" style="margin-top:0"></div>
         </div>
 
-        <div class="section" style="margin-top:0">
-          <div class="section-title">Порівняльна таблиця ДРП</div>
-          <div class="section-desc">Ключові характеристики датчиків для вибору оптимальної моделі.</div>
-          <table class="db-table">
-            <thead><tr>
-              <th>Модель</th><th>Інтерфейс</th><th>Довжина</th><th>Живлення</th><th>Точність</th><th>IP</th><th>Особливості</th>
-            </tr></thead>
-            <tbody>
-              <tr><td class="cell-code">BI FLSensor v.8 (700)</td><td><span class="tag tag-green">RS485</span></td><td>700 мм</td><td>9–40V</td><td>±0.5%</td><td>IP67</td><td>Монтажний комплект, кабель 7м</td></tr>
-              <tr><td class="cell-code">BI FLSensor v.8 (1500)</td><td><span class="tag tag-green">RS485</span></td><td>1500 мм</td><td>9–40V</td><td>±0.5%</td><td>IP67</td><td>Монтажний комплект, кабель 7м</td></tr>
-              <tr><td class="cell-code">BI FLSensor v.8 (3000)</td><td><span class="tag tag-green">RS485</span></td><td>3000 мм</td><td>9–40V</td><td>±0.5%</td><td>IP67</td><td>Для великих баків, кабель 7м</td></tr>
-              <tr><td class="cell-code">BI FLB (1000) BLE</td><td><span class="tag tag-blue">BLE 5.4</span></td><td>1000 мм</td><td>Батарея 4р.</td><td>±1%</td><td>IP67</td><td>Бездротовий, змінна батарея</td></tr>
-              <tr style="background:var(--sidebar-bg)"><td colspan="7" style="padding:10px 12px;font-size:12px;color:var(--text-2)">💡 Сумісні трекери Bitrek: BI 530 R TREK, BI 530 C TREK, BI 810/820/910/920 TREK. Сумісні трекери Teltonika: FMB серія з RS485 (FMB110, FMB120, FMB130, FMB122, FMB140, FMB150, FMC130, FMC230 тощо).</td></tr>
-            </tbody>
-          </table>
-        </div>
+        
 
         <div class="section">
           <div class="section-title">Ігла — Ємкісні датчики рівня палива</div>
@@ -2888,11 +2874,11 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
                 <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">ТОВ ТРЕКАВТО</div>
                 <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ 38872343</div>
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> <span style="color:var(--text-2)">04050 Київ, вул.&nbsp;Білоруська,&nbsp;30</span></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:14px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:info@tipster.ua" style="color:var(--accent)">info@tipster.ua</a></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:14px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="/cdn-cgi/l/email-protection#a0c9cec6cfe0d4c9d0d3d4c5d28ed5c1" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="bad3d4dcd5faced3cac9cedfc894cfdb">[email&#160;protected]</span></a></div>
                 <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Продажі / сервіс</div>
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380956546644" style="color:var(--accent)">+38&nbsp;(095)&nbsp;654-66-44</a></div>
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444526617" style="color:var(--accent)">+38&nbsp;(044)&nbsp;452-66-17</a></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:shutko@trackauto.com.ua" style="color:var(--accent)">shutko@trackauto.com.ua</a></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="/cdn-cgi/l/email-protection#81f2e9f4f5eaeec1f5f3e0e2eae0f4f5eeafe2eeecaff4e0" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="ddaeb5a8a9b6b29da9afbcbeb6bca8a9b2f3beb2b0f3a8bc">[email&#160;protected]</span></a></div>
               </div>
             </div>
 
@@ -2901,7 +2887,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
               <div class="contacts-info" style="padding-top:4px">
                 <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
                 <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ТРЕКАВТО</div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="mailto:office@trackauto.com.ua" style="color:var(--accent)">office@trackauto.com.ua</a></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <a href="/cdn-cgi/l/email-protection#117e777778727451656370727a7064657e3f727e7c3f6470" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="ef808989868c8aaf9b9d8e8c848e9a9b80c18c8082c19a8e">[email&#160;protected]</span></a></div>
               </div>
             </div>
 
@@ -3324,7 +3310,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
 
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  DATA
@@ -4194,7 +4180,7 @@ const PROD_META = {
 // ════════════════════════════════════════════════════════
 function renderDRP() {
   // Bitrek fuel sensors
-  const bitrekFuel = products.filter(p => p.brand==='Bitrek' && p.series==='Датчики' && p.program==='Паливо');
+  const bitrekFuel = products.filter(p => p.brand==='Bitrek' && (p.series==='ДРП' || p.program==='Паливо'));
   document.getElementById('drp-bitrek-table').innerHTML = buildTable(bitrekFuel, BITREK_URL, false);
 
   // Ігла sensors (all — ДВРП + accessories)
@@ -5223,6 +5209,4 @@ window.fbGoogleLogin = async function() {
         requestedRole: 'partner',
         createdAt: serverTimestamp()
       });
-      const tgMsg = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="1" y="4" width="14" height="8" rx="1"/><path d="M4 10V6l2 2 2-2v4"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="8" x2="13" y2="8"/></svg> *Google реєстрація — TIPSTER*\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> ' + user.displayName + '\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> ' + user.email + '\n\n_Підтвердіть: Firebase → Firestore → users_';
-      fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
-        method: 'P
+      const tgMsg = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="1" y="4" width="14" height="8" rx="1"/><path d="M4 10V6l2 2 2-2v4"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="8" x2="13" y2="8"/></svg> *Google реєстрація — TIPSTER*\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112
