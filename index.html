@@ -3260,7 +3260,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
         <div style="display:flex;flex-wrap:wrap;gap:4px 16px;align-items:center">
           
           <a href="tel:+380444516617" style="color:rgba(255,255,255,0.32);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;display:flex;align-items:center;gap:5px" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.32)'"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="4" y="1" width="8" height="14" rx="1.5"/><circle cx="8" cy="12" r=".75" fill="currentColor"/></svg> 044 451-66-17</a>
-          <a href="https://tipster.ua" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.32);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;display:flex;align-items:center;gap:5px">tipster.ua</a>
+          <a href="https://tipster.ua" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.32);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;display:flex;align-items:center;gap:5px" onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='rgba(255,255,255,0.32)'">tipster.ua</a>
           <a href="https://www.tagps.com.ua" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.28);font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-decoration:none;margin-left:auto;display:flex;align-items:center;gap:4px" onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='rgba(255,255,255,0.28)'"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg> tagps.com.ua</a>
         </div>
       </div>
@@ -3340,7 +3340,12 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
         <span style="color:var(--border);padding:0 7px">·</span>
         <a href="tel:+380444516617" style="color:var(--accent);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600">044 451-66-17</a>
         <br style="margin-bottom:4px">
-        <a href="https://tipster.ua" target="_blank" rel="noopener" style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;margin-top:5px;display:inline-block;text-decoration:none">tipster.ua</a>
+        <span style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;margin-top:5px;display:inline-block;cursor:pointer"
+          data-u="info" data-d="tipster.ua"
+          onclick="var e=this.dataset.u+'@'+this.dataset.d;navigator.clipboard.writeText(e);this.title='Скопійовано ✓';setTimeout(()=>this.title='Копіювати',2000)"
+          title="Копіювати"
+          onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='var(--accent)'"></span>
+        <script>(function(){var s=document.currentScript.previousElementSibling;s.textContent=s.dataset.u+'@'+s.dataset.d;})();</script>
       </div>
     </div>
   </div>
