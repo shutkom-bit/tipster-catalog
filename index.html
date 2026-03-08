@@ -934,6 +934,39 @@ body {
   padding: 12px 0;
   min-height: 0;
 }
+
+/* ── Кнопка "Надіслати замовлення" ── */
+.cart-send-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: 8px;
+  border: none;
+  cursor: not-allowed;
+  transition: background 0.2s, opacity 0.2s, box-shadow 0.2s, transform 0.1s;
+  background: #c0cfe0;
+  color: #7a95b0;
+  opacity: 1;
+  letter-spacing: 0.01em;
+}
+.cart-send-btn:not([disabled]) {
+  background: #1a6ef5;
+  color: #fff;
+  cursor: pointer;
+  opacity: 1;
+  box-shadow: 0 4px 16px rgba(26,110,245,0.35);
+}
+.cart-send-btn:not([disabled]):hover {
+  background: #1259d6;
+  box-shadow: 0 6px 22px rgba(26,110,245,0.45);
+  transform: translateY(-1px);
+}
+.cart-send-btn:not([disabled]):active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(26,110,245,0.3);
+}
 .cart-empty {
   display: flex;
   flex-direction: column;
@@ -1969,6 +2002,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
     position: fixed !important;
     top: 0; left: 0;
     height: 100vh;
+    height: 100dvh;
     z-index: 200;
     transform: translateX(-100%);
     transition: transform 0.26s cubic-bezier(.4,0,.2,1);
@@ -1977,8 +2011,8 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
     display: flex !important;
     box-shadow: 4px 0 24px rgba(0,0,0,0.18);
   }
-  #sidebar.mobile-open { transform: translateX(0); }
-  #sidebar.collapsed   { transform: translateX(-100%); }
+  #sidebar.mobile-open { transform: translateX(0) !important; }
+  #sidebar.collapsed   { transform: translateX(-100%) !important; }
 
   #main { width: 100%; min-width: 0; }
 
@@ -2167,6 +2201,26 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
   }
   .db-table { min-width: 440px !important; }
   .page-inner { padding: 12px 10px 90px !important; }
+}
+
+/* ── Touch devices (будь-яка орієнтація) — sidebar завжди slide-in ── */
+@media (hover: none) and (pointer: coarse) {
+  #sidebar {
+    position: fixed !important;
+    transform: translateX(-100%);
+    width: 270px !important;
+    min-width: 270px !important;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 200;
+    display: flex !important;
+    transition: transform 0.26s cubic-bezier(.4,0,.2,1);
+  }
+  #sidebar.mobile-open { transform: translateX(0) !important; }
+  #sidebar.collapsed   { transform: translateX(-100%) !important; }
+  #main { width: 100% !important; }
+  #mobile-rates-bar { display: flex !important; }
+  #cart-fab { bottom: calc(58px + env(safe-area-inset-bottom, 0px)) !important; }
 }
 </style>
 
@@ -3991,10 +4045,15 @@ function toggleWikiMenu() {
   sub.style.display = open ? 'none' : 'block';
   if (arrow) arrow.textContent = open ? '›' : '‹';
 }
+function isMobileDevice() {
+  return window.matchMedia('(hover: none) and (pointer: coarse)').matches
+      || window.innerWidth <= 768;
+}
+
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebar-overlay');
-  if (window.innerWidth <= 768) {
+  if (isMobileDevice()) {
     const isOpen = sidebar.classList.toggle('mobile-open');
     if (overlay) overlay.classList.toggle('open', isOpen);
   } else {
@@ -4726,6 +4785,28 @@ function onRateChange() {
 showSection('overview');
 // Auto-fetch NBU on load
 fetchNBURates();
+// При зміні орієнтації — закрити sidebar і перерахувати mobile mode
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    if (sidebar && sidebar.classList.contains('mobile-open')) {
+      sidebar.classList.remove('mobile-open');
+      if (overlay) overlay.classList.remove('open');
+    }
+    // Оновити mobile rates bar visibility
+    const mobBar = document.getElementById('mobile-rates-bar');
+    if (mobBar) mobBar.style.display = isMobileDevice() ? 'flex' : 'none';
+  }, 300);
+});
+window.addEventListener('resize', () => {
+  const mobBar = document.getElementById('mobile-rates-bar');
+  if (mobBar) {
+    mobBar.style.display = (window.innerWidth <= 768 ||
+      window.matchMedia('(hover: none) and (pointer: coarse)').matches)
+      ? 'flex' : 'none';
+  }
+});
 // Ініціалізувати mobile rates bar з дефолтними значеннями
 (function initMobRates() {
   const usdEl = document.getElementById('usdRate');
@@ -4939,6 +5020,18 @@ function cartRender() {
   }
   const sendBtn = document.getElementById('cart-send-btn');
   if (sendBtn) sendBtn.disabled = false;
+  // Перевірити поля форми одразу
+  cartValidateForm();
+}
+
+// ── Валідація форми замовлення ────────────────────
+function cartValidateForm() {
+  const name  = (document.getElementById('cart-buyer-name')?.value  || '').trim();
+  const phone = (document.getElementById('cart-buyer-phone')?.value || '').trim();
+  const btn   = document.getElementById('cart-send-btn');
+  if (!btn) return;
+  const valid = name.length >= 2 && phone.length >= 7;
+  btn.disabled = !valid;
 }
 
 // ── Open / Close ──────────────────────────────────────
@@ -5269,13 +5362,13 @@ function selectRole(role) {
     </div>
     <div id="cart-order-form" style="padding:12px 16px;display:none">
       <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px">Деталі замовника</div>
-      <input id="cart-buyer-name" type="text" placeholder="Ім&#39;я *" style="width:100%;margin-bottom:7px;padding:8px 10px;border:1px solid var(--border);border-radius:5px;background:var(--bg-card);color:var(--text);font-size:16px;box-sizing:border-box;font-family:inherit">
-      <input id="cart-buyer-phone" type="tel" placeholder="Телефон *" style="width:100%;margin-bottom:7px;padding:8px 10px;border:1px solid var(--border);border-radius:5px;background:var(--bg-card);color:var(--text);font-size:16px;box-sizing:border-box;font-family:inherit">
+      <input id="cart-buyer-name" type="text" placeholder="Ім&#39;я *" oninput="cartValidateForm()" style="width:100%;margin-bottom:7px;padding:8px 10px;border:1px solid var(--border);border-radius:5px;background:var(--bg-card);color:var(--text);font-size:16px;box-sizing:border-box;font-family:inherit">
+      <input id="cart-buyer-phone" type="tel" placeholder="Телефон *" oninput="cartValidateForm()" style="width:100%;margin-bottom:7px;padding:8px 10px;border:1px solid var(--border);border-radius:5px;background:var(--bg-card);color:var(--text);font-size:16px;box-sizing:border-box;font-family:inherit">
       <input id="cart-buyer-email" type="email" placeholder="Email" style="width:100%;margin-bottom:7px;padding:8px 10px;border:1px solid var(--border);border-radius:5px;background:var(--bg-card);color:var(--text);font-size:16px;box-sizing:border-box;font-family:inherit">
       <textarea id="cart-buyer-comment" placeholder="Коментар (необов'язково)" rows="2" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;background:var(--bg-card);color:var(--text);font-size:16px;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
     </div>
     <div style="padding:12px 16px 16px;flex-shrink:0;background:var(--bg)">
-      <button id="cart-send-btn" class="cart-send-btn" onclick="sendOrder()" disabled style="width:100%;padding:14px;font-size:14px;font-weight:600;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer;opacity:0.5;transition:opacity .2s">
+      <button id="cart-send-btn" class="cart-send-btn" onclick="sendOrder()" disabled>
         📩 Надіслати замовлення
       </button>
     </div>
