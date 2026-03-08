@@ -2353,7 +2353,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
             <div class="nav-item" onclick="showSection('contacts')">
               Контакти
             </div>
-            <div class="nav-item" onclick="showSection('privacy')" style="font-size:11.5px;color:var(--text-3)">
+            <div class="nav-item" onclick="showPrivacyModal()" style="font-size:11.5px;color:var(--text-3)">
               Політика конфіденційності
             </div>
           </div>
@@ -3599,7 +3599,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       <button class="auth-btn" id="fb-reg-btn" onclick="fbRegister()">Зареєструватись</button>
       <div style="margin-top:12px;font-size:11px;color:var(--text-3);text-align:center;line-height:1.6">
         Реєструючись, ви погоджуєтесь з<br>
-        <a onclick="showSection('privacy');hideOverlays()" style="color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Політикою конфіденційності</a>
+        <a onclick="showPrivacyModal()" style="color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Політикою конфіденційності</a>
       </div>
       <div class="auth-switch" style="margin-top:14px">Вже є акаунт? <a onclick="showLogin()">Увійти</a></div>
     </div>
@@ -4043,6 +4043,15 @@ function hideOverlays() {
     var el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
+}
+
+function showPrivacyModal() {
+  const m = document.getElementById('privacy-modal');
+  if (m) { m.style.display = 'block'; m.scrollTop = 0; }
+}
+function closePrivacyModal() {
+  const m = document.getElementById('privacy-modal');
+  if (m) m.style.display = 'none';
 }
 
 function showSection(id) {
@@ -5669,4 +5678,61 @@ window.fbGoogleLogin = async function() {
     if (btn) { btn.disabled = false; btn.textContent = 'Зареєструватись'; }
   }
 };
-</script></body></html>
+</script>
+<!-- ══ PRIVACY MODAL ══ -->
+<div id="privacy-modal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 16px">
+  <div style="max-width:720px;margin:0 auto;background:var(--bg);border-radius:14px;padding:32px 36px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+    <button onclick="closePrivacyModal()" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border:none;background:var(--bg-card);border-radius:50%;cursor:pointer;font-size:16px;color:var(--text-2);display:flex;align-items:center;justify-content:center">✕</button>
+    
+    <div style="font-size:11px;color:var(--text-3);margin-bottom:4px;font-family:'IBM Plex Mono',monospace">ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
+    <h2 style="margin:0 0 4px;font-size:20px;font-weight:700">Політика конфіденційності</h2>
+    <div style="font-size:11px;color:var(--text-3);margin-bottom:24px">hub.tipster.ua · Редакція від 09 березня 2026 року</div>
+
+    <div style="font-size:13px;line-height:1.75;color:var(--text)">
+
+      <div style="background:var(--bg-card);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--text-3)">
+        Цей документ визначає порядок збору, зберігання та захисту персональних даних користувачів закритого B2B-порталу.
+      </div>
+
+      <b style="color:var(--text-2)">1. Загальні положення</b>
+      <p style="margin:8px 0 16px">Оператором персональних даних є <b>ТОВ «ТРЕКАВТО»</b> (ЄДРПОУ 38872343). Реєструючись на Порталі, ви надаєте згоду на обробку своїх персональних даних. Портал є закритим корпоративним ресурсом — доступ надається після ручної перевірки адміністратором.</p>
+
+      <b style="color:var(--text-2)">2. Які дані збираються</b>
+      <ul style="margin:8px 0 16px;padding-left:20px;line-height:2">
+        <li><b>Ім'я та прізвище</b> — для ідентифікації;</li>
+        <li><b>Email</b> — для авторизації та зв'язку;</li>
+        <li><b>Номер телефону</b> — для верифікації;</li>
+        <li><b>Назва компанії</b> — для визначення ролі доступу.</li>
+      </ul>
+      <p style="margin:0 0 16px">Пароль зберігається у зашифрованому вигляді (Firebase Authentication) і недоступний для Компанії.</p>
+
+      <b style="color:var(--text-2)">3. Мета обробки</b>
+      <p style="margin:8px 0 16px">Дані використовуються виключно для надання доступу до Порталу, обробки замовлень та комунікації. Компанія не передає дані рекламним мережам.</p>
+
+      <b style="color:var(--text-2)">4. Зберігання та захист</b>
+      <p style="margin:8px 0 16px">Дані зберігаються в Firebase Firestore (Google LLC) з шифруванням TLS/SSL. Строк зберігання — до 3 років після видалення акаунту.</p>
+
+      <b style="color:var(--text-2)">5. Передача третім особам</b>
+      <p style="margin:8px 0 16px">Дані не продаються. Передаються лише Google LLC (Firebase) як технічному провайдеру та держорганам за вимогою закону.</p>
+
+      <b style="color:var(--text-2)">6. Права користувача</b>
+      <p style="margin:8px 0 16px">Ви маєте право отримати, виправити або видалити свої дані. Звертайтесь: <b>office@trackauto.com.ua</b> або <b>+38 (044) 451-66-17</b>. Відповідь — протягом 10 робочих днів.</p>
+
+      <b style="color:var(--text-2)">7. Cookie</b>
+      <p style="margin:8px 0 16px">Використовуються лише технічні cookie Firebase для підтримки сесії. Рекламні cookie відсутні.</p>
+
+      <b style="color:var(--text-2)">8. Зміни до Політики</b>
+      <p style="margin:8px 0 20px">Про суттєві зміни повідомляємо через Портал або на email.</p>
+
+      <div style="border-top:1px solid var(--border);padding-top:16px;font-size:12px;color:var(--text-3)">
+        ТОВ «ТРЕКАВТО» · office@trackauto.com.ua · +38 (044) 451-66-17 · tipster.ua
+      </div>
+    </div>
+
+    <div style="margin-top:20px;text-align:center">
+      <button onclick="closePrivacyModal()" style="padding:10px 32px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Зрозуміло</button>
+    </div>
+  </div>
+</div>
+
+</body></html>
