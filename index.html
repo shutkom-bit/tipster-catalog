@@ -5455,7 +5455,7 @@ window.fbLogin = async function() {
   const pass  = document.getElementById('fb-login-pass').value;
   const errEl = document.getElementById('fb-login-error');
   errEl.style.display = 'none';
-  if (!email || !pass) { errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Введіть email та пароль'; errEl.style.display='block'; return; }
+  if (!email || !pass) { errEl.innerHTML = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg> Введіть email та пароль'; errEl.style.display='block'; return; }
   const btn = document.getElementById('fb-login-btn');
   btn.disabled = true; btn.textContent = 'Входимо…';
   try {
@@ -5485,9 +5485,9 @@ window.fbRegister = async function() {
   const errEl   = document.getElementById('fb-reg-error');
   errEl.style.display = 'none';
   if (!name || !email || !pass || !phone) {
-    errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Заповніть всі обов\'язкові поля'; errEl.style.display='block'; return;
+    errEl.innerHTML = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Заповніть всі обов\'язкові поля'; errEl.style.display='block'; return;
   }
-  if (pass.length < 6) { errEl.textContent = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Пароль мінімум 6 символів'; errEl.style.display='block'; return; }
+  if (pass.length < 6) { errEl.innerHTML = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M8 2L1 13h14z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12" r="0.5" fill="currentColor"/></svg>️ Пароль мінімум 6 символів'; errEl.style.display='block'; return; }
   const btn = document.getElementById('fb-reg-btn');
   btn.disabled = true; btn.textContent = 'Реєструємо…';
   try {
