@@ -5669,7 +5669,8 @@ window.fbGoogleLogin = async function() {
     const msgs = {
       'auth/email-already-in-use': '✕ Email вже використовується',
       'auth/weak-password':        '✕ Пароль занадто слабкий (мін. 6 символів)',
-      'auth/invalid-email':        '✕ Невірний формат
+      'auth/invalid-email':        '✕ Невірний формат email',
+      'auth/operation-not-allowed': '✕ Вхід через Google не дозволено',
     };
     const regErr = document.getElementById('reg-error');
     if (regErr) { regErr.textContent = msgs[e.code] || ('✕ ' + e.message); regErr.style.display = 'block'; }
