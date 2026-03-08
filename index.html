@@ -654,6 +654,12 @@ body {
 .wiki-arrow.open { transform: rotate(90deg); }
 
 /* ── Contacts section ── */
+.contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
 .contacts-card {
   background: var(--bg);
   border: 1px solid var(--border);
@@ -804,10 +810,7 @@ body {
   font-family: 'IBM Plex Mono', monospace;
 }
 
-@media (max-width: 768px) {
-  #sidebar { display: none; }
-  .page-inner { padding: 20px 16px 60px; }
-}
+
 /* ═══════════════════════════════════════════
    КОШИК — Cart
 ═══════════════════════════════════════════ */
@@ -1138,10 +1141,7 @@ body {
 .btn-add-cart:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn-add-cart.in-cart { background: var(--accent-bg); color: var(--accent); border-color: #c3d9f7; }
 
-@media (max-width: 768px) {
-  #cart-panel { width: 100%; }
-  #cart-fab { bottom: 20px; right: 16px; }
-}
+
 
 /* ── Ролі: ціни ── */
 /* Дефолт (без ролі) — все видиме (до логіну) */
@@ -1573,11 +1573,7 @@ body[data-role="admin"] th.cell-retail { display: table-cell !important; }
 }
 
 /* ── Мобільна адаптація ────────────────────────────── */
-@media (max-width: 720px) {
-  .auth-left-panel { display: none; }
-  .auth-right-panel { width: 100%; border-left: none; }
-  #login-overlay, #register-overlay { align-items: flex-start; }
-}
+
 
 
 /* ── Tipster SVG logo ─────────────────────────── */
@@ -1912,10 +1908,257 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
   color: rgba(255,255,255,.7);
   flex-shrink: 0;
 }
+
+/* ═══════════════════════════════════════════════════
+   MOBILE RESPONSIVE — повна адаптація
+   ═══════════════════════════════════════════════════ */
+
+/* ── Мобільний overlay для sidebar ── */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 199;
+}
+#sidebar-overlay.open { display: block; }
+
+
+
+/* ── Планшет ── */
+
+
+/* ═══════════════════════════════════════════════
+   MOBILE OVERLAY ДЛЯ SIDEBAR
+   ═══════════════════════════════════════════════ */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 199;
+  cursor: pointer;
+}
+#sidebar-overlay.open { display: block; }
+
+/* ═══════════════════════════════════════════════
+   TABLET  ≤ 1024px
+   ═══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .page-inner { padding: 24px 20px 80px; }
+  .tariff-grid { grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); }
+  .card-grid   { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .filters-row { flex-wrap: wrap; }
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE  ≤ 768px
+   ═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Layout ── */
+  body { overflow: hidden; }
+
+  #sidebar {
+    position: fixed !important;
+    top: 0; left: 0;
+    height: 100vh;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.26s cubic-bezier(.4,0,.2,1);
+    width: 270px !important;
+    min-width: 270px !important;
+    display: flex !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+  }
+  #sidebar.mobile-open { transform: translateX(0); }
+  #sidebar.collapsed   { transform: translateX(-100%); }
+
+  #main { width: 100%; min-width: 0; }
+
+  /* ── Topbar ── */
+  #topbar {
+    padding: 0 10px;
+    gap: 6px;
+    height: 52px;
+  }
+  #toggleSidebar {
+    font-size: 22px;
+    padding: 4px 8px;
+    flex-shrink: 0;
+  }
+  .topbar-breadcrumb {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 12px;
+  }
+  .topbar-actions {
+    flex-shrink: 0;
+    gap: 3px;
+  }
+  /* Auth bar — стискаємо email */
+  #auth-user-bar > span:first-child {
+    max-width: 80px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px !important;
+  }
+
+  /* ── Page content ── */
+  .page-inner {
+    padding: 14px 12px 90px !important;
+    max-width: 100% !important;
+  }
+  .page-title  { font-size: 20px !important; }
+  .page-subtitle { font-size: 12px !important; line-height: 1.5 !important; }
+  .page-header { margin-bottom: 14px !important; }
+  .section     { margin-bottom: 20px !important; }
+  .section-title { font-size: 15px !important; }
+  .section-desc  { font-size: 12px !important; }
+
+  /* ── Таблиці — горизонтальний скролл ── */
+  .db-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Всі контейнери таблиць в секціях */
+  #tlt-table-wrap, #bit-table-wrap,
+  #acc-antennas, #acc-power, #acc-mount,
+  #extra-can, #extra-rfid, #extra-sos,
+  #extra-sensors, #extra-eye,
+  #drp-bitrek-table, #drp-igla-table, #drp-teltonika-table,
+  #cfg-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    display: block !important;
+  }
+  .db-table {
+    min-width: 520px !important;
+    font-size: 12px !important;
+  }
+  .db-table th, .db-table td { padding: 6px 8px !important; }
+  .cell-spec    { font-size: 11px !important; }
+  .cell-article { display: none !important; }
+  .cell-code    { font-size: 10px !important; }
+
+  /* ── Filters row ── */
+  .filters-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .search-box  { width: 100% !important; min-width: 0 !important; }
+  .filter-select { width: 100% !important; font-size: 14px !important; }
+
+  /* ── Tariff grid ── */
+  .tariff-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .tariff-flip      { min-height: 155px !important; }
+  .tariff-name      { font-size: 13px !important; }
+  .tariff-price     { font-size: 22px !important; }
+  .tariff-flip-hint { font-size: 10px !important; }
+
+  /* ── Card grid ── */
+  .card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* ── Contacts ── */
+  .contacts-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* ── Navixy ── */
+  .nvx-plan-grid { grid-template-columns: 1fr !important; }
+  .nvx-vol-table-wrap { overflow-x: auto; }
+
+  /* ── Overview stats ── */
+  #overview-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .stat-box     { padding: 12px !important; }
+  .stat-box-val { font-size: 20px !important; }
+
+  /* ── Cart ── */
+  #cart-panel {
+    width: 100% !important;
+    max-width: 100vw !important;
+    border-left: none !important;
+  }
+  #cart-fab {
+    bottom: 16px !important;
+    right: 14px !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  /* ── Кнопки ── */
+  .btn-add-cart {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+  }
+
+  /* ── Auth overlays ── */
+  .auth-left-panel  { display: none !important; }
+  .auth-right-panel {
+    width: 100% !important;
+    border-left: none !important;
+    padding: 24px 18px 40px !important;
+    max-width: 100% !important;
+  }
+  #login-overlay,
+  #register-overlay {
+    align-items: flex-start !important;
+    overflow-y: auto !important;
+  }
+  .auth-input    { font-size: 16px !important; } /* iOS no-zoom */
+  .auth-btn      { font-size: 14px !important; padding: 12px !important; }
+  .auth-role-tabs { gap: 6px !important; }
+
+  /* ── Pending overlay ── */
+  #pending-overlay .auth-box {
+    margin: 20px 16px;
+    padding: 24px 18px;
+    width: auto;
+  }
+
+  /* ── Wiki ── */
+  .wiki-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* ── Sidebar rates ── */
+  .sidebar-rates { padding: 10px 12px; }
+  .sidebar-rates-row { flex-wrap: wrap; gap: 6px; }
+
+  /* ── Приховати деякі декоративні елементи ── */
+  .page-subtitle br { display: none; }
+}
+
+/* ═══════════════════════════════════════════════
+   SMALL MOBILE  ≤ 400px
+   ═══════════════════════════════════════════════ */
+@media (max-width: 400px) {
+  .tariff-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .db-table { min-width: 440px !important; }
+  .page-inner { padding: 12px 10px 90px !important; }
+}
 </style>
 
 </head>
 <body>
+
+<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <!-- SIDEBAR -->
   <div id="sidebar">
@@ -2885,7 +3128,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
                 <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ 38872343</div>
                 
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380956546644" style="color:var(--accent)">+38&nbsp;(095)&nbsp;654-66-44</a></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="navigator.clipboard.writeText('shutko@trackauto.com.ua')" title="Копіювати">shutko@trackauto.com.ua</span></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="navigator.clipboard.writeText('shutko@trackauto.com.ua')" title="Копіювати"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="16657e63627d7956626477757d776362793875797b386377">[email&#160;protected]</a></span></div>
               </div>
             </div>
 
@@ -2895,7 +3138,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
                 <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
                 <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ТРЕКАВТО</div>
                 <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444516617" style="color:var(--accent)">+38&nbsp;(044)&nbsp;451-66-17</a></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="navigator.clipboard.writeText('office@trackauto.com.ua')" title="Копіювати">office@trackauto.com.ua</span></div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="navigator.clipboard.writeText('office@trackauto.com.ua')" title="Копіювати"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ef808989868c8aaf9b9d8e8c848e9a9b80c18c8082c19a8e">[email&#160;protected]</a></span></div>
               </div>
             </div>
 
@@ -3318,7 +3561,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.1/jspdf.plugin.autotable.min.js" defer></script>
 <script>
 // ════════════════════════════════════════════════════════
 //  DATA
@@ -3734,7 +3977,19 @@ function toggleWikiMenu() {
   if (arrow) arrow.textContent = open ? '›' : '‹';
 }
 function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('collapsed');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (window.innerWidth <= 768) {
+    const isOpen = sidebar.classList.toggle('mobile-open');
+    if (overlay) overlay.classList.toggle('open', isOpen);
+  } else {
+    sidebar.classList.toggle('collapsed');
+  }
+}
+ else {
+    // Десктоп — collapse/expand
+    sidebar.classList.toggle('collapsed');
+  }
 }
 
 function filterBySeries(s) {
