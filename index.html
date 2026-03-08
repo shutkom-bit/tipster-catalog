@@ -2304,10 +2304,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
     <div class="sidebar-section">
       <div class="sidebar-section-label">Каталог</div>
       <div class="nav-item" onclick="showSection('accessories')">
-        Аксесуари
-      </div>
-      <div class="nav-item" onclick="showSection('extra')">
-        Додаткове обладнання
+        Аксесуари та обладнання
       </div>
       <div class="nav-item" onclick="showSection('tariffs')">
         Тарифи
@@ -2596,11 +2593,11 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
         <div id="bit-table-wrap"></div>
       </div>
 
-      <!-- ══════════ ACCESSORIES ══════════ -->
+      <!-- ══════════ ACCESSORIES + EXTRA ══════════ -->
       <div class="page-section" id="sec-accessories">
         <div class="page-header">
-          <div class="page-title">Аксесуари</div>
-          <div class="page-subtitle">Додаткові аксесуари для GPS-трекерів: кабелі, антени, адаптери, SIM-карти та монтажне обладнання.</div>
+          <div class="page-title">Аксесуари та обладнання</div>
+          <div class="page-subtitle">Аксесуари та супутнє обладнання для GPS-трекерів: антени, живлення, SIM-карти, CAN-модулі, датчики, RFID та SOS-маяки.</div>
         </div>
 
         <div class="section">
@@ -2619,14 +2616,6 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
           <div class="section-title">Монтажне приладдя</div>
           <div class="section-desc">Кронштейни, скотч, термоусадка та герметичні коробки. Ціни в USD з ПДВ.</div>
           <div id="acc-mount"></div>
-        </div>
-      </div>
-
-      <!-- ══════════ EXTRA EQUIPMENT ══════════ -->
-      <div class="page-section" id="sec-extra">
-        <div class="page-header">
-          <div class="page-title">Додаткове обладнання</div>
-          <div class="page-subtitle">Супутнє обладнання для систем моніторингу транспорту: тахографи, зчитувачі карток, RFID, CAN-адаптери, кнопки SOS.</div>
         </div>
 
         <div class="section">
@@ -2660,7 +2649,6 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
         </div>
 
       </div>
-
 
       <!-- ══════════ ДРП ══════════ -->
       <div class="page-section" id="sec-drp">
@@ -3936,7 +3924,7 @@ function fmt(n) { return new Intl.NumberFormat('uk-UA').format(Math.round(n)); }
 // ════════════════════════════════════════════════════════
 const SECTION_LABELS = {
   overview:'Огляд', teltonika:'Teltonika', bitrek:'Bitrek',
-  accessories:'Аксесуари', extra:'Додаткове обладнання',
+  accessories:'Аксесуари та обладнання', extra:'Додаткове обладнання',
   tariffs:'Тарифи', install:'Монтаж та сервіс',
   drp:'ДРП — Датчики палива', configurator:'Конфігуратор',
   navixy:'Navixy Platform',
@@ -3968,8 +3956,8 @@ function showSection(id) {
   // Render on demand
   if (id === 'teltonika')    renderTeltonika();
   if (id === 'bitrek')       renderBitrek();
-  if (id === 'accessories')  renderAccessories();
-  if (id === 'extra')        renderExtra();
+  if (id === 'accessories')  { renderAccessories(); renderExtra(); }
+  if (id === 'extra')        { showSection('accessories'); return; }
   if (id === 'drp')          renderDRP();
   if (id === 'configurator') renderConfigurator();
   if (id === 'overview')     renderOverview();
@@ -4721,8 +4709,8 @@ function onRateChange() {
   if (id === 'overview')     renderOverview();
   if (id === 'teltonika')    renderTeltonika();
   if (id === 'bitrek')       renderBitrek();
-  if (id === 'accessories')  renderAccessories();
-  if (id === 'extra')        renderExtra();
+  if (id === 'accessories')  { renderAccessories(); renderExtra(); }
+  if (id === 'extra')        { showSection('accessories'); return; }
   if (id === 'drp')          renderDRP();
   if (id === 'configurator') renderConfigurator();
 }
@@ -5382,8 +5370,7 @@ function renderAll() {
   if (typeof renderOverview  === 'function') try { renderOverview();  } catch(e){}
   if (typeof renderTeltonika === 'function') try { renderTeltonika(); } catch(e){}
   if (typeof renderBitrek    === 'function') try { renderBitrek();    } catch(e){}
-  if (typeof renderAccessories==='function') try { renderAccessories(); } catch(e){}
-  if (typeof renderExtra     === 'function') try { renderExtra();     } catch(e){}
+  if (typeof renderAccessories==='function') try { renderAccessories(); renderExtra(); } catch(e){}
 }
 
 function applyRole(role) {
