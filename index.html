@@ -3364,7 +3364,8 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
     </div>
     <!-- Права панель -->
     <div class="auth-right-panel">
-      <div style="margin-bottom:28px">
+      <div id="login-form-box">
+<div style="margin-bottom:28px">
         <svg style="height:28px;width:auto;display:block;margin-bottom:16px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1201 256" xml:space="preserve"><path fill="#FF512F" d="M1174.2,124.3c0.7,0.7,1.1,1.4,1.7,1.5c16.3,5.3,20.4,18.2,21.1,33.4c0.3,6.9,0.7,13.8,1.3,20.7
 	c0.3,2.9,1.7,5.6,2.2,8.5c1,4.7,1,9.1-6,8.9c-8-0.3-9.6-1.4-10.1-9.9c-0.6-9.4-1.3-18.7-1.7-28.1c0-7.5-2.8-14.8-7.7-20.4
 	c-3.4-3.6-9.1-4.9-14-6.9c-2.3-0.9-4.8-1.3-7.3-1.2c-16.6,0-33.2,0-49.8-0.1c-4.4,0-4.2,2.7-4.2,5.6c0,17.7,0,35.4,0,53.1
@@ -3426,7 +3427,23 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       <button class="auth-btn" id="fb-login-btn" onclick="fbLogin()"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5 7V5a3 3 0 016 0v2"/><circle cx="8" cy="11" r="1" fill="currentColor"/></svg> Увійти</button>
       <div class="auth-divider">або</div>
       <button class="auth-btn-google" onclick="fbGoogleLogin()"><svg width="15" height="15" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.34-8.16 2.34-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Увійти через Google</button>
-      <div class="auth-switch" style="margin-top:16px">Немає акаунту? <a onclick="showOverlay('register-overlay')">Зареєструватись</a></div>
+           <div style="margin-top:10px;text-align:center">
+          <a onclick="showForgotPassword()" style="font-size:11.5px;color:var(--text-3);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Забули пароль?</a>
+        </div>
+        <div class="auth-switch" style="margin-top:10px">Немає акаунту? <a onclick="showOverlay('register-overlay')">Зареєструватись</a></div></div>
+      <div id="forgot-password-box" style="display:none">
+        <div style="margin-bottom:20px">
+          <div style="font-size:18px;font-weight:700;margin-bottom:6px">Скидання пароля</div>
+          <div style="font-size:13px;color:var(--text-3)">Введіть email — надішлемо посилання для скидання пароля.</div>
+        </div>
+        <input class="auth-input" type="email" id="forgot-email" placeholder="Email" autocomplete="email">
+        <div id="forgot-err" class="auth-error" style="display:none"></div>
+        <div id="forgot-msg" style="display:none;font-size:13px;color:#22c55e;margin-top:8px;padding:10px 14px;background:rgba(34,197,94,0.08);border-radius:8px;border:1px solid rgba(34,197,94,0.2)"></div>
+        <button class="auth-btn" id="forgot-btn" onclick="fbSendReset()" style="margin-top:12px">Надіслати лист</button>
+        <div style="margin-top:14px;text-align:center">
+          <a onclick="hideForgotPassword()" style="font-size:12px;color:var(--text-3);cursor:pointer;text-decoration:underline">← Повернутись до входу</a>
+        </div>
+      </div>
       <div style="margin-top:20px;padding:12px 14px;background:var(--accent-bg);border:1px solid rgba(37,113,208,0.18);border-radius:5px">
         <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M2 10l4-4 2 1 2-2 2 1 2-2"/><path d="M2 10l3 3 8-8"/></svg> Для партнерів</div>
         <div style="font-size:11px;color:var(--text-3);line-height:1.55">Після підтвердження — доступ до оптових цін та умов</div>
@@ -4050,6 +4067,19 @@ function hideOverlays() {
     var el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
+}
+
+function showForgotPassword() {
+  const el = document.getElementById('forgot-password-box');
+  const loginBox = document.getElementById('login-form-box');
+  if (el) el.style.display = 'block';
+  if (loginBox) loginBox.style.display = 'none';
+}
+function hideForgotPassword() {
+  const el = document.getElementById('forgot-password-box');
+  const loginBox = document.getElementById('login-form-box');
+  if (el) el.style.display = 'none';
+  if (loginBox) loginBox.style.display = 'block';
 }
 
 function showOverlay(id) {
@@ -5446,7 +5476,7 @@ function selectRole(role) {
 //  FIREBASE — Auth + Firestore
 // ══════════════════════════════════════════════════════════
 import { initializeApp }                        from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword,
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail,
          createUserWithEmailAndPassword,
          signOut, onAuthStateChanged,
          GoogleAuthProvider, signInWithPopup }  from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
@@ -5575,6 +5605,30 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 // ── Вхід email/password ───────────────────────────────────
+window.fbSendReset = async function() {
+  const email = document.getElementById('forgot-email').value.trim();
+  const msgEl = document.getElementById('forgot-msg');
+  const errEl = document.getElementById('forgot-err');
+  msgEl.style.display = 'none';
+  errEl.style.display = 'none';
+  if (!email) { errEl.textContent = '✕ Введіть email'; errEl.style.display='block'; return; }
+  const btn = document.getElementById('forgot-btn');
+  btn.disabled = true; btn.textContent = 'Надсилаємо…';
+  try {
+    await sendPasswordResetEmail(auth, email);
+    msgEl.textContent = '✅ Лист надіслано! Перевірте пошту (та папку Spam).';
+    msgEl.style.display = 'block';
+    document.getElementById('forgot-email').value = '';
+  } catch(e) {
+    const msgs = {
+      'auth/user-not-found': '✕ Email не знайдено',
+      'auth/invalid-email':  '✕ Невірний формат email',
+    };
+    errEl.textContent = msgs[e.code] || ('✕ ' + e.message);
+    errEl.style.display = 'block';
+  } finally { btn.disabled = false; btn.textContent = 'Надіслати лист'; }
+};
+
 window.fbLogin = async function() {
   const email = document.getElementById('fb-login-email').value.trim();
   const pass  = document.getElementById('fb-login-pass').value;
