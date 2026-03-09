@@ -3598,6 +3598,10 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       <input class="auth-input" type="tel" id="fb-reg-phone" placeholder="+38 (0XX) XXX-XX-XX" autocomplete="tel">
       <input class="auth-input" type="email" id="fb-reg-email" placeholder="Email" autocomplete="email">
       <input class="auth-input" type="password" id="fb-reg-pass" placeholder="Пароль (мін. 6 символів)" autocomplete="new-password">
+        <select class="auth-input" id="fb-reg-role" style="cursor:pointer;color:var(--text)">
+          <option value="partner">🤝 Партнер (оптові ціни)</option>
+          <option value="client">👤 Клієнт (РРЦ ціни)</option>
+        </select>
       <div class="auth-error" id="fb-reg-error"></div>
       <button class="auth-btn" id="fb-reg-btn" onclick="fbRegister()">Зареєструватись</button>
       <div style="margin-top:12px;font-size:11px;color:var(--text-3);text-align:center;line-height:1.6">
