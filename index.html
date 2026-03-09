@@ -4048,6 +4048,14 @@ function hideOverlays() {
   });
 }
 
+function showOverlay(id) {
+  ['login-overlay','register-overlay','pending-overlay'].forEach(function(oid){
+    var el = document.getElementById(oid);
+    if (el) el.style.display = oid === id ? 'flex' : 'none';
+  });
+}
+function showLogin() { showOverlay('login-overlay'); }
+
 function showPrivacyModal() {
   const m = document.getElementById('privacy-modal');
   if (m) { m.style.display = 'block'; m.scrollTop = 0; }
