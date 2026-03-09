@@ -5624,20 +5624,16 @@ window.fbRegister = async function() {
       createdAt: serverTimestamp()
     });
     // Сповіщення в Telegram
-    const tgMsg = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="1" y="4" width="14" height="8" rx="1"/><path d="M4 10V6l2 2 2-2v4"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="8" x2="13" y2="8"/></svg> *Нова реєстрація — TIPSTER Каталог*
+    const roleLabel = role === 'partner' ? '🤝 Партнер' : '👤 Клієнт';
+    const tgMsg = `🆕 *Нова реєстрація — TIPSTER*
+👤 ${name}
+🏢 ${company || '—'}
+📞 ${phone}
+📧 ${email}
+${roleLabel}
+🕐 ${new Date().toLocaleString('uk-UA')}
 
-` +
-      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> *Ім'я:* ${name}
-<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="3" y="2" width="10" height="13" rx="0.5"/><rect x="5" y="4" width="2" height="2"/><rect x="9" y="4" width="2" height="2"/><rect x="5" y="8" width="2" height="2"/><rect x="9" y="8" width="2" height="2"/><rect x="6" y="11" width="4" height="4"/></svg> *Компанія:* ${company||'—'}
-<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="4" y="1" width="8" height="14" rx="1.5"/><circle cx="8" cy="12" r="0.75" fill="currentColor"/></svg> *Телефон:* ${phone}
-` +
-      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> *Email:* ${email}
-<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><path d="M2 6c0-1.7 6-4 6-4s6 2.3 6 4c0 6-6 8-6 8S2 12 2 6z"/></svg> *Роль:* ${role === 'partner' ? '🤝 Партнер' : role === 'admin' ? '⭐ Адмін' : role === 'pending' ? '⏳ На розгляді' : 'Клієнт · РРЦ'}
-` +
-      `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="1"/><line x1="2" y1="7" x2="14" y2="7"/><line x1="5" y1="1" x2="5" y2="5"/><line x1="11" y1="1" x2="11" y2="5"/></svg> *Дата:* ${new Date().toLocaleString('uk-UA')}
-
-` +
-      `_Підтвердьте в Firebase Console → Firestore → users_`;
+✅ Підтвердіть: Firebase → Firestore → users`;
     fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
@@ -5673,7 +5669,13 @@ window.fbGoogleLogin = async function() {
         requestedRole: 'partner',
         createdAt: serverTimestamp()
       });
-      const tgMsg = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="1" y="4" width="14" height="8" rx="1"/><path d="M4 10V6l2 2 2-2v4"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="8" x2="13" y2="8"/></svg> *Google реєстрація — TIPSTER*\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="8" cy="6" r="3"/><path d="M2 14a6 6 0 0112 0"/></svg> ' + user.displayName + '\n<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><rect x="2" y="4" width="12" height="9" rx="1"/><polyline points="2,4 8,9 14,4"/></svg> ' + user.email + '\n\n_Підтвердіть: Firebase → Firestore → users_';
+      const tgMsg = `🆕 *Google реєстрація — TIPSTER*
+👤 ${user.displayName || '—'}
+📧 ${user.email}
+🤝 Партнер (запит)
+🕐 ${new Date().toLocaleString('uk-UA')}
+
+✅ Підтвердіть: Firebase → Firestore → users`;
       fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
