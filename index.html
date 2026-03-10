@@ -4923,8 +4923,7 @@ function renderConfigurator() {
 // ════════════════════════════════════════════════════════
 
 // НБУ офіційний API. Спробуємо кілька CORS-проксі по черзі.
-const NBU_USD = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json&valcode=USD';
-const NBU_EUR = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json&valcode=EUR';
+const PRIVAT_API = 'https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11';
 
 // Список CORS-проксі (перший що відповів — використовуємо)
 const PROXIES = [
@@ -4963,8 +4962,12 @@ function setNBUStatus(state, text) {
 }
 
 function applyRates(rateUSD, rateEUR, dateStr, source) {
-  document.getElementById('usdRate').value = parseFloat(rateUSD).toFixed(2);
-  document.getElementById('eurRate').value = parseFloat(rateEUR).toFixed(2);
+  // +1.5% націнка до курсу ПриватБанку
+  const MARKUP = 1.015;
+  rateUSD = (parseFloat(rateUSD) * MARKUP);
+  rateEUR = (parseFloat(rateEUR) * MARKUP);
+  document.getElementById('usdRate').value = rateUSD.toFixed(2);
+  document.getElementById('eurRate').value = rateEUR.toFixed(2);
   // Синхронізувати мобільну панель курсів
   const mobUsd = document.getElementById('mob-usd-val');
   const mobEur = document.getElementById('mob-eur-val');
@@ -4983,38 +4986,42 @@ function applyRates(rateUSD, rateEUR, dateStr, source) {
 async function fetchNBURates() {
   setNBUStatus('loading', 'завантаження…');
   try {
-    const [dataUSD, dataEUR] = await Promise.all([
-      fetchWithProxies(NBU_USD),
-      fetchWithProxies(NBU_EUR),
-    ]);
+    const resp = await fetchWithProxies(PRIVAT_API);
 
-    const rateUSD = dataUSD[0].rate;
-    const rateEUR = dataEUR[0].rate;
-    const dateStr = dataUSD[0].exchangedate || '';
+    // ПриватБанк повертає масив валют — знайти USD і EUR
+    const usdObj = resp.find(r => r.ccy === 'USD');
+    const eurObj = resp.find(r => r.ccy === 'EUR');
 
-    applyRates(rateUSD, rateEUR, dateStr, '🏦 НБУ');
-    setNBUStatus('ok', 'НБУ · ' + dateStr);
+    if (!usdObj || !eurObj) throw new Error('Валюти не знайдено');
 
-    // Зберегти в localStorage
+    const rateUSD = parseFloat(usdObj.sale);
+    const rateEUR = parseFloat(eurObj.sale);
+    const today   = new Date().toLocaleDateString('uk-UA');
+
+    applyRates(rateUSD, rateEUR, today, '🏦 ПриватБанк');
+    setNBUStatus('ok', 'Приват · продаж · ' + today);
+
+    // Кеш
     try {
       localStorage.setItem('nbu_usd', rateUSD);
       localStorage.setItem('nbu_eur', rateEUR);
-      localStorage.setItem('nbu_date', dateStr);
+      localStorage.setItem('nbu_date', today);
+      localStorage.setItem('nbu_src', 'ПриватБанк');
     } catch(e) {}
 
   } catch(err) {
     // Спробувати кешовані дані
     try {
-      const cUSD  = localStorage.getItem('nbu_usd');
-      const cEUR  = localStorage.getItem('nbu_eur');
+      const cUSD = localStorage.getItem('nbu_usd');
+      const cEUR = localStorage.getItem('nbu_eur');
       const cDate = localStorage.getItem('nbu_date') || '';
+      const cSrc  = localStorage.getItem('nbu_src') || 'кеш';
       if (cUSD && cEUR) {
-        applyRates(cUSD, cEUR, cDate, '💾 Кеш');
+        applyRates(cUSD, cEUR, cDate, '💾 ' + cSrc);
         setNBUStatus('cache', 'кеш · ' + cDate);
         return;
       }
     } catch(e) {}
-    // Залишити дефолтні значення
     setNBUStatus('error', 'вручну');
   }
 }
