@@ -2291,6 +2291,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       <div class="nav-item active" onclick="showSection('overview')">
         Огляд
       </div>
+      <div class="nav-item" onclick="showSection('kits')" style="color:var(--accent);font-weight:600">&#128230; Готові рішення</div>
       <div class="nav-item" onclick="showSection('teltonika')">
         Teltonika
         <span class="count" id="cnt-teltonika">0</span>
@@ -2999,6 +3000,27 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
         </div>
       </div><!-- /sec-navixy -->
+
+
+      <!-- ══ KITS ══ -->
+      <div class="page-section" id="sec-kits">
+        <div class="page-header">
+          <h1 class="page-title">Готові рішення</h1>
+          <p class="page-subtitle">Комплекти під задачу — трекер + SIM + перший місяць платформи безкоштовно. Монтаж оплачується окремо.</p>
+        </div>
+        <div id="kits-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:8px"></div>
+        <div style="margin-top:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;max-width:560px">
+          <div style="font-size:16px;font-weight:700;margin-bottom:6px">Не знайшли потрібний варіант?</div>
+          <div style="font-size:13px;color:var(--text-3);margin-bottom:18px">Залиште запит — наш спеціаліст зателефонує і підбере оптимальне рішення.</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <input id="kit-req-name" class="auth-input" type="text" placeholder="Ваше ім'я" style="max-width:400px">
+            <input id="kit-req-phone" class="auth-input" type="tel" placeholder="+38 (0XX) XXX-XX-XX" style="max-width:400px">
+            <input id="kit-req-task" class="auth-input" type="text" placeholder="Що потрібно відстежувати?" style="max-width:400px">
+            <div id="kit-req-msg" style="display:none;font-size:13px;color:#22c55e;padding:8px 12px;background:rgba(34,197,94,0.08);border-radius:6px;border:1px solid rgba(34,197,94,0.2)"></div>
+            <button onclick="sendKitRequest()" style="max-width:200px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Залишити запит</button>
+          </div>
+        </div>
+      </div>
 
       <!-- ══ TARIFFS ══ -->
       <div class="page-section" id="sec-tariffs">
@@ -4059,7 +4081,8 @@ const SECTION_LABELS = {
   tariffs:'Тарифи', install:'Монтаж та сервіс',
   drp:'ДРП — Датчики палива', configurator:'Конфігуратор',
   navixy:'Navixy Platform',
-  wiki:'Wiki / База знань', contacts:'Контакти', privacy:'Політика конфіденційності'
+  wiki:'Wiki / База знань', contacts:'Контакти', privacy:'Політика конфіденційності',
+  kits:'Готові рішення'
 };
 
 // Fallback for hideOverlays (overridden by Firebase module when loaded)
@@ -4090,6 +4113,139 @@ function showOverlay(id) {
   });
 }
 function showLogin() { showOverlay('login-overlay'); }
+
+// ══════════════════════════════════════════════
+// ГОТОВІ РІШЕННЯ — renderKits
+// ══════════════════════════════════════════════
+function renderKits() {
+  const grid = document.getElementById('kits-grid');
+  if (!grid || grid.dataset.rendered) return;
+  grid.dataset.rendered = '1';
+
+  const rate = parseFloat(document.getElementById('usdRate')?.value) || 41.20;
+
+  const kits = [
+    {
+      icon: '🚗', badge: 'Популярний', badgeColor: '#2563eb',
+      name: 'Легкове авто — Teltonika',
+      subtitle: 'FMB920 + реле блокування',
+      desc: 'Місцезнаходження, блокування двигуна, сповіщення про рух. Захист від угону.',
+      items: ['Трекер Teltonika FMB920', 'Реле блокування двигуна', 'SIM карта', '1 місяць платформи безкоштовно'],
+      price_usd: 51.16
+    },
+    {
+      icon: '🚗', badge: null,
+      name: 'Легкове авто — Bitrek',
+      subtitle: 'BI 522L + реле блокування',
+      desc: 'Надійний захист на базі українського трекера Bitrek. Блокування, тривога, моніторинг.',
+      items: ['Трекер BI 522 L TREK', 'Реле блокування двигуна', 'SIM карта', '1 місяць платформи безкоштовно'],
+      price_usd: 58.00
+    },
+    {
+      icon: '⛽', badge: 'Для бізнесу', badgeColor: '#16a34a',
+      name: 'Контроль палива',
+      subtitle: 'BI 530C TREK v3 + датчик BI FLS 700',
+      desc: 'Точний облік витрат пального. Виявлення зливу, аналітика, автоматичні звіти.',
+      items: ['Трекер BI 530 C TREK v3', 'Датчик рівня палива BI FLS 700', 'SIM карта', '1 місяць платформи безкоштовно'],
+      price_usd: 185.00
+    },
+    {
+      icon: '📡', badge: null,
+      name: 'Маяк CAT1',
+      subtitle: 'ATC700 CAT1',
+      desc: 'Автономний маяк для активів, причепів та вантажів. Без постійного живлення.',
+      items: ['Маяк ATC700 CAT1', 'SIM карта', '1 місяць платформи безкоштовно'],
+      price_usd: 91.08
+    },
+    {
+      icon: '📍', badge: null,
+      name: 'Маяк Cicada',
+      subtitle: 'BI 310 Cicada v.2',
+      desc: 'Компактний маяк з магнітним кріпленням. Тривала робота від батареї.',
+      items: ['BI 310 Cicada v.2', 'SIM карта', '1 місяць платформи безкоштовно'],
+      price_usd: 72.00
+    },
+    {
+      icon: '🏍️', badge: null,
+      name: 'Мото та спецтехніка',
+      subtitle: 'FMB965 IP67',
+      desc: 'Захищений трекер IP67 для мотоциклів, квадроциклів та спецтехніки.',
+      items: ['Трекер FMB965 (IP67)', 'SIM карта', '1 місяць платформи безкоштовно'],
+      price_usd: 66.71
+    },
+  ];
+
+  grid.innerHTML = kits.map(k => {
+    const uah = Math.round(k.price_usd * rate);
+    const badge = k.badge ? `<span style="position:absolute;top:14px;right:14px;background:${k.badgeColor};color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;font-family:'IBM Plex Mono',monospace">${k.badge}</span>` : '';
+    const items = k.items.map(i => `
+      <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2)">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,8 6,12 14,4"/></svg>
+        ${i}
+      </div>`).join('');
+    return `
+    <div style="position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;gap:0;transition:box-shadow 0.2s"
+         onmouseover="this.style.boxShadow='0 4px 20px rgba(37,99,235,0.12)'"
+         onmouseout="this.style.boxShadow='none'">
+      ${badge}
+      <div style="font-size:28px;margin-bottom:10px">${k.icon}</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:3px">${k.name}</div>
+      <div style="font-size:11.5px;color:var(--accent);font-family:'IBM Plex Mono',monospace;margin-bottom:10px">${k.subtitle}</div>
+      <div style="font-size:12.5px;color:var(--text-3);line-height:1.55;margin-bottom:14px">${k.desc}</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;padding:12px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+        ${items}
+      </div>
+      <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:10px;color:var(--text-3);font-family:'IBM Plex Mono',monospace">від</div>
+          <div style="font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">${uah.toLocaleString('uk-UA')} ₴</div>
+          <div style="font-size:10px;color:var(--text-3)">≈ $${k.price_usd.toFixed(0)} · монтаж окремо</div>
+        </div>
+        <button onclick="sendKitOrder('${k.name}')" style="padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Замовити →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function sendKitOrder(kitName) {
+  const user = window._fbUser;
+  const name = user ? (user.displayName || user.email) : 'Клієнт';
+  const tgMsg = `🛒 *Запит на комплект — TIPSTER*
+📦 ${kitName}
+👤 ${name}
+📧 ${user ? user.email : '—'}
+🕐 ${new Date().toLocaleString('uk-UA')}`;
+  fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
+  }).catch(()=>{});
+  alert('✅ Запит надіслано! Наш спеціаліст зв\'яжеться з вами найближчим часом.');
+}
+
+function sendKitRequest() {
+  const name  = document.getElementById('kit-req-name').value.trim();
+  const phone = document.getElementById('kit-req-phone').value.trim();
+  const task  = document.getElementById('kit-req-task').value.trim();
+  const msg   = document.getElementById('kit-req-msg');
+  if (!name || !phone) { alert('Введіть ім\'я та телефон'); return; }
+  const tgMsg = `📋 *Індивідуальний запит — TIPSTER*
+👤 ${name}
+📞 ${phone}
+💬 ${task || '—'}
+🕐 ${new Date().toLocaleString('uk-UA')}`;
+  fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
+  }).catch(()=>{});
+  msg.textContent = '✅ Запит надіслано! Очікуйте дзвінок.';
+  msg.style.display = 'block';
+  document.getElementById('kit-req-name').value = '';
+  document.getElementById('kit-req-phone').value = '';
+  document.getElementById('kit-req-task').value = '';
+}
+
 
 function showPrivacyModal() {
   const m = document.getElementById('privacy-modal');
@@ -4125,6 +4281,7 @@ function showSection(id) {
   if (id === 'install')      renderInstall();
   if (id === 'tariffs')      renderTariffs();
   if (id === 'navixy')       renderNavixy();
+  if (id === 'kits')         renderKits();
 }
 
 
