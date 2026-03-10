@@ -931,7 +931,7 @@ body {
 #cart-items {
   flex: 1;
   overflow-y: auto;
-  padding: 12px 0;
+  padding: 12px 4px;
   min-height: 0;
 }
 
@@ -4120,25 +4120,23 @@ function showLogin() { showOverlay('login-overlay'); }
 function goToProduct(brand, code) {
   const section = brand === 'Teltonika' ? 'teltonika' : 'bitrek';
   showSection(section);
-  // Знайти рядок таблиці або картку і підсвітити
   setTimeout(function() {
-    // Шукаємо по data-code або по тексту в таблиці
-    const rows = document.querySelectorAll('#sec-' + section + ' tr, #sec-' + section + ' .flip-card');
+    const sec = document.getElementById('sec-' + section);
+    if (!sec) return;
+    // Шукаємо tr або td що містять точний код
+    const all = sec.querySelectorAll('tr, .flip-card, .card');
     let found = null;
-    rows.forEach(function(row) {
-      if (row.textContent.includes(code)) {
-        if (!found) found = row;
-      }
+    all.forEach(function(el) {
+      if (!found && el.textContent.indexOf(code) >= 0) found = el;
     });
     if (found) {
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Підсвітити
-      const orig = found.style.background || '';
-      found.style.transition = 'background 0.3s';
-      found.style.background = 'rgba(37,99,235,0.13)';
-      setTimeout(function() { found.style.background = orig; }, 1800);
+      const orig = found.style.background;
+      found.style.transition = 'background 0.4s';
+      found.style.background = 'rgba(37,99,235,0.15)';
+      setTimeout(function() { found.style.background = orig || ''; }, 2000);
     }
-  }, 350);
+  }, 400);
 }
 
 function renderKits() {
@@ -5330,16 +5328,20 @@ function cartRender() {
     const { uahVal, label } = cartItemPrice(item);
     totalUAH += uahVal * qty;
     const rowTotal = uahVal > 0 ? fmt(uahVal * qty) + ' ₴' : label;
-    return `<div class="cart-item-row">
-      <div class="cart-item-name">${item.name || id}</div>
-      <div class="cart-item-qty" style="grid-row:1;grid-column:2;justify-content:flex-end">
+    const rowUSD = uahVal > 0 ? (uahVal * qty / usd).toFixed(0) : null;
+    const priceStr = uahVal > 0
+      ? `<span style="font-weight:700">${fmt(uahVal * qty)} ₴</span> <span style="color:var(--text-3);font-size:11px">/ $${rowUSD}</span>`
+      : label;
+    return `<div class="cart-item-row" style="padding:10px 16px">
+      <div class="cart-item-name" style="padding:0 2px">${item.name || id}</div>
+      <div class="cart-item-qty" style="grid-row:1;grid-column:2;justify-content:flex-end;padding:0 2px">
         <button onclick="cartChangeQty('${id}', -1)">−</button>
         <span>${qty}</span>
         <button onclick="cartChangeQty('${id}', +1)">+</button>
         <button class="cart-item-remove" onclick="cartRemove('${id}')" title="Видалити">✕</button>
       </div>
-      <div class="cart-item-spec">${item.spec || item.note || ''}</div>
-      <div class="cart-item-price" style="grid-column:2">${rowTotal}</div>
+      <div class="cart-item-spec" style="padding:0 2px">${item.spec || item.note || ''}</div>
+      <div class="cart-item-price" style="grid-column:2;padding:0 2px">${priceStr}</div>
     </div>`;
   }).join('');
 
@@ -5349,7 +5351,12 @@ function cartRender() {
   if (totalRow) {
     totalRow.style.display = 'flex';
     const tv = totalRow.querySelector('.cart-total-val');
-    if (tv) tv.textContent = totalUAH > 0 ? fmt(totalUAH) + ' ₴' : '—';
+    if (tv) {
+      const totalUSD = usd > 0 ? (totalUAH / usd).toFixed(0) : null;
+      tv.innerHTML = totalUAH > 0
+        ? `<span style="font-size:16px;font-weight:700">${fmt(totalUAH)} ₴</span> <span style="font-size:12px;color:var(--text-3)">/ $${totalUSD}</span>`
+        : '—';
+    }
   }
   const sendBtn = document.getElementById('cart-send-btn');
   if (sendBtn) sendBtn.disabled = false;
