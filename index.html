@@ -3036,10 +3036,10 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
               <div style="display:flex;justify-content:space-between;font-size:11px"><span>📡 FMC920 CAT1</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p1"></span></div>
               <div style="display:flex;justify-content:space-between;font-size:11px"><span>👁 EYE BEACON</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p2"></span></div>
               <div style="display:flex;justify-content:space-between;font-size:11px"><span>⚡ Реле 40A (1 канал)</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p3"></span></div>
-              <div style="display:flex;justify-content:space-between;font-size:11px"><span>📶 SIM Roaming EU+UA</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)">250 ₴</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px"><span>📶 SIM-карта Kyivstar</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p4"></span></div>
               <div style="display:flex;justify-content:space-between;font-size:11px"><span>🖥 GPS-сервер 1 міс</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p5"></span></div>
               <div style="border-top:1px solid var(--border);margin-top:5px;padding-top:5px;display:flex;justify-content:space-between;font-size:12px;font-weight:700">
-                <span>Разом РРЦ</span><span style="color:var(--accent)" id="pod-total"></span>
+                <span id="pod-total-label">Разом РРЦ</span><span style="color:var(--accent)" id="pod-total"></span>
               </div>
             </div>
             <button onclick="addPodToCart()" style="width:100%;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
@@ -4163,53 +4163,61 @@ function renderPOD() {
   const { usd } = getRates();
   const role = window._fbRole || 'client';
   const isPartner = role === 'partner' || role === 'admin';
+  const allP = typeof products !== 'undefined' ? products : [];
 
-  // Компоненти комплекту
+  // Компоненти: code, label, id, фіксована UAH (null = розрахувати з USD)
   const items = [
-    { code: 'FMC920',      id: 'pod-p1' },
-    { code: 'EXT-EYEBCN',  id: 'pod-p2' },
-    { code: 'EXT-RELAY',   id: 'pod-p3' },
-    { code: 'TAR-BASE',    id: 'pod-p5' },
+    { code:'FMC920',     label:'📡 FMC920 CAT1',          id:'pod-p1', fixedUAH:null },
+    { code:'EXT-EYEBCN', label:'👁 EYE BEACON',            id:'pod-p2', fixedUAH:null },
+    { code:'EXT-RELAY',  label:'⚡ Реле 40A (1 канал)',    id:'pod-p3', fixedUAH:null },
+    { code:'SIM-KS',     label:'📶 SIM-карта Kyivstar',    id:'pod-p4', fixedUAH:35   },
+    { code:'TAR-BASE',   label:'🖥 GPS-сервер 1 міс',      id:'pod-p5', fixedUAH:0    },
   ];
 
-  let totalUAH = 250; // SIM фіксована
+  let total = 0;
+
   items.forEach(function(it) {
-    const p = (typeof products !== 'undefined' ? products : []).find(function(x){ return x.code === it.code; });
     const el = document.getElementById(it.id);
-    if (!p || !el) return;
-    const { partner, retail } = calcPrices(p);
-    const priceUSD = isPartner ? partner : retail;
+    if (!el) return;
+
+    // GPS-сервер — безкоштовно перший місяць
+    if (it.fixedUAH === 0) {
+      el.textContent = 'Безкоштовно';
+      el.style.color = '#22c55e';
+      return;
+    }
+
+    // Фіксована UAH (SIM)
+    if (it.fixedUAH !== null) {
+      el.textContent = it.fixedUAH.toLocaleString('uk-UA') + ' ₴';
+      el.style.color = '';
+      total += it.fixedUAH;
+      return;
+    }
+
+    // Розрахувати з USD
+    const p = allP.find(function(x){ return x.code === it.code; });
+    if (!p) return;
+    const prices = calcPrices(p);
+    const priceUSD = isPartner ? prices.partner : prices.retail;
     const priceUAH = Math.round(priceUSD * usd);
-    totalUAH += priceUAH;
     el.textContent = priceUAH.toLocaleString('uk-UA') + ' ₴';
+    el.style.color = '';
+    total += priceUAH;
   });
 
-  // Тариф Base ціна в грн (фіксована)
-  const tarEl = document.getElementById('pod-p5');
-  const tar = (typeof TARIFFS_DATA !== 'undefined' ? TARIFFS_DATA : []).find(function(t){ return t.code === 'TAR-BASE'; });
-  if (tar && tarEl) {
-    totalUAH = totalUAH - (totalUAH) + 0; // скинемо тариф з USD
-    // перерахуємо без тарифу
-    let uahNoTar = 250;
-    items.filter(function(i){ return i.code !== 'TAR-BASE'; }).forEach(function(it) {
-      const p = (typeof products !== 'undefined' ? products : []).find(function(x){ return x.code === it.code; });
-      if (!p) return;
-      const { partner, retail } = calcPrices(p);
-      uahNoTar += Math.round((isPartner ? partner : retail) * usd);
-    });
-    tarEl.textContent = tar.price + ' ₴/міс';
-    totalUAH = uahNoTar + tar.price;
-  }
-
+  // Підсумок
   const totalEl = document.getElementById('pod-total');
-  if (totalEl) totalEl.textContent = totalUAH.toLocaleString('uk-UA') + ' ₴';
+  const labelEl = document.getElementById('pod-total-label');
+  if (totalEl) totalEl.textContent = total.toLocaleString('uk-UA') + ' ₴';
+  if (labelEl) labelEl.textContent = isPartner ? 'Разом Партнер' : 'Разом РРЦ';
 }
 
 function addPodToCart() {
   addToCartById('FMC920');
   addToCartById('EXT-EYEBCN');
   addToCartById('EXT-RELAY');
-  addToCartById('SIM-EU');
+  addToCartById('SIM-KS');
   addToCartById('TAR-BASE');
   cartShowToast('✅ Комплект "FMC920 + EYE Beacon" додано до кошика');
   cartOpen();
