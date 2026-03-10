@@ -4160,18 +4160,18 @@ function showLogin() { showOverlay('login-overlay'); }
 function renderPOD() {
   const podEl = document.getElementById('pod-widget');
   if (!podEl) return;
-  const { usd } = getRates();
   const role = window._fbRole || 'client';
   const isPartner = role === 'partner' || role === 'admin';
   const allP = typeof products !== 'undefined' ? products : [];
 
-  // Компоненти: code, label, id, фіксована UAH (null = розрахувати з USD)
+  // calcPrices вже повертає UAH (множить на курс всередині)
+  // fixedUAH: число = фіксована ціна, 0 = безкоштовно, null = з products
   const items = [
-    { code:'FMC920',     label:'📡 FMC920 CAT1',          id:'pod-p1', fixedUAH:null },
-    { code:'EXT-EYEBCN', label:'👁 EYE BEACON',            id:'pod-p2', fixedUAH:null },
-    { code:'EXT-RELAY',  label:'⚡ Реле 40A (1 канал)',    id:'pod-p3', fixedUAH:null },
-    { code:'SIM-KS',     label:'📶 SIM-карта Kyivstar',    id:'pod-p4', fixedUAH:35   },
-    { code:'TAR-BASE',   label:'🖥 GPS-сервер 1 міс',      id:'pod-p5', fixedUAH:0    },
+    { code:'FMC920',     id:'pod-p1', fixedUAH:null },
+    { code:'EXT-EYEBCN', id:'pod-p2', fixedUAH:null },
+    { code:'EXT-RELAY',  id:'pod-p3', fixedUAH:null },
+    { code:'SIM-KS',     id:'pod-p4', fixedUAH:35   },
+    { code:'TAR-BASE',   id:'pod-p5', fixedUAH:0    },
   ];
 
   let total = 0;
@@ -4180,14 +4180,12 @@ function renderPOD() {
     const el = document.getElementById(it.id);
     if (!el) return;
 
-    // GPS-сервер — безкоштовно перший місяць
     if (it.fixedUAH === 0) {
       el.textContent = 'Безкоштовно';
       el.style.color = '#22c55e';
       return;
     }
 
-    // Фіксована UAH (SIM)
     if (it.fixedUAH !== null) {
       el.textContent = it.fixedUAH.toLocaleString('uk-UA') + ' ₴';
       el.style.color = '';
@@ -4195,18 +4193,16 @@ function renderPOD() {
       return;
     }
 
-    // Розрахувати з USD
+    // calcPrices вже повертає UAH — НЕ множимо знову на курс
     const p = allP.find(function(x){ return x.code === it.code; });
     if (!p) return;
     const prices = calcPrices(p);
-    const priceUSD = isPartner ? prices.partner : prices.retail;
-    const priceUAH = Math.round(priceUSD * usd);
+    const priceUAH = Math.round(isPartner ? prices.partner : prices.retail);
     el.textContent = priceUAH.toLocaleString('uk-UA') + ' ₴';
     el.style.color = '';
     total += priceUAH;
   });
 
-  // Підсумок
   const totalEl = document.getElementById('pod-total');
   const labelEl = document.getElementById('pod-total-label');
   if (totalEl) totalEl.textContent = total.toLocaleString('uk-UA') + ' ₴';
