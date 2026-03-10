@@ -992,7 +992,7 @@ body {
 .cart-item:hover { background: var(--row-hover); }
 .cart-item-info { flex: 1; min-width: 0; }
 .cart-item-name {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text);
   white-space: nowrap;
@@ -1063,6 +1063,14 @@ body {
   padding: 16px 20px;
   flex-shrink: 0;
   background: var(--sidebar-bg);
+}
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
 }
 .cart-totals {
   display: flex;
@@ -2291,7 +2299,7 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
       <div class="nav-item active" onclick="showSection('overview')">
         Огляд
       </div>
-      <div class="nav-item" onclick="showSection('kits')" style="color:var(--accent);font-weight:600">&#128230; Готові рішення</div>
+      <div class="nav-item" onclick="showSection('kits')" style="color:var(--accent);font-weight:600">Готові рішення</div>
       <div class="nav-item" onclick="showSection('teltonika')">
         Teltonika
         <span class="count" id="cnt-teltonika">0</span>
@@ -3727,71 +3735,71 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
 const TELTONIKA_URL = {
   // 2G
-  "FMB900":  "https://teltonika-gps.com/products/trackers/fmb900",
-  "FMB910":  "https://teltonika-gps.com/products/trackers/fmb910",
+  "FMB900":  "https://www.teltonika-gps.com/products/trackers/basic/fmb900",
+  "FMB910":  "https://www.teltonika-gps.com/products/trackers/basic/fmb910",
   "FMB920":  "https://www.teltonika-gps.com/products/trackers/basic/fmb920",
-  "FMB930":  "https://teltonika-gps.com/products/trackers/fmb930",
-  "FMB965":  "https://teltonika-gps.com/products/trackers/fmb965",
-  "FMT100":  "https://teltonika-gps.com/products/trackers/fmt100",
-  "FMT100G": "https://teltonika-gps.com/products/trackers/fmt100",
-  "FMP100":  "https://teltonika-gps.com/products/trackers/fmp100",
-  "FMB010":  "https://teltonika-gps.com/products/trackers/fmb010",
-  "FMB020":  "https://teltonika-gps.com/products/trackers/fmb020",
-  "FMB001":  "https://teltonika-gps.com/products/trackers/fmb001",
-  "FMB003":  "https://teltonika-gps.com/products/trackers/fmb003",
-  "FMB110":  "https://teltonika-gps.com/products/trackers/fmb110",
-  "FMB120":  "https://teltonika-gps.com/products/trackers/fmb120",
-  "FMB130":  "https://teltonika-gps.com/products/trackers/fmb130",
-  "FMB122":  "https://teltonika-gps.com/products/trackers/fmb122",
-  "FMB204":  "https://teltonika-gps.com/products/trackers/fmb204",
-  "FMB209":  "https://teltonika-gps.com/products/trackers/fmb209",
-  "FMB150L": "https://teltonika-gps.com/products/trackers/fmb150",
-  "FMB150E": "https://teltonika-gps.com/products/trackers/fmb150",
-  "FMB140L": "https://teltonika-gps.com/products/trackers/fmb140",
-  "FMB140A": "https://teltonika-gps.com/products/trackers/fmb140",
-  "FMB240L": "https://teltonika-gps.com/products/trackers/fmb240",
-  "FMB240A": "https://teltonika-gps.com/products/trackers/fmb240",
-  "FMB125E": "https://teltonika-gps.com/products/trackers/fmb125",
-  "FMB125I": "https://teltonika-gps.com/products/trackers/fmb125",
-  "FMB225":  "https://teltonika-gps.com/products/trackers/fmb225",
+  "FMB930":  "https://www.teltonika-gps.com/products/trackers/basic/fmb930",
+  "FMB965":  "https://www.teltonika-gps.com/products/trackers/basic/fmb965",
+  "FMT100":  "https://www.teltonika-gps.com/products/trackers/fast-easy/fmt100",
+  "FMT100G": "https://www.teltonika-gps.com/products/trackers/fast-easy/fmt100",
+  "FMP100":  "https://www.teltonika-gps.com/products/trackers/fast-easy/fmp100",
+  "FMB010":  "https://www.teltonika-gps.com/products/trackers/fast-easy/fmb010",
+  "FMB020":  "https://www.teltonika-gps.com/products/trackers/fast-easy/fmb020",
+  "FMB001":  "https://www.teltonika-gps.com/products/trackers/obd/fmb001",
+  "FMB003":  "https://www.teltonika-gps.com/products/trackers/obd/fmb003",
+  "FMB110":  "https://www.teltonika-gps.com/products/trackers/advanced/fmb110",
+  "FMB120":  "https://www.teltonika-gps.com/products/trackers/advanced/fmb120",
+  "FMB130":  "https://www.teltonika-gps.com/products/trackers/advanced/fmb130",
+  "FMB122":  "https://www.teltonika-gps.com/products/trackers/advanced/fmb122",
+  "FMB204":  "https://www.teltonika-gps.com/products/trackers/advanced/fmb204",
+  "FMB209":  "https://www.teltonika-gps.com/products/trackers/advanced/fmb209",
+  "FMB150L": "https://www.teltonika-gps.com/products/trackers/can/fmb150",
+  "FMB150E": "https://www.teltonika-gps.com/products/trackers/can/fmb150",
+  "FMB140L": "https://www.teltonika-gps.com/products/trackers/can/fmb140",
+  "FMB140A": "https://www.teltonika-gps.com/products/trackers/can/fmb140",
+  "FMB240L": "https://www.teltonika-gps.com/products/trackers/can/fmb240",
+  "FMB240A": "https://www.teltonika-gps.com/products/trackers/can/fmb240",
+  "FMB125E": "https://www.teltonika-gps.com/products/trackers/professional/fmb125",
+  "FMB125I": "https://www.teltonika-gps.com/products/trackers/professional/fmb125",
+  "FMB225":  "https://www.teltonika-gps.com/products/trackers/professional/fmb225",
   // 4G
-  "FMC920":  "https://teltonika-gps.com/products/trackers/fmc920",
-  "FMC880":  "https://teltonika-gps.com/products/trackers/fmc880",
-  "FMC880G": "https://teltonika-gps.com/products/trackers/fmc880",
-  "FMC800":  "https://teltonika-gps.com/products/trackers/fmc800",
-  "FMC003":  "https://teltonika-gps.com/products/trackers/fmc003",
-  "FMC130":  "https://teltonika-gps.com/products/trackers/fmc130",
-  "FMC230":  "https://teltonika-gps.com/products/trackers/fmc230",
-  "FMC234":  "https://teltonika-gps.com/products/trackers/fmc234",
-  "FMC150":  "https://teltonika-gps.com/products/trackers/fmc150",
-  "FMC150E": "https://teltonika-gps.com/products/trackers/fmc150",
-  "FMC250":  "https://teltonika-gps.com/products/trackers/fmc250",
-  "FMC250E": "https://teltonika-gps.com/products/trackers/fmc250",
-  "FMC125":  "https://teltonika-gps.com/products/trackers/fmc125",
-  "FMC225":  "https://teltonika-gps.com/products/trackers/fmc225",
-  "FMC650":  "https://teltonika-gps.com/products/trackers/fmc650",
+  "FMC920":  "https://www.teltonika-gps.com/products/trackers/basic/fmc920",
+  "FMC880":  "https://www.teltonika-gps.com/products/trackers/fast-easy/fmc880",
+  "FMC880G": "https://www.teltonika-gps.com/products/trackers/fast-easy/fmc880",
+  "FMC800":  "https://www.teltonika-gps.com/products/trackers/fast-easy/fmc800",
+  "FMC003":  "https://www.teltonika-gps.com/products/trackers/obd/fmc003",
+  "FMC130":  "https://www.teltonika-gps.com/products/trackers/advanced/fmc130",
+  "FMC230":  "https://www.teltonika-gps.com/products/trackers/advanced/fmc230",
+  "FMC234":  "https://www.teltonika-gps.com/products/trackers/advanced/fmc234",
+  "FMC150":  "https://www.teltonika-gps.com/products/trackers/can/fmc150",
+  "FMC150E": "https://www.teltonika-gps.com/products/trackers/can/fmc150",
+  "FMC250":  "https://www.teltonika-gps.com/products/trackers/can/fmc250",
+  "FMC250E": "https://www.teltonika-gps.com/products/trackers/can/fmc250",
+  "FMC125":  "https://www.teltonika-gps.com/products/trackers/professional/fmc125",
+  "FMC225":  "https://www.teltonika-gps.com/products/trackers/professional/fmc225",
+  "FMC650":  "https://www.teltonika-gps.com/products/trackers/professional/fmc650",
   // FTC
-  "FTC920":  "https://teltonika-gps.com/products/trackers/ftc920",
-  "FTC921":  "https://teltonika-gps.com/products/trackers/ftc921",
-  "FTC924":  "https://teltonika-gps.com/products/trackers/ftc924",
-  "FTC927":  "https://teltonika-gps.com/products/trackers/ftc927",
-  "FTC961":  "https://teltonika-gps.com/products/trackers/ftc961",
-  "FTC965":  "https://teltonika-gps.com/products/trackers/ftc965",
-  "FTC880":  "https://teltonika-gps.com/products/trackers/ftc880",
-  "FTC887":  "https://teltonika-gps.com/products/trackers/ftc887",
-  "FTC134":  "https://teltonika-gps.com/products/trackers/ftc134",
-  "FTC305":  "https://teltonika-gps.com/products/trackers/ftc305",
-  "FTC305W": "https://teltonika-gps.com/products/trackers/ftc305",
-  "ATC700":  "https://teltonika-gps.com/products/trackers/atc700",
+  "FTC920":  "https://www.teltonika-gps.com/products/trackers/basic/ftc920",
+  "FTC921":  "https://www.teltonika-gps.com/products/trackers/basic/ftc921",
+  "FTC924":  "https://www.teltonika-gps.com/products/trackers/basic/ftc924",
+  "FTC927":  "https://www.teltonika-gps.com/products/trackers/basic/ftc927",
+  "FTC961":  "https://www.teltonika-gps.com/products/trackers/basic/ftc961",
+  "FTC965":  "https://www.teltonika-gps.com/products/trackers/basic/ftc965",
+  "FTC880":  "https://www.teltonika-gps.com/products/trackers/fast-easy/ftc880",
+  "FTC887":  "https://www.teltonika-gps.com/products/trackers/fast-easy/ftc887",
+  "FTC134":  "https://www.teltonika-gps.com/products/trackers/advanced/ftc134",
+  "FTC305":  "https://www.teltonika-gps.com/products/trackers/e-mobility/ftc305",
+  "FTC305W": "https://www.teltonika-gps.com/products/trackers/e-mobility/ftc305",
+  "ATC700":  "https://www.teltonika-gps.com/products/trackers/autonomous/atc700",
   // Assets
-  "TAT100":  "https://teltonika-gps.com/products/trackers/tat100",
-  "TAT100B": "https://teltonika-gps.com/products/trackers/tat100",
-  "TAT140":  "https://teltonika-gps.com/products/trackers/tat140",
-  "TAT240":  "https://teltonika-gps.com/products/trackers/tat240",
-  "GH5200":  "https://teltonika-gps.com/products/trackers/gh5200",
-  "TFT100C": "https://teltonika-gps.com/products/trackers/tft100",
-  "TFT100R": "https://teltonika-gps.com/products/trackers/tft100",
-  "TFT100U": "https://teltonika-gps.com/products/trackers/tft100",
+  "TAT100":  "https://www.teltonika-gps.com/products/trackers/autonomous/tat100",
+  "TAT100B": "https://www.teltonika-gps.com/products/trackers/autonomous/tat100",
+  "TAT140":  "https://www.teltonika-gps.com/products/trackers/autonomous/tat140",
+  "TAT240":  "https://www.teltonika-gps.com/products/trackers/autonomous/tat240",
+  "GH5200":  "https://www.teltonika-gps.com/products/trackers/autonomous/gh5200",
+  "TFT100C": "https://www.teltonika-gps.com/products/trackers/e-mobility/tft100",
+  "TFT100R": "https://www.teltonika-gps.com/products/trackers/e-mobility/tft100",
+  "TFT100U": "https://www.teltonika-gps.com/products/trackers/e-mobility/tft100",
 };
 
 const BITREK_URL = {
@@ -5708,8 +5716,8 @@ function renderAll() {
 
   <!-- Закріплено знизу: підсумок + форма + кнопка -->
   <div id="cart-bottom" style="flex-shrink:0;display:flex;flex-direction:column;border-top:1px solid var(--border)">
-    <div id="cart-total-row" class="cart-total-row" style="display:none">
-      <span>Разом:</span>
+    <div id="cart-total-row" class="cart-total-row" style="display:none;padding:10px 16px">
+      <span style="font-size:13px">Разом:</span>
       <span class="cart-total-val">0 ₴</span>
     </div>
     <div id="cart-order-form" style="padding:12px 16px;display:none">
