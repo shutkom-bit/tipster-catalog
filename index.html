@@ -4162,10 +4162,14 @@ function renderPOD() {
   if (!podEl) return;
   const role = window._fbRole || 'client';
   const isPartner = role === 'partner' || role === 'admin';
-  const allP = typeof products !== 'undefined' ? products : [];
 
-  // calcPrices вже повертає UAH (множить на курс всередині)
-  // fixedUAH: число = фіксована ціна, 0 = безкоштовно, null = з products
+  // Об'єднати products + всі підмасиви extraEquipment в один список
+  const allP = (typeof products !== 'undefined' ? products : []).concat(
+    typeof extraEquipment !== 'undefined'
+      ? Object.values(extraEquipment).reduce(function(a,b){ return a.concat(b); }, [])
+      : []
+  );
+
   const items = [
     { code:'FMC920',     id:'pod-p1', fixedUAH:null },
     { code:'EXT-EYEBCN', id:'pod-p2', fixedUAH:null },
@@ -4193,9 +4197,8 @@ function renderPOD() {
       return;
     }
 
-    // calcPrices вже повертає UAH — НЕ множимо знову на курс
     const p = allP.find(function(x){ return x.code === it.code; });
-    if (!p) return;
+    if (!p) { console.warn('POD: не знайдено', it.code); return; }
     const prices = calcPrices(p);
     const priceUAH = Math.round(isPartner ? prices.partner : prices.retail);
     el.textContent = priceUAH.toLocaleString('uk-UA') + ' ₴';
