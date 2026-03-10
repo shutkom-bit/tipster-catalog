@@ -2806,7 +2806,6 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
               <option value="FTC8">FTC8xx — Fast&amp;Easy</option>
               <option value="FTC1">FTC134 — Advanced</option>
               <option value="FTC305">FTC305 — E-Mobility</option>
-              <option value="ATC700">ATC700 — Autonomous</option>
             </optgroup>
             <optgroup label="Teltonika Assets">
               <option value="TAT">TAT — Asset Tracker</option>
@@ -3790,7 +3789,6 @@ const TELTONIKA_URL = {
   "FTC134":  "https://www.teltonika-gps.com/products/trackers/advanced/ftc134",
   "FTC305":  "https://www.teltonika-gps.com/products/trackers/e-mobility/ftc305",
   "FTC305W": "https://www.teltonika-gps.com/products/trackers/e-mobility/ftc305",
-  "ATC700":  "https://www.teltonika-gps.com/products/trackers/autonomous/atc700",
   // Assets
   "TAT100":  "https://www.teltonika-gps.com/products/trackers/autonomous/tat100",
   "TAT100B": "https://www.teltonika-gps.com/products/trackers/autonomous/tat100",
@@ -3914,7 +3912,6 @@ const products = [
   { mode:"fixed", code:"FTC134",    article:"FTC134AAAA01",        name:"FTC134 CAT1",                             currency:"USD", partnerPrice:71.10, retailPrice:78.21, series:"FTC", program:"ADVANCED", brand:"Teltonika" },
   { mode:"fixed", code:"FTC305",    article:"FTC305STAC01",        name:"FTC305",                                  currency:"USD", partnerPrice:113.40, retailPrice:124.74, series:"FTC", program:"E-MOBILITY", brand:"Teltonika" },
   { mode:"fixed", code:"FTC305W",   article:"FTC305HEAB01",        name:"FTC305 without casing",                   currency:"USD", partnerPrice:113.40, retailPrice:124.74, series:"FTC", program:"E-MOBILITY", brand:"Teltonika" },
-  { mode:"fixed", code:"ATC700",    article:"ATC700AAAA01",        name:"ATC700 CAT1",                             currency:"USD", partnerPrice:82.80, retailPrice:91.08, series:"FTC", program:"AUTONOMOUS", brand:"Teltonika" },
   // TELTONIKA Assets
   { mode:"fixed", code:"TAT100",    article:"TAT100TSBAH0",        name:"TAT100",                                  currency:"USD", partnerPrice:77.40, retailPrice:85.14, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
   { mode:"fixed", code:"TAT100B",   article:"TAT1003CXW01",        name:"TAT100 (3x batt.)",                       currency:"USD", partnerPrice:88.20, retailPrice:97.02, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
@@ -4820,7 +4817,6 @@ const PROD_META = {
   "FTC880":["4G","RS485","RS232"],"FTC887":["4G","RS485","RS232"],
   "FTC134":["4G","RS485","RS232","1-Wire"],
   "FTC305":["4G","CAN"],"FTC305W":["4G","CAN"],
-  "ATC700":["4G"],
   // Assets
   "TAT100":["4G"],"TAT100B":["4G"],"TAT140":["4G"],"TAT240":["4G"],
   "GH5200":["2G"],"TFT100C":["4G","CAN"],"TFT100R":["4G","RS485","RS232"],"TFT100U":["4G"],
@@ -4895,7 +4891,6 @@ function renderConfigurator() {
     if (subseries === 'TAT')    return c.startsWith('TAT');
     if (subseries === 'TFT')    return c.startsWith('TFT');
     if (subseries === 'GH52')   return c.startsWith('GH5');
-    if (subseries === 'ATC700') return c === 'ATC700';
     if (subseries === 'FTC305') return c.startsWith('FTC3') || c === 'FTC305W';
     if (subseries === 'FTC1')   return c === 'FTC134';
     // для решти — prefix-match на код
