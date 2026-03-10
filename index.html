@@ -5646,6 +5646,18 @@ function selectRole(role) {
 }
 
 // showSection extended
+
+function renderAll() {
+  const active = document.querySelector('.page-section.active');
+  if (!active) { showSection('overview'); return; }
+  const id = active.id.replace('sec-', '');
+  ['kits-grid'].forEach(function(gid) {
+    var el = document.getElementById(gid);
+    if (el) delete el.dataset.rendered;
+  });
+  showSection(id);
+}
+
 </script>
 
 <!-- ══ CART PANEL ══ -->
