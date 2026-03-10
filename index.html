@@ -4124,88 +4124,136 @@ function renderKits() {
 
   const rate = parseFloat(document.getElementById('usdRate')?.value) || 41.20;
 
-  const kits = [
+  // Отримати продукти з глобального масиву
+  const allP = typeof products !== 'undefined' ? products : [];
+
+  const categories = [
     {
-      icon: '🚗', badge: 'Популярний', badgeColor: '#2563eb',
-      name: 'Легкове авто — Teltonika',
-      subtitle: 'FMB920 + реле блокування',
-      desc: 'Місцезнаходження, блокування двигуна, сповіщення про рух. Захист від угону.',
-      items: ['Трекер Teltonika FMB920', 'Реле блокування двигуна', 'SIM карта', '1 місяць платформи безкоштовно'],
-      price_usd: 51.16
+      id: 'instant',
+      icon: '⚡',
+      title: 'Миттєво',
+      color: '#f59e0b',
+      desc: 'Не потребує монтажу. Підключіть у діагностичний роз'єм OBD або прикурювач. Ідеально для контролю співробітників на особистих авто.',
+      programs: ['OBD', 'FAST&EASY'],
+      extraBitrek: []
     },
     {
-      icon: '🚗', badge: null,
-      name: 'Легкове авто — Bitrek',
-      subtitle: 'BI 522L + реле блокування',
-      desc: 'Надійний захист на базі українського трекера Bitrek. Блокування, тривога, моніторинг.',
-      items: ['Трекер BI 522 L TREK', 'Реле блокування двигуна', 'SIM карта', '1 місяць платформи безкоштовно'],
-      price_usd: 58.00
+      id: 'self',
+      icon: '🔧',
+      title: 'Самостійно',
+      color: '#22c55e',
+      desc: 'Підключіть живлення 12/24В самостійно або у будь-якого автоелектрика за ~20 хвилин. Компактний маячок встановлюється приховано.',
+      programs: ['BASIC'],
+      extraBitrek: ['BI 522 L TREK', 'BI 530 R TREK', 'BI 420 TREK', 'BI 410 TREK', 'BI 530 C TREK', 'BI 450 TREK', 'BI 910 TREK', 'BI 868 TREK']
     },
     {
-      icon: '⛽', badge: 'Для бізнесу', badgeColor: '#16a34a',
-      name: 'Контроль палива',
-      subtitle: 'BI 530C TREK v3 + датчик BI FLS 700',
-      desc: 'Точний облік витрат пального. Виявлення зливу, аналітика, автоматичні звіти.',
-      items: ['Трекер BI 530 C TREK v3', 'Датчик рівня палива BI FLS 700', 'SIM карта', '1 місяць платформи безкоштовно'],
-      price_usd: 185.00
+      id: 'pro',
+      icon: '👨‍🔧',
+      title: 'Встановлення спеціалістом',
+      color: '#2563eb',
+      desc: 'Фахівці авторизованого центру встановлять систему будь-якої складності: датчики палива, ідентифікація водія, тахограф, CAN-шина.',
+      programs: ['ADVANCED', 'CAN', 'PROFESSIONAL', 'Advanced'],
+      extraBitrek: ['BI 530 C TREK', 'BI 450 TREK']
     },
     {
-      icon: '📡', badge: null,
-      name: 'Маяк CAT1',
-      subtitle: 'ATC700 CAT1',
-      desc: 'Автономний маяк для активів, причепів та вантажів. Без постійного живлення.',
-      items: ['Маяк ATC700 CAT1', 'SIM карта', '1 місяць платформи безкоштовно'],
-      price_usd: 91.08
+      id: 'autonomous',
+      icon: '📡',
+      title: 'Автономний маяк',
+      color: '#8b5cf6',
+      desc: 'Працює без постійного живлення від вбудованої батареї. Для відстеження причепів, вантажів, активів та техніки без бортової мережі.',
+      programs: ['AUTONOMOUS'],
+      extraBitrek: ['BI 310 Cicada']
     },
     {
-      icon: '📍', badge: null,
-      name: 'Маяк Cicada',
-      subtitle: 'BI 310 Cicada v.2',
-      desc: 'Компактний маяк з магнітним кріпленням. Тривала робота від батареї.',
-      items: ['BI 310 Cicada v.2', 'SIM карта', '1 місяць платформи безкоштовно'],
-      price_usd: 72.00
+      id: 'emobility',
+      icon: '🔋',
+      title: 'E-Mobility',
+      color: '#06b6d4',
+      desc: 'Спеціалізовані трекери для електротранспорту, спецтехніки та транспортних засобів з нестандартним живленням.',
+      programs: ['E-MOBILITY'],
+      extraBitrek: []
     },
     {
-      icon: '🏍️', badge: null,
-      name: 'Мото та спецтехніка',
-      subtitle: 'FMB965 IP67',
-      desc: 'Захищений трекер IP67 для мотоциклів, квадроциклів та спецтехніки.',
-      items: ['Трекер FMB965 (IP67)', 'SIM карта', '1 місяць платформи безкоштовно'],
-      price_usd: 66.71
+      id: 'app',
+      icon: '📱',
+      title: 'Мобільний додаток',
+      color: '#ec4899',
+      desc: 'Встановіть додаток X-GPS TRACKER на смартфон водія. Контроль поїздок за GPS, завдання, відстеження виконання. Без додаткового обладнання.',
+      programs: [],
+      extraBitrek: [],
+      isApp: true
     },
   ];
 
-  grid.innerHTML = kits.map(k => {
-    const uah = Math.round(k.price_usd * rate);
-    const badge = k.badge ? `<span style="position:absolute;top:14px;right:14px;background:${k.badgeColor};color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;font-family:'IBM Plex Mono',monospace">${k.badge}</span>` : '';
-    const items = k.items.map(i => `
-      <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2)">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,8 6,12 14,4"/></svg>
-        ${i}
-      </div>`).join('');
+  grid.innerHTML = categories.map(cat => {
+    let models = [];
+
+    if (!cat.isApp) {
+      // Teltonika моделі за програмою
+      const tlt = allP.filter(p => p.brand === 'Teltonika' && cat.programs.includes(p.program));
+      // Bitrek моделі за назвою
+      const bit = allP.filter(p => p.brand === 'Bitrek' && cat.extraBitrek.includes(p.name));
+      models = [...tlt, ...bit];
+    }
+
+    const modelTags = cat.isApp
+      ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+          <a href="https://play.google.com/store/apps/details?id=com.navixy.xgps.client.app" target="_blank"
+             style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-2);text-decoration:none">
+            🤖 Android
+          </a>
+          <a href="https://apps.apple.com/us/app/navixy-viewer/id883610994" target="_blank"
+             style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-2);text-decoration:none">
+            🍎 Apple iOS
+          </a>
+        </div>`
+      : models.length > 0
+        ? `<div style="margin-bottom:14px">
+            <div style="font-size:10px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Моделі</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              ${models.map(p => {
+                const uah = Math.round((p.retailPrice || 0) * rate);
+                return `<div onclick="showSection('${p.brand === 'Teltonika' ? 'teltonika' : 'bitrek'}')"
+                  style="padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:5px;font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer;white-space:nowrap;transition:border-color 0.15s"
+                  onmouseover="this.style.borderColor='${cat.color}';this.style.color='${cat.color}'"
+                  onmouseout="this.style.borderColor='';this.style.color=''"
+                  title="${p.name} — від ${uah.toLocaleString('uk-UA')} ₴">${p.code || p.name}</div>`;
+              }).join('')}
+            </div>
+          </div>`
+        : '';
+
+    const priceRange = models.length > 0
+      ? (() => {
+          const prices = models.map(p => Math.round((p.retailPrice || 0) * rate)).filter(x => x > 0);
+          const min = Math.min(...prices);
+          const max = Math.max(...prices);
+          return `<div style="font-size:11px;color:var(--text-3);font-family:'IBM Plex Mono',monospace">
+            від <span style="color:var(--accent);font-weight:700">${min.toLocaleString('uk-UA')} ₴</span>
+            ${min !== max ? `до ${max.toLocaleString('uk-UA')} ₴` : ''}
+            · ${models.length} моделей
+          </div>`;
+        })()
+      : '';
+
     return `
-    <div style="position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;gap:0;transition:box-shadow 0.2s"
-         onmouseover="this.style.boxShadow='0 4px 20px rgba(37,99,235,0.12)'"
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;transition:box-shadow 0.2s"
+         onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,0.12)'"
          onmouseout="this.style.boxShadow='none'">
-      ${badge}
-      <div style="font-size:28px;margin-bottom:10px">${k.icon}</div>
-      <div style="font-size:15px;font-weight:700;margin-bottom:3px">${k.name}</div>
-      <div style="font-size:11.5px;color:var(--accent);font-family:'IBM Plex Mono',monospace;margin-bottom:10px">${k.subtitle}</div>
-      <div style="font-size:12.5px;color:var(--text-3);line-height:1.55;margin-bottom:14px">${k.desc}</div>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;padding:12px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
-        ${items}
-      </div>
-      <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="font-size:26px">${cat.icon}</div>
         <div>
-          <div style="font-size:10px;color:var(--text-3);font-family:'IBM Plex Mono',monospace">від</div>
-          <div style="font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">${uah.toLocaleString('uk-UA')} ₴</div>
-          <div style="font-size:10px;color:var(--text-3)">≈ $${k.price_usd.toFixed(0)} · монтаж окремо</div>
+          <div style="font-size:15px;font-weight:700">${cat.title}</div>
+          <div style="width:32px;height:2px;background:${cat.color};border-radius:2px;margin-top:3px"></div>
         </div>
-        <button onclick="sendKitOrder('${k.name}')" style="padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Замовити →</button>
       </div>
+      <div style="font-size:12.5px;color:var(--text-3);line-height:1.6;margin-bottom:14px">${cat.desc}</div>
+      ${modelTags}
+      ${priceRange}
     </div>`;
   }).join('');
 }
+
 
 function sendKitOrder(kitName) {
   const user = window._fbUser;
