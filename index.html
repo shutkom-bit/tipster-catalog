@@ -4117,6 +4117,30 @@ function showLogin() { showOverlay('login-overlay'); }
 // ══════════════════════════════════════════════
 // ГОТОВІ РІШЕННЯ — renderKits
 // ══════════════════════════════════════════════
+function goToProduct(brand, code) {
+  const section = brand === 'Teltonika' ? 'teltonika' : 'bitrek';
+  showSection(section);
+  // Знайти рядок таблиці або картку і підсвітити
+  setTimeout(function() {
+    // Шукаємо по data-code або по тексту в таблиці
+    const rows = document.querySelectorAll('#sec-' + section + ' tr, #sec-' + section + ' .flip-card');
+    let found = null;
+    rows.forEach(function(row) {
+      if (row.textContent.includes(code)) {
+        if (!found) found = row;
+      }
+    });
+    if (found) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Підсвітити
+      const orig = found.style.background || '';
+      found.style.transition = 'background 0.3s';
+      found.style.background = 'rgba(37,99,235,0.13)';
+      setTimeout(function() { found.style.background = orig; }, 1800);
+    }
+  }, 350);
+}
+
 function renderKits() {
   const grid = document.getElementById('kits-grid');
   if (!grid || grid.dataset.rendered) return;
