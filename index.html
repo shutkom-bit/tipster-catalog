@@ -3004,52 +3004,43 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         <div style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
 
           <!-- ══ ТОВАР ДНЯ ══ -->
-          <div id="pod-widget" style="background:var(--bg-card);border:1px solid rgba(239,68,68,0.5);border-radius:14px;overflow:hidden;position:relative;box-shadow:0 4px 24px rgba(239,68,68,0.08)">
-
-            <!-- Верхня смуга градієнт -->
-            <div style="height:4px;background:linear-gradient(90deg,#ef4444,#f97316,#eab308)"></div>
-
+          <div id="pod-widget" style="background:var(--bg-card);border:1px solid rgba(239,68,68,0.45);border-radius:12px;overflow:hidden;position:relative">
+            <div style="height:3px;background:linear-gradient(90deg,#ef4444,#f97316,#eab308)"></div>
             <!-- Заголовок -->
-            <div style="padding:16px 18px 0;display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:8px">
-                <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#f97316);display:flex;align-items:center;justify-content:center;font-size:14px;animation:pod-pulse 2s infinite">⭐</div>
+            <div style="padding:12px 14px 0;display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="font-size:16px;animation:pod-pulse 2s infinite;display:inline-block">⭐</span>
                 <div>
                   <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#ef4444">Товар дня</div>
-                  <div style="font-size:9px;color:var(--text-3);letter-spacing:0.05em">Спеціальна пропозиція</div>
+                  <div style="font-size:9px;color:var(--text-3)">Спеціальна пропозиція</div>
                 </div>
               </div>
-              <div style="font-size:9px;padding:3px 8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:20px;color:#ef4444;font-weight:700;letter-spacing:0.05em">КОМПЛЕКТ</div>
+              <div style="font-size:9px;padding:2px 7px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:20px;color:#ef4444;font-weight:700">КОМПЛЕКТ</div>
             </div>
-
-            <!-- Іконка пристрою велика -->
-            <div style="padding:18px 18px 12px;display:flex;flex-direction:column;align-items:center;text-align:center">
-              <div style="width:80px;height:80px;border-radius:16px;background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(249,115,22,0.06));border:1px solid rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:12px">📡</div>
-              <div style="font-size:15px;font-weight:800;margin-bottom:3px;line-height:1.3">FMC920 + EYE Beacon</div>
-              <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Захист від угону</div>
-              <div style="font-size:11px;color:var(--text-2);line-height:1.55;background:rgba(239,68,68,0.04);border-radius:8px;padding:8px 10px;border:1px solid rgba(239,68,68,0.1)">
-                Запуск двигуна дозволено лише авторизованим користувачам з маяком EYE. Неавторизовані особи не зможуть запустити двигун.
-              </div>
+            <!-- Назва і опис -->
+            <div style="padding:10px 14px 8px;text-align:center">
+              <div style="font-size:22px;margin-bottom:6px">📡</div>
+              <div style="font-size:13px;font-weight:800;margin-bottom:3px">FMC920 + EYE Beacon</div>
+              <div style="font-size:10px;color:var(--text-3);line-height:1.5">Запуск дозволено лише авторизованим з маяком EYE. Захист від угону.</div>
             </div>
-
             <!-- Компоненти -->
-            <div style="margin:0 14px 12px;border-radius:8px;overflow:hidden;border:1px solid var(--border)">
-              <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);padding:6px 10px;background:var(--bg);border-bottom:1px solid var(--border)">Склад комплекту</div>
-              <div id="pod-rows" style="background:var(--bg-card)">
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">📡 FMC920 CAT1</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p1">—</span></div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">👁 EYE BEACON</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p2">—</span></div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">⚡ Реле 40A</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p3">—</span></div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">📶 SIM Kyivstar</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p4">—</span></div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;font-size:11px"><span style="color:var(--text-2)">🖥 GPS-сервер 1 міс</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600;color:#22c55e" id="pod-p5">—</span></div>
+            <div style="margin:0 10px 10px;border-radius:7px;overflow:hidden;border:1px solid var(--border)">
+              <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);padding:4px 8px;background:var(--bg);border-bottom:1px solid var(--border)">Склад</div>
+              <div style="background:var(--bg-card)">
+                <div style="display:flex;justify-content:space-between;padding:4px 8px;border-bottom:1px solid var(--border);font-size:10.5px"><span style="color:var(--text-2)">📡 FMC920 CAT1</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px" id="pod-p1">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:4px 8px;border-bottom:1px solid var(--border);font-size:10.5px"><span style="color:var(--text-2)">👁 EYE BEACON</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px" id="pod-p2">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:4px 8px;border-bottom:1px solid var(--border);font-size:10.5px"><span style="color:var(--text-2)">⚡ Реле 40A</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px" id="pod-p3">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:4px 8px;border-bottom:1px solid var(--border);font-size:10.5px"><span style="color:var(--text-2)">📶 SIM Kyivstar</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px" id="pod-p4">—</span></div>
+                <div style="display:flex;justify-content:space-between;padding:4px 8px;font-size:10.5px"><span style="color:var(--text-2)">🖥 GPS-сервер</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#22c55e" id="pod-p5">—</span></div>
               </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:linear-gradient(90deg,rgba(239,68,68,0.06),rgba(249,115,22,0.04));border-top:1px solid rgba(239,68,68,0.2)">
-                <span style="font-size:12px;font-weight:700" id="pod-total-label">Разом РРЦ</span>
-                <span style="font-size:15px;font-weight:800;color:#ef4444;font-family:'IBM Plex Mono',monospace" id="pod-total">—</span>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:linear-gradient(90deg,rgba(239,68,68,0.07),rgba(249,115,22,0.04));border-top:1px solid rgba(239,68,68,0.2)">
+                <span style="font-size:11px;font-weight:700" id="pod-total-label">Разом РРЦ</span>
+                <span style="font-size:13px;font-weight:800;color:#ef4444;font-family:'IBM Plex Mono',monospace" id="pod-total">—</span>
               </div>
             </div>
-
             <!-- Кнопка -->
-            <div style="padding:0 14px 16px">
-              <button onclick="addPodToCart()" style="width:100%;padding:11px;background:linear-gradient(90deg,#ef4444,#f97316);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.02em;transition:opacity 0.15s;box-shadow:0 3px 12px rgba(239,68,68,0.3)" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+            <div style="padding:0 10px 12px">
+              <button onclick="addPodToCart()" style="width:100%;padding:9px;background:linear-gradient(90deg,#ef4444,#f97316);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.15s;box-shadow:0 2px 8px rgba(239,68,68,0.3)" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
                 🛒 Додати до кошика
               </button>
             </div>
@@ -3828,8 +3819,8 @@ const TELTONIKA_URL = {
   "FTC880":  "https://www.teltonika-gps.com/products/trackers/fast-easy/ftc880",
   "FTC887":  "https://www.teltonika-gps.com/products/trackers/fast-easy/ftc887",
   "FTC134":  "https://www.teltonika-gps.com/products/trackers/advanced/ftc134",
-  "FTC305":  "https://www.teltonika-gps.com/products/trackers/e-mobility/ftc305",
-  "FTC305W": "https://www.teltonika-gps.com/products/trackers/e-mobility/ftc305",
+  "FTC305":  "https://wiki.teltonika-gps.com/view/FTC305",
+  "FTC305W": "https://wiki.teltonika-gps.com/view/FTC305",
   // Assets
   "TAT100":  "https://www.teltonika-gps.com/products/trackers/autonomous/tat100",
   "TAT100B": "https://www.teltonika-gps.com/products/trackers/autonomous/tat100",
@@ -3959,7 +3950,7 @@ const products = [
   { mode:"fixed", code:"TAT100B",   article:"TAT1003CXW01",        name:"TAT100 (3x batt.)",                       currency:"USD", partnerPrice:88.20, retailPrice:97.02, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
   { mode:"fixed", code:"TAT140",    article:"TAT1403UBP01",        name:"TAT140 CAT1",                             currency:"USD", partnerPrice:108.00, retailPrice:118.80, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
   { mode:"fixed", code:"TAT240",    article:"TAT240R6BP01",        name:"TAT240 (tamper) CAT1",                    currency:"USD", partnerPrice:124.20, retailPrice:136.62, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
-  { mode:"fixed", code:"ATC700-P",   article:"ATC700AAAA01",        name:"ATC700 CAT1 Персональний", currency:"USD", partnerPrice:56.00, retailPrice:86.00, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika",
+  { mode:"fixed", code:"ATC700-P",   article:"ATC700AAAA01",        name:"ATC700 CAT1 Персональний", currency:"USD", partnerPrice:61.60, retailPrice:86.40, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika",
     spec:"Персональний трекер CAT1. Вбудована батарея, IPX7, BLE. Ідеально для відстеження людей та цінностей." },
   { mode:"fixed", code:"GH5200",    article:"GH5200TSTAA0",        name:"GH5200",                                  currency:"USD", partnerPrice:64.80, retailPrice:71.28, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
   { mode:"fixed", code:"TFT100C",   article:"TFT100TSTAA0",        name:"TFT100 (CAN)",                            currency:"USD", partnerPrice:86.40, retailPrice:95.04, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" },
