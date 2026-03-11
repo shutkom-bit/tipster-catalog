@@ -4558,14 +4558,14 @@ function buildTable(items, urlMap, showSpec) {
         const { partner, retail } = calcPrices(p);
         const url = (urlMap && urlMap[p.code]) ? urlMap[p.code] : (p.url || null);
         const tagClass = PROGRAM_TAG[p.program] || 'tag-gray';
+        const isPromo = PROMO_CODES.has(p.code);
+        const isNew = NEW_CODES.has(p.code);
         const promoBadge = isPromo ? '<span class="promo-badge">🔥 Акція</span>' : (isNew ? '<span class="new-badge">✨ Новинка</span>' : '');
         const nameHtml = url
           ? `<a href="${url}" target="_blank">${p.name} <span class="link-icon">↗</span></a>${promoBadge}`
           : p.name + promoBadge;
         const specHtml = (showSpec && p.spec) ? `<div class="cell-spec">${p.spec}</div>` : '';
         cartRegistry.set(p.code, { article: p.article||p.code, name: p.name, spec: p.spec||'', _uah: retail, note: null });
-        const isPromo = PROMO_CODES.has(p.code);
-        const isNew = NEW_CODES.has(p.code);
         return `<tr class="${isPromo ? 'promo-row' : isNew ? 'new-row' : ''}">
           <td class="cell-name">
             <div class="cell-name-top">${nameHtml}</div>
