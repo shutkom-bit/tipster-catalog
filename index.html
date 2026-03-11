@@ -2230,6 +2230,42 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
   #mobile-rates-bar { display: flex !important; }
   #cart-fab { bottom: calc(58px + env(safe-area-inset-bottom, 0px)) !important; }
 }
+
+@keyframes pod-pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* ── Бейдж АКЦІЯ ── */
+.promo-badge {
+  display:inline-flex;align-items:center;gap:3px;
+  padding:2px 7px;border-radius:4px;
+  font-size:9px;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.06em;
+  background:linear-gradient(90deg,#ef4444,#f97316);
+  color:#fff;margin-left:6px;vertical-align:middle;
+  box-shadow:0 1px 4px rgba(239,68,68,0.35);
+  white-space:nowrap;animation:promo-glow 2.5s ease-in-out infinite;
+}
+@keyframes promo-glow {
+  0%,100% { box-shadow:0 1px 4px rgba(239,68,68,0.35); }
+  50%      { box-shadow:0 1px 10px rgba(239,68,68,0.65); }
+}
+tr.promo-row td:first-child { position:relative; }
+tr.promo-row { background:rgba(239,68,68,0.035) !important; }
+
+/* ── Бейдж NEW ── */
+.new-badge {
+  display:inline-flex;align-items:center;gap:2px;
+  padding:2px 6px;border-radius:4px;
+  font-size:9px;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.06em;
+  background:linear-gradient(90deg,#2563eb,#06b6d4);
+  color:#fff;margin-left:6px;vertical-align:middle;
+  box-shadow:0 1px 4px rgba(37,99,235,0.35);
+  white-space:nowrap;
+}
+tr.new-row { background:rgba(37,99,235,0.03) !important; }
 </style>
 
 </head>
@@ -2968,32 +3004,55 @@ body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
         <div style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
 
           <!-- ══ ТОВАР ДНЯ ══ -->
-          <div id="pod-widget" style="background:var(--bg-card);border:1px solid var(--accent);border-radius:12px;padding:22px 20px;position:relative;overflow:hidden">
-            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#06b6d4)"></div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-              <span style="font-size:18px">⭐</span>
-              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent)">Товар дня</span>
+          <div id="pod-widget" style="background:var(--bg-card);border:1px solid rgba(239,68,68,0.5);border-radius:14px;overflow:hidden;position:relative;box-shadow:0 4px 24px rgba(239,68,68,0.08)">
+
+            <!-- Верхня смуга градієнт -->
+            <div style="height:4px;background:linear-gradient(90deg,#ef4444,#f97316,#eab308)"></div>
+
+            <!-- Заголовок -->
+            <div style="padding:16px 18px 0;display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#f97316);display:flex;align-items:center;justify-content:center;font-size:14px;animation:pod-pulse 2s infinite">⭐</div>
+                <div>
+                  <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#ef4444">Товар дня</div>
+                  <div style="font-size:9px;color:var(--text-3);letter-spacing:0.05em">Спеціальна пропозиція</div>
+                </div>
+              </div>
+              <div style="font-size:9px;padding:3px 8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:20px;color:#ef4444;font-weight:700;letter-spacing:0.05em">КОМПЛЕКТ</div>
             </div>
-            <div style="font-size:14px;font-weight:700;margin-bottom:4px">FMC920 + EYE Beacon — Захист від угону</div>
-            <div style="font-size:11px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;margin-bottom:12px">FMC920 CAT1 · EYE BEACON · Реле 40A · SIM · 1 міс</div>
-            <div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:14px">
-              Запуск двигуна дозволено лише авторизованим користувачам з призначеним маяком EYE. Неавторизовані особи не зможуть запустити двигун.
-            </div>
-            <!-- Компоненти -->
-            <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px;padding:10px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
-              <div style="font-size:10px;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">Комплект</div>
-              <div style="display:flex;justify-content:space-between;font-size:11px"><span>📡 FMC920 CAT1</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p1"></span></div>
-              <div style="display:flex;justify-content:space-between;font-size:11px"><span>👁 EYE BEACON</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p2"></span></div>
-              <div style="display:flex;justify-content:space-between;font-size:11px"><span>⚡ Реле 40A (1 канал)</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p3"></span></div>
-              <div style="display:flex;justify-content:space-between;font-size:11px"><span>📶 SIM-карта Kyivstar</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p4"></span></div>
-              <div style="display:flex;justify-content:space-between;font-size:11px"><span>🖥 GPS-сервер 1 міс</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--text-2)" id="pod-p5"></span></div>
-              <div style="border-top:1px solid var(--border);margin-top:5px;padding-top:5px;display:flex;justify-content:space-between;font-size:12px;font-weight:700">
-                <span id="pod-total-label">Разом РРЦ</span><span style="color:var(--accent)" id="pod-total"></span>
+
+            <!-- Іконка пристрою велика -->
+            <div style="padding:18px 18px 12px;display:flex;flex-direction:column;align-items:center;text-align:center">
+              <div style="width:80px;height:80px;border-radius:16px;background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(249,115,22,0.06));border:1px solid rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:12px">📡</div>
+              <div style="font-size:15px;font-weight:800;margin-bottom:3px;line-height:1.3">FMC920 + EYE Beacon</div>
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Захист від угону</div>
+              <div style="font-size:11px;color:var(--text-2);line-height:1.55;background:rgba(239,68,68,0.04);border-radius:8px;padding:8px 10px;border:1px solid rgba(239,68,68,0.1)">
+                Запуск двигуна дозволено лише авторизованим користувачам з маяком EYE. Неавторизовані особи не зможуть запустити двигун.
               </div>
             </div>
-            <button onclick="addPodToCart()" style="width:100%;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
-              + Додати до кошика
-            </button>
+
+            <!-- Компоненти -->
+            <div style="margin:0 14px 12px;border-radius:8px;overflow:hidden;border:1px solid var(--border)">
+              <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);padding:6px 10px;background:var(--bg);border-bottom:1px solid var(--border)">Склад комплекту</div>
+              <div id="pod-rows" style="background:var(--bg-card)">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">📡 FMC920 CAT1</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p1">—</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">👁 EYE BEACON</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p2">—</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">⚡ Реле 40A</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p3">—</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">📶 SIM Kyivstar</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p4">—</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;font-size:11px"><span style="color:var(--text-2)">🖥 GPS-сервер 1 міс</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600;color:#22c55e" id="pod-p5">—</span></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:linear-gradient(90deg,rgba(239,68,68,0.06),rgba(249,115,22,0.04));border-top:1px solid rgba(239,68,68,0.2)">
+                <span style="font-size:12px;font-weight:700" id="pod-total-label">Разом РРЦ</span>
+                <span style="font-size:15px;font-weight:800;color:#ef4444;font-family:'IBM Plex Mono',monospace" id="pod-total">—</span>
+              </div>
+            </div>
+
+            <!-- Кнопка -->
+            <div style="padding:0 14px 16px">
+              <button onclick="addPodToCart()" style="width:100%;padding:11px;background:linear-gradient(90deg,#ef4444,#f97316);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.02em;transition:opacity 0.15s;box-shadow:0 3px 12px rgba(239,68,68,0.3)" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+                🛒 Додати до кошика
+              </button>
+            </div>
           </div>
 
           <!-- ══ НЕ ЗНАЙШЛИ ══ -->
@@ -3776,6 +3835,7 @@ const TELTONIKA_URL = {
   "TAT100B": "https://www.teltonika-gps.com/products/trackers/autonomous/tat100",
   "TAT140":  "https://www.teltonika-gps.com/products/trackers/autonomous/tat140",
   "TAT240":  "https://www.teltonika-gps.com/products/trackers/autonomous/tat240",
+  "ATC700-P": "https://wiki.teltonika-gps.com/view/ATC700",
   "GH5200":  "https://www.teltonika-gps.com/products/trackers/assets-workforce/gh5200",
   "TFT100C": "https://www.teltonika-gps.com/products/trackers/e-mobility/tft100",
   "TFT100R": "https://www.teltonika-gps.com/products/trackers/e-mobility/tft100",
@@ -3899,6 +3959,8 @@ const products = [
   { mode:"fixed", code:"TAT100B",   article:"TAT1003CXW01",        name:"TAT100 (3x batt.)",                       currency:"USD", partnerPrice:88.20, retailPrice:97.02, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
   { mode:"fixed", code:"TAT140",    article:"TAT1403UBP01",        name:"TAT140 CAT1",                             currency:"USD", partnerPrice:108.00, retailPrice:118.80, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
   { mode:"fixed", code:"TAT240",    article:"TAT240R6BP01",        name:"TAT240 (tamper) CAT1",                    currency:"USD", partnerPrice:124.20, retailPrice:136.62, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
+  { mode:"fixed", code:"ATC700-P",   article:"ATC700AAAA01",        name:"ATC700 CAT1 Персональний", currency:"USD", partnerPrice:56.00, retailPrice:86.00, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika",
+    spec:"Персональний трекер CAT1. Вбудована батарея, IPX7, BLE. Ідеально для відстеження людей та цінностей." },
   { mode:"fixed", code:"GH5200",    article:"GH5200TSTAA0",        name:"GH5200",                                  currency:"USD", partnerPrice:64.80, retailPrice:71.28, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
   { mode:"fixed", code:"TFT100C",   article:"TFT100TSTAA0",        name:"TFT100 (CAN)",                            currency:"USD", partnerPrice:86.40, retailPrice:95.04, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" },
   { mode:"fixed", code:"TFT100R",   article:"TFT100TRSAC0",        name:"TFT100 (RS232 or RS485)",                 currency:"USD", partnerPrice:82.80, retailPrice:91.08, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" },
@@ -4472,6 +4534,11 @@ function renderOverview() {
 // ════════════════════════════════════════════════════════
 //  RENDER TABLE (generic)
 // ════════════════════════════════════════════════════════
+// Коди товарів зі значком АКЦІЯ — редагуйте тут
+const PROMO_CODES = new Set(['FMB920']);
+// Коди нових товарів — значок NEW
+const NEW_CODES = new Set(['ATC700-P', 'FTC927']);
+
 function buildTable(items, urlMap, showSpec) {
   if (!items.length) return `<div class="no-results">Нічого не знайдено</div>`;
   return `<table class="db-table">
@@ -4491,12 +4558,15 @@ function buildTable(items, urlMap, showSpec) {
         const { partner, retail } = calcPrices(p);
         const url = (urlMap && urlMap[p.code]) ? urlMap[p.code] : (p.url || null);
         const tagClass = PROGRAM_TAG[p.program] || 'tag-gray';
+        const promoBadge = isPromo ? '<span class="promo-badge">🔥 Акція</span>' : (isNew ? '<span class="new-badge">✨ Новинка</span>' : '');
         const nameHtml = url
-          ? `<a href="${url}" target="_blank">${p.name} <span class="link-icon">↗</span></a>`
-          : p.name;
+          ? `<a href="${url}" target="_blank">${p.name} <span class="link-icon">↗</span></a>${promoBadge}`
+          : p.name + promoBadge;
         const specHtml = (showSpec && p.spec) ? `<div class="cell-spec">${p.spec}</div>` : '';
         cartRegistry.set(p.code, { article: p.article||p.code, name: p.name, spec: p.spec||'', _uah: retail, note: null });
-        return `<tr>
+        const isPromo = PROMO_CODES.has(p.code);
+        const isNew = NEW_CODES.has(p.code);
+        return `<tr class="${isPromo ? 'promo-row' : isNew ? 'new-row' : ''}">
           <td class="cell-name">
             <div class="cell-name-top">${nameHtml}</div>
             ${specHtml}
