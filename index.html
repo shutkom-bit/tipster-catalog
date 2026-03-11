@@ -4040,7 +4040,7 @@ const accessories = {
       spec:"Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.",
       price_uah:35, url:null, brand:'vodafone' },
     { code:'SIM-EU',  name:"SIM Roaming (EU+UA)",
-      spec:"Фізична Multi-SIM. Вартість сплачується один раз при замовленні.",
+      spec:"Фізична Multi-SIM. Вартість сплачується один раз при замовленні. Мінімальне замовлення — 10 шт.",
       price_uah:250, url:null, brand:'roaming' },
   ],
   mount: [
@@ -4528,7 +4528,7 @@ function renderOverview() {
 // Коди товарів зі значком АКЦІЯ — редагуйте тут
 const PROMO_CODES = new Set(['FMB920']);
 // Коди нових товарів — значок NEW
-const NEW_CODES = new Set(['ATC700-P', 'FTC927']);
+const NEW_CODES = new Set(['ATC700-P', 'FTC927', 'BI 410 TREK']);
 
 function buildTable(items, urlMap, showSpec) {
   if (!items.length) return `<div class="no-results">Нічого не знайдено</div>`;
