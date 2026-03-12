@@ -1202,6 +1202,11 @@ body[data-role="client"] .cell-price-eur,
 body[data-role="client"] th.cell-price-eur { display: none !important; }
 body[data-role="client"] .cell-retail,
 body[data-role="client"] th.cell-retail { display: table-cell !important; }
+
+/* ── Auth bar завжди видимий після логіну ── */
+body[data-role="client"] #auth-user-bar,
+body[data-role="partner"] #auth-user-bar,
+body[data-role="admin"] #auth-user-bar { display: flex !important; }
 /* Партнер — показуємо все */
 body[data-role="partner"] .cell-partner,
 body[data-role="partner"] th.cell-partner,
@@ -3415,7 +3420,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
   </div><!-- /page -->
 </div><!-- /main -->
 
-<div id="login-overlay">
+<div id="login-overlay" style="display:none">
   <div style="display:flex;width:100%;min-height:100vh;margin:0 auto;max-width:1160px">
     <!-- Ліва панель -->
     <div class="auth-left-panel">
@@ -3834,7 +3839,8 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
       Ваш запит партнерського доступу на розгляді.<br>
       Після підтвердження адміністратором ви отримаєте доступ до оптових цін.
     </div>
-    <button class="auth-btn" onclick="hideOverlays()">Переглянути РРЦ ціни</button>
+    <button class="auth-btn" onclick="hideOverlays(); if(window.updateAuthHeader) window.updateAuthHeader();">Переглянути РРЦ ціни</button>
+    <button onclick="if(window.fbSignOut)fbSignOut();" style="margin-top:8px;background:none;border:none;color:var(--text-3);font-size:12px;cursor:pointer;font-family:inherit;text-decoration:underline">Вийти з акаунту</button>
   </div>
 </div>
 
@@ -6004,6 +6010,9 @@ const db   = getFirestore(app);
 window._fbUser = null;
 window._fbRole = null; // 'partner' | 'client' | 'admin' | 'pending'
 
+// Показати login overlay до перевірки сесії
+showOverlay('login-overlay');
+
 // ── Показати правильний overlay ───────────────────────────
 function showOverlay(id) {
   ['login-overlay','register-overlay','pending-overlay'].forEach(oid => {
@@ -6052,9 +6061,9 @@ function applyRole(role) {
   if (typeof renderAll === 'function') renderAll();
 }
 
-function updateAuthHeader() {
+window.updateAuthHeader = function updateAuthHeader() {
   const user = window._fbUser;
-  const role = window._fbRole;
+  const role = window._fbRole || 'client';
   const bar  = document.getElementById('auth-user-bar');
   if (!bar || !user) return;
   const roleLabel = { partner: '🤝 Партнер', client: 'Клієнт · РРЦ', admin: '⭐ Адмін', pending: '⏳ На розгляді' };
