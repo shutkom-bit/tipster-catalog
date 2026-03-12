@@ -5192,36 +5192,8 @@ function renderConfigurator() {
 // ════════════════════════════════════════════════════════
 
 // ПриватБанк API. Спробуємо кілька CORS-проксі по черзі.
-const PRIVAT_API = 'https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11';
-
-// Список CORS-проксі (перший що відповів — використовуємо)
-const PROXIES = [
-  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-  url => `https://proxy.cors.sh/${url}`,
-  url => `https://cors-anywhere.herokuapp.com/${url}`,
-];
-
-async function fetchWithProxies(targetUrl) {
-  for (const proxyFn of PROXIES) {
-    try {
-      const res = await fetch(proxyFn(targetUrl), { signal: AbortSignal.timeout(5000) });
-      if (!res.ok) continue;
-      const text = await res.text();
-      // corsproxy.io та codetabs повертають JSON напряму
-      // thingproxy — теж напряму
-      const data = JSON.parse(text);
-      if (Array.isArray(data) && data[0]?.rate) return data;
-      // allorigins-стиль — {contents: "..."}
-      if (data?.contents) {
-        const inner = JSON.parse(data.contents);
-        if (Array.isArray(inner) && inner[0]?.rate) return inner;
-      }
-    } catch(e) { /* спробуємо наступний */ }
-  }
-  throw new Error('all proxies failed');
-}
+// ── Курс ПриватБанку через Cloudflare Worker ──────────────────
+const WORKER_RATES_URL = 'https://cold-art-b646tipster-chat.shutko-m.workers.dev/rates';
 
 function setNBUStatus(state, text) {
   const dot   = document.getElementById('nbu-dot');
@@ -5233,22 +5205,19 @@ function setNBUStatus(state, text) {
 }
 
 function applyRates(rateUSD, rateEUR, dateStr, source) {
-  // +1.5% націнка до курсу ПриватБанку
   const MARKUP = 1.015;
   rateUSD = (parseFloat(rateUSD) * MARKUP);
   rateEUR = (parseFloat(rateEUR) * MARKUP);
   document.getElementById('usdRate').value = rateUSD.toFixed(2);
   document.getElementById('eurRate').value = rateEUR.toFixed(2);
-  // Синхронізувати мобільну панель курсів
   const mobUsd = document.getElementById('mob-usd-val');
   const mobEur = document.getElementById('mob-eur-val');
   if (mobUsd) mobUsd.textContent = parseFloat(rateUSD).toFixed(2) + ' ₴';
   if (mobEur) mobEur.textContent = parseFloat(rateEUR).toFixed(2) + ' ₴';
-  const badge = document.getElementById('nbu-source-badge');
+  const badge  = document.getElementById('nbu-source-badge');
   const dateEl = document.getElementById('nbu-date-label');
-  if (badge) badge.style.display = 'flex';
-  if (dateEl) dateEl.textContent = source + ' · ' + dateStr;
-  // Дата в mobile bar
+  if (badge)  badge.style.display = 'flex';
+  if (dateEl) dateEl.textContent  = source + ' · ' + dateStr;
   const mobDate = document.getElementById('mob-rates-date');
   if (mobDate) mobDate.textContent = dateStr;
   onRateChange();
@@ -5257,12 +5226,12 @@ function applyRates(rateUSD, rateEUR, dateStr, source) {
 async function fetchNBURates() {
   setNBUStatus('loading', 'завантаження…');
   try {
-    const resp = await fetchWithProxies(PRIVAT_API);
+    const res  = await fetch(WORKER_RATES_URL, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const resp = await res.json();
 
-    // ПриватБанк повертає масив валют — знайти USD і EUR
     const usdObj = resp.find(r => r.ccy === 'USD');
     const eurObj = resp.find(r => r.ccy === 'EUR');
-
     if (!usdObj || !eurObj) throw new Error('Валюти не знайдено');
 
     const rateUSD = parseFloat(usdObj.sale);
@@ -5272,38 +5241,32 @@ async function fetchNBURates() {
     applyRates(rateUSD, rateEUR, today, '🏦 ПриватБанк');
     setNBUStatus('ok', 'Приват · продаж · ' + today);
 
-    // Кеш
+    // Зберегти кеш з міткою часу
     try {
       localStorage.setItem('nbu_usd', rateUSD);
       localStorage.setItem('nbu_eur', rateEUR);
       localStorage.setItem('nbu_date', today);
-      localStorage.setItem('nbu_src', 'ПриватБанк');
-      localStorage.setItem('nbu_ts', Date.now());
+      localStorage.setItem('nbu_ts',   Date.now());
     } catch(e) {}
 
   } catch(err) {
-    // Спробувати кешовані дані — тільки якщо не старіший за 24 год
+    // Кеш — тільки якщо свіжий (до 24 год)
     try {
       const cUSD  = localStorage.getItem('nbu_usd');
       const cEUR  = localStorage.getItem('nbu_eur');
       const cDate = localStorage.getItem('nbu_date') || '';
-      const cSrc  = localStorage.getItem('nbu_src') || 'кеш';
       const cTs   = parseInt(localStorage.getItem('nbu_ts') || '0');
-      const ageOk = (Date.now() - cTs) < 24 * 60 * 60 * 1000;
-      if (cUSD && cEUR && ageOk) {
-        applyRates(cUSD, cEUR, cDate, '💾 ' + cSrc);
+      if (cUSD && cEUR && (Date.now() - cTs) < 86400000) {
+        applyRates(cUSD, cEUR, cDate, '💾 кеш');
         setNBUStatus('cache', 'кеш · ' + cDate);
         return;
       }
-      // Кеш застарів — очищаємо
-      ['nbu_usd','nbu_eur','nbu_date','nbu_ts'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
     } catch(e) {}
     setNBUStatus('error', 'вручну');
-    // Повторна спроба через 30 сек
-    setTimeout(fetchNBURates, 30000);
+    // Повтор через 60 сек
+    setTimeout(fetchNBURates, 60000);
   }
 }
-
 function onRateChange() {
   // Re-render whichever section is active
   const active = document.querySelector('.page-section.active');
