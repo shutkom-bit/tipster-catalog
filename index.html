@@ -3001,52 +3001,8 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
           <p class="page-subtitle">Комплекти під задачу — трекер + SIM + перший місяць платформи безкоштовно. Монтаж оплачується окремо.</p>
         </div>
         <div id="kits-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:8px"></div>
-        <div style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
-
-          <!-- ══ ТОВАР ДНЯ ══ -->
-          <div id="pod-widget" style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;transition:box-shadow 0.2s;position:relative;overflow:hidden"
-            onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,0.12)'"
-            onmouseout="this.style.boxShadow='none'">
-
-            <!-- Верхня акцентна смуга -->
-            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ef4444,#f97316)"></div>
-
-            <!-- Заголовок як у kit-card -->
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-              <div style="font-size:26px;animation:pod-pulse 2s infinite;display:inline-block">⭐</div>
-              <div>
-                <div style="font-size:15px;font-weight:700;line-height:1.2">FMC920 + EYE Beacon</div>
-                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#ef4444;margin-top:2px">Товар дня</div>
-              </div>
-              <div style="margin-left:auto;font-size:9px;padding:2px 8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:20px;color:#ef4444;font-weight:700;white-space:nowrap">КОМПЛЕКТ</div>
-            </div>
-
-            <!-- Опис як subtitle у kit-card -->
-            <div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:14px">
-              Запуск дозволено лише авторизованим з маяком EYE. Неавторизовані особи не зможуть запустити двигун — <strong>захист від угону</strong>.
-            </div>
-
-            <!-- Таблиця компонентів -->
-            <div style="background:var(--bg);border-radius:8px;border:1px solid var(--border);margin-bottom:14px;overflow:hidden">
-              <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);padding:5px 10px;border-bottom:1px solid var(--border)">Склад комплекту</div>
-              <div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">📡 FMC920 CAT1</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p1">—</span></div>
-              <div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">👁 EYE BEACON</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p2">—</span></div>
-              <div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">⚡ Реле 40A</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p3">—</span></div>
-              <div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">📶 SIM Kyivstar</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600" id="pod-p4">—</span></div>
-              <div style="display:flex;justify-content:space-between;padding:5px 10px;font-size:11px"><span style="color:var(--text-2)">🖥 GPS-сервер 1 міс</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600;color:#22c55e" id="pod-p5">—</span></div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:linear-gradient(90deg,rgba(239,68,68,0.06),transparent);border-top:1px solid rgba(239,68,68,0.18)">
-                <span style="font-size:12px;font-weight:700" id="pod-total-label">Разом РРЦ</span>
-                <span style="font-size:14px;font-weight:800;color:#ef4444;font-family:'IBM Plex Mono',monospace" id="pod-total">—</span>
-              </div>
-            </div>
-
-            <!-- Кнопка — стиль як у kit-card -->
-            <button onclick="addPodToCart()" style="margin-top:auto;width:100%;padding:10px;background:linear-gradient(90deg,#ef4444,#f97316);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s;box-shadow:0 2px 8px rgba(239,68,68,0.25)" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
-              🛒 Додати до кошика
-            </button>
-          </div>
-
-          <!-- ══ НЕ ЗНАЙШЛИ ══ -->
+        
+        <div style="margin-top:24px;max-width:560px">
           <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:28px 32px">
           <div style="font-size:16px;font-weight:700;margin-bottom:6px">Не знайшли потрібний варіант?</div>
           <div style="font-size:13px;color:var(--text-3);margin-bottom:18px">Залиште запит — наш спеціаліст зателефонує і підбере оптимальне рішення.</div>
@@ -3059,6 +3015,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
           </div>
           </div>
         </div>
+
       </div>
 
       <!-- ══ TARIFFS ══ -->
@@ -3301,7 +3258,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
             <div class="section" style="padding:0;margin-bottom:20px">
               <div class="section-title" style="font-size:14px">6. Права користувача</div>
               <p style="margin:8px 0;font-size:13px">Відповідно до Закону України «Про захист персональних даних» користувач має право отримати, виправити або видалити свої персональні дані, а також відкликати згоду на їх обробку.</p>
-              <p style="margin:8px 0;font-size:13px">Для реалізації прав звертайтесь: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f19e9797989294b1858390929a9084859edf929e9cdf8490">[email&#160;protected]</a></strong> або <strong>+38 (044) 451-66-17</strong>. Запит розглядається протягом 10 робочих днів.</p>
+              <p style="margin:8px 0;font-size:13px">Для реалізації прав звертайтесь: <strong><a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)">office@trackauto.com.ua</a></strong> або <strong>+38 (044) 451-66-17</strong>. Запит розглядається протягом 10 робочих днів.</p>
             </div>
 
             <div class="section" style="padding:0;margin-bottom:20px">
@@ -3318,7 +3275,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
               <div style="font-weight:600;font-size:13px;margin-bottom:10px">Контактна інформація</div>
               <div style="font-size:12.5px;line-height:2;color:var(--text-2)">
                 <div>ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
-                <div>Email: <a href="/cdn-cgi/l/email-protection#e68980808f8583a6929487858d87939289c885898bc89387" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="204f464649434560545241434b4155544f0e434f4d0e5541">[email&#160;protected]</span></a></div>
+                <div>Email: <a data-u="shutko" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)">shutko@trackauto.com.ua</a></div>
                 <div>Телефон: <a href="tel:+380444516617" style="color:var(--accent)">+38 (044) 451-66-17</a></div>
                 <div>Вебсайт: <a href="https://tipster.ua" target="_blank" style="color:var(--accent)">tipster.ua</a></div>
               </div>
@@ -3888,74 +3845,74 @@ const PROGRAM_TAG = {
 
 const products = [
   // TELTONIKA 2G
-  { mode:"fixed", code:"FMB900",    article:"FMB900AGCO01",        name:"FMB900",                                  currency:"USD", partnerPrice:37.80, retailPrice:41.40, series:"2G", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB910",    article:"FMB91093IN01",        name:"FMB910",                                  currency:"USD", partnerPrice:37.80, retailPrice:41.20, series:"2G", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB920",    article:"FMB920AECORU",        name:"FMB920",                                  currency:"USD", partnerPrice:39.60, retailPrice:43.16, series:"2G", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB930",    article:"FMB930XR3C01",        name:"FMB930 (90V)",                            currency:"USD", partnerPrice:39.60, retailPrice:43.16, series:"2G", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB965",    article:"FMB9653EQJ01",        name:"FMB965 (IP67)",                           currency:"USD", partnerPrice:61.20, retailPrice:66.71, series:"2G", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FMT100",    article:"FMT1001AFD01",        name:"FMT100",                                  currency:"USD", partnerPrice:59.40, retailPrice:64.75, series:"2G", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FMT100G",   article:"FMT1005RFD01",        name:"FMT100 (+GYRO)",                          currency:"USD", partnerPrice:63.00, retailPrice:68.67, series:"2G", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FMP100",    article:"FMP100UEC301",        name:"FMP100",                                  currency:"USD", partnerPrice:50.40, retailPrice:54.94, series:"2G", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB010",    article:"FMB0101VHG01",        name:"FMB010",                                  currency:"USD", partnerPrice:45.00, retailPrice:49.05, series:"2G", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB020",    article:"FMB0204MNJ01",        name:"FMB020",                                  currency:"USD", partnerPrice:39.60, retailPrice:43.16, series:"2G", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB001",    article:"FMB001SDLY01",        name:"FMB001 (OBD)",                            currency:"USD", partnerPrice:64.80, retailPrice:70.63, series:"2G", program:"OBD", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB003",    article:"FMB00377NJ01",        name:"FMB003 (OBD)",                            currency:"USD", partnerPrice:75.60, retailPrice:82.40, series:"2G", program:"OBD", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB110",    article:"FMB110BBV801",        name:"FMB110",                                  currency:"USD", partnerPrice:43.20, retailPrice:47.09, series:"2G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB120",    article:"FMB120B6XW01",        name:"FMB120",                                  currency:"USD", partnerPrice:46.80, retailPrice:51.01, series:"2G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB130",    article:"FMB130B5XW01",        name:"FMB130",                                  currency:"USD", partnerPrice:51.30, retailPrice:55.92, series:"2G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB122",    article:"FMB122BIOB01",        name:"FMB122",                                  currency:"USD", partnerPrice:51.30, retailPrice:55.92, series:"2G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB204",    article:"FMB204BD9L01",        name:"FMB204",                                  currency:"USD", partnerPrice:66.60, retailPrice:72.59, series:"2G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB209",    article:"FMB2092N9L01",        name:"FMB209",                                  currency:"USD", partnerPrice:54.00, retailPrice:58.86, series:"2G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB150L",   article:"FMB150K5XW01",        name:"FMB150",                        currency:"USD", partnerPrice:97.20, retailPrice:105.95, series:"2G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB150E",   article:"FMB150K5J101",        name:"FMB150 Extended",                         currency:"USD", partnerPrice:135.00, retailPrice:147.15, series:"2G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB140L",   article:"FMB1408TXWO1",        name:"FMB140 LV-CAN200",                        currency:"USD", partnerPrice:117.00, retailPrice:127.53, series:"2G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB140A",   article:"FMB140YNXWO1",        name:"FMB140 ALL-CAN300",                       currency:"USD", partnerPrice:187.20, retailPrice:204.05, series:"2G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB240L",   article:"FMB240BT2X01",        name:"FMB240 IP67 LV-CAN200",                   currency:"USD", partnerPrice:128.70, retailPrice:140.28, series:"2G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB240A",   article:"FMB240YN2X01",        name:"FMB240 IP67 ALL-CAN300",                  currency:"USD", partnerPrice:198.90, retailPrice:216.80, series:"2G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB125E",   article:"FMB125BJOB01",        name:"FMB125 External GPS",                     currency:"USD", partnerPrice:52.20, retailPrice:56.90, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB125I",   article:"FMB125BRRB01",        name:"FMB125 Internal GPS",                     currency:"USD", partnerPrice:49.50, retailPrice:53.96, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" },
-  { mode:"fixed", code:"FMB225",    article:"FMB225BR2X01",        name:"FMB225 IP67",                             currency:"USD", partnerPrice:57.60, retailPrice:62.78, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" },
-  { mode:"fixed", code:"ALLCAN3",   article:"—",                   name:"ALLCAN300 Оновлення",                     currency:"USD", partnerPrice:79.20, retailPrice:93.00, series:"2G", program:"Оновлення", brand:"Teltonika" },
-  { mode:"fixed", code:"EXTEND",    article:"—",                   name:"Extended Оновлення",                      currency:"USD", partnerPrice:59.94, retailPrice:71.00, series:"2G", program:"Оновлення", brand:"Teltonika" },
+  { mode:"fixed", code:"FMB900",    article:"FMB900AGCO01",        name:"FMB900",                                  currency:"USD", partnerPrice:37.80, retailPrice:41.40, series:"2G", program:"BASIC", brand:"Teltonika" , spec:"2G трекер початкового рівня. Компактний, вбудована антена GNSS/GSM. Ідеально для базового моніторингу транспорту."},
+  { mode:"fixed", code:"FMB910",    article:"FMB91093IN01",        name:"FMB910",                                  currency:"USD", partnerPrice:37.80, retailPrice:41.20, series:"2G", program:"BASIC", brand:"Teltonika" , spec:"2G трекер з розширеними входами/виходами. Цифрові та аналогові I/O. Підтримка датчиків і реле."},
+  { mode:"fixed", code:"FMB920",    article:"FMB920AECORU",        name:"FMB920",                                  currency:"USD", partnerPrice:39.60, retailPrice:43.16, series:"2G", program:"BASIC", brand:"Teltonika" , spec:"2G трекер з BLE 4.0. Зчитує маяки EYE, датчики температури та RFID. Компактний корпус."},
+  { mode:"fixed", code:"FMB930",    article:"FMB930XR3C01",        name:"FMB930 (90V)",                            currency:"USD", partnerPrice:39.60, retailPrice:43.16, series:"2G", program:"BASIC", brand:"Teltonika" , spec:"2G трекер для вантажного транспорту. Вхід живлення 10–90V. CAN читання через зовнішній адаптер."},
+  { mode:"fixed", code:"FMB965",    article:"FMB9653EQJ01",        name:"FMB965 (IP67)",                           currency:"USD", partnerPrice:61.20, retailPrice:66.71, series:"2G", program:"BASIC", brand:"Teltonika" , spec:"2G трекер із захистом IP67. Герметичний корпус, 4 цифрові входи. Для спецтехніки та вантажівок."},
+  { mode:"fixed", code:"FMT100",    article:"FMT1001AFD01",        name:"FMT100",                                  currency:"USD", partnerPrice:59.40, retailPrice:64.75, series:"2G", program:"FAST&EASY", brand:"Teltonika" , spec:"2G OBD трекер Plug&Play. Встановлення в OBD-II роз\'єм за 1 хвилину. Зчитує діагностику авто."},
+  { mode:"fixed", code:"FMT100G",   article:"FMT1005RFD01",        name:"FMT100 (+GYRO)",                          currency:"USD", partnerPrice:63.00, retailPrice:68.67, series:"2G", program:"FAST&EASY", brand:"Teltonika" , spec:"2G OBD трекер з гіроскопом. Виявлення прискорення, удару та небезпечного водіння. Plug&Play."},
+  { mode:"fixed", code:"FMP100",    article:"FMP100UEC301",        name:"FMP100",                                  currency:"USD", partnerPrice:50.40, retailPrice:54.94, series:"2G", program:"FAST&EASY", brand:"Teltonika" , spec:"2G трекер від прикурювача. Живлення 12/24V, вбудований акумулятор. Встановлення без монтажу."},
+  { mode:"fixed", code:"FMB010",    article:"FMB0101VHG01",        name:"FMB010",                                  currency:"USD", partnerPrice:45.00, retailPrice:49.05, series:"2G", program:"FAST&EASY", brand:"Teltonika" , spec:"2G трекер FAST&EASY з вбудованою батареєю. Мінімальний монтаж, живлення від ACC лінії."},
+  { mode:"fixed", code:"FMB020",    article:"FMB0204MNJ01",        name:"FMB020",                                  currency:"USD", partnerPrice:39.60, retailPrice:43.16, series:"2G", program:"FAST&EASY", brand:"Teltonika" , spec:"2G трекер FAST&EASY. Розширена версія FMB010 з додатковим I/O. Простий монтаж."},
+  { mode:"fixed", code:"FMB001",    article:"FMB001SDLY01",        name:"FMB001 (OBD)",                            currency:"USD", partnerPrice:64.80, retailPrice:70.63, series:"2G", program:"OBD", brand:"Teltonika" , spec:"2G OBD трекер. Зчитує понад 10 000 параметрів ECU. Plug&Play через OBD-II роз\'єм."},
+  { mode:"fixed", code:"FMB003",    article:"FMB00377NJ01",        name:"FMB003 (OBD)",                            currency:"USD", partnerPrice:75.60, retailPrice:82.40, series:"2G", program:"OBD", brand:"Teltonika" , spec:"2G OBD трекер із захистом від несанкціонованого доступу. Зчитування J1939/FMS для вантажівок."},
+  { mode:"fixed", code:"FMB110",    article:"FMB110BBV801",        name:"FMB110",                                  currency:"USD", partnerPrice:43.20, retailPrice:47.09, series:"2G", program:"ADVANCED", brand:"Teltonika" , spec:"2G трекер із зовнішньою GNSS-антеною. 2 SIM-карти, резервне живлення, 4 digital I/O."},
+  { mode:"fixed", code:"FMB120",    article:"FMB120B6XW01",        name:"FMB120",                                  currency:"USD", partnerPrice:46.80, retailPrice:51.01, series:"2G", program:"ADVANCED", brand:"Teltonika" , spec:"2G трекер із зовнішніми антенами GNSS та GSM. Підвищена чутливість у складних умовах."},
+  { mode:"fixed", code:"FMB130",    article:"FMB130B5XW01",        name:"FMB130",                                  currency:"USD", partnerPrice:51.30, retailPrice:55.92, series:"2G", program:"ADVANCED", brand:"Teltonika" , spec:"2G трекер з вбудованою батареєю 170 mAh. Резервне живлення, сповіщення про відключення."},
+  { mode:"fixed", code:"FMB122",    article:"FMB122BIOB01",        name:"FMB122",                                  currency:"USD", partnerPrice:51.30, retailPrice:55.92, series:"2G", program:"ADVANCED", brand:"Teltonika" , spec:"2G трекер Advanced з GNSS-антеною. Покращена точність позиціонування для комерційного транспорту."},
+  { mode:"fixed", code:"FMB204",    article:"FMB204BD9L01",        name:"FMB204",                                  currency:"USD", partnerPrice:66.60, retailPrice:72.59, series:"2G", program:"ADVANCED", brand:"Teltonika" , spec:"2G трекер з 4 digital + 4 analog входами. Для складних інсталяцій із множинними датчиками."},
+  { mode:"fixed", code:"FMB209",    article:"FMB2092N9L01",        name:"FMB209",                                  currency:"USD", partnerPrice:54.00, retailPrice:58.86, series:"2G", program:"ADVANCED", brand:"Teltonika" , spec:"2G трекер Advanced з 1-Wire. Підтримка датчиків температури Dallas та iButton-ключів."},
+  { mode:"fixed", code:"FMB150L",   article:"FMB150K5XW01",        name:"FMB150",                        currency:"USD", partnerPrice:97.20, retailPrice:105.95, series:"2G", program:"CAN", brand:"Teltonika" , spec:"2G CAN-трекер з LV-CAN200. Читання до 1000 параметрів шини CAN легкового авто без врізки."},
+  { mode:"fixed", code:"FMB150E",   article:"FMB150K5J101",        name:"FMB150 Extended",                         currency:"USD", partnerPrice:135.00, retailPrice:147.15, series:"2G", program:"CAN", brand:"Teltonika" , spec:"2G CAN-трекер Extended. Підтримка LV-CAN200 + ALL-CAN300. Максимальна сумісність авто."},
+  { mode:"fixed", code:"FMB140L",   article:"FMB1408TXWO1",        name:"FMB140 LV-CAN200",                        currency:"USD", partnerPrice:117.00, retailPrice:127.53, series:"2G", program:"CAN", brand:"Teltonika" , spec:"2G CAN-трекер з адаптером LV-CAN200. Бездротове підключення до шини CAN 2.0."},
+  { mode:"fixed", code:"FMB140A",   article:"FMB140YNXWO1",        name:"FMB140 ALL-CAN300",                       currency:"USD", partnerPrice:187.20, retailPrice:204.05, series:"2G", program:"CAN", brand:"Teltonika" , spec:"2G CAN-трекер з адаптером ALL-CAN300. Сумісний із 400+ моделями авто. Без врізки."},
+  { mode:"fixed", code:"FMB240L",   article:"FMB240BT2X01",        name:"FMB240 IP67 LV-CAN200",                   currency:"USD", partnerPrice:128.70, retailPrice:140.28, series:"2G", program:"CAN", brand:"Teltonika" , spec:"2G CAN-трекер IP67 з LV-CAN200. Герметичний корпус для комерційного транспорту."},
+  { mode:"fixed", code:"FMB240A",   article:"FMB240YN2X01",        name:"FMB240 IP67 ALL-CAN300",                  currency:"USD", partnerPrice:198.90, retailPrice:216.80, series:"2G", program:"CAN", brand:"Teltonika" , spec:"2G CAN-трекер IP67 з ALL-CAN300. Захищений корпус + широка сумісність з авто."},
+  { mode:"fixed", code:"FMB125E",   article:"FMB125BJOB01",        name:"FMB125 External GPS",                     currency:"USD", partnerPrice:52.20, retailPrice:56.90, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" , spec:"2G Professional трекер із зовнішньою GNSS-антеною. Розширені I/O, 1-Wire, RS232/RS485."},
+  { mode:"fixed", code:"FMB125I",   article:"FMB125BRRB01",        name:"FMB125 Internal GPS",                     currency:"USD", partnerPrice:49.50, retailPrice:53.96, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" , spec:"2G Professional трекер з внутрішньою GNSS-антеною. 1-Wire, RS232, повний набір I/O."},
+  { mode:"fixed", code:"FMB225",    article:"FMB225BR2X01",        name:"FMB225 IP67",                             currency:"USD", partnerPrice:57.60, retailPrice:62.78, series:"2G", program:"PROFESSIONAL", brand:"Teltonika" , spec:"2G Professional трекер IP67. Захищений корпус, RS232/RS485, 1-Wire. Для спецтехніки."},
+  { mode:"fixed", code:"ALLCAN3",   article:"—",                   name:"ALLCAN300 Оновлення",                     currency:"USD", partnerPrice:79.20, retailPrice:93.00, series:"2G", program:"Оновлення", brand:"Teltonika" , spec:"Прошивка ALL-CAN300 для оновлення сумісного CAN-адаптера до підтримки 400+ авто."},
+  { mode:"fixed", code:"EXTEND",    article:"—",                   name:"Extended Оновлення",                      currency:"USD", partnerPrice:59.94, retailPrice:71.00, series:"2G", program:"Оновлення", brand:"Teltonika" , spec:"Прошивка Extended для розширення функціоналу CAN-адаптера. Активує додаткові параметри."},
   // TELTONIKA 4G
-  { mode:"fixed", code:"FMC920",    article:"FMC9202MC01",         name:"FMC920 CAT1",                             currency:"USD", partnerPrice:43.56, retailPrice:47.92, series:"4G", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC880",    article:"FMC880LOFD01",        name:"FMC880 CAT1",                             currency:"USD", partnerPrice:81.90, retailPrice:90.09, series:"4G", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC880G",   article:"FMC880FGFD01",        name:"FMC880 (+GYRO)",                          currency:"USD", partnerPrice:85.50, retailPrice:94.05, series:"4G", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC800",    article:"FMC800TPNJ01",        name:"FMC800 CAT1",                             currency:"USD", partnerPrice:86.40, retailPrice:95.04, series:"4G", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC003",    article:"FMC003X4NJ01",        name:"FMC003 CAT1 OBD",                         currency:"USD", partnerPrice:75.24, retailPrice:82.76, series:"4G", program:"OBD", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC130",    article:"FMC130KYXW01",        name:"FMC130 CAT1",                             currency:"USD", partnerPrice:49.50, retailPrice:54.45, series:"4G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC230",    article:"FMC230KY2X01",        name:"FMC230",                                  currency:"USD", partnerPrice:81.00, retailPrice:89.10, series:"4G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC234",    article:"FMC234WC2X01",        name:"FMC234 IP67",                             currency:"USD", partnerPrice:86.40, retailPrice:95.04, series:"4G", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC150",    article:"FMC150UAXW01",        name:"FMC150",                                  currency:"USD", partnerPrice:117.00, retailPrice:128.70, series:"4G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC150E",   article:"FMC150UAJ201",        name:"FMC150 Extended",                         currency:"USD", partnerPrice:154.80, retailPrice:170.28, series:"4G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC250",    article:"FMC2505NXW01",        name:"FMC250 CAT1 IP67",                        currency:"USD", partnerPrice:128.70, retailPrice:141.57, series:"4G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC250E",   article:"FMC2505NJ101",        name:"FMC250 Extended IP67",                    currency:"USD", partnerPrice:166.50, retailPrice:183.15, series:"4G", program:"CAN", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC125",    article:"FMC125TLXW01",        name:"FMC125 CAT1 EMEA",                        currency:"USD", partnerPrice:56.10, retailPrice:61.71, series:"4G", program:"PROFESSIONAL", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC225",    article:"FMC225832X01",        name:"FMC225 IP67 EMEA",                        currency:"USD", partnerPrice:64.68, retailPrice:71.15, series:"4G", program:"PROFESSIONAL", brand:"Teltonika" },
-  { mode:"fixed", code:"FMC650",    article:"FMC6501T5S01",        name:"FMC650 CAT1",                             currency:"USD", partnerPrice:112.20, retailPrice:123.42, series:"4G", program:"PROFESSIONAL", brand:"Teltonika" },
+  { mode:"fixed", code:"FMC920",    article:"FMC9202MC01",         name:"FMC920 CAT1",                             currency:"USD", partnerPrice:43.56, retailPrice:47.92, series:"4G", program:"BASIC", brand:"Teltonika" , spec:"4G CAT1 трекер з BLE 4.0. Читає маяки EYE, датчики та RFID. Компактний, швидкий зв\'язок."},
+  { mode:"fixed", code:"FMC880",    article:"FMC880LOFD01",        name:"FMC880 CAT1",                             currency:"USD", partnerPrice:81.90, retailPrice:90.09, series:"4G", program:"FAST&EASY", brand:"Teltonika" , spec:"4G CAT1 OBD трекер Plug&Play. Зчитує діагностику ECU, швидкий 4G зв\'язок. Без монтажу."},
+  { mode:"fixed", code:"FMC880G",   article:"FMC880FGFD01",        name:"FMC880 (+GYRO)",                          currency:"USD", partnerPrice:85.50, retailPrice:94.05, series:"4G", program:"FAST&EASY", brand:"Teltonika" , spec:"4G CAT1 OBD трекер з гіроскопом. Виявлення небезпечного водіння + діагностика авто."},
+  { mode:"fixed", code:"FMC800",    article:"FMC800TPNJ01",        name:"FMC800 CAT1",                             currency:"USD", partnerPrice:86.40, retailPrice:95.04, series:"4G", program:"FAST&EASY", brand:"Teltonika" , spec:"4G CAT1 трекер від прикурювача. Вбудований акумулятор, встановлення без інструментів."},
+  { mode:"fixed", code:"FMC003",    article:"FMC003X4NJ01",        name:"FMC003 CAT1 OBD",                         currency:"USD", partnerPrice:75.24, retailPrice:82.76, series:"4G", program:"OBD", brand:"Teltonika" , spec:"4G CAT1 OBD трекер. Зчитує ECU-параметри через OBD-II, підтримка J1939/FMS для вантажівок."},
+  { mode:"fixed", code:"FMC130",    article:"FMC130KYXW01",        name:"FMC130 CAT1",                             currency:"USD", partnerPrice:49.50, retailPrice:54.45, series:"4G", program:"ADVANCED", brand:"Teltonika" , spec:"4G CAT1 Advanced трекер із зовнішньою GNSS-антеною. 2 SIM, резервне живлення, 4 I/O."},
+  { mode:"fixed", code:"FMC230",    article:"FMC230KY2X01",        name:"FMC230",                                  currency:"USD", partnerPrice:81.00, retailPrice:89.10, series:"4G", program:"ADVANCED", brand:"Teltonika" , spec:"4G CAT1 трекер із зовнішніми антенами. Покращена стабільність зв\'язку у складних умовах."},
+  { mode:"fixed", code:"FMC234",    article:"FMC234WC2X01",        name:"FMC234 IP67",                             currency:"USD", partnerPrice:86.40, retailPrice:95.04, series:"4G", program:"ADVANCED", brand:"Teltonika" , spec:"4G CAT1 трекер IP67. Герметичний корпус, зовнішні антени. Для комерційного транспорту."},
+  { mode:"fixed", code:"FMC150",    article:"FMC150UAXW01",        name:"FMC150",                                  currency:"USD", partnerPrice:117.00, retailPrice:128.70, series:"4G", program:"CAN", brand:"Teltonika" , spec:"4G CAT1 CAN-трекер з LV-CAN200. Бездротове зчитування CAN-шини легкових авто. 4G зв\'язок."},
+  { mode:"fixed", code:"FMC150E",   article:"FMC150UAJ201",        name:"FMC150 Extended",                         currency:"USD", partnerPrice:154.80, retailPrice:170.28, series:"4G", program:"CAN", brand:"Teltonika" , spec:"4G CAT1 CAN-трекер Extended. LV-CAN200 + ALL-CAN300, максимальна сумісність + 4G."},
+  { mode:"fixed", code:"FMC250",    article:"FMC2505NXW01",        name:"FMC250 CAT1 IP67",                        currency:"USD", partnerPrice:128.70, retailPrice:141.57, series:"4G", program:"CAN", brand:"Teltonika" , spec:"4G CAT1 CAN-трекер IP67. Герметичний корпус, LV-CAN200, швидкий 4G зв\'язок."},
+  { mode:"fixed", code:"FMC250E",   article:"FMC2505NJ101",        name:"FMC250 Extended IP67",                    currency:"USD", partnerPrice:166.50, retailPrice:183.15, series:"4G", program:"CAN", brand:"Teltonika" , spec:"4G CAT1 CAN-трекер IP67 Extended. LV-CAN200 + ALL-CAN300 + IP67 + 4G CAT1."},
+  { mode:"fixed", code:"FMC125",    article:"FMC125TLXW01",        name:"FMC125 CAT1 EMEA",                        currency:"USD", partnerPrice:56.10, retailPrice:61.71, series:"4G", program:"PROFESSIONAL", brand:"Teltonika" , spec:"4G CAT1 Professional трекер EMEA. RS232/RS485, 1-Wire, повний I/O. Для складних інсталяцій."},
+  { mode:"fixed", code:"FMC225",    article:"FMC225832X01",        name:"FMC225 IP67 EMEA",                        currency:"USD", partnerPrice:64.68, retailPrice:71.15, series:"4G", program:"PROFESSIONAL", brand:"Teltonika" , spec:"4G CAT1 Professional IP67. Захищений корпус, RS232/RS485, 1-Wire. Для спецтехніки."},
+  { mode:"fixed", code:"FMC650",    article:"FMC6501T5S01",        name:"FMC650 CAT1",                             currency:"USD", partnerPrice:112.20, retailPrice:123.42, series:"4G", program:"PROFESSIONAL", brand:"Teltonika" , spec:"4G CAT1 Professional трекер преміум-класу. Широкий діапазон живлення, RS232/RS485/1-Wire."},
   // TELTONIKA FTC
-  { mode:"fixed", code:"FTC920",    article:"FTC920AAPIL1",        name:"FTC920",                                  currency:"USD", partnerPrice:57.60, retailPrice:63.36, series:"FTC", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC921",    article:"FTC921RCXW01",        name:"FTC921",                                  currency:"USD", partnerPrice:59.40, retailPrice:65.34, series:"FTC", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC924",    article:"FTC924AAPIL1",        name:"FTC924",                                  currency:"USD", partnerPrice:63.00, retailPrice:69.30, series:"FTC", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC927",    article:"FTC927BPPIL1",        name:"FTC927",                                  currency:"USD", partnerPrice:66.60, retailPrice:73.26, series:"FTC", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC961",    article:"FTC961M8PIL1",        name:"FTC961",                                  currency:"USD", partnerPrice:79.20, retailPrice:87.12, series:"FTC", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC965",    article:"FTC965CLAA01",        name:"FTC965",                                  currency:"USD", partnerPrice:84.60, retailPrice:93.06, series:"FTC", program:"BASIC", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC880",    article:"FTC880KVU801",        name:"FTC880",                                  currency:"USD", partnerPrice:76.50, retailPrice:84.15, series:"FTC", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC887",    article:"FTC887XFNJ01",        name:"FTC887",                                  currency:"USD", partnerPrice:87.30, retailPrice:96.03, series:"FTC", program:"FAST&EASY", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC134",    article:"FTC134AAAA01",        name:"FTC134 CAT1",                             currency:"USD", partnerPrice:71.10, retailPrice:78.21, series:"FTC", program:"ADVANCED", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC305",    article:"FTC305STAC01",        name:"FTC305",                                  currency:"USD", partnerPrice:113.40, retailPrice:124.74, series:"FTC", program:"E-MOBILITY", brand:"Teltonika" },
-  { mode:"fixed", code:"FTC305W",   article:"FTC305HEAB01",        name:"FTC305 without casing",                   currency:"USD", partnerPrice:113.40, retailPrice:124.74, series:"FTC", program:"E-MOBILITY", brand:"Teltonika" },
+  { mode:"fixed", code:"FTC920",    article:"FTC920AAPIL1",        name:"FTC920",                                  currency:"USD", partnerPrice:57.60, retailPrice:63.36, series:"FTC", program:"BASIC", brand:"Teltonika" , spec:"4G CAT1 трекер серії FTC. Компактний, оптимізований для хмарних платформ Teltonika."},
+  { mode:"fixed", code:"FTC921",    article:"FTC921RCXW01",        name:"FTC921",                                  currency:"USD", partnerPrice:59.40, retailPrice:65.34, series:"FTC", program:"BASIC", brand:"Teltonika" , spec:"4G CAT1 трекер FTC із розширеними I/O. Цифрові входи, аналогові виходи, BLE."},
+  { mode:"fixed", code:"FTC924",    article:"FTC924AAPIL1",        name:"FTC924",                                  currency:"USD", partnerPrice:63.00, retailPrice:69.30, series:"FTC", program:"BASIC", brand:"Teltonika" , spec:"4G CAT1 трекер FTC з BLE 5.0. Підтримка маяків EYE та датчиків. Оновлений чіпсет."},
+  { mode:"fixed", code:"FTC927",    article:"FTC927BPPIL1",        name:"FTC927",                                  currency:"USD", partnerPrice:66.60, retailPrice:73.26, series:"FTC", program:"BASIC", brand:"Teltonika" , spec:"4G CAT1 трекер FTC НОВИНКА. BLE 5.0, покращена GNSS-чутливість, хмарна конфігурація."},
+  { mode:"fixed", code:"FTC961",    article:"FTC961M8PIL1",        name:"FTC961",                                  currency:"USD", partnerPrice:79.20, retailPrice:87.12, series:"FTC", program:"BASIC", brand:"Teltonika" , spec:"4G CAT1 трекер FTC з IP67. Герметичний захист, цифрові I/O, для зовнішніх інсталяцій."},
+  { mode:"fixed", code:"FTC965",    article:"FTC965CLAA01",        name:"FTC965",                                  currency:"USD", partnerPrice:84.60, retailPrice:93.06, series:"FTC", program:"BASIC", brand:"Teltonika" , spec:"4G CAT1 трекер FTC IP67 з BLE. Захищений корпус + бездротові датчики EYE."},
+  { mode:"fixed", code:"FTC880",    article:"FTC880KVU801",        name:"FTC880",                                  currency:"USD", partnerPrice:76.50, retailPrice:84.15, series:"FTC", program:"FAST&EASY", brand:"Teltonika" , spec:"4G CAT1 OBD трекер FTC. Plug&Play, зчитує ECU, хмарна конфігурація без ноутбука."},
+  { mode:"fixed", code:"FTC887",    article:"FTC887XFNJ01",        name:"FTC887",                                  currency:"USD", partnerPrice:87.30, retailPrice:96.03, series:"FTC", program:"FAST&EASY", brand:"Teltonika" , spec:"4G CAT1 OBD трекер FTC з гіроскопом. Eco-driving, аналіз водіння + діагностика авто."},
+  { mode:"fixed", code:"FTC134",    article:"FTC134AAAA01",        name:"FTC134 CAT1",                             currency:"USD", partnerPrice:71.10, retailPrice:78.21, series:"FTC", program:"ADVANCED", brand:"Teltonika" , spec:"4G CAT1 Advanced трекер FTC. Зовнішні антени GNSS/LTE, резервне живлення, I/O."},
+  { mode:"fixed", code:"FTC305",    article:"FTC305STAC01",        name:"FTC305",                                  currency:"USD", partnerPrice:113.40, retailPrice:124.74, series:"FTC", program:"E-MOBILITY", brand:"Teltonika" , spec:"4G CAT1 трекер для електротранспорту. Зчитування параметрів BMS, SOC батареї, SAE J1939."},
+  { mode:"fixed", code:"FTC305W",   article:"FTC305HEAB01",        name:"FTC305 without casing",                   currency:"USD", partnerPrice:113.40, retailPrice:124.74, series:"FTC", program:"E-MOBILITY", brand:"Teltonika" , spec:"4G CAT1 трекер E-Mobility без корпусу (монтаж всередині). BMS, SAE J1939, CAN."},
   // TELTONIKA Assets
-  { mode:"fixed", code:"TAT100",    article:"TAT100TSBAH0",        name:"TAT100",                                  currency:"USD", partnerPrice:77.40, retailPrice:85.14, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
-  { mode:"fixed", code:"TAT100B",   article:"TAT1003CXW01",        name:"TAT100 (3x batt.)",                       currency:"USD", partnerPrice:88.20, retailPrice:97.02, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
-  { mode:"fixed", code:"TAT140",    article:"TAT1403UBP01",        name:"TAT140 CAT1",                             currency:"USD", partnerPrice:108.00, retailPrice:118.80, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
-  { mode:"fixed", code:"TAT240",    article:"TAT240R6BP01",        name:"TAT240 (tamper) CAT1",                    currency:"USD", partnerPrice:124.20, retailPrice:136.62, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
+  { mode:"fixed", code:"TAT100",    article:"TAT100TSBAH0",        name:"TAT100",                                  currency:"USD", partnerPrice:77.40, retailPrice:85.14, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" , spec:"Автономний GPS-маяк 2G. Вбудована батарея до 3 років. Магнітне кріплення, IPX7."},
+  { mode:"fixed", code:"TAT100B",   article:"TAT1003CXW01",        name:"TAT100 (3x batt.)",                       currency:"USD", partnerPrice:88.20, retailPrice:97.02, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" , spec:"Автономний маяк 2G з 3 батареями. Потрійний ресурс — до 5 років автономної роботи."},
+  { mode:"fixed", code:"TAT140",    article:"TAT1403UBP01",        name:"TAT140 CAT1",                             currency:"USD", partnerPrice:108.00, retailPrice:118.80, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" , spec:"Автономний маяк 4G CAT1. Вбудована батарея, магнітне кріплення, IPX7. Швидкий зв\'язок."},
+  { mode:"fixed", code:"TAT240",    article:"TAT240R6BP01",        name:"TAT240 (tamper) CAT1",                    currency:"USD", partnerPrice:124.20, retailPrice:136.62, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" , spec:"4G CAT1 маяк з датчиком тамперу. Захист від несанкціонованого зняття + IPX7 + CAT1."},
   { mode:"fixed", code:"ATC700-P",   article:"ATC700AAAA01",        name:"ATC700 CAT1 Персональний", currency:"USD", partnerPrice:61.60, retailPrice:86.40, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika",
     spec:"Персональний трекер CAT1. Вбудована батарея, IPX7, BLE. Ідеально для відстеження людей та цінностей." },
-  { mode:"fixed", code:"GH5200",    article:"GH5200TSTAA0",        name:"GH5200",                                  currency:"USD", partnerPrice:64.80, retailPrice:71.28, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" },
-  { mode:"fixed", code:"TFT100C",   article:"TFT100TSTAA0",        name:"TFT100 (CAN)",                            currency:"USD", partnerPrice:86.40, retailPrice:95.04, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" },
-  { mode:"fixed", code:"TFT100R",   article:"TFT100TRSAC0",        name:"TFT100 (RS232 or RS485)",                 currency:"USD", partnerPrice:82.80, retailPrice:91.08, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" },
-  { mode:"fixed", code:"TFT100U",   article:"TFT100TURAD0",        name:"TFT100 (UART)",                           currency:"USD", partnerPrice:75.60, retailPrice:83.16, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" },
+  { mode:"fixed", code:"GH5200",    article:"GH5200TSTAA0",        name:"GH5200",                                  currency:"USD", partnerPrice:64.80, retailPrice:71.28, series:"Assets", program:"AUTONOMOUS", brand:"Teltonika" , spec:"Промисловий GPS-трекер для важкої техніки. Захист IP67, CAN J1939/FMS, 10–100V живлення."},
+  { mode:"fixed", code:"TFT100C",   article:"TFT100TSTAA0",        name:"TFT100 (CAN)",                            currency:"USD", partnerPrice:86.40, retailPrice:95.04, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" , spec:"Трекер для електробусів та електровантажівок (CAN). Зчитування BMS, SOC, пробіг, зарядка."},
+  { mode:"fixed", code:"TFT100R",   article:"TFT100TRSAC0",        name:"TFT100 (RS232 or RS485)",                 currency:"USD", partnerPrice:82.80, retailPrice:91.08, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" , spec:"Трекер для електротранспорту (RS232/RS485). Параметри заряду, BMS, підключення до UART."},
+  { mode:"fixed", code:"TFT100U",   article:"TFT100TURAD0",        name:"TFT100 (UART)",                           currency:"USD", partnerPrice:75.60, retailPrice:83.16, series:"Assets", program:"E-MOBILITY", brand:"Teltonika" , spec:"Трекер для електротранспорту (UART). BMS-моніторинг, SOC батареї, підтримка CAN-шини."},
 
       // BITREK Трекери
   { mode:"fixed", code:"BI 910 TREK",       article:"BI910TREK",         name:"BI 910 TREK",                             currency:"USD", partnerPrice:111.10, retailPrice:130.00, series:"Трекери", program:"Advanced", brand:"Bitrek", spec:"Зовнішні GPS/GSM антени; RS485; CAN (FMS, j1939); 1-Wire; SIM:2, D_high:2, D_low:4, AIN:2, DOUT:2, АКБ:1000 mAh, Voice GSM" },
@@ -4160,58 +4117,65 @@ function showLogin() { showOverlay('login-overlay'); }
 
 // ══ ТОВАР ДНЯ ══
 function renderPOD() {
-  const podEl = document.getElementById('pod-widget');
-  if (!podEl) return;
-  const role = window._fbRole || 'client';
-  const isPartner = role === 'partner' || role === 'admin';
-
-  // Об'єднати products + всі підмасиви extraEquipment в один список
-  const allP = (typeof products !== 'undefined' ? products : []).concat(
+  var grid = document.getElementById('kits-grid');
+  if (!grid) return;
+  var role = window._fbRole || 'client';
+  var isPartner = role === 'partner' || role === 'admin';
+  var allP = (typeof products !== 'undefined' ? products : []).concat(
     typeof extraEquipment !== 'undefined'
       ? Object.values(extraEquipment).reduce(function(a,b){ return a.concat(b); }, [])
       : []
   );
+  function getUAH(code) {
+    var p = allP.find(function(x){ return x.code === code; });
+    if (!p) return 0;
+    var prices = calcPrices(p);
+    return Math.round(isPartner ? prices.partner : prices.retail);
+  }
+  var p1 = getUAH('FMC920');
+  var p2 = getUAH('EXT-EYEBCN');
+  var p3 = getUAH('EXT-RELAY');
+  var p4 = 35;
+  var total = p1 + p2 + p3 + p4;
+  var fmtN = function(n){ return n ? n.toLocaleString('uk-UA') + ' \u20b4' : '\u2014'; };
+  var totalLabel = isPartner ? 'Разом Партнер' : 'Разом РРЦ';
 
-  const items = [
-    { code:'FMC920',     id:'pod-p1', fixedUAH:null },
-    { code:'EXT-EYEBCN', id:'pod-p2', fixedUAH:null },
-    { code:'EXT-RELAY',  id:'pod-p3', fixedUAH:null },
-    { code:'SIM-KS',     id:'pod-p4', fixedUAH:35   },
-    { code:'TAR-BASE',   id:'pod-p5', fixedUAH:0    },
-  ];
+  var old = grid.querySelector('[data-pod]');
+  if (old) old.remove();
 
-  let total = 0;
+  var card = document.createElement('div');
+  card.setAttribute('data-pod', '1');
+  card.style.cssText = 'background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;transition:box-shadow 0.2s;position:relative;overflow:hidden';
+  card.onmouseover = function(){ this.style.boxShadow = '0 4px 20px rgba(0,0,0,0.12)'; };
+  card.onmouseout  = function(){ this.style.boxShadow = 'none'; };
 
-  items.forEach(function(it) {
-    const el = document.getElementById(it.id);
-    if (!el) return;
+  var html2 = '';
+  html2 += '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ef4444,#f97316)"></div>';
+  html2 += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">';
+  html2 +=   '<div style="font-size:26px;animation:pod-pulse 2s infinite;display:inline-block">\u2b50</div>';
+  html2 +=   '<div>';
+  html2 +=     '<div style="font-size:15px;font-weight:700;line-height:1.2">FMC920 + EYE Beacon</div>';
+  html2 +=     '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#ef4444;margin-top:2px">Товар дня</div>';
+  html2 +=   '</div>';
+  html2 +=   '<div style="margin-left:auto;font-size:9px;padding:2px 8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:20px;color:#ef4444;font-weight:700;white-space:nowrap">КОМПЛЕКТ</div>';
+  html2 += '</div>';
+  html2 += '<div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:14px">Запуск дозволено лише авторизованим з маяком EYE. Неавторизовані не зможуть запустити двигун \u2014 <strong>захист від угону</strong>.</div>';
+  html2 += '<div style="background:var(--bg);border-radius:8px;border:1px solid var(--border);margin-bottom:14px;overflow:hidden;flex:1">';
+  html2 +=   '<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);padding:5px 10px;border-bottom:1px solid var(--border)">Склад комплекту</div>';
+  html2 +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">\ud83d\udce1 FMC920 CAT1</span><span style="font-family:\'IBM Plex Mono\',monospace;font-weight:600">' + fmtN(p1) + '</span></div>';
+  html2 +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">\ud83d\udc41 EYE BEACON</span><span style="font-family:\'IBM Plex Mono\',monospace;font-weight:600">' + fmtN(p2) + '</span></div>';
+  html2 +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">\u26a1 Реле 40A</span><span style="font-family:\'IBM Plex Mono\',monospace;font-weight:600">' + fmtN(p3) + '</span></div>';
+  html2 +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">\ud83d\udcf6 SIM Kyivstar</span><span style="font-family:\'IBM Plex Mono\',monospace;font-weight:600">' + fmtN(p4) + '</span></div>';
+  html2 +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;font-size:11px"><span style="color:var(--text-2)">\ud83d\udda5 GPS-сервер 1 міс</span><span style="font-family:\'IBM Plex Mono\',monospace;font-weight:600;color:#22c55e">Безкоштовно</span></div>';
+  html2 +=   '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:linear-gradient(90deg,rgba(239,68,68,0.06),transparent);border-top:1px solid rgba(239,68,68,0.18)">';
+  html2 +=     '<span style="font-size:12px;font-weight:700">' + totalLabel + '</span>';
+  html2 +=     '<span style="font-size:14px;font-weight:800;color:#ef4444;font-family:\'IBM Plex Mono\',monospace">' + fmtN(total) + '</span>';
+  html2 +=   '</div>';
+  html2 += '</div>';
+  html2 += '<button onclick="addPodToCart()" style="margin-top:auto;width:100%;padding:10px;background:linear-gradient(90deg,#ef4444,#f97316);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s;box-shadow:0 2px 8px rgba(239,68,68,0.25)" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">\ud83d\uded2 Додати до кошика</button>';
 
-    if (it.fixedUAH === 0) {
-      el.textContent = 'Безкоштовно';
-      el.style.color = '#22c55e';
-      return;
-    }
-
-    if (it.fixedUAH !== null) {
-      el.textContent = it.fixedUAH.toLocaleString('uk-UA') + ' ₴';
-      el.style.color = '';
-      total += it.fixedUAH;
-      return;
-    }
-
-    const p = allP.find(function(x){ return x.code === it.code; });
-    if (!p) { console.warn('POD: не знайдено', it.code); return; }
-    const prices = calcPrices(p);
-    const priceUAH = Math.round(isPartner ? prices.partner : prices.retail);
-    el.textContent = priceUAH.toLocaleString('uk-UA') + ' ₴';
-    el.style.color = '';
-    total += priceUAH;
-  });
-
-  const totalEl = document.getElementById('pod-total');
-  const labelEl = document.getElementById('pod-total-label');
-  if (totalEl) totalEl.textContent = total.toLocaleString('uk-UA') + ' ₴';
-  if (labelEl) labelEl.textContent = isPartner ? 'Разом Партнер' : 'Разом РРЦ';
+  card.innerHTML = html2;
+  grid.appendChild(card);
 }
 
 function addPodToCart() {
@@ -6200,7 +6164,7 @@ window.fbGoogleLogin = async function() {
         </ul>
         <p style="margin:0 0 8px">6.2. Для реалізації своїх прав звертайтесь:</p>
         <div style="background:var(--bg-card);border-radius:6px;padding:10px 14px;margin-bottom:8px;line-height:2">
-          <div>📧 <strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f49b92929d9791b4808695979f9581809bda979b99da8195">[email&#160;protected]</a></div>
+          <div>📧 <strong>Email:</strong> <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)">office@trackauto.com.ua</a></div>
           <div>📞 <strong>Телефон:</strong> +38 (044) 451-66-17</div>
         </div>
         <p style="margin:0">6.3. Запит розглядається протягом 10 робочих днів з дати отримання.</p>
@@ -6223,7 +6187,7 @@ window.fbGoogleLogin = async function() {
         <div style="font-weight:600;font-size:13px;margin-bottom:10px">9. Контактна інформація</div>
         <div style="font-size:12.5px;line-height:2;color:var(--text-2)">
           <div>ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
-          <div>Email: <a href="/cdn-cgi/l/email-protection#9bf4fdfdf2f8fedbefe9faf8f0faeeeff4b5f8f4f6b5eefa" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="066960606f656346727467656d677372692865696b287367">[email&#160;protected]</span></a></div>
+          <div>Email: <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)">office@trackauto.com.ua</a></div>
           <div>Телефон: <a href="tel:+380444516617" style="color:var(--accent)">+38 (044) 451-66-17</a></div>
           <div>Вебсайт: <a href="https://tipster.ua" target="_blank" style="color:var(--accent)">tipster.ua</a></div>
           <div style="margin-top:6px;font-size:11px;color:var(--text-3)">Редакція від 09 березня 2026 року</div>
