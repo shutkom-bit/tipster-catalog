@@ -6294,9 +6294,7 @@ Base 300: 300 ₴/міс — 300 МБ трафік, Kyivstar/Vodafone, GPS ті�
     const typingEl = chatShowTyping();
 
     try {
-      // ЗАМІНІТЬ URL нижче на ваш Cloudflare Worker після деплою:
-      // const WORKER_URL = 'https://tipster-chat.YOUR-SUBDOMAIN.workers.dev';
-      const WORKER_URL = 'https://tipster-chat.workers.dev';
+      const WORKER_URL = 'https://tipster-chat.shutko-m.workers.dev';
       const response = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
