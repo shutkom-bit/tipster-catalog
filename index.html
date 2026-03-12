@@ -4345,6 +4345,7 @@ function renderPOD2() {
   card.onmouseover = function(){ this.style.boxShadow = '0 4px 20px rgba(0,0,0,0.12)'; };
   card.onmouseout  = function(){ this.style.boxShadow = 'none'; };
 
+  var mono = "font-family:'IBM Plex Mono',monospace";
   var h = '';
   h += '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0ea5e9,#22c55e)"></div>';
   h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">';
@@ -4358,17 +4359,17 @@ function renderPOD2() {
   h += '<div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:14px">Точний облік витрат палива з ємнісним датчиком «Ігла» — <strong>захист від зливу та недообліку</strong>.</div>';
   h += '<div style="background:var(--bg);border-radius:8px;border:1px solid var(--border);margin-bottom:14px;overflow:hidden;flex:1">';
   h +=   '<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);padding:5px 10px;border-bottom:1px solid var(--border)">Склад комплекту</div>';
-  h +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">&#x1F4E1; BI 530 R TREK v3</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">' + fmtN(p1) + '</span></div>';
-  h +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">&#x1F4A7; ДВРП «Ігла» 400/700/1000 мм</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">' + fmtN(p2) + '</span></div>';
-  h +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">&#x1F4F6; SIM Vodafone</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">' + fmtN(p3) + '</span></div>';
-  h +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">&#x1F5A5; GPS-сервер 1 міс</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600;color:#22c55e">Безкоштовно</span></div>';
+  h +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">&#x1F4E1; BI 530 R TREK v3</span><span style="' + mono + ';font-weight:600">' + fmtN(p1) + '</span></div>';
+  h +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">&#x1F4A7; ДВРП «Ігла» 400/700/1000 мм</span><span style="' + mono + ';font-weight:600">' + fmtN(p2) + '</span></div>';
+  h +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">&#x1F4F6; SIM Vodafone</span><span style="' + mono + ';font-weight:600">' + fmtN(p3) + '</span></div>';
+  h +=   '<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text-2)">&#x1F5A5; GPS-сервер 1 міс</span><span style="' + mono + ';font-weight:600;color:#22c55e">Безкоштовно</span></div>';
   h +=   '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:linear-gradient(90deg,rgba(14,165,233,0.06),transparent);border-top:1px solid rgba(14,165,233,0.18)">';
   h +=     '<span style="font-size:12px;font-weight:700">' + totalLabel + '</span>';
-  h +=     '<span style="font-size:14px;font-weight:800;color:#0ea5e9;font-family:'IBM Plex Mono',monospace">' + fmtN(total) + '</span>';
+  h +=     '<span style="font-size:14px;font-weight:800;color:#0ea5e9;' + mono + '">' + fmtN(total) + '</span>';
   h +=   '</div>';
   h += '</div>';
   h += '<div style="font-size:11px;color:#6b7280;background:rgba(14,165,233,0.05);border:1px solid rgba(14,165,233,0.2);border-radius:6px;padding:7px 10px;margin-bottom:12px;line-height:1.5">&#x26A0;&#xFE0F; <strong>Монтажні роботи</strong> — розрахунок індивідуально</div>';
-  h += '<button onclick="addPod2ToCart()" style="margin-top:auto;width:100%;padding:10px;background:linear-gradient(90deg,#0ea5e9,#22c55e);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s;box-shadow:0 2px 8px rgba(14,165,233,0.25)" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">&#x1F6D2; Додати до кошика</button>';
+  h += '<button onclick="addPod2ToCart()" style="margin-top:auto;width:100%;padding:10px;background:linear-gradient(90deg,#0ea5e9,#22c55e);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s;box-shadow:0 2px 8px rgba(14,165,233,0.25)" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">Додати до кошика</button>';
 
   card.innerHTML = h;
   grid.appendChild(card);
@@ -4382,6 +4383,7 @@ function addPod2ToCart() {
   cartShowToast('✅ Комплект "Контроль палива" додано до кошика');
   cartOpen();
 }
+
 
 function goToProduct(brand, code) {
   const section = brand === 'Teltonika' ? 'teltonika' : 'bitrek';
