@@ -2266,6 +2266,128 @@ tr.promo-row { background:rgba(239,68,68,0.035) !important; }
   white-space:nowrap;
 }
 tr.new-row { background:rgba(37,99,235,0.03) !important; }
+
+/* ═══════════════════════════ AI CHAT WIDGET ═══════════════════════════ */
+#ai-chat-btn {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9000;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #06b6d4);
+  border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(0,84,166,0.35);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 22px;
+}
+#ai-chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(0,84,166,0.45); }
+#ai-chat-btn .chat-badge {
+  position: absolute; top: -3px; right: -3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #ef4444; color: #fff; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg);
+}
+
+#ai-chat-panel {
+  position: fixed; bottom: 86px; right: 24px; z-index: 9001;
+  width: 380px; height: 520px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  display: none; flex-direction: column; overflow: hidden;
+  font-family: inherit;
+}
+#ai-chat-panel.open { display: flex; animation: chat-slide-up 0.22s ease; }
+@keyframes chat-slide-up {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+#ai-chat-header {
+  padding: 14px 16px; display: flex; align-items: center; gap: 10px;
+  background: linear-gradient(90deg, var(--accent), #0369a1);
+  color: #fff; flex-shrink: 0;
+}
+#ai-chat-header .chat-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+}
+#ai-chat-header .chat-info { flex: 1; }
+#ai-chat-header .chat-name { font-size: 14px; font-weight: 700; }
+#ai-chat-header .chat-status { font-size: 11px; opacity: 0.82; display: flex; align-items: center; gap: 5px; }
+#ai-chat-header .chat-status::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%; background: #4ade80;
+}
+#ai-chat-close {
+  background: none; border: none; color: #fff; cursor: pointer;
+  font-size: 18px; padding: 4px; opacity: 0.8; line-height: 1;
+}
+#ai-chat-close:hover { opacity: 1; }
+
+#ai-chat-messages {
+  flex: 1; overflow-y: auto; padding: 14px 12px; display: flex;
+  flex-direction: column; gap: 10px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.chat-msg { display: flex; gap: 8px; align-items: flex-end; max-width: 92%; }
+.chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+.chat-msg.bot  { align-self: flex-start; }
+.chat-msg .msg-avatar {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), #06b6d4);
+  display: flex; align-items: center; justify-content: center; font-size: 13px;
+}
+.chat-msg.user .msg-avatar { background: var(--bg); border: 1px solid var(--border); }
+.chat-bubble {
+  padding: 9px 12px; border-radius: 14px; font-size: 13px; line-height: 1.55;
+  max-width: 100%; word-break: break-word;
+}
+.chat-msg.bot  .chat-bubble { background: var(--bg); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+.chat-msg.user .chat-bubble { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+.chat-bubble strong { font-weight: 700; }
+.chat-bubble br + br { display: none; }
+
+.chat-typing { display: flex; gap: 4px; align-items: center; padding: 10px 12px; }
+.chat-typing span {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--text-3);
+  animation: typing-dot 1.2s infinite;
+}
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-dot {
+  0%,60%,100% { transform: translateY(0); opacity: 0.4; }
+  30%          { transform: translateY(-5px); opacity: 1; }
+}
+
+#ai-chat-suggestions {
+  display: flex; gap: 6px; flex-wrap: wrap; padding: 0 12px 8px;
+  flex-shrink: 0;
+}
+.chat-suggestion {
+  padding: 5px 10px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 20px; font-size: 11px; cursor: pointer; color: var(--text-2);
+  transition: border-color 0.15s, color 0.15s; white-space: nowrap;
+}
+.chat-suggestion:hover { border-color: var(--accent); color: var(--accent); }
+
+#ai-chat-input-row {
+  padding: 10px 12px; border-top: 1px solid var(--border);
+  display: flex; gap: 8px; align-items: center; flex-shrink: 0;
+}
+#ai-chat-input {
+  flex: 1; border: 1px solid var(--border); border-radius: 20px;
+  padding: 8px 14px; font-size: 13px; background: var(--bg);
+  color: var(--text-1); font-family: inherit; outline: none; resize: none;
+  transition: border-color 0.15s;
+}
+#ai-chat-input:focus { border-color: var(--accent); }
+#ai-chat-send {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  background: var(--accent); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.15s;
+}
+#ai-chat-send:hover { opacity: 0.88; }
+#ai-chat-send svg { width: 16px; height: 16px; fill: #fff; }
+/* ═══════════════════════════════════════════════════════════════════════ */
 </style>
 
 </head>
@@ -3258,7 +3380,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
             <div class="section" style="padding:0;margin-bottom:20px">
               <div class="section-title" style="font-size:14px">6. Права користувача</div>
               <p style="margin:8px 0;font-size:13px">Відповідно до Закону України «Про захист персональних даних» користувач має право отримати, виправити або видалити свої персональні дані, а також відкликати згоду на їх обробку.</p>
-              <p style="margin:8px 0;font-size:13px">Для реалізації прав звертайтесь: <strong><a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)">office@trackauto.com.ua</a></strong> або <strong>+38 (044) 451-66-17</strong>. Запит розглядається протягом 10 робочих днів.</p>
+              <p style="margin:8px 0;font-size:13px">Для реалізації прав звертайтесь: <strong><a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="600f060609030520141201030b0115140f4e030f0d4e1501">[email&#160;protected]</span></a></strong> або <strong>+38 (044) 451-66-17</strong>. Запит розглядається протягом 10 робочих днів.</p>
             </div>
 
             <div class="section" style="padding:0;margin-bottom:20px">
@@ -3275,7 +3397,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
               <div style="font-weight:600;font-size:13px;margin-bottom:10px">Контактна інформація</div>
               <div style="font-size:12.5px;line-height:2;color:var(--text-2)">
                 <div>ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
-                <div>Email: <a data-u="shutko" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)">shutko@trackauto.com.ua</a></div>
+                <div>Email: <a data-u="shutko" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="07746f72736c6847737566646c667273682964686a297266">[email&#160;protected]</span></a></div>
                 <div>Телефон: <a href="tel:+380444516617" style="color:var(--accent)">+38 (044) 451-66-17</a></div>
                 <div>Вебсайт: <a href="https://tipster.ua" target="_blank" style="color:var(--accent)">tipster.ua</a></div>
               </div>
@@ -3478,7 +3600,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
           onclick="var e=this.dataset.u+'@'+this.dataset.d;navigator.clipboard.writeText(e);this.title='Скопійовано ✓';setTimeout(()=>this.title='Копіювати',2000)"
           title="Копіювати"
           onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='var(--accent)'"></span>
-        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>(function(){var s=document.currentScript.previousElementSibling;s.textContent=s.dataset.u+'@'+s.dataset.d;})();</script>
+        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>(function(){var s=document.currentScript.previousElementSibling;s.textContent=s.dataset.u+'@'+s.dataset.d;})();</script>
         <div style="margin-top:10px">
           <a onclick="showPrivacyModal()" style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Політика конфіденційності</a>
         </div>
@@ -6085,6 +6207,130 @@ window.fbGoogleLogin = async function() {
     if (btn) { btn.disabled = false; btn.textContent = 'Зареєструватись'; }
   }
 };
+
+
+// ═══════════════════════════════════════════
+// AI CHAT — TIPSTER помічник
+// ═══════════════════════════════════════════
+(function() {
+  const SYSTEM_PROMPT = `Ти — AI-помічник компанії TIPSTER (ТОВ ТРЕКАВТО), експерт з GPS-моніторингу та телематики. Відповідай лише українською мовою. Будь конкретним, корисним, дружнім.
+
+Ти знаєш увесь прайс-каталог. Ціни вказані в USD, курс долара ~41-42 грн. Для партнерів є знижка (партнерська ціна).
+
+КАТАЛОГ ОБЛАДНАННЯ (код | назва | бренд | партнер | РРЦ | програма | опис):
+FMB900 | FMB900 | Teltonika | партнер $37.80 | РРЦ $41.40 | BASIC | 2G трекер початкового рівня. Компактний, вбудована антена GNSS/GSM. Ід\nFMB910 | FMB910 | Teltonika | партнер $37.80 | РРЦ $41.20 | BASIC | 2G трекер з розширеними входами/виходами. Цифрові та аналогові I/O. Пі\nFMB920 | FMB920 | Teltonika | партнер $39.60 | РРЦ $43.16 | BASIC | 2G трекер з BLE 4.0. Зчитує маяки EYE, датчики температури та RFID. Ко\nFMB930 | FMB930 (90V) | Teltonika | партнер $39.60 | РРЦ $43.16 | BASIC | 2G трекер для вантажного транспорту. Вхід живлення 10–90V. CAN читання\nFMB965 | FMB965 (IP67) | Teltonika | партнер $61.20 | РРЦ $66.71 | BASIC | 2G трекер із захистом IP67. Герметичний корпус, 4 цифрові входи. Для с\nFMT100 | FMT100 | Teltonika | партнер $59.40 | РРЦ $64.75 | FAST&EASY | 2G OBD трекер Plug&Play. Встановлення в OBD-II роз\'єм за 1 хвилину. З\nFMT100G | FMT100 (+GYRO) | Teltonika | партнер $63.00 | РРЦ $68.67 | FAST&EASY | 2G OBD трекер з гіроскопом. Виявлення прискорення, удару та небезпечно\nFMP100 | FMP100 | Teltonika | партнер $50.40 | РРЦ $54.94 | FAST&EASY | 2G трекер від прикурювача. Живлення 12/24V, вбудований акумулятор. Вст\nFMB010 | FMB010 | Teltonika | партнер $45.00 | РРЦ $49.05 | FAST&EASY | 2G трекер FAST&EASY з вбудованою батареєю. Мінімальний монтаж, живленн\nFMB020 | FMB020 | Teltonika | партнер $39.60 | РРЦ $43.16 | FAST&EASY | 2G трекер FAST&EASY. Розширена версія FMB010 з додатковим I/O. Простий\nFMB001 | FMB001 (OBD) | Teltonika | партнер $64.80 | РРЦ $70.63 | OBD | 2G OBD трекер. Зчитує понад 10 000 параметрів ECU. Plug&Play через OBD\nFMB003 | FMB003 (OBD) | Teltonika | партнер $75.60 | РРЦ $82.40 | OBD | 2G OBD трекер із захистом від несанкціонованого доступу. Зчитування J1\nFMB110 | FMB110 | Teltonika | партнер $43.20 | РРЦ $47.09 | ADVANCED | 2G трекер із зовнішньою GNSS-антеною. 2 SIM-карти, резервне живлення, \nFMB120 | FMB120 | Teltonika | партнер $46.80 | РРЦ $51.01 | ADVANCED | 2G трекер із зовнішніми антенами GNSS та GSM. Підвищена чутливість у с\nFMB130 | FMB130 | Teltonika | партнер $51.30 | РРЦ $55.92 | ADVANCED | 2G трекер з вбудованою батареєю 170 mAh. Резервне живлення, сповіщення\nFMB122 | FMB122 | Teltonika | партнер $51.30 | РРЦ $55.92 | ADVANCED | 2G трекер Advanced з GNSS-антеною. Покращена точність позиціонування д\nFMB204 | FMB204 | Teltonika | партнер $66.60 | РРЦ $72.59 | ADVANCED | 2G трекер з 4 digital + 4 analog входами. Для складних інсталяцій із м\nFMB209 | FMB209 | Teltonika | партнер $54.00 | РРЦ $58.86 | ADVANCED | 2G трекер Advanced з 1-Wire. Підтримка датчиків температури Dallas та \nFMB150L | FMB150 | Teltonika | партнер $97.20 | РРЦ $105.95 | CAN | 2G CAN-трекер з LV-CAN200. Читання до 1000 параметрів шини CAN легково\nFMB150E | FMB150 Extended | Teltonika | партнер $135.00 | РРЦ $147.15 | CAN | 2G CAN-трекер Extended. Підтримка LV-CAN200 + ALL-CAN300. Максимальна \nFMB140L | FMB140 LV-CAN200 | Teltonika | партнер $117.00 | РРЦ $127.53 | CAN | 2G CAN-трекер з адаптером LV-CAN200. Бездротове підключення до шини CA\nFMB140A | FMB140 ALL-CAN300 | Teltonika | партнер $187.20 | РРЦ $204.05 | CAN | 2G CAN-трекер з адаптером ALL-CAN300. Сумісний із 400+ моделями авто. \nFMB240L | FMB240 IP67 LV-CAN200 | Teltonika | партнер $128.70 | РРЦ $140.28 | CAN | 2G CAN-трекер IP67 з LV-CAN200. Герметичний корпус для комерційного тр\nFMB240A | FMB240 IP67 ALL-CAN300 | Teltonika | партнер $198.90 | РРЦ $216.80 | CAN | 2G CAN-трекер IP67 з ALL-CAN300. Захищений корпус + широка сумісність \nFMB125E | FMB125 External GPS | Teltonika | партнер $52.20 | РРЦ $56.90 | PROFESSIONAL | 2G Professional трекер із зовнішньою GNSS-антеною. Розширені I/O, 1-Wi\nFMB125I | FMB125 Internal GPS | Teltonika | партнер $49.50 | РРЦ $53.96 | PROFESSIONAL | 2G Professional трекер з внутрішньою GNSS-антеною. 1-Wire, RS232, повн\nFMB225 | FMB225 IP67 | Teltonika | партнер $57.60 | РРЦ $62.78 | PROFESSIONAL | 2G Professional трекер IP67. Захищений корпус, RS232/RS485, 1-Wire. Дл\nALLCAN3 | ALLCAN300 Оновлення | Teltonika | партнер $79.20 | РРЦ $93.00 | Оновлення | Прошивка ALL-CAN300 для оновлення сумісного CAN-адаптера до підтримки \nEXTEND | Extended Оновлення | Teltonika | партнер $59.94 | РРЦ $71.00 | Оновлення | Прошивка Extended для розширення функціоналу CAN-адаптера. Активує дод\nFMC920 | FMC920 CAT1 | Teltonika | партнер $43.56 | РРЦ $47.92 | BASIC | 4G CAT1 трекер з BLE 4.0. Читає маяки EYE, датчики та RFID. Компактний\nFMC880 | FMC880 CAT1 | Teltonika | партнер $81.90 | РРЦ $90.09 | FAST&EASY | 4G CAT1 OBD трекер Plug&Play. Зчитує діагностику ECU, швидкий 4G зв\'я\nFMC880G | FMC880 (+GYRO) | Teltonika | партнер $85.50 | РРЦ $94.05 | FAST&EASY | 4G CAT1 OBD трекер з гіроскопом. Виявлення небезпечного водіння + діаг\nFMC800 | FMC800 CAT1 | Teltonika | партнер $86.40 | РРЦ $95.04 | FAST&EASY | 4G CAT1 трекер від прикурювача. Вбудований акумулятор, встановлення бе\nFMC003 | FMC003 CAT1 OBD | Teltonika | партнер $75.24 | РРЦ $82.76 | OBD | 4G CAT1 OBD трекер. Зчитує ECU-параметри через OBD-II, підтримка J1939\nFMC130 | FMC130 CAT1 | Teltonika | партнер $49.50 | РРЦ $54.45 | ADVANCED | 4G CAT1 Advanced трекер із зовнішньою GNSS-антеною. 2 SIM, резервне жи\nFMC230 | FMC230 | Teltonika | партнер $81.00 | РРЦ $89.10 | ADVANCED | 4G CAT1 трекер із зовнішніми антенами. Покращена стабільність зв\'язку\nFMC234 | FMC234 IP67 | Teltonika | партнер $86.40 | РРЦ $95.04 | ADVANCED | 4G CAT1 трекер IP67. Герметичний корпус, зовнішні антени. Для комерцій\nFMC150 | FMC150 | Teltonika | партнер $117.00 | РРЦ $128.70 | CAN | 4G CAT1 CAN-трекер з LV-CAN200. Бездротове зчитування CAN-шини легкови\nFMC150E | FMC150 Extended | Teltonika | партнер $154.80 | РРЦ $170.28 | CAN | 4G CAT1 CAN-трекер Extended. LV-CAN200 + ALL-CAN300, максимальна суміс\nFMC250 | FMC250 CAT1 IP67 | Teltonika | партнер $128.70 | РРЦ $141.57 | CAN | 4G CAT1 CAN-трекер IP67. Герметичний корпус, LV-CAN200, швидкий 4G зв\\nFMC250E | FMC250 Extended IP67 | Teltonika | партнер $166.50 | РРЦ $183.15 | CAN | 4G CAT1 CAN-трекер IP67 Extended. LV-CAN200 + ALL-CAN300 + IP67 + 4G C\nFMC125 | FMC125 CAT1 EMEA | Teltonika | партнер $56.10 | РРЦ $61.71 | PROFESSIONAL | 4G CAT1 Professional трекер EMEA. RS232/RS485, 1-Wire, повний I/O. Для\nFMC225 | FMC225 IP67 EMEA | Teltonika | партнер $64.68 | РРЦ $71.15 | PROFESSIONAL | 4G CAT1 Professional IP67. Захищений корпус, RS232/RS485, 1-Wire. Для \nFMC650 | FMC650 CAT1 | Teltonika | партнер $112.20 | РРЦ $123.42 | PROFESSIONAL | 4G CAT1 Professional трекер преміум-класу. Широкий діапазон живлення, \nFTC920 | FTC920 | Teltonika | партнер $57.60 | РРЦ $63.36 | BASIC | 4G CAT1 трекер серії FTC. Компактний, оптимізований для хмарних платфо\nFTC921 | FTC921 | Teltonika | партнер $59.40 | РРЦ $65.34 | BASIC | 4G CAT1 трекер FTC із розширеними I/O. Цифрові входи, аналогові виходи\nFTC924 | FTC924 | Teltonika | партнер $63.00 | РРЦ $69.30 | BASIC | 4G CAT1 трекер FTC з BLE 5.0. Підтримка маяків EYE та датчиків. Оновле\nFTC927 | FTC927 | Teltonika | партнер $66.60 | РРЦ $73.26 | BASIC | 4G CAT1 трекер FTC НОВИНКА. BLE 5.0, покращена GNSS-чутливість, хмарна\nFTC961 | FTC961 | Teltonika | партнер $79.20 | РРЦ $87.12 | BASIC | 4G CAT1 трекер FTC з IP67. Герметичний захист, цифрові I/O, для зовніш\nFTC965 | FTC965 | Teltonika | партнер $84.60 | РРЦ $93.06 | BASIC | 4G CAT1 трекер FTC IP67 з BLE. Захищений корпус + бездротові датчики E\nFTC880 | FTC880 | Teltonika | партнер $76.50 | РРЦ $84.15 | FAST&EASY | 4G CAT1 OBD трекер FTC. Plug&Play, зчитує ECU, хмарна конфігурація без\nFTC887 | FTC887 | Teltonika | партнер $87.30 | РРЦ $96.03 | FAST&EASY | 4G CAT1 OBD трекер FTC з гіроскопом. Eco-driving, аналіз водіння + діа\nFTC134 | FTC134 CAT1 | Teltonika | партнер $71.10 | РРЦ $78.21 | ADVANCED | 4G CAT1 Advanced трекер FTC. Зовнішні антени GNSS/LTE, резервне живлен\nFTC305 | FTC305 | Teltonika | партнер $113.40 | РРЦ $124.74 | E-MOBILITY | 4G CAT1 трекер для електротранспорту. Зчитування параметрів BMS, SOC б\nFTC305W | FTC305 without casing | Teltonika | партнер $113.40 | РРЦ $124.74 | E-MOBILITY | 4G CAT1 трекер E-Mobility без корпусу (монтаж всередині). BMS, SAE J19\nTAT100 | TAT100 | Teltonika | партнер $77.40 | РРЦ $85.14 | AUTONOMOUS | Автономний GPS-маяк 2G. Вбудована батарея до 3 років. Магнітне кріплен\nTAT100B | TAT100 (3x batt.) | Teltonika | партнер $88.20 | РРЦ $97.02 | AUTONOMOUS | Автономний маяк 2G з 3 батареями. Потрійний ресурс — до 5 років автоно\nTAT140 | TAT140 CAT1 | Teltonika | партнер $108.00 | РРЦ $118.80 | AUTONOMOUS | Автономний маяк 4G CAT1. Вбудована батарея, магнітне кріплення, IPX7. \nTAT240 | TAT240 (tamper) CAT1 | Teltonika | партнер $124.20 | РРЦ $136.62 | AUTONOMOUS | 4G CAT1 маяк з датчиком тамперу. Захист від несанкціонованого зняття +\nATC700-P | ATC700 CAT1 Персональний | Teltonika | партнер $61.60 | РРЦ $86.40 | AUTONOMOUS | Персональний трекер CAT1. Вбудована батарея, IPX7, BLE. Ідеально для в\nGH5200 | GH5200 | Teltonika | партнер $64.80 | РРЦ $71.28 | AUTONOMOUS | Промисловий GPS-трекер для важкої техніки. Захист IP67, CAN J1939/FMS,\nTFT100C | TFT100 (CAN) | Teltonika | партнер $86.40 | РРЦ $95.04 | E-MOBILITY | Трекер для електробусів та електровантажівок (CAN). Зчитування BMS, SO\nTFT100R | TFT100 (RS232 or RS485) | Teltonika | партнер $82.80 | РРЦ $91.08 | E-MOBILITY | Трекер для електротранспорту (RS232/RS485). Параметри заряду, BMS, під\nTFT100U | TFT100 (UART) | Teltonika | партнер $75.60 | РРЦ $83.16 | E-MOBILITY | Трекер для електротранспорту (UART). BMS-моніторинг, SOC батареї, підт\nBI 910 TREK | BI 910 TREK | Bitrek | партнер $111.10 | РРЦ $130.00 | Advanced | Зовнішні GPS/GSM антени; RS485; CAN (FMS, j1939); 1-Wire; SIM:2, D_hig\nBI 868 TREK | BI 868 TREK v10 | Bitrek | партнер $70.40 | РРЦ $82.00 | BLE | Вбудовані GPS/GSM антени; SIM:1, D_high:1, D_low:1, AIN:1, DOUT:1, АКБ\nBI 522 L TREK | BI 522 L TREK | Bitrek | партнер $35.20 | РРЦ $50.00 | CAN BLE | Вбудовані GPS/GSM антени; SIM:1, AIN:1, D_high:1, D_low:1, DOUT:1, АКБ\nBI 530 R TREK | BI 530 R TREK v3 | Bitrek | партнер $44.00 | РРЦ $80.00 | CAN BLE | Вбудовані GPS/GSM антени; 1-Wire; RS485, SIM:1, D_low:2, AIN:2, DOUT:2\nBI 310 Cicada | BI 310 Cicada v.2 | Bitrek | партнер $73.70 | РРЦ $72.00 | Автономний маяк | Зовнішні GPS/GSM антени; SIM:1; CAN (Connect-Bus); АКБ:1000 mAh\nBI 420 TREK | BI 420 TREK (4G) | Bitrek | партнер $83.60 | РРЦ $92.00 | 4G BLE | 2G/4G LTE Cat 1, SIM:1, D_high:1, D_low:1, AIN:1, DOUT:1, АКБ:1000 mAh\nBI 410 TREK | BI 410 TREK (4G) NEW! | Bitrek | партнер $44.00 | РРЦ $65.00 | BLE RS485 | 2G/4G LTE Cat 1, SIM:1, AIN:1, DOUT:1, АКБ:130 mAh, BLE 4.0, RS232 Can\nBI 530 C TREK | BI 530 C TREK v3 | Bitrek | партнер $85.80 | РРЦ $90.00 | 4G BLE | CAN 29bit(FMS,j1939)/11bit, 1-Wire, RS485, RS232, SIM:1, D_low:1, AIN:\nBI 450 TREK | BI 450 TREK (4G) | Bitrek | партнер $112.20 | РРЦ $120.00 | 4G BLE | 2G/4G LTE Cat 1, CAN:2, 1-Wire, RS485, RS232, SIM:1, D_high:1, D_low:2\nBLE-TAG | Мітка BLE | Bitrek | партнер $48.40 | РРЦ $55.00 | Мітки | Вбудована батарея; Автономність до 2 років\nBLE-TAG-BTN | Мітка BLE (з кнопкою) | Bitrek | партнер $48.40 | РРЦ $55.00 | Мітки | Вбудована батарея; Автономність до 1 року\nBI FLB 1000 | BI FLB (1000) BLE | Bitrek | партнер $100.10 | РРЦ $120.00 | Паливо | Бездротовий датчик рівня пального; BLE 5.4; до 4 років; Android додато\nBI FLS 700 | BI FLSensor v.8 (700) | Bitrek | партнер $89.10 | РРЦ $95.00 | Паливо | RS485; довжина кабелю 7м; монтажний комплект\nBI FLS 1500 | BI FLSensor v.8 (1500) | Bitrek | партнер $119.90 | РРЦ $115.00 | Паливо | RS485; довжина кабелю 7м; монтажний комплект\nBI FLS 3000 | BI FLSensor v.8 (3000) | Bitrek | партнер $148.47 | РРЦ $155.00 | Паливо | RS485; довжина кабелю 7м; монтажний комплект\nmNVR S250 SD | mNVR S250 SD | Bitrek | партнер $365.20 | РРЦ $365.00 | mNVR | 4 камери; GPS/Glonass; Passive POE; WiFi; SD Card\nmNVR S260 SSD | mNVR S260 SSD | Bitrek | партнер $422.18 | РРЦ $460.00 | mNVR | 4 камери; GPS/Glonass; Passive POE; WiFi; Kingston M2 SSD 240 ГБ\nmNVR S261 M2 | mNVR S261 M2 | Bitrek | партнер $347.44 | РРЦ $379.00 | mNVR | 4 камери; GPS/Glonass; Passive POE; WiFi; Слот SATA M2 SSD до 2 ТБ\nCAM-DAHUA | Камера Dahua IP | Bitrek | партнер $92.40 | РРЦ $97.00 | Камери | IP-камера для mDVR; Роз'єм живлення SP1310/P7\nIGLA-400-1000 | ДВРП «Ігла» 400, 700, 1000 мм | Ігла | партнер $58.62 | РРЦ $66.99 | Ємкісний | Ємкісний датчик рівня палива; довжина 400/700/1000 мм; RS-485; точніст\nIGLA-1500-2000 | ДВРП «Ігла» 1500, 2000 мм | Ігла | партнер $68.81 | РРЦ $78.64 | Ємкісний | Ємкісний датчик рівня палива; довжина 1500/2000 мм; RS-485; точність ±\nIGLA-3000 | ДВРП «Ігла» 3000 мм | Ігла | партнер $79.00 | РРЦ $90.29 | Ємкісний | Ємкісний датчик рівня палива; довжина 3000 мм; RS-485; для великих бак\nIGLA-CFG | Конфігуратор Ігла | Ігла | партнер $58.62 | РРЦ $66.99 | Конфігуратор | Пристрій для налаштування та калібрування датчиків Ігла; USB-підключен\nIGLA-DT01 | Датчик температури DT-01/RS-485 | Ігла | партнер $58.62 | РРЦ $66.99 | Температура | Цифровий датчик температури; RS-485; діапазон -40…+125°C; точність ±0.\nIGLA-MOUNT | Монтажний комплект Ігла | Ігла | партнер $7.65 | РРЦ $8.74 | Монтаж | Комплект для монтажу датчика: різьбовий штуцер, ущільнювачі, кріплення\nIGLA-CBL-75 | Кабель ДВРП 7.5 м з роз'ємом | Ігла | партнер $10.19 | РРЦ $11.65 | Кабелі | Подовжувальний кабель з роз'ємом для датчиків Ігла; довжина 7.5 м; IP5\nIGLA-CBL-10 | Кабель ДВРП 10 м з роз'ємом | Ігла | партнер $12.74 | РРЦ $14.56 | Кабелі | Подовжувальний кабель з роз'ємом для датчиків Ігла; довжина 10 м; IP54\nIGLA-CBL-21 | Кабель ДВРП (2+1) з роз'ємом | Ігла | партнер $14.78 | РРЦ $16.89 | Кабелі | Кабель для підключення двох датчиків до одного порту; з роз'ємами; IP5\nIGLA-CBL-CFG | Кабель Конфігуратора з роз'ємом | Ігла | партнер $13.25 | РРЦ $15.15 | Кабелі | Кабель для підключення конфігуратора до датчика; з роз'ємами\nCAN-READER | CAN Reader BITREK | Bitrek | партнер $33.00 | РРЦ $40.00 | CAN | Безконтактний зчитувач CAN 29bit/11bit; не працює із запитами в шину C\nCAN-READER-L | CAN Reader Light BITREK | Bitrek | партнер $27.50 | РРЦ $35.00 | CAN | Безконтактний зчитувач CAN 29bit/11bit; безкорпусний; під стяжку\nNOZZLE | Зчитувач Nozzle BITREK | Bitrek | партнер $38.50 | РРЦ $46.00 | Форсунки | Зчитувач керуючого сигналу форсунок бензинового ДВЗ\nDS18B20 | Датчик температури DS18B20 | Bitrek | партнер $22.50 | РРЦ $5.00 | Аксесуари | 1-Wire; кабель 1.5м; IP65\nBI-BLTCIM | Датчик BI-BLTCIM | Bitrek | партнер $39.60 | РРЦ $46.00 | Аксесуари | BLE; Вбудований сенсор температури; сумісний з BI 868/530R/530C\nBI-BLTCEM | Датчик BI-BLTCEM | Bitrek | партнер $46.20 | РРЦ $52.00 | Аксесуари | BLE; Зовнішній сенсор температури; сумісний з BI 868/530R/530C\nBI-BLTHIM | Датчик BI-BLTHIM | Bitrek | партнер $41.80 | РРЦ $50.00 | Аксесуари | BLE; Температура та вологість; сумісний з BI 868/530R/530C
+
+ТАРИФИ SIM-КАРТ:
+Base 300: 300 ₴/міс — 300 МБ трафік, Kyivstar/Vodafone, GPS тільки трафік\nFuel-Can 330: 330 ₴/міс — 330 МБ трафік + CAN-дані, ДВРП підтримка\nRent 460: 460 ₴/міс — 460 МБ, 2 SIM + роумінг EU, оренда трекера включена\nPersonal 250: 250 ₴/міс — 250 МБ, базовий трекінг, 1 SIM. Мобільний додаток X-GPS Tracker.\nRoaming 400: 400 ₴/міс — Тарифний план "Україна 30" + Країни ЄС. Роумінг EU + UA.\nTipster 140: 140 ₴/міс — 140 МБ, TIPSTER фіксований IP, M2M\nHold 90: 90 ₴/міс — Режим утримання, мінімальний трафік, без авто-оновлень
+
+ПОСЛУГИ МОНТАЖУ: базовий монтаж від 400 ₴, складний з CAN від 1200 ₴.
+
+КОНТАКТИ: +38(095)654-66-44, office@trackauto.com.ua, tipster.ua
+
+Якщо питають ціну — вказуй РРЦ (для звичайних клієнтів). Партнерські ціни — тільки для зареєстрованих партнерів.
+Якщо питають підібрати трекер — уточни задачу: легкове авто / вантажівка / спецтехніка / маяк / особистий трекер.
+Не вигадуй характеристики — якщо не знаєш, рекомендуй звернутись до менеджера.`;
+
+  let chatHistory = [];
+  let chatOpen = false;
+  let isTyping = false;
+
+  window.chatToggle = function() {
+    chatOpen = !chatOpen;
+    const panel = document.getElementById('ai-chat-panel');
+    const badge = document.getElementById('chat-badge');
+    panel.classList.toggle('open', chatOpen);
+    if (chatOpen) {
+      badge.style.display = 'none';
+      const inp = document.getElementById('ai-chat-input');
+      if (inp) inp.focus();
+      if (chatHistory.length === 0) chatAddWelcome();
+    }
+  };
+
+  function chatAddWelcome() {
+    chatAddMessage('bot', 'Привіт! 👋 Я AI-помічник TIPSTER.<br>Допоможу підібрати трекер, дізнатися ціни або відповім на питання по каталогу.<br><strong>Про що запитати?</strong>');
+  }
+
+  function chatAddMessage(role, html_content) {
+    const messages = document.getElementById('ai-chat-messages');
+    if (!messages) return;
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
+    const avatar = role === 'bot' ? '🤖' : '👤';
+    div.innerHTML = `<div class="msg-avatar">${avatar}</div><div class="chat-bubble">${html_content}</div>`;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+
+  function chatShowTyping() {
+    const messages = document.getElementById('ai-chat-messages');
+    if (!messages) return null;
+    const div = document.createElement('div');
+    div.className = 'chat-msg bot';
+    div.id = 'chat-typing-indicator';
+    div.innerHTML = '<div class="msg-avatar">🤖</div><div class="chat-bubble"><div class="chat-typing"><span></span><span></span><span></span></div></div>';
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+
+  window.chatSend = async function(presetText) {
+    if (isTyping) return;
+    const input = document.getElementById('ai-chat-input');
+    const text = presetText || (input ? input.value.trim() : '');
+    if (!text) return;
+    if (input) input.value = '';
+
+    // Сховати підказки після першого повідомлення
+    const sugg = document.getElementById('ai-chat-suggestions');
+    if (sugg) sugg.style.display = 'none';
+
+    chatAddMessage('user', text);
+    chatHistory.push({ role: 'user', content: text });
+
+    isTyping = true;
+    const typingEl = chatShowTyping();
+
+    try {
+      // ЗАМІНІТЬ URL нижче на ваш Cloudflare Worker після деплою:
+      // const WORKER_URL = 'https://tipster-chat.YOUR-SUBDOMAIN.workers.dev';
+      const WORKER_URL = 'https://tipster-chat.workers.dev';
+      const response = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: SYSTEM_PROMPT,
+          messages: chatHistory
+        })
+      });
+
+      const data = await response.json();
+      if (typingEl) typingEl.remove();
+
+      if (data.content && data.content[0]) {
+        const reply = data.content[0].text
+          .replace(/\n\n/g, '<br><br>')
+          .replace(/\n/g, '<br>')
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+        chatAddMessage('bot', reply);
+        chatHistory.push({ role: 'assistant', content: data.content[0].text });
+      } else {
+        chatAddMessage('bot', 'Вибачте, сталась помилка. Спробуйте ще раз або зверніться до менеджера: <strong>+38(095)654-66-44</strong>');
+      }
+    } catch(err) {
+      if (typingEl) typingEl.remove();
+      chatAddMessage('bot', 'Помилка з\'єднання. Будь ласка, перевірте інтернет або зателефонуйте: <strong>+38(095)654-66-44</strong>');
+    } finally {
+      isTyping = false;
+    }
+  };
+})();
+// ════════════════════════════════════════════
+
 </script>
 <!-- ══ PRIVACY MODAL ══ -->
 <div id="privacy-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 16px">
@@ -6164,7 +6410,7 @@ window.fbGoogleLogin = async function() {
         </ul>
         <p style="margin:0 0 8px">6.2. Для реалізації своїх прав звертайтесь:</p>
         <div style="background:var(--bg-card);border-radius:6px;padding:10px 14px;margin-bottom:8px;line-height:2">
-          <div>📧 <strong>Email:</strong> <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)">office@trackauto.com.ua</a></div>
+          <div>📧 <strong>Email:</strong> <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="600f060609030520141201030b0115140f4e030f0d4e1501">[email&#160;protected]</span></a></div>
           <div>📞 <strong>Телефон:</strong> +38 (044) 451-66-17</div>
         </div>
         <p style="margin:0">6.3. Запит розглядається протягом 10 робочих днів з дати отримання.</p>
@@ -6187,19 +6433,47 @@ window.fbGoogleLogin = async function() {
         <div style="font-weight:600;font-size:13px;margin-bottom:10px">9. Контактна інформація</div>
         <div style="font-size:12.5px;line-height:2;color:var(--text-2)">
           <div>ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
-          <div>Email: <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)">office@trackauto.com.ua</a></div>
+          <div>Email: <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="83ece5e5eae0e6c3f7f1e2e0e8e2f6f7ecade0eceeadf6e2">[email&#160;protected]</span></a></div>
           <div>Телефон: <a href="tel:+380444516617" style="color:var(--accent)">+38 (044) 451-66-17</a></div>
           <div>Вебсайт: <a href="https://tipster.ua" target="_blank" style="color:var(--accent)">tipster.ua</a></div>
-          <div style="margin-top:6px;font-size:11px;color:var(--text-3)">Редакція від 09 березня 2026 року</div>
-        </div>
-      </div>
+      
 
-    </div>
+</div></div></div></div></div>
+<!-- ═══════════════ AI CHAT WIDGET ═══════════════ -->
+<button id="ai-chat-btn" onclick="chatToggle()" title="AI-помічник TIPSTER">
+  🤖
+  <div class="chat-badge" id="chat-badge" style="display:none">1</div>
+</button>
 
-    <div style="margin-top:20px;text-align:center">
-         <button onclick="closePrivacyModal()" style="padding:10px 32px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Зрозуміло</button>
+<div id="ai-chat-panel">
+  <div id="ai-chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-info">
+      <div class="chat-name">TIPSTER AI</div>
+      <div class="chat-status">Онлайн · відповідає миттєво</div>
     </div>
+    <button id="ai-chat-close" onclick="chatToggle()">✕</button>
+  </div>
+
+  <div id="ai-chat-messages">
+    <!-- Повідомлення додаються JS -->
+  </div>
+
+  <div id="ai-chat-suggestions">
+    <button class="chat-suggestion" onclick="chatSend('Які трекери є для легкового авто?')">Трекери для авто</button>
+    <button class="chat-suggestion" onclick="chatSend('Яка ціна FMC920?')">Ціна FMC920</button>
+    <button class="chat-suggestion" onclick="chatSend('Які тарифи SIM є?')">Тарифи SIM</button>
+    <button class="chat-suggestion" onclick="chatSend('Скільки коштує монтаж?')">Монтаж</button>
+  </div>
+
+  <div id="ai-chat-input-row">
+    <input id="ai-chat-input" type="text" placeholder="Запитайте про трекери, ціни, тарифи…"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatSend();}">
+    <button id="ai-chat-send" onclick="chatSend()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+    </button>
   </div>
 </div>
-
-</body></html>
+<!-- ════════════════════════════════════════════════ -->
+</body>
+</html>
