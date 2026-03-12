@@ -5197,8 +5197,10 @@ const PRIVAT_API = 'https://api.privatbank.ua/p24api/pubinfo?exchange&json&cours
 // Список CORS-проксі (перший що відповів — використовуємо)
 const PROXIES = [
   url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
   url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+  url => `https://proxy.cors.sh/${url}`,
+  url => `https://cors-anywhere.herokuapp.com/${url}`,
 ];
 
 async function fetchWithProxies(targetUrl) {
@@ -5276,22 +5278,29 @@ async function fetchNBURates() {
       localStorage.setItem('nbu_eur', rateEUR);
       localStorage.setItem('nbu_date', today);
       localStorage.setItem('nbu_src', 'ПриватБанк');
+      localStorage.setItem('nbu_ts', Date.now());
     } catch(e) {}
 
   } catch(err) {
-    // Спробувати кешовані дані
+    // Спробувати кешовані дані — тільки якщо не старіший за 24 год
     try {
-      const cUSD = localStorage.getItem('nbu_usd');
-      const cEUR = localStorage.getItem('nbu_eur');
+      const cUSD  = localStorage.getItem('nbu_usd');
+      const cEUR  = localStorage.getItem('nbu_eur');
       const cDate = localStorage.getItem('nbu_date') || '';
       const cSrc  = localStorage.getItem('nbu_src') || 'кеш';
-      if (cUSD && cEUR) {
+      const cTs   = parseInt(localStorage.getItem('nbu_ts') || '0');
+      const ageOk = (Date.now() - cTs) < 24 * 60 * 60 * 1000;
+      if (cUSD && cEUR && ageOk) {
         applyRates(cUSD, cEUR, cDate, '💾 ' + cSrc);
         setNBUStatus('cache', 'кеш · ' + cDate);
         return;
       }
+      // Кеш застарів — очищаємо
+      ['nbu_usd','nbu_eur','nbu_date','nbu_ts'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
     } catch(e) {}
     setNBUStatus('error', 'вручну');
+    // Повторна спроба через 30 сек
+    setTimeout(fetchNBURates, 30000);
   }
 }
 
