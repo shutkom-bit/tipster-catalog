@@ -1658,6 +1658,17 @@ body[data-role="admin"]   .partner-only { display: flex !important; }
 body[data-role="partner"] .nav-item.partner-only { display: flex !important; }
 body[data-role="admin"]   .nav-item.partner-only { display: flex !important; }
 
+/* ── Navixy Platform — role-based views ─────────── */
+/* За замовчуванням — показуємо клієнтський вид */
+.nvx-client-view  { display: block; }
+.nvx-partner-view { display: none; }
+
+/* Партнер/адмін — показуємо партнерський, ховаємо клієнтський */
+body[data-role="partner"] .nvx-client-view,
+body[data-role="admin"]   .nvx-client-view  { display: none; }
+body[data-role="partner"] .nvx-partner-view,
+body[data-role="admin"]   .nvx-partner-view { display: block; }
+
 /* ── Navixy pricing cards ───────────────────────── */
 .nvx-plan-grid {
   display: grid;
@@ -2987,18 +2998,119 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         <div class="page-inner">
           <div class="page-header">
             <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap">
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent)">B2B · Partner</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent)">GPS · Platform</span>
               <span style="font-family:'IBM Plex Sans',sans-serif;font-size:24px;font-weight:800;letter-spacing:-0.04em;color:var(--text)">Navixy Platform</span>
             </div>
-            <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;max-width:680px">
-              Platform as a Service (PaaS) — повнофункціональна платформа GPS-моніторингу.
-              Модель: <b style="color:var(--text)">Pay-as-you-Go</b> — тільки за активні юніти поточного місяця.
+            <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;max-width:720px">
+              Navixy — це гнучка платформа, яка працює як для кінцевих користувачів через партнерів, так і як основа для власного GPS-бізнесу чи корпоративного рішення enterprise-рівня.
             </div>
           </div>
 
+          <!-- ══ КЛІЄНТСЬКИЙ БЛОК (client/pending) ══ -->
+          <div class="nvx-client-view">
+
+            <!-- Три картки аудиторій -->
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:28px">
+
+              <!-- Картка 1: Приватні / малий бізнес -->
+              <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:10px">
+                <div style="font-size:22px">🚗</div>
+                <div style="font-size:14px;font-weight:700;color:var(--text)">Приватні особи та малий бізнес</div>
+                <div style="font-size:12.5px;color:var(--text-2);line-height:1.65">
+                  GPS-моніторинг особистого або корпоративного автопарку через готову хмарну платформу з помісячною оплатою.
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text-2)">
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Не потребує власної інфраструктури</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Мобільний додаток X-GPS Tracker</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Підключення від 1 об'єкта</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Звіти, маршрути, геозони</span></li>
+                </ul>
+                <div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--border)">
+                  <button onclick="showSection('tariffs')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Переглянути тарифи
+                  </button>
+                </div>
+              </div>
+
+              <!-- Картка 2: Великий бізнес / держструктури -->
+              <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:10px">
+                <div style="font-size:22px">🏢</div>
+                <div style="font-size:14px;font-weight:700;color:var(--text)">Великі компанії та держструктури</div>
+                <div style="font-size:12.5px;color:var(--text-2);line-height:1.65">
+                  Масштабовані рішення для автопарків від 50+ одиниць з поглибленою аналітикою, інтеграцією в корпоративні системи та підтримкою 24/7.
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text-2)">
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Підтримка 30 000+ активних об'єктів</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Інтеграція з SAP, Oracle, 1С</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Відеоспостереження (MDVR)</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>White Label під власний бренд</span></li>
+                </ul>
+                <div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--border)">
+                  <a href="tel:+380956546644" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--bg-card);color:var(--text);border:1px solid var(--border);border-radius:7px;font-size:13px;font-weight:600;text-decoration:none">
+                    📞 Зв'язатися з менеджером
+                  </a>
+                </div>
+              </div>
+
+              <!-- Картка 3: On-Premise / Enterprise -->
+              <div style="background:linear-gradient(135deg,#f0f4ff 0%,#e8f0fb 100%);border:1px solid #c3d9f7;border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:10px">
+                <div style="font-size:22px">🔧</div>
+                <div style="font-size:14px;font-weight:700;color:var(--text)">On-Premise / Enterprise</div>
+                <div style="font-size:12.5px;color:var(--text-2);line-height:1.65">
+                  Повне власне впровадження платформи на власній інфраструктурі з максимальним контролем та кастомізацією.
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text-2)">
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Розгортання на власних серверах</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Повний контроль над даними</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Необмежена кастомізація</span></li>
+                  <li style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> <span>Індивідуальний SLA</span></li>
+                </ul>
+                <div style="margin-top:auto;padding-top:12px;border-top:1px solid #c3d9f7">
+                  <div style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:6px 10px;border-radius:6px;font-weight:600">
+                    💼 Комерційний запит — індивідуально
+                  </div>
+                  <a href="tel:+380956546644" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;margin-top:8px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;text-decoration:none">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Обговорити проєкт
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Можливості платформи (для всіх) -->
+            <div class="section">
+              <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Можливості платформи</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;max-width:720px">
+                <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-2)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Моніторинг в реальному часі</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-2)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Маршрути, зупинки, геозони</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-2)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Телематика авто (CAN-дані)</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-2)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Управління польовими командами</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-2)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Відеоспостереження (MDVR)</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-2)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Веб + мобільні додатки iOS/Android</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-2)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> REST API для інтеграцій</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-2)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> SLA 99.7% uptime</div>
+              </div>
+            </div>
+
+            <!-- Callout — партнерська програма -->
+            <div class="callout callout-blue" style="max-width:680px">
+              <span class="callout-icon">🤝</span>
+              <div>Якщо ви плануєте надавати GPS-моніторинг як послугу своїм клієнтам — зверніться щодо <b>партнерської програми TIPSTER</b>. Партнери отримують доступ до комерційних умов та B2B-інструментів.</div>
+            </div>
+
+          </div><!-- /nvx-client-view -->
+
+          <!-- ══ ПАРТНЕРСЬКИЙ БЛОК (partner/admin) ══ -->
+          <div class="nvx-partner-view">
+
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;padding:10px 14px;background:var(--accent-bg);border:1px solid #c3d9f7;border-radius:8px;max-width:560px">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg>
+              <span style="font-size:12.5px;color:var(--accent);font-weight:600">B2B · Partner — комерційні умови</span>
+            </div>
+
           <!-- Активація -->
           <div class="section">
-            <div class="section-title"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--text-3)"><circle cx="6" cy="8" r="3"/><line x1="8.5" y1="8" x2="14" y2="8"/><line x1="12" y1="8" x2="12" y2="10"/></svg> Одноразова активація</div>
+            <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><circle cx="6" cy="8" r="3"/><line x1="8.5" y1="8" x2="14" y2="8"/><line x1="12" y1="8" x2="12" y2="10"/></svg> Одноразова активація</div>
             <div style="display:flex;align-items:center;gap:20px;padding:16px;background:var(--bg);border:1px solid var(--border);border-radius:6px;max-width:560px">
               <div style="flex:1">
                 <div style="font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px">Активація платформи</div>
@@ -3011,7 +3123,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
 
           <!-- Плани -->
           <div class="section">
-            <div class="section-title"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--text-3)"><rect x="2" y="3" width="12" height="4" rx="1"/><rect x="2" y="9" width="12" height="4" rx="1"/><circle cx="13" cy="5" r="1" fill="currentColor"/><circle cx="13" cy="11" r="1" fill="currentColor"/></svg> Щомісячні плани — ціна за юніт</div>
+            <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><rect x="2" y="3" width="12" height="4" rx="1"/><rect x="2" y="9" width="12" height="4" rx="1"/><circle cx="13" cy="5" r="1" fill="currentColor"/><circle cx="13" cy="11" r="1" fill="currentColor"/></svg> Щомісячні плани — ціна за юніт</div>
             <div class="nvx-warn-box">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--tag-orange-text);flex-shrink:0"><path d="M8 2L15 14H1z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12.5" r=".5" fill="currentColor"/></svg>
               <span>Мінімальна щомісячна плата — <b>$199</b>.</span>
@@ -3023,11 +3135,11 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
                 <div class="plan-price">$3.00<span> /міс за юніт</span></div>
                 <div class="plan-desc">4 модулі + Premium GIS (Google Maps)</div>
                 <ul class="nvx-feature-list">
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Track&amp;Trace</li>
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Reports (Звіти)</li>
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Fleet Management</li>
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Field Service Management</li>
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Premium GIS (Google Maps)</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Track&amp;Trace</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Reports (Звіти)</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Fleet Management</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Field Service Management</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Premium GIS (Google Maps)</li>
                 </ul>
               </div>
               <div class="nvx-plan-card" data-plan="basic" onclick="nvxSelectPlan('basic')">
@@ -3036,17 +3148,17 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
                 <div class="plan-price">$2.80<span> /міс за юніт</span></div>
                 <div class="plan-desc">4 модулі + Basic GIS (OpenStreetMap)</div>
                 <ul class="nvx-feature-list">
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Track&amp;Trace</li>
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Reports (Звіти)</li>
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Fleet Management</li>
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points='2,8 6,12 14,4'/></svg> Field Service Management</li>
-                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--text-3)"><line x1='2' y1='8' x2='14' y2='8'/></svg> Premium GIS — недоступно</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Track&amp;Trace</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Reports (Звіти)</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Fleet Management</li>
+                  <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Field Service Management</li>
+                  <li><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><line x1="2" y1="8" x2="14" y2="8"/></svg> Premium GIS — недоступно</li>
                 </ul>
               </div>
             </div>
             <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
               <button id="nvx-cart-btn" class="tb-btn primary" onclick="nvxAddToCart()" style="gap:7px;padding:8px 18px;font-size:13px">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--text-3)"><path d="M2 3h2l2 7h7l1.5-4H6"/><circle cx="9" cy="13" r="1" fill="currentColor"/><circle cx="13" cy="13" r="1" fill="currentColor"/></svg> Додати в кошик
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#fff;flex-shrink:0"><path d="M2 3h2l2 7h7l1.5-4H6"/><circle cx="9" cy="13" r="1" fill="currentColor"/><circle cx="13" cy="13" r="1" fill="currentColor"/></svg> Додати в кошик
               </button>
               <span style="font-size:11.5px;color:var(--text-3)">Обрано: <b id="nvx-plan-label" style="color:var(--text)">Premium (Google Maps)</b></span>
             </div>
@@ -3054,7 +3166,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
 
           <!-- Volume discounts -->
           <div class="section">
-            <div class="section-title"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--text-3)"><polyline points="1,12 5,7 9,9 13,4"/><line x1="1" y1="14" x2="15" y2="14"/></svg> Знижки за об'ємом (Premium)</div>
+            <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="1,12 5,7 9,9 13,4"/><line x1="1" y1="14" x2="15" y2="14"/></svg> Знижки за об'ємом (Premium)</div>
             <div style="font-size:13px;color:var(--text-2);line-height:1.7;max-width:640px;margin-bottom:14px">
               Щомісячний рахунок формується на основі кількості одиниць (GPS-трекери або мобільні додатки
               X-GPS трекера), які були хоча б раз активними протягом календарного місяця.
@@ -3082,7 +3194,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
 
           <!-- Додаткові послуги -->
           <div class="section">
-            <div class="section-title"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--text-3)"><polygon points="8,2 10,6 14,6.5 11,9.5 11.5,14 8,12 4.5,14 5,9.5 2,6.5 6,6"/></svg> Додаткові послуги</div>
+            <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polygon points="8,2 10,6 14,6.5 11,9.5 11.5,14 8,12 4.5,14 5,9.5 2,6.5 6,6"/></svg> Додаткові послуги</div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;max-width:600px;margin-bottom:14px">
               <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:6px">
                 <div style="font-size:11px;color:var(--text-3);margin-bottom:4px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em">Тех. підтримка</div>
@@ -3096,14 +3208,14 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
               </div>
             </div>
             <div class="nvx-info-box" style="max-width:600px">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg> &nbsp;<b>Безкоштовна документація:</b> самостійне вивчення через
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg> &nbsp;<b>Безкоштовна документація:</b> самостійне вивчення через
               <a href="https://docs.navixy.com" target="_blank" style="color:var(--accent);font-weight:500">Navixy Docs ↗</a>
             </div>
           </div>
 
           <!-- Модулі -->
           <div class="section">
-            <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0;color:var(--accent)"><polyline points="2,8 6,12 14,4"/></svg> Що включено</div>
+            <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><polyline points="2,8 6,12 14,4"/></svg> Що включено</div>
             <div class="nvx-modules-grid">
               <label class="nvx-module-item"><input type="checkbox" id="nvx-mod-smartair" checked><span>SmartAir™ для IoT пристроїв</span></label>
               <label class="nvx-module-item"><input type="checkbox" id="nvx-mod-xgps" checked><span>X-GPS мобільні додатки</span></label>
@@ -3119,6 +3231,8 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
               <label class="nvx-module-item"><input type="checkbox" id="nvx-mod-sla" checked><span>SLA 99.7%</span></label>
             </div>
           </div>
+
+          </div><!-- /nvx-partner-view -->
 
         </div>
       </div><!-- /sec-navixy -->
