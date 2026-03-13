@@ -3411,148 +3411,19 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         <div class="page-inner" id="contacts-page-inner">
           <div class="page-header">
             <div class="page-title">Контакти</div>
-            <div class="page-subtitle">ТОВ ТРЕКАВТО — офіційний партнер Teltonika та Bitrek. ЄДРПОУ 38872343</div>
+            <div class="page-subtitle" id="contacts-subtitle">Завантаження...</div>
           </div>
+
           <div class="contacts-grid" id="contacts-grid">
-
-            <!-- Продажі / сервіс -->
-            <div class="contacts-card">
-              <div class="contacts-info">
-                <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">ТОВ ТРЕКАВТО</div>
-                <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ 38872343</div>
-                
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380956546644" style="color:var(--accent)">+38&nbsp;(095)&nbsp;654-66-44</a></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="var e='shutko'+'@'+'trackauto.com.ua';navigator.clipboard.writeText(e);this.title='Скопійовано ✓';setTimeout(()=>this.title='Копіювати',2000)" title="Копіювати" data-u="shutko" data-d="trackauto.com.ua"></span><script>(function(){var s=document.currentScript.previousElementSibling;s.textContent=s.dataset.u+'@'+s.dataset.d;})();</script></div>
-              </div>
+            <!-- Динамічно заповнюється з Firestore -->
+            <div style="padding:40px;text-align:center;color:var(--text-3);grid-column:1/-1">
+              <div style="width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px"></div>
+              Завантаження контактів...
             </div>
-
-            <!-- Документи / рахунки / договори -->
-            <div class="contacts-card">
-              <div class="contacts-info" style="padding-top:4px">
-                <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
-                <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ТРЕКАВТО</div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg> <a href="tel:+380444516617" style="color:var(--accent)">+38&nbsp;(044)&nbsp;451-66-17</a></div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;margin-bottom:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <span style="color:var(--accent);cursor:pointer;user-select:all" onclick="var e='office'+'@'+'trackauto.com.ua';navigator.clipboard.writeText(e);this.title='Скопійовано ✓';setTimeout(()=>this.title='Копіювати',2000)" title="Копіювати" data-u="office" data-d="trackauto.com.ua"></span><script>(function(){var s=document.currentScript.previousElementSibling;s.textContent=s.dataset.u+'@'+s.dataset.d;})();</script></div>
-              </div>
-            </div>
-
-            <!-- Веб та соцмережі -->
-            <div class="contacts-card">
-              <div class="contacts-info" style="padding-top:4px">
-                <div class="contacts-name">Веб-ресурси та соцмережі</div>
-                <div class="contacts-detail">
-                  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-                    <a href="https://www.instagram.com/tipster.ua?igsh=bXdqd3dtYmUwMmVu" target="_blank" rel="noopener"
-                       style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-size:13px;font-weight:500;transition:all .15s"
-                       onmouseover="this.style.borderColor='#e1306c';this.style.color='#e1306c'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text)'">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg> Instagram
-                    </a>
-                    <a href="https://www.facebook.com/share/1BAb33Yjmm/?mibextid=wwXIfr" target="_blank" rel="noopener"
-                       style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-size:13px;font-weight:500;transition:all .15s"
-                       onmouseover="this.style.borderColor='#1877f2';this.style.color='#1877f2'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text)'">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg> Facebook
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      <!-- ══════════ PRIVACY ══════════ -->
-      <div class="page-section" id="sec-privacy">
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-title">Політика конфіденційності</div>
-            <div class="page-subtitle">ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343 · hub.tipster.ua</div>
           </div>
 
-          <div style="max-width:780px;line-height:1.7;color:var(--text)">
-
-            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:24px;font-size:12px;color:var(--text-3)">
-              Редакція від 09 березня 2026 року. Цей документ визначає порядок збору, зберігання та захисту персональних даних користувачів закритого B2B-порталу.
-            </div>
-
-            <div class="section" style="padding:0;margin-bottom:20px">
-              <div class="section-title" style="font-size:14px">1. Загальні положення</div>
-              <p style="margin:8px 0;font-size:13px">Ця Політика конфіденційності визначає порядок збору, зберігання, використання та захисту персональних даних користувачів закритого B2B-порталу <strong>hub.tipster.ua</strong>.</p>
-              <p style="margin:8px 0;font-size:13px">Оператором персональних даних є <strong>ТОВ «ТРЕКАВТО»</strong> (ЄДРПОУ 38872343).</p>
-              <p style="margin:8px 0;font-size:13px">Реєструючись на Порталі, користувач надає згоду на обробку своїх персональних даних відповідно до умов цієї Політики.</p>
-              <p style="margin:8px 0;font-size:13px">Портал є закритим корпоративним ресурсом. Доступ надається виключно авторизованим партнерам та клієнтам після ручної перевірки адміністратором.</p>
-            </div>
-
-            <div class="section" style="padding:0;margin-bottom:20px">
-              <div class="section-title" style="font-size:14px">2. Персональні дані, що збираються</div>
-              <p style="margin:8px 0;font-size:13px">При реєстрації та використанні Порталу збираються такі дані:</p>
-              <ul style="margin:8px 0 8px 20px;font-size:13px;line-height:1.8">
-                <li><strong>Ім'я та прізвище</strong> — для ідентифікації та персоналізації комунікації;</li>
-                <li><strong>Email</strong> — для авторизації, сповіщень та зв'язку;</li>
-                <li><strong>Номер телефону</strong> — для верифікації та оперативного зв'язку;</li>
-                <li><strong>Назва компанії</strong> — для визначення ролі доступу (партнер / клієнт).</li>
-              </ul>
-              <p style="margin:8px 0;font-size:13px">Пароль зберігається у зашифрованому вигляді засобами Firebase Authentication і є недоступним для Компанії. Портал не збирає платіжні або паспортні дані.</p>
-            </div>
-
-            <div class="section" style="padding:0;margin-bottom:20px">
-              <div class="section-title" style="font-size:14px">3. Мета обробки персональних даних</div>
-              <p style="margin:8px 0;font-size:13px">Зібрані дані використовуються виключно для:</p>
-              <ul style="margin:8px 0 8px 20px;font-size:13px;line-height:1.8">
-                <li>надання доступу до Порталу та його функціоналу;</li>
-                <li>ідентифікації користувача та визначення його ролі;</li>
-                <li>обробки та виконання замовлень, оформлених через Портал;</li>
-                <li>комунікації щодо замовлень, цін та оновлень каталогу;</li>
-                <li>адміністрування облікових записів та забезпечення безпеки.</li>
-              </ul>
-              <p style="margin:8px 0;font-size:13px">Компанія не використовує персональні дані для реклами третіх сторін.</p>
-            </div>
-
-            <div class="section" style="padding:0;margin-bottom:20px">
-              <div class="section-title" style="font-size:14px">4. Зберігання та захист даних</div>
-              <p style="margin:8px 0;font-size:13px">Персональні дані зберігаються в хмарній базі Firebase Firestore (Google LLC) з шифруванням TLS/SSL. Доступ мають виключно авторизовані адміністратори Компанії.</p>
-              <p style="margin:8px 0;font-size:13px">Дані зберігаються протягом строку дії облікового запису та не більше 3 років після його видалення.</p>
-            </div>
-
-            <div class="section" style="padding:0;margin-bottom:20px">
-              <div class="section-title" style="font-size:14px">5. Передача даних третім особам</div>
-              <p style="margin:8px 0;font-size:13px">Компанія не продає та не передає персональні дані третім особам, крім:</p>
-              <ul style="margin:8px 0 8px 20px;font-size:13px;line-height:1.8">
-                <li><strong>Google LLC (Firebase)</strong> — як технічний провайдер платформи;</li>
-                <li>виконання вимог законодавства України або запитів державних органів.</li>
-              </ul>
-            </div>
-
-            <div class="section" style="padding:0;margin-bottom:20px">
-              <div class="section-title" style="font-size:14px">6. Права користувача</div>
-              <p style="margin:8px 0;font-size:13px">Відповідно до Закону України «Про захист персональних даних» користувач має право отримати, виправити або видалити свої персональні дані, а також відкликати згоду на їх обробку.</p>
-              <p style="margin:8px 0;font-size:13px">Для реалізації прав звертайтесь: <strong><a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="600f060609030520141201030b0115140f4e030f0d4e1501">[email&#160;protected]</span></a></strong> або <strong>+38 (044) 451-66-17</strong>. Запит розглядається протягом 10 робочих днів.</p>
-            </div>
-
-            <div class="section" style="padding:0;margin-bottom:20px">
-              <div class="section-title" style="font-size:14px">7. Cookie файли</div>
-              <p style="margin:8px 0;font-size:13px">Портал використовує лише технічні cookie Firebase Authentication для підтримки сесії. Рекламні або аналітичні cookie не використовуються. Портал не відображає рекламу.</p>
-            </div>
-
-            <div class="section" style="padding:0;margin-bottom:20px">
-              <div class="section-title" style="font-size:14px">8. Зміни до Політики</div>
-              <p style="margin:8px 0;font-size:13px">Компанія залишає за собою право вносити зміни до цієї Політики. Про суттєві зміни користувачі будуть повідомлені через Портал або на вказану електронну адресу.</p>
-            </div>
-
-            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-top:8px">
-              <div style="font-weight:600;font-size:13px;margin-bottom:10px">Контактна інформація</div>
-              <div style="font-size:12.5px;line-height:2;color:var(--text-2)">
-                <div>ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
-                <div>Email: <a data-u="shutko" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="07746f72736c6847737566646c667273682964686a297266">[email&#160;protected]</span></a></div>
-                <div>Телефон: <a href="tel:+380444516617" style="color:var(--accent)">+38 (044) 451-66-17</a></div>
-                <div>Вебсайт: <a href="https://tipster.ua" target="_blank" style="color:var(--accent)">tipster.ua</a></div>
-              </div>
-            </div>
-
-          </div>
         </div>
       </div>
-
-    </div>
     </div><!-- /page-inner -->
   </div><!-- /page -->
 </div><!-- /main -->
@@ -4696,10 +4567,10 @@ function sendKitOrder(kitName) {
 👤 ${name}
 📧 ${user ? user.email : '—'}
 🕐 ${new Date().toLocaleString('uk-UA')}`;
-  fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
+  fetch((window._tgToken ? `https://api.telegram.org/bot${window._tgToken}/sendMessage` : 'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage'), {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
+    body: JSON.stringify({ chat_id: window._tgChatId || '69110103', text: tgMsg, parse_mode: 'Markdown' })
   }).catch(()=>{});
   alert('✅ Запит надіслано! Наш спеціаліст зв\'яжеться з вами найближчим часом.');
 }
@@ -4715,10 +4586,10 @@ function sendKitRequest() {
 📞 ${phone}
 💬 ${task || '—'}
 🕐 ${new Date().toLocaleString('uk-UA')}`;
-  fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
+  fetch((window._tgToken ? `https://api.telegram.org/bot${window._tgToken}/sendMessage` : 'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage'), {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
+    body: JSON.stringify({ chat_id: window._tgChatId || '69110103', text: tgMsg, parse_mode: 'Markdown' })
   }).catch(()=>{});
   msg.textContent = '✅ Запит надіслано! Очікуйте дзвінок.';
   msg.style.display = 'block';
@@ -5840,9 +5711,9 @@ async function sendOrder() {
 
   try {
     const resp = await fetch(
-      'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage',
+      (window._tgToken ? `https://api.telegram.org/bot${window._tgToken}/sendMessage` : 'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage'),
       { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: '69110103', text, parse_mode: 'Markdown' }) }
+        body: JSON.stringify({ chat_id: window._tgChatId || '69110103', text, parse_mode: 'Markdown' }) }
     );
     if (resp.ok) {
       cartClear();
@@ -6143,9 +6014,181 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
+// ══════════════════════════════════════════════════════
+// TENANT SETTINGS — читання з Firestore
+// ══════════════════════════════════════════════════════
+async function loadTenantSettings() {
+  try {
+    const snap = await getDoc(doc(db, 'tenants/tipster/settings/general'));
+    if (!snap.exists()) return;
+    const d = snap.data();
+
+    // ── Компанія ──────────────────────────────────────
+    if (d.name) {
+      document.querySelectorAll('[data-fs="co-name"]').forEach(el => el.textContent = d.name);
+    }
+    if (d.edrpou) {
+      document.querySelectorAll('[data-fs="co-edrpou"]').forEach(el => el.textContent = 'ЄДРПОУ ' + d.edrpou);
+    }
+    if (d.brand) {
+      document.querySelectorAll('[data-fs="co-brand"]').forEach(el => el.textContent = d.brand);
+    }
+    if (d.website) {
+      document.querySelectorAll('[data-fs="co-website"]').forEach(el => {
+        el.href = d.website;
+        el.textContent = d.website.replace('https://','');
+      });
+    }
+    if (d.description) {
+      document.querySelectorAll('[data-fs="co-description"]').forEach(el => el.textContent = d.description);
+    }
+
+    // ── Телефони ──────────────────────────────────────
+    if (d.phone1) {
+      document.querySelectorAll('[data-fs="ct-phone1"]').forEach(el => {
+        if (el.tagName === 'A') el.href = 'tel:' + d.phone1.replace(/[^+0-9]/g,'');
+        el.textContent = d.phone1;
+      });
+    }
+    if (d.phone2) {
+      document.querySelectorAll('[data-fs="ct-phone2"]').forEach(el => {
+        if (el.tagName === 'A') el.href = 'tel:' + d.phone2.replace(/[^+0-9]/g,'');
+        el.textContent = d.phone2;
+      });
+    }
+
+    // ── Email ─────────────────────────────────────────
+    if (d.email1) {
+      document.querySelectorAll('[data-fs="ct-email1"]').forEach(el => {
+        const parts = d.email1.split('@');
+        if (parts.length === 2) {
+          el.removeAttribute('data-u'); el.removeAttribute('data-d');
+          el.href = 'mailto:' + d.email1;
+          el.textContent = d.email1;
+        }
+      });
+    }
+    if (d.email2) {
+      document.querySelectorAll('[data-fs="ct-email2"]').forEach(el => {
+        el.href = 'mailto:' + d.email2;
+        el.textContent = d.email2;
+      });
+    }
+    if (d.email3) {
+      document.querySelectorAll('[data-fs="ct-email3"]').forEach(el => {
+        el.href = 'mailto:' + d.email3;
+        el.textContent = d.email3;
+      });
+    }
+
+    // ── Соціальні мережі ──────────────────────────────
+    if (d.instagram) {
+      document.querySelectorAll('[data-fs="ct-instagram"]').forEach(el => {
+        el.href = d.instagram;
+      });
+    }
+    if (d.facebook) {
+      document.querySelectorAll('[data-fs="ct-facebook"]').forEach(el => {
+        el.href = d.facebook;
+      });
+    }
+    if (d.site1) {
+      document.querySelectorAll('[data-fs="ct-site1"]').forEach(el => {
+        el.href = d.site1;
+        el.textContent = d.site1.replace('https://','');
+      });
+    }
+    if (d.site2) {
+      document.querySelectorAll('[data-fs="ct-site2"]').forEach(el => {
+        el.href = d.site2;
+        el.textContent = d.site2.replace('https://','');
+      });
+    }
+
+    // ── Telegram ──────────────────────────────────────
+    if (d.tgToken)  window._tgToken  = d.tgToken;
+    if (d.tgChatId) window._tgChatId = d.tgChatId;
+
+    // ── Кольори ───────────────────────────────────────
+    if (d.colorAccent) {
+      document.documentElement.style.setProperty('--accent', d.colorAccent);
+      document.documentElement.style.setProperty('--accent-bg', d.colorAccent + '1a');
+    }
+
+    // ── Рендер секції Контакти ────────────────────────
+    renderContactsSection(d);
+
+  } catch(e) {
+    console.warn('loadTenantSettings:', e);
+  }
+}
+
+// ── Рендер секції Контакти з Firestore даних ─────────
+function renderContactsSection(d) {
+  // Subtitle
+  const sub = document.getElementById('contacts-subtitle');
+  if (sub) {
+    const name   = d.name   || 'Компанія';
+    const edrpou = d.edrpou ? ` · ЄДРПОУ ${d.edrpou}` : '';
+    sub.textContent = name + edrpou;
+  }
+
+  const grid = document.getElementById('contacts-grid');
+  if (!grid) return;
+
+  const iconPhone = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9c0 .4-.1.9-.3 1.3-.3.4-.6.9-1 1.1-.7.3-1.5.4-2.2.1-2.2-.7-4.3-1.9-5.9-3.5-1.6-1.6-2.8-3.7-3.5-5.9-.3-.7-.2-1.5.1-2.2.2-.4.6-.7 1-1 .4-.2.9-.3 1.3-.3h.4c.2 0 .3.1.4.3l1.9 3.5c.1.1.1.3.1.5 0 .2-.1.4-.3.5l-.9.9c-.1.1-.1.2-.1.3 0 .1 0 .2.1.3.3.6.7 1.1 1.2 1.5.5.5 1 .9 1.5 1.2.1.1.2.1.3.1.1 0 .2-.1.3-.1l.9-.9c.1-.2.3-.3.5-.3h.1c.2 0 .3.1.5.2l3.5 1.9c.2.1.3.3.3.5v.3z"/></svg>`;
+  const iconMail  = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>`;
+  const iconWeb   = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14 14 0 010 20M2 12h20"/></svg>`;
+  const iconInst  = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`;
+  const iconFb    = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>`;
+
+  const linkStyle = `display:inline-flex;align-items:center;gap:7px;color:var(--accent);text-decoration:none;font-size:13px;font-weight:500;padding:6px 0;`;
+  const cardStyle = `background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:14px;`;
+
+  let cards = '';
+
+  // Картка 1 — Продажі
+  if (d.phone1 || d.email1) {
+    const phone1 = d.phone1 ? `<a href="tel:${(d.phone1||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone1">${iconPhone}${d.phone1}</a>` : '';
+    const email1 = d.email1 ? `<a href="mailto:${d.email1}" style="${linkStyle}" data-fs="ct-email1">${iconMail}${d.email1}</a>` : '';
+    cards += `<div style="${cardStyle}">
+      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Продажі та сервіс</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text)" data-fs="co-name">${d.name||''}</div>
+      <div style="font-size:12px;color:var(--text-3)" data-fs="co-edrpou">ЄДРПОУ ${d.edrpou||''}</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${phone1}${email1}</div>
+    </div>`;
+  }
+
+  // Картка 2 — Документи / офіс
+  if (d.phone2 || d.email2) {
+    const phone2 = d.phone2 ? `<a href="tel:${(d.phone2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone2">${iconPhone}${d.phone2}</a>` : '';
+    const email2 = d.email2 ? `<a href="mailto:${d.email2}" style="${linkStyle}" data-fs="ct-email2">${iconMail}${d.email2}</a>` : '';
+    cards += `<div style="${cardStyle}">
+      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Документи та офіс</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${phone2}${email2}</div>
+    </div>`;
+  }
+
+  // Картка 3 — Веб та соцмережі
+  const inst  = d.instagram ? `<a href="${d.instagram}" target="_blank" style="${linkStyle}" data-fs="ct-instagram">${iconInst}Instagram</a>` : '';
+  const fb    = d.facebook  ? `<a href="${d.facebook}"  target="_blank" style="${linkStyle}" data-fs="ct-facebook">${iconFb}Facebook</a>` : '';
+  const site1 = d.site1     ? `<a href="${d.site1}"     target="_blank" style="${linkStyle}" data-fs="ct-site1">${iconWeb}${d.site1.replace('https://','')}</a>` : '';
+  const site2 = d.site2     ? `<a href="${d.site2}"     target="_blank" style="${linkStyle}" data-fs="ct-site2">${iconWeb}${d.site2.replace('https://','')}</a>` : '';
+  if (inst || fb || site1 || site2) {
+    cards += `<div style="${cardStyle}">
+      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Веб-ресурси</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${inst}${fb}${site1}${site2}</div>
+    </div>`;
+  }
+
+  grid.innerHTML = cards || '<div style="padding:40px;text-align:center;color:var(--text-3);grid-column:1/-1">Контакти не налаштовані</div>';
+}
+
 // ── Глобальний стан ───────────────────────────────────────
 window._fbUser = null;
-window._fbRole = null; // 'partner' | 'client' | 'admin' | 'pending'
+window._fbRole   = null;
+window._tgToken  = '8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4';
+window._tgChatId = '69110103'; // 'partner' | 'client' | 'admin' | 'pending'
 
 // Показати login overlay до перевірки сесії
 showOverlay('login-overlay');
@@ -6217,6 +6260,9 @@ window.updateAuthHeader = function updateAuthHeader() {
 }
 
 // ── Auth state listener ───────────────────────────────────
+// Завантажити налаштування тенанта одразу при старті
+loadTenantSettings();
+
 onAuthStateChanged(auth, async (user) => {
   // Завжди очищаємо localStorage — доступ тільки через Firestore
   localStorage.removeItem('navixy_partner_access');
@@ -6255,6 +6301,155 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 // ── Вхід email/password ───────────────────────────────────
+// ══════════════════════════════════════════════════════
+// CONTACTS — динамічне завантаження з Firestore
+// ══════════════════════════════════════════════════════
+const SVG_PHONE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.0 2.18 2 2 0 012 .0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>`;
+const SVG_EMAIL = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>`;
+const SVG_GLOBE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>`;
+const SVG_IG    = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>`;
+const SVG_FB    = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>`;
+
+function emailRow(email) {
+  if (!email) return '';
+  const parts = email.split('@');
+  if (parts.length !== 2) return '';
+  return `<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+    ${SVG_EMAIL}
+    <span style="color:var(--accent);cursor:pointer;user-select:all"
+          onclick="navigator.clipboard.writeText('${email}');this.title='Скопійовано ✓';setTimeout(()=>this.title='Копіювати',2000)"
+          title="Копіювати">${email}</span>
+  </div>`;
+}
+
+function phoneRow(phone) {
+  if (!phone) return '';
+  const href = phone.replace(/[^+0-9]/g, '');
+  return `<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+    ${SVG_PHONE}
+    <a href="tel:${href}" style="color:var(--accent)">${phone}</a>
+  </div>`;
+}
+
+async function loadContactsFromFirestore() {
+  const grid     = document.getElementById('contacts-grid');
+  const subtitle = document.getElementById('contacts-subtitle');
+  if (!grid) return;
+
+  try {
+    const snap = await getDoc(doc(db, 'tenants/tipster/settings/general'));
+    if (!snap.exists()) {
+      renderContactsFallback(grid, subtitle);
+      return;
+    }
+    const d = snap.data();
+
+    // Оновити subtitle
+    if (subtitle) {
+      const companyName = d.name || 'TIPSTER';
+      const edrpou = d.edrpou ? ` — ЄДРПОУ ${d.edrpou}` : '';
+      subtitle.textContent = companyName + edrpou;
+    }
+
+    // Картка 1: Продажі / сервіс
+    const card1 = `
+      <div class="contacts-card">
+        <div class="contacts-info">
+          <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">${d.name || 'TIPSTER'}</div>
+          ${d.edrpou ? `<div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ ${d.edrpou}</div>` : ''}
+          ${phoneRow(d.phone1)}
+          ${emailRow(d.email1)}
+        </div>
+      </div>`;
+
+    // Картка 2: Документи / офіс
+    const card2 = `
+      <div class="contacts-card">
+        <div class="contacts-info" style="padding-top:4px">
+          <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
+          <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ${d.brand || d.name || 'TIPSTER'}</div>
+          ${phoneRow(d.phone2)}
+          ${emailRow(d.email2)}
+          ${d.email3 ? emailRow(d.email3) : ''}
+        </div>
+      </div>`;
+
+    // Картка 3: Веб та соцмережі
+    const socials = [
+      d.instagram ? `<a href="${d.instagram}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)">${SVG_IG} <span>Instagram</span></a>` : '',
+      d.facebook  ? `<a href="${d.facebook}"  target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)">${SVG_FB} <span>Facebook</span></a>` : '',
+      d.site1     ? `<a href="${d.site1}"     target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)">${SVG_GLOBE} <span>${d.site1.replace('https://','')}</span></a>` : '',
+      d.site2     ? `<a href="${d.site2}"     target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--text);text-decoration:none">${SVG_GLOBE} <span>${d.site2.replace('https://','')}</span></a>` : '',
+    ].filter(Boolean).join('');
+
+    const card3 = `
+      <div class="contacts-card">
+        <div class="contacts-info">
+          <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:14px">Веб та соціальні мережі</div>
+          ${socials || '<div style="color:var(--text-3);font-size:13px">Посилання не вказані</div>'}
+        </div>
+      </div>`;
+
+    grid.innerHTML = card1 + card2 + card3;
+
+    // Оновити Telegram якщо є нові дані
+    if (d.tgToken && d.tgChatId) {
+      window._tgToken  = d.tgToken;
+      window._tgChatId = d.tgChatId;
+    }
+
+  } catch(e) {
+    console.warn('loadContactsFromFirestore:', e);
+    renderContactsFallback(grid, subtitle);
+  }
+}
+
+function renderContactsFallback(grid, subtitle) {
+  // Fallback — показати дефолтні захардковані дані якщо Firestore недоступний
+  if (subtitle) subtitle.textContent = 'ТОВ ТРЕКАВТО — офіційний партнер Teltonika та Bitrek';
+  grid.innerHTML = `
+    <div class="contacts-card">
+      <div class="contacts-info">
+        <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">ТОВ ТРЕКАВТО</div>
+        <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ 38872343</div>
+        ${phoneRow('+38 (095) 654-66-44')}
+        ${emailRow('shutko@trackauto.com.ua')}
+      </div>
+    </div>
+    <div class="contacts-card">
+      <div class="contacts-info">
+        <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
+        <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ТРЕКАВТО</div>
+        ${phoneRow('+38 (044) 451-66-17')}
+        ${emailRow('office@trackauto.com.ua')}
+      </div>
+    </div>`;
+}
+
+// Викликати при відкритті розділу contacts
+const _origShowSection = typeof showSection === 'function' ? showSection : null;
+
+// Завантажити контакти одразу після авторизації
+window.addEventListener('DOMContentLoaded', () => {
+  // Завантажимо при першому відкритті секції
+});
+
+// Патч showSection для завантаження контактів
+const _patchShowSection = () => {
+  const orig = window.showSection;
+  if (!orig) return;
+  window.showSection = function(id) {
+    orig(id);
+    if (id === 'contacts') loadContactsFromFirestore();
+  };
+};
+// Дочекатись завантаження showSection
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _patchShowSection);
+} else {
+  setTimeout(_patchShowSection, 500);
+}
+
 window.fbSendReset = async function() {
   const email = document.getElementById('forgot-email').value.trim();
   const msgEl = document.getElementById('forgot-msg');
@@ -6338,10 +6533,10 @@ ${roleLabel}
 🕐 ${new Date().toLocaleString('uk-UA')}
 
 ✅ Підтвердіть: Firebase → Firestore → users`;
-    fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
+    fetch((window._tgToken ? `https://api.telegram.org/bot${window._tgToken}/sendMessage` : 'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage'), {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ chat_id: '69110103', text: tgMsg, parse_mode: 'Markdown' })
+      body: JSON.stringify({ chat_id: window._tgChatId || '69110103', text: tgMsg, parse_mode: 'Markdown' })
     }).catch(()=>{});
     // Показати pending overlay
     showOverlay('pending-overlay');
@@ -6380,7 +6575,7 @@ window.fbGoogleLogin = async function() {
 🕐 ${new Date().toLocaleString('uk-UA')}
 
 ✅ Підтвердіть: Firebase → Firestore → users`;
-      fetch('https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage', {
+      fetch((window._tgToken ? `https://api.telegram.org/bot${window._tgToken}/sendMessage` : 'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chat_id: '-1002674415575', text: tgMsg, parse_mode: 'Markdown' })
