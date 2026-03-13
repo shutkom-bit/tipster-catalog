@@ -6023,88 +6023,6 @@ async function loadTenantSettings() {
     if (!snap.exists()) return;
     const d = snap.data();
 
-    // ── Компанія ──────────────────────────────────────
-    if (d.name) {
-      document.querySelectorAll('[data-fs="co-name"]').forEach(el => el.textContent = d.name);
-    }
-    if (d.edrpou) {
-      document.querySelectorAll('[data-fs="co-edrpou"]').forEach(el => el.textContent = 'ЄДРПОУ ' + d.edrpou);
-    }
-    if (d.brand) {
-      document.querySelectorAll('[data-fs="co-brand"]').forEach(el => el.textContent = d.brand);
-    }
-    if (d.website) {
-      document.querySelectorAll('[data-fs="co-website"]').forEach(el => {
-        el.href = d.website;
-        el.textContent = d.website.replace('https://','');
-      });
-    }
-    if (d.description) {
-      document.querySelectorAll('[data-fs="co-description"]').forEach(el => el.textContent = d.description);
-    }
-
-    // ── Телефони ──────────────────────────────────────
-    if (d.phone1) {
-      document.querySelectorAll('[data-fs="ct-phone1"]').forEach(el => {
-        if (el.tagName === 'A') el.href = 'tel:' + d.phone1.replace(/[^+0-9]/g,'');
-        el.textContent = d.phone1;
-      });
-    }
-    if (d.phone2) {
-      document.querySelectorAll('[data-fs="ct-phone2"]').forEach(el => {
-        if (el.tagName === 'A') el.href = 'tel:' + d.phone2.replace(/[^+0-9]/g,'');
-        el.textContent = d.phone2;
-      });
-    }
-
-    // ── Email ─────────────────────────────────────────
-    if (d.email1) {
-      document.querySelectorAll('[data-fs="ct-email1"]').forEach(el => {
-        const parts = d.email1.split('@');
-        if (parts.length === 2) {
-          el.removeAttribute('data-u'); el.removeAttribute('data-d');
-          el.href = 'mailto:' + d.email1;
-          el.textContent = d.email1;
-        }
-      });
-    }
-    if (d.email2) {
-      document.querySelectorAll('[data-fs="ct-email2"]').forEach(el => {
-        el.href = 'mailto:' + d.email2;
-        el.textContent = d.email2;
-      });
-    }
-    if (d.email3) {
-      document.querySelectorAll('[data-fs="ct-email3"]').forEach(el => {
-        el.href = 'mailto:' + d.email3;
-        el.textContent = d.email3;
-      });
-    }
-
-    // ── Соціальні мережі ──────────────────────────────
-    if (d.instagram) {
-      document.querySelectorAll('[data-fs="ct-instagram"]').forEach(el => {
-        el.href = d.instagram;
-      });
-    }
-    if (d.facebook) {
-      document.querySelectorAll('[data-fs="ct-facebook"]').forEach(el => {
-        el.href = d.facebook;
-      });
-    }
-    if (d.site1) {
-      document.querySelectorAll('[data-fs="ct-site1"]').forEach(el => {
-        el.href = d.site1;
-        el.textContent = d.site1.replace('https://','');
-      });
-    }
-    if (d.site2) {
-      document.querySelectorAll('[data-fs="ct-site2"]').forEach(el => {
-        el.href = d.site2;
-        el.textContent = d.site2.replace('https://','');
-      });
-    }
-
     // ── Telegram ──────────────────────────────────────
     if (d.tgToken)  window._tgToken  = d.tgToken;
     if (d.tgChatId) window._tgChatId = d.tgChatId;
@@ -6115,7 +6033,7 @@ async function loadTenantSettings() {
       document.documentElement.style.setProperty('--accent-bg', d.colorAccent + '1a');
     }
 
-    // ── Рендер секції Контакти ────────────────────────
+    // ── Рендер контактів — завжди повний рендер через renderContactsSection ──
     renderContactsSection(d);
 
   } catch(e) {
@@ -6265,9 +6183,6 @@ window.updateAuthHeader = function updateAuthHeader() {
 }
 
 // ── Auth state listener ───────────────────────────────────
-// Завантажити налаштування тенанта одразу при старті
-loadTenantSettings();
-
 onAuthStateChanged(auth, async (user) => {
   // Завжди очищаємо localStorage — доступ тільки через Firestore
   localStorage.removeItem('navixy_partner_access');
@@ -6285,6 +6200,7 @@ onAuthStateChanged(auth, async (user) => {
         const role = data.role || 'pending';
         // pending — пускаємо в каталог але тільки з РРЦ цінами
         applyRole(role);
+        loadTenantSettings();
       } else {
         // Новий користувач без профілю — показати pending
         showOverlay('pending-overlay');
