@@ -6130,6 +6130,7 @@ async function loadFirestoreProducts() {
         program:      d.series   || 'Інше',
         brand:        d.brand    || 'Інше',
         spec:         d.spec || d.description || '',
+        url:          d.url  || '',
         _fromFirestore: true,
       });
       added++;
