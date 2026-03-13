@@ -853,6 +853,14 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
             <label>Адреса</label>
             <input type="text" id="ct-address" placeholder="м. Київ, Україна">
           </div>
+          <div class="form-group">
+            <label>Телефон — Технічна підтримка</label>
+            <input type="tel" id="ct-phone-support" placeholder="+38(0XX)XXX-XX-XX">
+          </div>
+          <div class="form-group">
+            <label>Email — Технічна підтримка</label>
+            <input type="email" id="ct-email-support" placeholder="support@tipster.ua">
+          </div>
         </div>
         <div class="save-bar">
           <button class="btn btn-primary" onclick="saveContacts()">Зберегти</button>
@@ -1302,7 +1310,9 @@ async function loadSettings() {
     if (d.email1)     document.getElementById('ct-email1').value    = d.email1;
     if (d.email2)     document.getElementById('ct-email2').value    = d.email2;
     if (d.email3)     document.getElementById('ct-email3').value    = d.email3;
-    if (d.address)    document.getElementById('ct-address').value   = d.address;
+    if (d.address)       document.getElementById('ct-address').value        = d.address;
+    if (d.phone_support) document.getElementById('ct-phone-support').value  = d.phone_support;
+    if (d.email_support) document.getElementById('ct-email-support').value  = d.email_support;
     if (d.instagram)  document.getElementById('ct-instagram').value = d.instagram;
     if (d.facebook)   document.getElementById('ct-facebook').value  = d.facebook;
     if (d.site1)      document.getElementById('ct-site1').value     = d.site1;
@@ -1381,6 +1391,8 @@ window.saveContacts = () => saveToGeneral({
   email2:        document.getElementById('ct-email2').value.trim(),
   email3:        document.getElementById('ct-email3').value.trim(),
   address:       document.getElementById('ct-address').value.trim(),
+  phone_support: document.getElementById('ct-phone-support').value.trim(),
+  email_support: document.getElementById('ct-email-support').value.trim(),
 }, 'ct-status');
 
 window.saveSocials = () => saveToGeneral({
