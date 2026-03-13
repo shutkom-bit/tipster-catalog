@@ -6070,13 +6070,8 @@ function renderContactsSection(d) {
     const phone1      = d.phone1       ? `<a href="tel:${(d.phone1||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone1">${iconPhone}${d.phone1}</a>` : '';
     const phoneSales2 = d.phone_sales2 ? `<a href="tel:${(d.phone_sales2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone-sales2">${iconPhone}${d.phone_sales2}</a>` : '';
     const email1      = d.email1       ? `<a href="mailto:${d.email1}" style="${linkStyle}" data-fs="ct-email1">${iconMail}${d.email1}</a>` : '';
-    const legalName   = d.legalName || d.name || '';
-    const edrpou      = d.edrpou ? `<div style="font-size:12px;color:var(--text-3)" data-fs="co-edrpou">ЄДРПОУ ${d.edrpou}</div>` : '';
-    const desc        = d.description ? `<div style="font-size:12px;color:var(--text-2);line-height:1.5">${d.description}</div>` : '';
     cards += `<div style="${cardStyle}">
       <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Продажі · Консультація</div>
-      <div style="font-size:15px;font-weight:700;color:var(--text)" data-fs="co-name">${legalName}</div>
-      ${edrpou}${desc}
       <div style="display:flex;flex-direction:column;gap:2px">${phone1}${phoneSales2}${email1}</div>
     </div>`;
   }
@@ -6092,15 +6087,25 @@ function renderContactsSection(d) {
     </div>`;
   }
 
-  // Картка 3 — Веб та соцмережі
+  // Картка 3 — Технічна підтримка
+  if (d.phone_support || d.email_support) {
+    const phoneSupport = d.phone_support ? `<a href="tel:${(d.phone_support||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}">${iconPhone}${d.phone_support}</a>` : '';
+    const emailSupport = d.email_support ? `<a href="mailto:${d.email_support}" style="${linkStyle}">${iconMail}${d.email_support}</a>` : '';
+    cards += `<div style="${cardStyle}">
+      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Технічна підтримка</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${phoneSupport}${emailSupport}</div>
+    </div>`;
+  }
+
+  // Картка 4 — Веб та соцмережі (завжди внизу)
   const inst  = d.instagram ? `<a href="${d.instagram}" target="_blank" style="${linkStyle}" data-fs="ct-instagram">${iconInst}Instagram</a>` : '';
   const fb    = d.facebook  ? `<a href="${d.facebook}"  target="_blank" style="${linkStyle}" data-fs="ct-facebook">${iconFb}Facebook</a>` : '';
   const site1 = d.site1     ? `<a href="${d.site1}"     target="_blank" style="${linkStyle}" data-fs="ct-site1">${iconWeb}${d.site1.replace('https://','')}</a>` : '';
   const site2 = d.site2     ? `<a href="${d.site2}"     target="_blank" style="${linkStyle}" data-fs="ct-site2">${iconWeb}${d.site2.replace('https://','')}</a>` : '';
   if (inst || fb || site1 || site2) {
-    cards += `<div style="${cardStyle}">
-      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Веб-ресурси</div>
-      <div style="display:flex;flex-direction:column;gap:2px">${inst}${fb}${site1}${site2}</div>
+    cards += `<div style="${cardStyle};grid-column:1/-1">
+      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Веб-ресурси та соціальні мережі</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px 24px">${inst}${fb}${site1}${site2}</div>
     </div>`;
   }
 
