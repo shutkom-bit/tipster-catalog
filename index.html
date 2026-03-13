@@ -5999,7 +5999,8 @@ import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail,
          signOut, onAuthStateChanged,
          GoogleAuthProvider, signInWithPopup }  from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 import { getFirestore, doc, setDoc,
-         getDoc, serverTimestamp }              from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+         getDoc, getDocs, collection,
+         serverTimestamp }                      from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey:            "AIzaSyBpfhJQwc762p_W6VqxgdBSDr1913fcV70",
@@ -6041,6 +6042,59 @@ async function loadTenantSettings() {
   }
 }
 
+// ── Завантажити товари з Firestore і додати до масиву products ──
+async function loadFirestoreProducts() {
+  try {
+    const snap = await getDocs(collection(db, 'tenants/tipster/products'));
+    if (snap.empty) return;
+
+    // Існуючі артикули щоб не дублювати
+    const existingArticles = new Set(products.map(p => (p.article||'').toLowerCase()));
+    const existingCodes    = new Set(products.map(p => (p.code||'').toLowerCase()));
+
+    let added = 0;
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      if (!d.active && d.active !== undefined) return; // пропускаємо неактивні
+      const art = (d.article || d.name || '').toLowerCase();
+      const cod = (d.article || '').toLowerCase();
+      if (existingArticles.has(art) || existingCodes.has(cod)) return; // вже є
+
+      // Конвертуємо формат Firestore → формат масиву products
+      products.push({
+        mode:         'fixed',
+        code:         d.article || d.name || docSnap.id,
+        article:      d.article || '',
+        name:         d.name    || '',
+        currency:     'USD',
+        partnerPrice: d.partnerPrice || 0,
+        retailPrice:  d.retailPrice  || 0,
+        series:       d.series   || 'Інше',
+        program:      d.series   || 'Інше',
+        brand:        d.brand    || 'Інше',
+        spec:         d.spec || d.description || '',
+        _fromFirestore: true,
+      });
+      added++;
+    });
+
+    if (added > 0) {
+      console.log(`Firestore: додано ${added} товарів`);
+      // Оновити лічильники на дашборді
+      if (typeof renderOverview === 'function') renderOverview();
+      // Якщо зараз відкрита секція товарів — перерендерити
+      const active = document.querySelector('.nav-item.active');
+      if (active) {
+        const sec = active.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        if (sec === 'teltonika') renderTeltonika();
+        if (sec === 'bitrek')    renderBitrek();
+      }
+    }
+  } catch(e) {
+    console.warn('loadFirestoreProducts:', e);
+  }
+}
+
 // ── Рендер секції Контакти з Firestore даних ─────────
 function renderContactsSection(d) {
   // Subtitle
@@ -6066,31 +6120,33 @@ function renderContactsSection(d) {
   let cards = '';
 
   // Картка 1 — Продажі · Консультація
-  if (d.phone1 || d.phone_sales2 || d.email1) {
-    const phone1      = d.phone1       ? `<a href="tel:${(d.phone1||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone1">${iconPhone}${d.phone1}</a>` : '';
-    const phoneSales2 = d.phone_sales2 ? `<a href="tel:${(d.phone_sales2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone-sales2">${iconPhone}${d.phone_sales2}</a>` : '';
-    const email1      = d.email1       ? `<a href="mailto:${d.email1}" style="${linkStyle}" data-fs="ct-email1">${iconMail}${d.email1}</a>` : '';
+  if (d.phone1?.trim() || d.phone_sales2?.trim() || d.email1?.trim() || d.email3?.trim()) {
+    const phone1      = d.phone1?.trim()       ? `<a href="tel:${d.phone1.replace(/[^+0-9]/g,'')}" style="${linkStyle}">${iconPhone}${d.phone1}</a>` : '';
+    const phoneSales2 = d.phone_sales2?.trim() ? `<a href="tel:${d.phone_sales2.replace(/[^+0-9]/g,'')}" style="${linkStyle}">${iconPhone}${d.phone_sales2}</a>` : '';
+    const email1      = d.email1?.trim()       ? `<a href="mailto:${d.email1}" style="${linkStyle}">${iconMail}${d.email1}</a>` : '';
+    const email3      = d.email3?.trim()       ? `<a href="mailto:${d.email3}" style="${linkStyle}">${iconMail}${d.email3}</a>` : '';
     cards += `<div style="${cardStyle}">
       <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Продажі · Консультація</div>
-      <div style="display:flex;flex-direction:column;gap:2px">${phone1}${phoneSales2}${email1}</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${phone1}${phoneSales2}${email1}${email3}</div>
     </div>`;
   }
 
-  // Картка 2 — Документи / офіс
-  if (d.phone2 || d.phone_docs2 || d.email2) {
-    const phone2     = d.phone2      ? `<a href="tel:${(d.phone2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone2">${iconPhone}${d.phone2}</a>` : '';
-    const phoneDocs2 = d.phone_docs2 ? `<a href="tel:${(d.phone_docs2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone-docs2">${iconPhone}${d.phone_docs2}</a>` : '';
-    const email2     = d.email2      ? `<a href="mailto:${d.email2}" style="${linkStyle}" data-fs="ct-email2">${iconMail}${d.email2}</a>` : '';
+  // Картка 2 — Документи, рахунки, договори
+  if (d.phone2?.trim() || d.phone_docs2?.trim() || d.email2?.trim() || d.address?.trim()) {
+    const phone2     = d.phone2?.trim()      ? `<a href="tel:${d.phone2.replace(/[^+0-9]/g,'')}" style="${linkStyle}">${iconPhone}${d.phone2}</a>` : '';
+    const phoneDocs2 = d.phone_docs2?.trim() ? `<a href="tel:${d.phone_docs2.replace(/[^+0-9]/g,'')}" style="${linkStyle}">${iconPhone}${d.phone_docs2}</a>` : '';
+    const email2     = d.email2?.trim()      ? `<a href="mailto:${d.email2}" style="${linkStyle}">${iconMail}${d.email2}</a>` : '';
+    const address    = d.address?.trim()     ? `<div style="display:inline-flex;align-items:center;gap:7px;color:var(--text-2);font-size:13px;padding:6px 0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>${d.address}</div>` : '';
     cards += `<div style="${cardStyle}">
       <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Документи, рахунки, договори</div>
-      <div style="display:flex;flex-direction:column;gap:2px">${phone2}${phoneDocs2}${email2}</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${phone2}${phoneDocs2}${email2}${address}</div>
     </div>`;
   }
 
   // Картка 3 — Технічна підтримка
-  if (d.phone_support || d.email_support) {
-    const phoneSupport = d.phone_support ? `<a href="tel:${(d.phone_support||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}">${iconPhone}${d.phone_support}</a>` : '';
-    const emailSupport = d.email_support ? `<a href="mailto:${d.email_support}" style="${linkStyle}">${iconMail}${d.email_support}</a>` : '';
+  if (d.phone_support?.trim() || d.email_support?.trim()) {
+    const phoneSupport = d.phone_support?.trim() ? `<a href="tel:${d.phone_support.replace(/[^+0-9]/g,'')}" style="${linkStyle}">${iconPhone}${d.phone_support}</a>` : '';
+    const emailSupport = d.email_support?.trim() ? `<a href="mailto:${d.email_support}" style="${linkStyle}">${iconMail}${d.email_support}</a>` : '';
     cards += `<div style="${cardStyle}">
       <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Технічна підтримка</div>
       <div style="display:flex;flex-direction:column;gap:2px">${phoneSupport}${emailSupport}</div>
@@ -6206,6 +6262,7 @@ onAuthStateChanged(auth, async (user) => {
         // pending — пускаємо в каталог але тільки з РРЦ цінами
         applyRole(role);
         loadTenantSettings();
+        loadFirestoreProducts();
       } else {
         // Новий користувач без профілю — показати pending
         showOverlay('pending-overlay');
