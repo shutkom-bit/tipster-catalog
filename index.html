@@ -6147,15 +6147,17 @@ function renderContactsSection(d) {
 
   let cards = '';
 
-  // Картка 1 — Продажі
-  if (d.phone1 || d.email1) {
+  // Картка 1 — Продажі · Консультація
+  if (d.phone1 || d.phone3 || d.phone4 || d.email1) {
     const phone1 = d.phone1 ? `<a href="tel:${(d.phone1||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone1">${iconPhone}${d.phone1}</a>` : '';
+    const phone3 = d.phone3 ? `<a href="tel:${(d.phone3||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone3">${iconPhone}${d.phone3}</a>` : '';
+    const phone4 = d.phone4 ? `<a href="tel:${(d.phone4||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone4">${iconPhone}${d.phone4}</a>` : '';
     const email1 = d.email1 ? `<a href="mailto:${d.email1}" style="${linkStyle}" data-fs="ct-email1">${iconMail}${d.email1}</a>` : '';
     cards += `<div style="${cardStyle}">
-      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Продажі та сервіс</div>
+      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Продажі · Консультація</div>
       <div style="font-size:15px;font-weight:700;color:var(--text)" data-fs="co-name">${d.name||''}</div>
       <div style="font-size:12px;color:var(--text-3)" data-fs="co-edrpou">ЄДРПОУ ${d.edrpou||''}</div>
-      <div style="display:flex;flex-direction:column;gap:2px">${phone1}${email1}</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${phone1}${phone3}${phone4}${email1}</div>
     </div>`;
   }
 
