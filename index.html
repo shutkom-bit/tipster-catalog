@@ -6148,26 +6148,29 @@ function renderContactsSection(d) {
   let cards = '';
 
   // Картка 1 — Продажі · Консультація
-  if (d.phone1 || d.phone3 || d.phone4 || d.email1) {
-    const phone1 = d.phone1 ? `<a href="tel:${(d.phone1||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone1">${iconPhone}${d.phone1}</a>` : '';
-    const phone3 = d.phone3 ? `<a href="tel:${(d.phone3||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone3">${iconPhone}${d.phone3}</a>` : '';
-    const phone4 = d.phone4 ? `<a href="tel:${(d.phone4||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone4">${iconPhone}${d.phone4}</a>` : '';
-    const email1 = d.email1 ? `<a href="mailto:${d.email1}" style="${linkStyle}" data-fs="ct-email1">${iconMail}${d.email1}</a>` : '';
+  if (d.phone1 || d.phone_sales2 || d.email1) {
+    const phone1      = d.phone1       ? `<a href="tel:${(d.phone1||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone1">${iconPhone}${d.phone1}</a>` : '';
+    const phoneSales2 = d.phone_sales2 ? `<a href="tel:${(d.phone_sales2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone-sales2">${iconPhone}${d.phone_sales2}</a>` : '';
+    const email1      = d.email1       ? `<a href="mailto:${d.email1}" style="${linkStyle}" data-fs="ct-email1">${iconMail}${d.email1}</a>` : '';
+    const legalName   = d.legalName || d.name || '';
+    const edrpou      = d.edrpou ? `<div style="font-size:12px;color:var(--text-3)" data-fs="co-edrpou">ЄДРПОУ ${d.edrpou}</div>` : '';
+    const desc        = d.description ? `<div style="font-size:12px;color:var(--text-2);line-height:1.5">${d.description}</div>` : '';
     cards += `<div style="${cardStyle}">
       <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Продажі · Консультація</div>
-      <div style="font-size:15px;font-weight:700;color:var(--text)" data-fs="co-name">${d.name||''}</div>
-      <div style="font-size:12px;color:var(--text-3)" data-fs="co-edrpou">ЄДРПОУ ${d.edrpou||''}</div>
-      <div style="display:flex;flex-direction:column;gap:2px">${phone1}${phone3}${phone4}${email1}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text)" data-fs="co-name">${legalName}</div>
+      ${edrpou}${desc}
+      <div style="display:flex;flex-direction:column;gap:2px">${phone1}${phoneSales2}${email1}</div>
     </div>`;
   }
 
   // Картка 2 — Документи / офіс
-  if (d.phone2 || d.email2) {
-    const phone2 = d.phone2 ? `<a href="tel:${(d.phone2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone2">${iconPhone}${d.phone2}</a>` : '';
-    const email2 = d.email2 ? `<a href="mailto:${d.email2}" style="${linkStyle}" data-fs="ct-email2">${iconMail}${d.email2}</a>` : '';
+  if (d.phone2 || d.phone_docs2 || d.email2) {
+    const phone2     = d.phone2      ? `<a href="tel:${(d.phone2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone2">${iconPhone}${d.phone2}</a>` : '';
+    const phoneDocs2 = d.phone_docs2 ? `<a href="tel:${(d.phone_docs2||'').replace(/[^+0-9]/g,'')}" style="${linkStyle}" data-fs="ct-phone-docs2">${iconPhone}${d.phone_docs2}</a>` : '';
+    const email2     = d.email2      ? `<a href="mailto:${d.email2}" style="${linkStyle}" data-fs="ct-email2">${iconMail}${d.email2}</a>` : '';
     cards += `<div style="${cardStyle}">
-      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Документи та офіс</div>
-      <div style="display:flex;flex-direction:column;gap:2px">${phone2}${email2}</div>
+      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase">Документи, рахунки, договори</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${phone2}${phoneDocs2}${email2}</div>
     </div>`;
   }
 
