@@ -2485,6 +2485,10 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         Bitrek
         <span class="count" id="cnt-bitrek">0</span>
       </div>
+      <div class="nav-item" id="nav-other-brands" onclick="showSection('other-brands')" style="display:none">
+        Інші бренди
+        <span class="count" id="cnt-other-brands">0</span>
+      </div>
     </div>
 
     <div class="sidebar-section">
@@ -2733,6 +2737,26 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
       </div>
 
       <!-- ══════════ ACCESSORIES + EXTRA ══════════ -->
+      <div class="page-section" id="sec-other-brands">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)" id="other-brands-title">Інші бренди</span>
+          </div>
+          <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
+            Обладнання від додаткових виробників та партнерів TIPSTER.
+          </div>
+        </div>
+        <div class="filters-row" style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <div class="search-box">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-3)"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+            <input type="text" id="other-search" placeholder="Пошук…" oninput="renderOtherBrands()">
+          </div>
+          <select id="other-brand-filter" onchange="renderOtherBrands()" style="padding:7px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);cursor:pointer;outline:none">
+            <option value="">Всі бренди</option>
+          </select>
+        </div>
+        <div id="other-brands-table-wrap"></div>
+      </div>
       <div class="page-section" id="sec-accessories">
         <div class="page-header">
           <div class="page-title">Аксесуари та обладнання</div>
@@ -4625,6 +4649,7 @@ function showSection(id) {
   // Render on demand
   if (id === 'teltonika')    renderTeltonika();
   if (id === 'bitrek')       renderBitrek();
+  if (id === 'other-brands') renderOtherBrands();
   if (id === 'accessories')  { renderAccessories(); renderExtra(); }
   if (id === 'extra')        { showSection('accessories'); return; }
   if (id === 'drp')          renderDRP();
@@ -4780,6 +4805,38 @@ function renderBitrek() {
 // ════════════════════════════════════════════════════════
 //  RENDER ACCESSORIES
 // ════════════════════════════════════════════════════════
+function renderOtherBrands() {
+  const q      = (document.getElementById('other-search')?.value || '').trim().toLowerCase();
+  const brand  = document.getElementById('other-brand-filter')?.value || '';
+
+  // Всі товари НЕ Teltonika і НЕ Bitrek
+  const knownBrands = new Set(['Teltonika', 'Bitrek']);
+  const items = products
+    .filter(p => !knownBrands.has(p.brand))
+    .filter(p => !brand || p.brand === brand)
+    .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
+                       (p.code||'').toLowerCase().includes(q) ||
+                       (p.article||'').toLowerCase().includes(q));
+
+  // Оновити фільтр брендів
+  const sel = document.getElementById('other-brand-filter');
+  if (sel) {
+    const brands = [...new Set(products.filter(p => !knownBrands.has(p.brand)).map(p => p.brand).filter(Boolean))];
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Всі бренди</option>' +
+      brands.map(b => `<option value="${b}" ${b===current?'selected':''}>${b}</option>`).join('');
+  }
+
+  // Оновити заголовок
+  const title = document.getElementById('other-brands-title');
+  if (title && brand) title.textContent = brand;
+  else if (title) title.textContent = 'Інші бренди';
+
+  const wrap = document.getElementById('other-brands-table-wrap');
+  if (wrap) wrap.innerHTML = buildTable(items, {}, true);
+}
+
+
 function makeCard(item, currency='USD') {
   const { usd } = getRates();
   const pUAH = item.price_usd ? fmt(item.price_usd * usd) : null;
@@ -6080,14 +6137,27 @@ async function loadFirestoreProducts() {
 
     if (added > 0) {
       console.log(`Firestore: додано ${added} товарів`);
+
+      // Показати пункт "Інші бренди" в sidebar і оновити лічильник
+      const knownBrands = new Set(['Teltonika', 'Bitrek']);
+      const otherCount = products.filter(p => !knownBrands.has(p.brand)).length;
+      if (otherCount > 0) {
+        const navOther = document.getElementById('nav-other-brands');
+        if (navOther) navOther.style.display = '';
+        const cntOther = document.getElementById('cnt-other-brands');
+        if (cntOther) cntOther.textContent = otherCount;
+      }
+
       // Оновити лічильники на дашборді
       if (typeof renderOverview === 'function') renderOverview();
-      // Якщо зараз відкрита секція товарів — перерендерити
+
+      // Якщо зараз відкрита секція — перерендерити
       const active = document.querySelector('.nav-item.active');
       if (active) {
         const sec = active.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
-        if (sec === 'teltonika') renderTeltonika();
-        if (sec === 'bitrek')    renderBitrek();
+        if (sec === 'teltonika')    renderTeltonika();
+        if (sec === 'bitrek')       renderBitrek();
+        if (sec === 'other-brands') renderOtherBrands();
       }
     }
   } catch(e) {
