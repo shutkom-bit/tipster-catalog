@@ -6252,124 +6252,12 @@ function phoneRow(phone) {
   </div>`;
 }
 
-async function loadContactsFromFirestore() {
-  const grid     = document.getElementById('contacts-grid');
-  const subtitle = document.getElementById('contacts-subtitle');
-  if (!grid) return;
-
-  try {
-    const snap = await getDoc(doc(db, 'tenants/tipster/settings/general'));
-    if (!snap.exists()) {
-      renderContactsFallback(grid, subtitle);
-      return;
-    }
-    const d = snap.data();
-
-    // Оновити subtitle
-    if (subtitle) {
-      const companyName = d.name || 'TIPSTER';
-      const edrpou = d.edrpou ? ` — ЄДРПОУ ${d.edrpou}` : '';
-      subtitle.textContent = companyName + edrpou;
-    }
-
-    // Картка 1: Продажі / сервіс
-    const card1 = `
-      <div class="contacts-card">
-        <div class="contacts-info">
-          <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">${d.name || 'TIPSTER'}</div>
-          ${d.edrpou ? `<div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ ${d.edrpou}</div>` : ''}
-          ${phoneRow(d.phone1)}
-          ${emailRow(d.email1)}
-        </div>
-      </div>`;
-
-    // Картка 2: Документи / офіс
-    const card2 = `
-      <div class="contacts-card">
-        <div class="contacts-info" style="padding-top:4px">
-          <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
-          <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ${d.brand || d.name || 'TIPSTER'}</div>
-          ${phoneRow(d.phone2)}
-          ${emailRow(d.email2)}
-          ${d.email3 ? emailRow(d.email3) : ''}
-        </div>
-      </div>`;
-
-    // Картка 3: Веб та соцмережі
-    const socials = [
-      d.instagram ? `<a href="${d.instagram}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)">${SVG_IG} <span>Instagram</span></a>` : '',
-      d.facebook  ? `<a href="${d.facebook}"  target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)">${SVG_FB} <span>Facebook</span></a>` : '',
-      d.site1     ? `<a href="${d.site1}"     target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)">${SVG_GLOBE} <span>${d.site1.replace('https://','')}</span></a>` : '',
-      d.site2     ? `<a href="${d.site2}"     target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--text);text-decoration:none">${SVG_GLOBE} <span>${d.site2.replace('https://','')}</span></a>` : '',
-    ].filter(Boolean).join('');
-
-    const card3 = `
-      <div class="contacts-card">
-        <div class="contacts-info">
-          <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:14px">Веб та соціальні мережі</div>
-          ${socials || '<div style="color:var(--text-3);font-size:13px">Посилання не вказані</div>'}
-        </div>
-      </div>`;
-
-    grid.innerHTML = card1 + card2 + card3;
-
-    // Оновити Telegram якщо є нові дані
-    if (d.tgToken && d.tgChatId) {
-      window._tgToken  = d.tgToken;
-      window._tgChatId = d.tgChatId;
-    }
-
-  } catch(e) {
-    console.warn('loadContactsFromFirestore:', e);
-    renderContactsFallback(grid, subtitle);
-  }
+async // loadContactsFromFirestore — делегує до loadTenantSettings
+function loadContactsFromFirestore() {
+  // Дані вже завантажені через loadTenantSettings після авторизації.
+  // Цей виклик більше не потрібен — нічого не робимо.
 }
 
-function renderContactsFallback(grid, subtitle) {
-  // Fallback — показати дефолтні захардковані дані якщо Firestore недоступний
-  if (subtitle) subtitle.textContent = 'ТОВ ТРЕКАВТО — офіційний партнер Teltonika та Bitrek';
-  grid.innerHTML = `
-    <div class="contacts-card">
-      <div class="contacts-info">
-        <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">ТОВ ТРЕКАВТО</div>
-        <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">ЄДРПОУ 38872343</div>
-        ${phoneRow('+38 (095) 654-66-44')}
-        ${emailRow('shutko@trackauto.com.ua')}
-      </div>
-    </div>
-    <div class="contacts-card">
-      <div class="contacts-info">
-        <div class="contacts-name" style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px">Документи, рахунки, договори</div>
-        <div style="font-size:11.5px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:14px">офіс ТРЕКАВТО</div>
-        ${phoneRow('+38 (044) 451-66-17')}
-        ${emailRow('office@trackauto.com.ua')}
-      </div>
-    </div>`;
-}
-
-// Викликати при відкритті розділу contacts
-const _origShowSection = typeof showSection === 'function' ? showSection : null;
-
-// Завантажити контакти одразу після авторизації
-window.addEventListener('DOMContentLoaded', () => {
-  // Завантажимо при першому відкритті секції
-});
-
-// Патч showSection для завантаження контактів
-const _patchShowSection = () => {
-  const orig = window.showSection;
-  if (!orig) return;
-  window.showSection = function(id) {
-    orig(id);
-    if (id === 'contacts') loadContactsFromFirestore();
-  };
-};
-// Дочекатись завантаження showSection
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', _patchShowSection);
-} else {
-  setTimeout(_patchShowSection, 500);
-}
 
 window.fbSendReset = async function() {
   const email = document.getElementById('forgot-email').value.trim();
