@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIPSTER Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f9fb;
+  --bg-card: #ffffff;
+  --border: #e5e9f0;
+  --text: #1a1c21;
+  --text-2: #5e6673;
+  --text-3: #9ea5b1;
+  --accent: #2571d0;
+  --accent-bg: #e9f2ff;
+  --accent-dark: #1a5ab8;
+  --hover: #edf0f5;
+  --tag-green: #e7f6ec;
+  --tag-green-text: #0f8644;
+  --tag-red: #fbe9e9;
+  --tag-red-text: #eb5757;
+  --tag-orange: #fff4e5;
+  --tag-orange-text: #b25e09;
+  --sidebar-w: 240px;
+  --header-h: 52px;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13.5px;
+  min-height: 100vh;
+}
+
+/* ── Auth overlay ─────────────────────────── */
+#auth-overlay {
+  position: fixed; inset: 0;
+  background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 60%, #f8f9fb 100%);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.auth-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 44px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 40px rgba(37,113,208,.10);
+  text-align: center;
+}
+.auth-box h2 {
+  font-size: 20px; font-weight: 800;
+  letter-spacing: -.03em;
+  margin-bottom: 6px;
+}
+.auth-box p {
+  font-size: 12.5px; color: var(--text-2);
+  margin-bottom: 28px; line-height: 1.5;
+}
+.auth-error {
+  font-size: 12px; color: var(--tag-red-text);
+  background: var(--tag-red);
+  border-radius: 6px; padding: 8px 12px;
+  margin-bottom: 14px; display: none;
+}
+
+/* ── Layout ───────────────────────────────── */
+#app { display: none; min-height: 100vh; }
+
+/* Header */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 20px;
+  gap: 14px;
+  z-index: 100;
+}
+.header-logo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--accent);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.header-badge {
+  font-size: 10px; font-weight: 700;
+  background: var(--tag-red);
+  color: var(--tag-red-text);
+  padding: 2px 7px; border-radius: 4px;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.header-spacer { flex: 1; }
+.header-user {
+  font-size: 12px; color: var(--text-2);
+  display: flex; align-items: center; gap: 8px;
+}
+.header-user button {
+  font-size: 11px; padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 5px; background: none;
+  cursor: pointer; color: var(--text-2);
+  font-family: inherit;
+}
+.header-user button:hover { background: var(--hover); }
+
+/* Sidebar */
+.sidebar {
+  position: fixed; top: var(--header-h); left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 16px 0;
+  z-index: 90;
+}
+.nav-section {
+  padding: 0 14px;
+  margin-bottom: 4px;
+}
+.nav-label {
+  font-size: 10px; font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 12px 8px 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: 13px; font-weight: 500;
+  transition: background .15s, color .15s;
+  user-select: none;
+}
+.nav-item:hover { background: var(--hover); color: var(--text); }
+.nav-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+.nav-item svg { flex-shrink: 0; opacity: .7; }
+.nav-item.active svg { opacity: 1; }
+.nav-count {
+  margin-left: auto;
+  font-size: 10px; font-weight: 700;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  padding: 1px 6px; border-radius: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Main */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 28px 32px;
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* Page sections */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* Page header */
+.page-title {
+  font-size: 22px; font-weight: 800;
+  letter-spacing: -.03em; margin-bottom: 4px;
+}
+.page-subtitle {
+  font-size: 13px; color: var(--text-2);
+  margin-bottom: 24px;
+}
+
+/* Card */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.card-title {
+  font-size: 13px; font-weight: 700;
+  color: var(--text); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Form */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-grid.cols-1 { grid-template-columns: 1fr; }
+.form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.span-2 { grid-column: span 2; }
+.form-group.span-3 { grid-column: span 3; }
+label {
+  font-size: 11.5px; font-weight: 600;
+  color: var(--text-2); letter-spacing: .01em;
+}
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="number"],
+input[type="url"],
+select,
+textarea {
+  width: 100%;
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg-card);
+  transition: border-color .15s, box-shadow .15s;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,113,208,.10);
+}
+textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+.input-hint { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px;
+  border-radius: 7px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none;
+  transition: background .15s, opacity .15s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-dark); }
+.btn-secondary {
+  background: var(--bg);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--hover); color: var(--text); }
+.btn-danger { background: var(--tag-red); color: var(--tag-red-text); }
+.btn-danger:hover { background: #fcd5d5; }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Save bar */
+.save-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+.save-status {
+  font-size: 12px; color: var(--tag-green-text);
+  background: var(--tag-green);
+  padding: 5px 12px; border-radius: 5px;
+  display: none;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: #1a1c21; color: #fff;
+  padding: 12px 20px; border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0,0,0,.2);
+  z-index: 9999;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .25s, transform .25s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { background: #0f8644; }
+.toast.error { background: #dc2626; }
+
+/* Products table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.data-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 11px; font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: .06em; text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky; top: 0; z-index: 1;
+}
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.data-table tr:hover td { background: var(--hover); }
+.data-table tr:last-child td { border-bottom: none; }
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+/* Status badge */
+.badge {
+  display: inline-flex; align-items: center;
+  font-size: 10.5px; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px;
+  white-space: nowrap;
+}
+.badge-green { background: var(--tag-green); color: var(--tag-green-text); }
+.badge-red { background: var(--tag-red); color: var(--tag-red-text); }
+.badge-orange { background: var(--tag-orange); color: var(--tag-orange-text); }
+.badge-blue { background: var(--accent-bg); color: var(--accent); }
+
+/* Toolbar */
+.toolbar {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.search-input {
+  flex: 1; min-width: 200px; max-width: 340px;
+  padding: 7px 11px 7px 34px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 13px; font-family: inherit;
+  background: var(--bg-card);
+  outline: none;
+  position: relative;
+}
+.search-wrap {
+  position: relative; flex: 1;
+  min-width: 200px; max-width: 340px;
+}
+.search-wrap svg {
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; color: var(--text-3);
+}
+.search-wrap input {
+  width: 100%;
+  padding: 7px 11px 7px 32px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 13px; font-family: inherit;
+  background: var(--bg-card); outline: none;
+}
+.search-wrap input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,113,208,.10);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,28,33,.45);
+  z-index: 1000;
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-card);
+  border-radius: 14px;
+  width: 100%; max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+.modal-header {
+  display: flex; align-items: center;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.modal-title { font-size: 16px; font-weight: 700; flex: 1; }
+.modal-close {
+  width: 28px; height: 28px;
+  border: none; background: var(--hover);
+  border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-2);
+}
+.modal-close:hover { background: var(--border); color: var(--text); }
+.modal-body { padding: 24px; }
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Stats cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+.stat-label {
+  font-size: 11px; font-weight: 700;
+  color: var(--text-3); letter-spacing: .08em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.stat-value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 26px; font-weight: 700;
+  color: var(--text); line-height: 1;
+}
+.stat-sub {
+  font-size: 11.5px; color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* Loading */
+.loading {
+  display: flex; align-items: center; gap: 10px;
+  padding: 40px; justify-content: center;
+  color: var(--text-3); font-size: 13px;
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Toggle switch */
+.toggle {
+  position: relative; width: 36px; height: 20px;
+  flex-shrink: 0;
+}
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0;
+  background: var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.toggle-slider:before {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  left: 3px; top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.toggle input:checked + .toggle-slider { background: var(--accent); }
+.toggle input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+/* Color picker row */
+.color-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.color-row input[type="color"] {
+  width: 40px; height: 36px;
+  padding: 2px; cursor: pointer;
+  border-radius: 6px; border: 1px solid var(--border);
+}
+.color-preview {
+  width: 36px; height: 36px;
+  border-radius: 6px; border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ AUTH OVERLAY ══════════════════════════════════════ -->
+<div id="auth-overlay">
+  <div class="auth-box">
+    <svg style="margin:0 auto 16px;display:block" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2571d0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    <h2>TIPSTER Admin</h2>
+    <p>Панель управління каталогом.<br>Доступ тільки для адміністраторів.</p>
+    <div class="auth-error" id="auth-error"></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input type="email" id="adm-email" placeholder="Email адміністратора"
+             style="padding:10px 13px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;outline:none">
+      <input type="password" id="adm-pass" placeholder="Пароль"
+             style="padding:10px 13px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;outline:none"
+             onkeydown="if(event.key==='Enter')adminLogin()">
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:10px" onclick="adminLogin()">
+        Увійти
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- Header -->
+  <header class="header">
+    <span class="header-logo">TIPSTER</span>
+    <span class="header-badge">Admin</span>
+    <div class="header-spacer"></div>
+    <div class="header-user">
+      <span id="hdr-email" style="color:var(--text-2)"></span>
+      <button onclick="adminLogout()">Вийти</button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-label">Огляд</div>
+      <div class="nav-item active" onclick="showPage('dashboard')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+        Дашборд
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Каталог</div>
+      <div class="nav-item" onclick="showPage('products')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h2l2 7h7l1.5-4H6"/><circle cx="9" cy="13" r="1" fill="currentColor"/><circle cx="13" cy="13" r="1" fill="currentColor"/></svg>
+        Товари
+        <span class="nav-count" id="nav-cnt-products">—</span>
+      </div>
+      <div class="nav-item" onclick="showPage('kits')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M8 5v6M5 8h6"/></svg>
+        Готові рішення
+        <span class="nav-count" id="nav-cnt-kits">—</span>
+      </div>
+      <div class="nav-item" onclick="showPage('brands')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="8,2 10,6 14,6.5 11,9.5 11.5,14 8,12 4.5,14 5,9.5 2,6.5 6,6"/></svg>
+        Бренди
+        <span class="nav-count" id="nav-cnt-brands">—</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Клієнти</div>
+      <div class="nav-item" onclick="showPage('users')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+        Користувачі
+        <span class="nav-count" id="nav-cnt-users">—</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Налаштування</div>
+      <div class="nav-item" onclick="showPage('settings-company')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5h6M5 11h3"/></svg>
+        Компанія
+      </div>
+      <div class="nav-item" onclick="showPage('settings-contacts')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10.7c0 .3-.1.6-.2.9-.2.3-.4.6-.7.7-.5.2-1 .3-1.5.1-1.5-.5-2.9-1.3-4-2.4C6.5 8.9 5.7 7.5 5.2 6c-.2-.5-.1-1 .1-1.5.2-.3.4-.5.7-.7.3-.2.6-.2.9-.2.1 0 .2 0 .3.1.1 0 .2.1.3.2l2 2.4c.1.1.1.2.2.3 0 .1.1.2.1.3 0 .1 0 .3-.1.4-.1.1-.1.2-.2.3l-.6.6c0 .1-.1.1-.1.2 0 .1 0 .1.1.2.2.4.5.7.8 1 .3.3.7.6 1 .8.1 0 .2.1.2.1.1 0 .2-.1.2-.1l.6-.6c.1-.1.2-.2.3-.2.1-.1.3-.1.4-.1.1 0 .2 0 .3.1.1 0 .2.1.3.2l2.4 2c.1.1.2.2.2.3 0 .1.1.2.1.3z"/></svg>
+        Контакти
+      </div>
+      <div class="nav-item" onclick="showPage('settings-appearance')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg>
+        Вигляд
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- ── ДАШБОРД ── -->
+    <div class="page-section active" id="page-dashboard">
+      <div class="page-title">Дашборд</div>
+      <div class="page-subtitle" id="dash-greeting">Завантаження...</div>
+
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Товари</div>
+          <div class="stat-value" id="st-products">—</div>
+          <div class="stat-sub">в каталозі</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Готові рішення</div>
+          <div class="stat-value" id="st-kits">—</div>
+          <div class="stat-sub">активних</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Бренди</div>
+          <div class="stat-value" id="st-brands">—</div>
+          <div class="stat-sub">підключено</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Користувачі</div>
+          <div class="stat-value" id="st-users">—</div>
+          <div class="stat-sub">зареєстровано</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 1"/></svg>
+          Швидкі дії
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="showPage('products');openProductModal()">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
+            Додати товар
+          </button>
+          <button class="btn btn-secondary" onclick="showPage('users')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+            Переглянути користувачів
+          </button>
+          <button class="btn btn-secondary" onclick="showPage('settings-company')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
+            Налаштування
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ТОВАРИ ── -->
+    <div class="page-section" id="page-products">
+      <div class="page-title">Товари</div>
+      <div class="page-subtitle">Управління номенклатурою каталогу</div>
+
+      <div class="toolbar">
+        <div class="search-wrap">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="4"/><path d="M10 10l4 4"/></svg>
+          <input type="text" id="products-search" placeholder="Пошук по назві або артикулу…" oninput="filterProducts()">
+        </div>
+        <select id="products-brand-filter" onchange="filterProducts()" style="padding:7px 11px;border:1px solid var(--border);border-radius:7px;font-family:inherit;font-size:13px;background:var(--bg-card);outline:none;cursor:pointer">
+          <option value="">Всі бренди</option>
+        </select>
+        <select id="products-status-filter" onchange="filterProducts()" style="padding:7px 11px;border:1px solid var(--border);border-radius:7px;font-family:inherit;font-size:13px;background:var(--bg-card);outline:none;cursor:pointer">
+          <option value="">Всі статуси</option>
+          <option value="active">Активні</option>
+          <option value="inactive">Неактивні</option>
+        </select>
+        <button class="btn btn-primary" onclick="openProductModal()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
+          Додати товар
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Артикул</th>
+              <th>Назва</th>
+              <th>Бренд</th>
+              <th>Ціна партнер</th>
+              <th>Ціна РРЦ</th>
+              <th>Статус</th>
+              <th style="width:100px">Дії</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr><td colspan="7" class="loading"><div class="spinner"></div> Завантаження...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── ГОТОВІ РІШЕННЯ ── -->
+    <div class="page-section" id="page-kits">
+      <div class="page-title">Готові рішення</div>
+      <div class="page-subtitle">Комплектні пропозиції з кількох товарів</div>
+      <div class="toolbar">
+        <button class="btn btn-primary" onclick="openKitModal()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
+          Додати рішення
+        </button>
+      </div>
+      <div id="kits-list">
+        <div class="loading"><div class="spinner"></div> Завантаження...</div>
+      </div>
+    </div>
+
+    <!-- ── БРЕНДИ ── -->
+    <div class="page-section" id="page-brands">
+      <div class="page-title">Бренди</div>
+      <div class="page-subtitle">Виробники та партнери</div>
+      <div class="toolbar">
+        <button class="btn btn-primary" onclick="openBrandModal()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
+          Додати бренд
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Назва</th>
+              <th>Колір</th>
+              <th>Офіційний партнер</th>
+              <th>Посилання</th>
+              <th style="width:100px">Дії</th>
+            </tr>
+          </thead>
+          <tbody id="brands-tbody">
+            <tr><td colspan="5" class="loading"><div class="spinner"></div> Завантаження...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── КОРИСТУВАЧІ ── -->
+    <div class="page-section" id="page-users">
+      <div class="page-title">Користувачі</div>
+      <div class="page-subtitle">Управління доступом до каталогу</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Компанія</th>
+              <th>Телефон</th>
+              <th>Роль</th>
+              <th>Дата реєстрації</th>
+              <th style="width:120px">Дії</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody">
+            <tr><td colspan="6" class="loading"><div class="spinner"></div> Завантаження...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── НАЛАШТУВАННЯ: КОМПАНІЯ ── -->
+    <div class="page-section" id="page-settings-company">
+      <div class="page-title">Налаштування компанії</div>
+      <div class="page-subtitle">Основна інформація про вашу організацію</div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5h6M5 11h3"/></svg>
+          Юридична інформація
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Назва компанії</label>
+            <input type="text" id="co-name" placeholder="ТОВ ТРЕКАВТО">
+          </div>
+          <div class="form-group">
+            <label>ЄДРПОУ</label>
+            <input type="text" id="co-edrpou" placeholder="38872343">
+          </div>
+          <div class="form-group">
+            <label>Бренд / торгова назва</label>
+            <input type="text" id="co-brand" placeholder="TIPSTER">
+          </div>
+          <div class="form-group">
+            <label>Веб-сайт</label>
+            <input type="url" id="co-website" placeholder="https://tipster.ua">
+          </div>
+          <div class="form-group span-2">
+            <label>Опис / слоган</label>
+            <textarea id="co-description" placeholder="Офіційний партнер Teltonika та Bitrek…"></textarea>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn btn-primary" onclick="saveCompany()">Зберегти</button>
+          <span class="save-status" id="co-status">✓ Збережено</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6l6 4 6-4"/></svg>
+          Telegram сповіщення
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Bot Token</label>
+            <input type="text" id="tg-token" placeholder="1234567890:AAE...">
+            <div class="input-hint">Отримати у @BotFather</div>
+          </div>
+          <div class="form-group">
+            <label>Chat ID</label>
+            <input type="text" id="tg-chatid" placeholder="69110103">
+            <div class="input-hint">ID чату або групи для нотифікацій</div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn btn-primary" onclick="saveTelegram()">Зберегти</button>
+          <button class="btn btn-secondary" onclick="testTelegram()">Тест</button>
+          <span class="save-status" id="tg-status">✓ Збережено</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── НАЛАШТУВАННЯ: КОНТАКТИ ── -->
+    <div class="page-section" id="page-settings-contacts">
+      <div class="page-title">Контакти</div>
+      <div class="page-subtitle">Контактна інформація для клієнтів</div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10.7c0 .3-.1.6-.2.9-.2.3-.4.6-.7.7-.5.2-1 .3-1.5.1-1.5-.5-2.9-1.3-4-2.4C6.5 8.9 5.7 7.5 5.2 6c-.2-.5-.1-1 .1-1.5.2-.3.4-.5.7-.7.3-.2.6-.2.9-.2.1 0 .2 0 .3.1.1 0 .2.1.3.2l2 2.4c.1.1.1.2.2.3 0 .1.1.2.1.3 0 .1 0 .3-.1.4-.1.1-.1.2-.2.3l-.6.6c0 .1-.1.1-.1.2 0 .1 0 .1.1.2.2.4.5.7.8 1 .3.3.7.6 1 .8.1 0 .2.1.2.1.1 0 .2-.1.2-.1l.6-.6c.1-.1.2-.2.3-.2.1-.1.3-.1.4-.1.1 0 .2 0 .3.1.1 0 .2.1.3.2l2.4 2c.1.1.2.2.2.3 0 .1.1.2.1.3z"/></svg>
+          Телефони та Email
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Телефон (продажі / сервіс)</label>
+            <input type="tel" id="ct-phone1" placeholder="+38(095)654-66-44">
+          </div>
+          <div class="form-group">
+            <label>Телефон (документи / офіс)</label>
+            <input type="tel" id="ct-phone2" placeholder="+38(044)451-66-17">
+          </div>
+          <div class="form-group">
+            <label>Email (продажі)</label>
+            <input type="email" id="ct-email1" placeholder="shutko@trackauto.com.ua">
+          </div>
+          <div class="form-group">
+            <label>Email (офіс)</label>
+            <input type="email" id="ct-email2" placeholder="office@trackauto.com.ua">
+          </div>
+          <div class="form-group">
+            <label>Email (сайт / публічний)</label>
+            <input type="email" id="ct-email3" placeholder="info@tipster.ua">
+          </div>
+          <div class="form-group">
+            <label>Адреса</label>
+            <input type="text" id="ct-address" placeholder="м. Київ, Україна">
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn btn-primary" onclick="saveContacts()">Зберегти</button>
+          <span class="save-status" id="ct-status">✓ Збережено</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg>
+          Соціальні мережі та веб-ресурси
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Instagram</label>
+            <input type="url" id="ct-instagram" placeholder="https://www.instagram.com/tipster.ua">
+          </div>
+          <div class="form-group">
+            <label>Facebook</label>
+            <input type="url" id="ct-facebook" placeholder="https://www.facebook.com/tipster">
+          </div>
+          <div class="form-group">
+            <label>Основний сайт</label>
+            <input type="url" id="ct-site1" placeholder="https://tipster.ua">
+          </div>
+          <div class="form-group">
+            <label>Партнерський сайт</label>
+            <input type="url" id="ct-site2" placeholder="https://www.tagps.com.ua">
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn btn-primary" onclick="saveSocials()">Зберегти</button>
+          <span class="save-status" id="sc-status">✓ Збережено</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── НАЛАШТУВАННЯ: ВИГЛЯД ── -->
+    <div class="page-section" id="page-settings-appearance">
+      <div class="page-title">Вигляд каталогу</div>
+      <div class="page-subtitle">Брендування та кольорова схема</div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a10 10 0 010 12M2 8h12"/></svg>
+          Кольори
+        </div>
+        <div class="form-grid cols-3">
+          <div class="form-group">
+            <label>Акцентний колір</label>
+            <div class="color-row">
+              <input type="color" id="cl-accent" value="#2571d0" oninput="updateColorPreview('cl-accent','cl-accent-prev')">
+              <div class="color-preview" id="cl-accent-prev" style="background:#2571d0"></div>
+              <input type="text" id="cl-accent-hex" value="#2571d0" style="font-family:'IBM Plex Mono',monospace;font-size:12px" oninput="syncColorHex('cl-accent','cl-accent-hex','cl-accent-prev')">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Колір Teltonika</label>
+            <div class="color-row">
+              <input type="color" id="cl-teltonika" value="#0054A6" oninput="updateColorPreview('cl-teltonika','cl-teltonika-prev')">
+              <div class="color-preview" id="cl-teltonika-prev" style="background:#0054A6"></div>
+              <input type="text" id="cl-teltonika-hex" value="#0054A6" style="font-family:'IBM Plex Mono',monospace;font-size:12px" oninput="syncColorHex('cl-teltonika','cl-teltonika-hex','cl-teltonika-prev')">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Колір Bitrek</label>
+            <div class="color-row">
+              <input type="color" id="cl-bitrek" value="#1a3a6b" oninput="updateColorPreview('cl-bitrek','cl-bitrek-prev')">
+              <div class="color-preview" id="cl-bitrek-prev" style="background:#1a3a6b"></div>
+              <input type="text" id="cl-bitrek-hex" value="#1a3a6b" style="font-family:'IBM Plex Mono',monospace;font-size:12px" oninput="syncColorHex('cl-bitrek','cl-bitrek-hex','cl-bitrek-prev')">
+            </div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <button class="btn btn-primary" onclick="saveAppearance()">Зберегти</button>
+          <span class="save-status" id="ap-status">✓ Збережено</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ MODAL: ТОВАР ══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-product">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-product-title">Новий товар</div>
+      <button class="modal-close" onclick="closeModal('modal-product')">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l12 12M14 2L2 14"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="p-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Артикул *</label>
+          <input type="text" id="p-article" placeholder="FMC920" style="font-family:'IBM Plex Mono',monospace">
+        </div>
+        <div class="form-group">
+          <label>Бренд *</label>
+          <select id="p-brand">
+            <option value="">— оберіть бренд —</option>
+          </select>
+        </div>
+        <div class="form-group span-2">
+          <label>Назва товару *</label>
+          <input type="text" id="p-name" placeholder="Teltonika FMC920">
+        </div>
+        <div class="form-group span-2">
+          <label>Специфікація / характеристики</label>
+          <input type="text" id="p-spec" placeholder="4G LTE Cat 1, Bluetooth 4.0, GNSS…">
+        </div>
+        <div class="form-group">
+          <label>Ціна партнер (USD) *</label>
+          <input type="number" id="p-price-partner" placeholder="45.60" step="0.01" min="0">
+        </div>
+        <div class="form-group">
+          <label>Ціна РРЦ (USD) *</label>
+          <input type="number" id="p-price-retail" placeholder="64.00" step="0.01" min="0">
+        </div>
+        <div class="form-group">
+          <label>Серія</label>
+          <input type="text" id="p-series" placeholder="FMx9xx">
+        </div>
+        <div class="form-group">
+          <label>Посилання (wiki / сайт)</label>
+          <input type="url" id="p-url" placeholder="https://wiki.teltonika-gps.com/…">
+        </div>
+        <div class="form-group span-2">
+          <label>Опис</label>
+          <textarea id="p-description" placeholder="Короткий опис товару…" style="min-height:60px"></textarea>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle">
+              <input type="checkbox" id="p-active" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            Активний (відображається в каталозі)
+          </label>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle">
+              <input type="checkbox" id="p-promo">
+              <span class="toggle-slider"></span>
+            </label>
+            Акційний товар (PROMO)
+          </label>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle">
+              <input type="checkbox" id="p-new">
+              <span class="toggle-slider"></span>
+            </label>
+            Новинка (NEW)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-product')">Скасувати</button>
+      <button class="btn btn-danger btn-sm" id="p-delete-btn" onclick="deleteProduct()" style="display:none">Видалити</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Зберегти товар</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: БРЕНД ═════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-brand">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-brand-title">Новий бренд</div>
+      <button class="modal-close" onclick="closeModal('modal-brand')">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l12 12M14 2L2 14"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="br-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Назва бренду *</label>
+          <input type="text" id="br-name" placeholder="Teltonika">
+        </div>
+        <div class="form-group">
+          <label>Ключ (латиниця) *</label>
+          <input type="text" id="br-key" placeholder="teltonika" style="font-family:'IBM Plex Mono',monospace">
+          <div class="input-hint">Унікальний ідентифікатор, тільки латиниця і цифри</div>
+        </div>
+        <div class="form-group">
+          <label>Колір бренду</label>
+          <div class="color-row">
+            <input type="color" id="br-color" value="#0054A6" oninput="updateColorPreview('br-color','br-color-prev')">
+            <div class="color-preview" id="br-color-prev" style="background:#0054A6"></div>
+            <input type="text" id="br-color-hex" value="#0054A6" style="font-family:'IBM Plex Mono',monospace;font-size:12px" oninput="syncColorHex('br-color','br-color-hex','br-color-prev')">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Офіційний сайт</label>
+          <input type="url" id="br-url" placeholder="https://teltonika-gps.com">
+        </div>
+        <div class="form-group span-2">
+          <label>Опис</label>
+          <textarea id="br-description" placeholder="Короткий опис бренду…" style="min-height:60px"></textarea>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle">
+              <input type="checkbox" id="br-official">
+              <span class="toggle-slider"></span>
+            </label>
+            Офіційний партнер TIPSTER
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-brand')">Скасувати</button>
+      <button class="btn btn-danger btn-sm" id="br-delete-btn" onclick="deleteBrand()" style="display:none">Видалити</button>
+      <button class="btn btn-primary" onclick="saveBrand()">Зберегти бренд</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: ГОТОВЕ РІШЕННЯ ════════════════════════════ -->
+<div class="modal-overlay" id="modal-kit">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-kit-title">Нове рішення</div>
+      <button class="modal-close" onclick="closeModal('modal-kit')">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l12 12M14 2L2 14"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="kit-id">
+      <div class="form-grid cols-1">
+        <div class="form-group">
+          <label>Назва рішення *</label>
+          <input type="text" id="kit-name" placeholder="Контроль пального">
+        </div>
+        <div class="form-group">
+          <label>Підзаголовок / категорія</label>
+          <input type="text" id="kit-subtitle" placeholder="Вантажний транспорт · БЮДЖЕТ">
+        </div>
+        <div class="form-group">
+          <label>Опис</label>
+          <textarea id="kit-description" placeholder="Короткий опис рішення…"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Компоненти (по одному в рядок, формат: Артикул — Назва)</label>
+          <textarea id="kit-components" placeholder="FMC920 — GPS трекер Teltonika&#10;SIM-KS — SIM Київстар 35 грн&#10;EXT-RELAY — Реле блокування" style="min-height:120px;font-family:'IBM Plex Mono',monospace;font-size:12px"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Градієнт картки (CSS)</label>
+          <input type="text" id="kit-gradient" placeholder="linear-gradient(135deg,#FF512F,#DD2476)" style="font-family:'IBM Plex Mono',monospace;font-size:12px">
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle">
+              <input type="checkbox" id="kit-active" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            Активне (відображається в каталозі)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-kit')">Скасувати</button>
+      <button class="btn btn-danger btn-sm" id="kit-delete-btn" onclick="deleteKit()" style="display:none">Видалити</button>
+      <button class="btn btn-primary" onclick="saveKit()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ════════════════════════════════════════════ -->
+<div class="toast" id="toast"></div>
+
+<!-- ══ FIREBASE + LOGIC ════════════════════════════════ -->
+<script type="module">
+import { initializeApp }       from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+                                from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, collection, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp, query, orderBy }
+                                from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ── Firebase config ──────────────────────────────────
+const firebaseConfig = {
+  apiKey:            "AIzaSyBpfhJQwc762p_W6VqxgdBSDr1913fcV70",
+  authDomain:        "tipster-catalog.firebaseapp.com",
+  projectId:         "tipster-catalog",
+  storageBucket:     "tipster-catalog.firebasestorage.app",
+  messagingSenderId: "504782897234",
+  appId:             "1:504782897234:web:b6de297da9624d67821f8b"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── Tenant ID (для мультитенантності в майбутньому) ──
+const TENANT = 'tipster';
+const tenantRef = (path) => `tenants/${TENANT}/${path}`;
+
+// ── State ────────────────────────────────────────────
+let _products = [];
+let _brands   = [];
+let _kits     = [];
+let _users    = [];
+let _editingProduct = null;
+let _editingBrand   = null;
+let _editingKit     = null;
+
+// ── Auth ─────────────────────────────────────────────
+window.adminLogin = async () => {
+  const email = document.getElementById('adm-email').value.trim();
+  const pass  = document.getElementById('adm-pass').value;
+  const errEl = document.getElementById('auth-error');
+  errEl.style.display = 'none';
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
+    // Перевіримо чи це адмін
+    const snap = await getDoc(doc(db, 'users', cred.user.uid));
+    if (!snap.exists() || snap.data().role !== 'admin') {
+      await signOut(auth);
+      errEl.textContent = 'Доступ заборонено. Тільки для адміністраторів.';
+      errEl.style.display = 'block';
+      return;
+    }
+  } catch(e) {
+    errEl.textContent = e.code === 'auth/invalid-credential'
+      ? 'Невірний email або пароль' : e.message;
+    errEl.style.display = 'block';
+  }
+};
+
+window.adminLogout = async () => {
+  await signOut(auth);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // Перевіримо роль
+    try {
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      if (!snap.exists() || snap.data().role !== 'admin') {
+        await signOut(auth); return;
+      }
+    } catch(e) { /* продовжуємо */ }
+
+    document.getElementById('auth-overlay').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('hdr-email').textContent = user.email;
+
+    // Встановити привітання
+    const h = new Date().getHours();
+    const greeting = h < 12 ? 'Доброго ранку' : h < 18 ? 'Добрий день' : 'Добрий вечір';
+    document.getElementById('dash-greeting').textContent =
+      `${greeting}! Ласкаво просимо до панелі управління TIPSTER.`;
+
+    // Завантажити всі дані
+    await Promise.all([
+      loadSettings(),
+      loadProducts(),
+      loadBrands(),
+      loadKits(),
+      loadUsers(),
+    ]);
+    updateStats();
+  } else {
+    document.getElementById('auth-overlay').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+  }
+});
+
+// ── Navigation ───────────────────────────────────────
+window.showPage = (id) => {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  // Знайти nav-item що відкриває цю сторінку
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes(`'${id}'`)) n.classList.add('active');
+  });
+};
+
+// ── Toast ────────────────────────────────────────────
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.className = 'toast', 3000);
+}
+window._toast = toast;
+
+// ── Modal helpers ────────────────────────────────────
+window.closeModal = (id) => {
+  document.getElementById(id).classList.remove('open');
+};
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', (e) => {
+    if (e.target === el) el.classList.remove('open');
+  });
+});
+
+// ── Stats ────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('st-products').textContent = _products.length;
+  document.getElementById('st-kits').textContent     = _kits.length;
+  document.getElementById('st-brands').textContent   = _brands.length;
+  document.getElementById('st-users').textContent    = _users.length;
+  document.getElementById('nav-cnt-products').textContent = _products.length;
+  document.getElementById('nav-cnt-kits').textContent     = _kits.length;
+  document.getElementById('nav-cnt-brands').textContent   = _brands.length;
+  document.getElementById('nav-cnt-users').textContent    = _users.length;
+}
+
+// ════════════════════════════════════════════════════
+// SETTINGS
+// ════════════════════════════════════════════════════
+async function loadSettings() {
+  try {
+    const snap = await getDoc(doc(db, tenantRef('settings/general')));
+    if (!snap.exists()) return;
+    const d = snap.data();
+    // Компанія
+    if (d.name)        document.getElementById('co-name').value        = d.name;
+    if (d.edrpou)      document.getElementById('co-edrpou').value      = d.edrpou;
+    if (d.brand)       document.getElementById('co-brand').value       = d.brand;
+    if (d.website)     document.getElementById('co-website').value     = d.website;
+    if (d.description) document.getElementById('co-description').value = d.description;
+    // Telegram
+    if (d.tgToken)    document.getElementById('tg-token').value  = d.tgToken;
+    if (d.tgChatId)   document.getElementById('tg-chatid').value = d.tgChatId;
+    // Контакти
+    if (d.phone1)     document.getElementById('ct-phone1').value    = d.phone1;
+    if (d.phone2)     document.getElementById('ct-phone2').value    = d.phone2;
+    if (d.email1)     document.getElementById('ct-email1').value    = d.email1;
+    if (d.email2)     document.getElementById('ct-email2').value    = d.email2;
+    if (d.email3)     document.getElementById('ct-email3').value    = d.email3;
+    if (d.address)    document.getElementById('ct-address').value   = d.address;
+    if (d.instagram)  document.getElementById('ct-instagram').value = d.instagram;
+    if (d.facebook)   document.getElementById('ct-facebook').value  = d.facebook;
+    if (d.site1)      document.getElementById('ct-site1').value     = d.site1;
+    if (d.site2)      document.getElementById('ct-site2').value     = d.site2;
+    // Кольори
+    if (d.colorAccent) {
+      document.getElementById('cl-accent').value     = d.colorAccent;
+      document.getElementById('cl-accent-hex').value = d.colorAccent;
+      document.getElementById('cl-accent-prev').style.background = d.colorAccent;
+    }
+    if (d.colorTeltonika) {
+      document.getElementById('cl-teltonika').value     = d.colorTeltonika;
+      document.getElementById('cl-teltonika-hex').value = d.colorTeltonika;
+      document.getElementById('cl-teltonika-prev').style.background = d.colorTeltonika;
+    }
+    if (d.colorBitrek) {
+      document.getElementById('cl-bitrek').value     = d.colorBitrek;
+      document.getElementById('cl-bitrek-hex').value = d.colorBitrek;
+      document.getElementById('cl-bitrek-prev').style.background = d.colorBitrek;
+    }
+  } catch(e) { console.warn('loadSettings:', e); }
+}
+
+async function saveToGeneral(data, statusId) {
+  try {
+    const ref = doc(db, tenantRef('settings/general'));
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      await updateDoc(ref, data);
+    } else {
+      await setDoc(ref, data);
+    }
+    const st = document.getElementById(statusId);
+    st.style.display = 'inline-block';
+    setTimeout(() => st.style.display = 'none', 3000);
+    toast('Збережено ✓');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+}
+
+window.saveCompany = () => saveToGeneral({
+  name:        document.getElementById('co-name').value.trim(),
+  edrpou:      document.getElementById('co-edrpou').value.trim(),
+  brand:       document.getElementById('co-brand').value.trim(),
+  website:     document.getElementById('co-website').value.trim(),
+  description: document.getElementById('co-description').value.trim(),
+}, 'co-status');
+
+window.saveTelegram = () => saveToGeneral({
+  tgToken:  document.getElementById('tg-token').value.trim(),
+  tgChatId: document.getElementById('tg-chatid').value.trim(),
+}, 'tg-status');
+
+window.testTelegram = async () => {
+  const token  = document.getElementById('tg-token').value.trim();
+  const chatId = document.getElementById('tg-chatid').value.trim();
+  if (!token || !chatId) { toast('Заповніть Token і Chat ID', 'error'); return; }
+  try {
+    const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: '✅ TIPSTER Admin — тестове повідомлення. Telegram підключено!' })
+    });
+    const d = await r.json();
+    if (d.ok) toast('Telegram — повідомлення надіслано ✓');
+    else toast('Помилка Telegram: ' + d.description, 'error');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.saveContacts = () => saveToGeneral({
+  phone1:   document.getElementById('ct-phone1').value.trim(),
+  phone2:   document.getElementById('ct-phone2').value.trim(),
+  email1:   document.getElementById('ct-email1').value.trim(),
+  email2:   document.getElementById('ct-email2').value.trim(),
+  email3:   document.getElementById('ct-email3').value.trim(),
+  address:  document.getElementById('ct-address').value.trim(),
+}, 'ct-status');
+
+window.saveSocials = () => saveToGeneral({
+  instagram: document.getElementById('ct-instagram').value.trim(),
+  facebook:  document.getElementById('ct-facebook').value.trim(),
+  site1:     document.getElementById('ct-site1').value.trim(),
+  site2:     document.getElementById('ct-site2').value.trim(),
+}, 'sc-status');
+
+window.saveAppearance = () => saveToGeneral({
+  colorAccent:    document.getElementById('cl-accent-hex').value.trim(),
+  colorTeltonika: document.getElementById('cl-teltonika-hex').value.trim(),
+  colorBitrek:    document.getElementById('cl-bitrek-hex').value.trim(),
+}, 'ap-status');
+
+// Color helpers
+window.updateColorPreview = (inputId, previewId) => {
+  const val = document.getElementById(inputId).value;
+  document.getElementById(previewId).style.background = val;
+  const hexId = inputId + '-hex';
+  if (document.getElementById(hexId)) document.getElementById(hexId).value = val;
+};
+window.syncColorHex = (colorId, hexId, prevId) => {
+  const val = document.getElementById(hexId).value;
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+    document.getElementById(colorId).value = val;
+    document.getElementById(prevId).style.background = val;
+  }
+};
+
+// ════════════════════════════════════════════════════
+// PRODUCTS
+// ════════════════════════════════════════════════════
+async function loadProducts() {
+  try {
+    const snap = await getDocs(collection(db, tenantRef('products')));
+    _products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderProducts();
+    populateBrandFilter();
+  } catch(e) {
+    document.getElementById('products-tbody').innerHTML =
+      `<tr><td colspan="7" style="padding:20px;text-align:center;color:var(--tag-red-text)">Помилка завантаження: ${e.message}</td></tr>`;
+  }
+}
+
+function renderProducts(items) {
+  const list = items || _products;
+  const tbody = document.getElementById('products-tbody');
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="padding:20px;text-align:center;color:var(--text-3)">Товарів ще немає. Натисніть «Додати товар».</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(p => `
+    <tr>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-2)">${p.article || '—'}</td>
+      <td style="font-weight:500">${p.name || '—'}</td>
+      <td><span class="badge badge-blue">${p.brand || '—'}</span></td>
+      <td style="font-family:'IBM Plex Mono',monospace">$${(p.partnerPrice||0).toFixed(2)}</td>
+      <td style="font-family:'IBM Plex Mono',monospace">$${(p.retailPrice||0).toFixed(2)}</td>
+      <td><span class="badge ${p.active !== false ? 'badge-green' : 'badge-red'}">${p.active !== false ? 'Активний' : 'Неактивний'}</span></td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="openProductModal('${p.id}')">Редагувати</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+window.filterProducts = () => {
+  const q      = document.getElementById('products-search').value.toLowerCase();
+  const brand  = document.getElementById('products-brand-filter').value;
+  const status = document.getElementById('products-status-filter').value;
+  const filtered = _products.filter(p => {
+    const matchQ = !q || (p.name||'').toLowerCase().includes(q) || (p.article||'').toLowerCase().includes(q);
+    const matchB = !brand || p.brand === brand;
+    const matchS = !status ||
+      (status === 'active' && p.active !== false) ||
+      (status === 'inactive' && p.active === false);
+    return matchQ && matchB && matchS;
+  });
+  renderProducts(filtered);
+};
+
+function populateBrandFilter() {
+  const sel = document.getElementById('products-brand-filter');
+  const existing = new Set(Array.from(sel.options).map(o => o.value).filter(Boolean));
+  const brands = [...new Set(_products.map(p => p.brand).filter(Boolean))];
+  brands.forEach(b => {
+    if (!existing.has(b)) {
+      const opt = document.createElement('option');
+      opt.value = b; opt.textContent = b;
+      sel.appendChild(opt);
+    }
+  });
+  // Також з бренд-об'єктів
+  _brands.forEach(b => {
+    if (!existing.has(b.key || b.name)) {
+      const opt = document.createElement('option');
+      opt.value = b.key || b.name; opt.textContent = b.name;
+      sel.appendChild(opt);
+      const pSel = document.getElementById('p-brand');
+      if (pSel) {
+        const o2 = document.createElement('option');
+        o2.value = b.key || b.name; o2.textContent = b.name;
+        pSel.appendChild(o2);
+      }
+    }
+  });
+}
+
+window.openProductModal = (id) => {
+  _editingProduct = id || null;
+  const isEdit = !!id;
+  document.getElementById('modal-product-title').textContent = isEdit ? 'Редагувати товар' : 'Новий товар';
+  document.getElementById('p-delete-btn').style.display = isEdit ? 'inline-flex' : 'none';
+
+  // Populate brand select
+  const sel = document.getElementById('p-brand');
+  sel.innerHTML = '<option value="">— оберіть бренд —</option>';
+  _brands.forEach(b => {
+    const o = document.createElement('option');
+    o.value = b.key || b.name; o.textContent = b.name;
+    sel.appendChild(o);
+  });
+
+  if (isEdit) {
+    const p = _products.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('p-id').value            = p.id;
+    document.getElementById('p-article').value       = p.article || '';
+    document.getElementById('p-name').value          = p.name || '';
+    document.getElementById('p-brand').value         = p.brand || '';
+    document.getElementById('p-spec').value          = p.spec || '';
+    document.getElementById('p-price-partner').value = p.partnerPrice || '';
+    document.getElementById('p-price-retail').value  = p.retailPrice || '';
+    document.getElementById('p-series').value        = p.series || '';
+    document.getElementById('p-url').value           = p.url || '';
+    document.getElementById('p-description').value   = p.description || '';
+    document.getElementById('p-active').checked      = p.active !== false;
+    document.getElementById('p-promo').checked       = !!p.promo;
+    document.getElementById('p-new').checked         = !!p.isNew;
+  } else {
+    ['p-id','p-article','p-name','p-spec','p-price-partner','p-price-retail','p-series','p-url','p-description'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('p-brand').value   = '';
+    document.getElementById('p-active').checked = true;
+    document.getElementById('p-promo').checked  = false;
+    document.getElementById('p-new').checked    = false;
+  }
+  openModal('modal-product');
+};
+
+window.saveProduct = async () => {
+  const article = document.getElementById('p-article').value.trim();
+  const name    = document.getElementById('p-name').value.trim();
+  const brand   = document.getElementById('p-brand').value;
+  if (!article || !name || !brand) {
+    toast('Заповніть обов\'язкові поля (артикул, назва, бренд)', 'error'); return;
+  }
+  const data = {
+    article,
+    name,
+    brand,
+    spec:         document.getElementById('p-spec').value.trim(),
+    partnerPrice: parseFloat(document.getElementById('p-price-partner').value) || 0,
+    retailPrice:  parseFloat(document.getElementById('p-price-retail').value) || 0,
+    series:       document.getElementById('p-series').value.trim(),
+    url:          document.getElementById('p-url').value.trim(),
+    description:  document.getElementById('p-description').value.trim(),
+    active:       document.getElementById('p-active').checked,
+    promo:        document.getElementById('p-promo').checked,
+    isNew:        document.getElementById('p-new').checked,
+    updatedAt:    serverTimestamp(),
+  };
+  try {
+    if (_editingProduct) {
+      await updateDoc(doc(db, tenantRef('products'), _editingProduct), data);
+      const idx = _products.findIndex(p => p.id === _editingProduct);
+      if (idx >= 0) _products[idx] = { id: _editingProduct, ...data };
+      toast('Товар оновлено ✓');
+    } else {
+      data.createdAt = serverTimestamp();
+      const ref = await addDoc(collection(db, tenantRef('products')), data);
+      _products.push({ id: ref.id, ...data });
+      toast('Товар додано ✓');
+    }
+    renderProducts();
+    updateStats();
+    closeModal('modal-product');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.deleteProduct = async () => {
+  if (!_editingProduct) return;
+  if (!confirm('Видалити цей товар?')) return;
+  try {
+    await deleteDoc(doc(db, tenantRef('products'), _editingProduct));
+    _products = _products.filter(p => p.id !== _editingProduct);
+    renderProducts(); updateStats();
+    closeModal('modal-product');
+    toast('Товар видалено');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+// ════════════════════════════════════════════════════
+// BRANDS
+// ════════════════════════════════════════════════════
+async function loadBrands() {
+  try {
+    const snap = await getDocs(collection(db, tenantRef('brands')));
+    _brands = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderBrands();
+  } catch(e) { console.warn('loadBrands:', e); }
+}
+
+function renderBrands() {
+  const tbody = document.getElementById('brands-tbody');
+  if (!_brands.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--text-3)">Брендів ще немає.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = _brands.map(b => `
+    <tr>
+      <td style="font-weight:600;display:flex;align-items:center;gap:8px">
+        <span style="width:10px;height:10px;border-radius:50%;background:${b.color||'#ccc'};flex-shrink:0;display:inline-block"></span>
+        ${b.name}
+      </td>
+      <td><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px">${b.color||'—'}</span></td>
+      <td>${b.official ? '<span class="badge badge-green">✓ Партнер</span>' : '<span class="badge" style="background:var(--tag-gray);color:var(--text-3)">—</span>'}</td>
+      <td>${b.url ? `<a href="${b.url}" target="_blank" style="color:var(--accent);font-size:12px">${b.url.replace('https://','')}</a>` : '—'}</td>
+      <td><button class="btn btn-secondary btn-sm" onclick="openBrandModal('${b.id}')">Редагувати</button></td>
+    </tr>
+  `).join('');
+}
+
+window.openBrandModal = (id) => {
+  _editingBrand = id || null;
+  const isEdit = !!id;
+  document.getElementById('modal-brand-title').textContent = isEdit ? 'Редагувати бренд' : 'Новий бренд';
+  document.getElementById('br-delete-btn').style.display = isEdit ? 'inline-flex' : 'none';
+  if (isEdit) {
+    const b = _brands.find(x => x.id === id);
+    if (!b) return;
+    document.getElementById('br-id').value          = b.id;
+    document.getElementById('br-name').value         = b.name || '';
+    document.getElementById('br-key').value          = b.key || '';
+    document.getElementById('br-color').value        = b.color || '#0054A6';
+    document.getElementById('br-color-hex').value    = b.color || '#0054A6';
+    document.getElementById('br-color-prev').style.background = b.color || '#0054A6';
+    document.getElementById('br-url').value          = b.url || '';
+    document.getElementById('br-description').value  = b.description || '';
+    document.getElementById('br-official').checked   = !!b.official;
+  } else {
+    ['br-id','br-name','br-key','br-url','br-description'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('br-color').value = '#0054A6';
+    document.getElementById('br-color-hex').value = '#0054A6';
+    document.getElementById('br-color-prev').style.background = '#0054A6';
+    document.getElementById('br-official').checked = false;
+  }
+  openModal('modal-brand');
+};
+
+window.saveBrand = async () => {
+  const name = document.getElementById('br-name').value.trim();
+  const key  = document.getElementById('br-key').value.trim();
+  if (!name || !key) { toast('Заповніть назву і ключ бренду', 'error'); return; }
+  const data = {
+    name,
+    key,
+    color:       document.getElementById('br-color-hex').value.trim() || document.getElementById('br-color').value,
+    url:         document.getElementById('br-url').value.trim(),
+    description: document.getElementById('br-description').value.trim(),
+    official:    document.getElementById('br-official').checked,
+    updatedAt:   serverTimestamp(),
+  };
+  try {
+    if (_editingBrand) {
+      await updateDoc(doc(db, tenantRef('brands'), _editingBrand), data);
+      const idx = _brands.findIndex(b => b.id === _editingBrand);
+      if (idx >= 0) _brands[idx] = { id: _editingBrand, ...data };
+      toast('Бренд оновлено ✓');
+    } else {
+      data.createdAt = serverTimestamp();
+      const ref = await addDoc(collection(db, tenantRef('brands')), data);
+      _brands.push({ id: ref.id, ...data });
+      toast('Бренд додано ✓');
+    }
+    renderBrands(); updateStats();
+    closeModal('modal-brand');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.deleteBrand = async () => {
+  if (!_editingBrand) return;
+  if (!confirm('Видалити цей бренд?')) return;
+  try {
+    await deleteDoc(doc(db, tenantRef('brands'), _editingBrand));
+    _brands = _brands.filter(b => b.id !== _editingBrand);
+    renderBrands(); updateStats();
+    closeModal('modal-brand');
+    toast('Бренд видалено');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+// ════════════════════════════════════════════════════
+// KITS
+// ════════════════════════════════════════════════════
+async function loadKits() {
+  try {
+    const snap = await getDocs(collection(db, tenantRef('kits')));
+    _kits = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderKits();
+  } catch(e) { console.warn('loadKits:', e); }
+}
+
+function renderKits() {
+  const el = document.getElementById('kits-list');
+  if (!_kits.length) {
+    el.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-3)">Готових рішень ще немає.</div>';
+    return;
+  }
+  el.innerHTML = _kits.map(k => `
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="width:48px;height:48px;border-radius:10px;background:${k.gradient||'#ccc'};flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px">${k.name||'—'}</div>
+          <div style="font-size:12px;color:var(--text-2)">${k.subtitle||''}</div>
+        </div>
+        <span class="badge ${k.active !== false ? 'badge-green' : 'badge-red'}">${k.active !== false ? 'Активне' : 'Неактивне'}</span>
+        <button class="btn btn-secondary btn-sm" onclick="openKitModal('${k.id}')">Редагувати</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.openKitModal = (id) => {
+  _editingKit = id || null;
+  const isEdit = !!id;
+  document.getElementById('modal-kit-title').textContent = isEdit ? 'Редагувати рішення' : 'Нове рішення';
+  document.getElementById('kit-delete-btn').style.display = isEdit ? 'inline-flex' : 'none';
+  if (isEdit) {
+    const k = _kits.find(x => x.id === id);
+    if (!k) return;
+    document.getElementById('kit-id').value          = k.id;
+    document.getElementById('kit-name').value        = k.name || '';
+    document.getElementById('kit-subtitle').value    = k.subtitle || '';
+    document.getElementById('kit-description').value = k.description || '';
+    document.getElementById('kit-components').value  = (k.components||[]).join('\n');
+    document.getElementById('kit-gradient').value    = k.gradient || '';
+    document.getElementById('kit-active').checked    = k.active !== false;
+  } else {
+    ['kit-id','kit-name','kit-subtitle','kit-description','kit-components','kit-gradient'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('kit-active').checked = true;
+  }
+  openModal('modal-kit');
+};
+
+window.saveKit = async () => {
+  const name = document.getElementById('kit-name').value.trim();
+  if (!name) { toast('Введіть назву рішення', 'error'); return; }
+  const componentsRaw = document.getElementById('kit-components').value.trim();
+  const components = componentsRaw ? componentsRaw.split('\n').map(s => s.trim()).filter(Boolean) : [];
+  const data = {
+    name,
+    subtitle:    document.getElementById('kit-subtitle').value.trim(),
+    description: document.getElementById('kit-description').value.trim(),
+    components,
+    gradient:    document.getElementById('kit-gradient').value.trim(),
+    active:      document.getElementById('kit-active').checked,
+    updatedAt:   serverTimestamp(),
+  };
+  try {
+    if (_editingKit) {
+      await updateDoc(doc(db, tenantRef('kits'), _editingKit), data);
+      const idx = _kits.findIndex(k => k.id === _editingKit);
+      if (idx >= 0) _kits[idx] = { id: _editingKit, ...data };
+      toast('Рішення оновлено ✓');
+    } else {
+      data.createdAt = serverTimestamp();
+      const ref = await addDoc(collection(db, tenantRef('kits')), data);
+      _kits.push({ id: ref.id, ...data });
+      toast('Рішення додано ✓');
+    }
+    renderKits(); updateStats();
+    closeModal('modal-kit');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.deleteKit = async () => {
+  if (!_editingKit) return;
+  if (!confirm('Видалити це рішення?')) return;
+  try {
+    await deleteDoc(doc(db, tenantRef('kits'), _editingKit));
+    _kits = _kits.filter(k => k.id !== _editingKit);
+    renderKits(); updateStats();
+    closeModal('modal-kit');
+    toast('Рішення видалено');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+// ════════════════════════════════════════════════════
+// USERS
+// ════════════════════════════════════════════════════
+async function loadUsers() {
+  try {
+    const snap = await getDocs(collection(db, 'users'));
+    _users = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderUsers();
+  } catch(e) { console.warn('loadUsers:', e); }
+}
+
+const ROLE_LABELS = {
+  admin:   { label: 'Адмін',    cls: 'badge-red'    },
+  partner: { label: 'Партнер',  cls: 'badge-blue'   },
+  client:  { label: 'Клієнт',   cls: 'badge-green'  },
+  pending: { label: 'На розгляді', cls: 'badge-orange' },
+};
+
+function renderUsers() {
+  const tbody = document.getElementById('users-tbody');
+  if (!_users.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="padding:20px;text-align:center;color:var(--text-3)">Користувачів ще немає.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = _users.map(u => {
+    const rl = ROLE_LABELS[u.role] || { label: u.role || '—', cls: '' };
+    const date = u.createdAt?.toDate?.()?.toLocaleDateString('uk-UA') || '—';
+    return `
+    <tr>
+      <td style="font-size:12.5px">${u.email || '—'}</td>
+      <td>${u.company || u.name || '—'}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${u.phone || '—'}</td>
+      <td><span class="badge ${rl.cls}">${rl.label}</span></td>
+      <td style="font-size:12px;color:var(--text-3)">${date}</td>
+      <td>
+        <select onchange="changeUserRole('${u.id}', this.value)"
+                style="padding:4px 8px;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:inherit;background:var(--bg-card);cursor:pointer">
+          <option value="">Змінити роль</option>
+          <option value="partner">→ Партнер</option>
+          <option value="client">→ Клієнт</option>
+          <option value="pending">→ На розгляді</option>
+          <option value="admin">→ Адмін</option>
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+window.changeUserRole = async (uid, role) => {
+  if (!role) return;
+  if (!confirm(`Змінити роль користувача на «${ROLE_LABELS[role]?.label || role}»?`)) {
+    // Reset select
+    loadUsers(); return;
+  }
+  try {
+    await updateDoc(doc(db, 'users', uid), { role });
+    const u = _users.find(x => x.id === uid);
+    if (u) u.role = role;
+    renderUsers();
+    toast(`Роль змінено на «${ROLE_LABELS[role]?.label}» ✓`);
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+</script>
+</body>
+</html>
