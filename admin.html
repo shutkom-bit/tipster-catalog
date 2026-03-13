@@ -822,20 +822,20 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label>Телефон 1 (продажі / консультація)</label>
+            <label>Телефон 1 — Продажі · Консультація</label>
             <input type="tel" id="ct-phone1" placeholder="+38(095)654-66-44">
           </div>
           <div class="form-group">
-            <label>Телефон 2 (продажі / консультація)</label>
-            <input type="tel" id="ct-phone3" placeholder="+38(0XX)XXX-XX-XX">
+            <label>Телефон 2 — Продажі · Консультація</label>
+            <input type="tel" id="ct-phone-sales2" placeholder="+38(0XX)XXX-XX-XX">
           </div>
           <div class="form-group">
-            <label>Телефон 3 (продажі / консультація)</label>
-            <input type="tel" id="ct-phone4" placeholder="+38(0XX)XXX-XX-XX">
-          </div>
-          <div class="form-group">
-            <label>Телефон (документи / офіс)</label>
+            <label>Телефон 1 — Документи, рахунки, договори</label>
             <input type="tel" id="ct-phone2" placeholder="+38(044)451-66-17">
+          </div>
+          <div class="form-group">
+            <label>Телефон 2 — Документи, рахунки, договори</label>
+            <input type="tel" id="ct-phone-docs2" placeholder="+38(0XX)XXX-XX-XX">
           </div>
           <div class="form-group">
             <label>Email (продажі)</label>
@@ -1295,10 +1295,10 @@ async function loadSettings() {
     if (d.tgToken)    document.getElementById('tg-token').value  = d.tgToken;
     if (d.tgChatId)   document.getElementById('tg-chatid').value = d.tgChatId;
     // Контакти
-    if (d.phone1)     document.getElementById('ct-phone1').value    = d.phone1;
-    if (d.phone2)     document.getElementById('ct-phone2').value    = d.phone2;
-    if (d.phone3)     document.getElementById('ct-phone3').value    = d.phone3;
-    if (d.phone4)     document.getElementById('ct-phone4').value    = d.phone4;
+    if (d.phone1)        document.getElementById('ct-phone1').value         = d.phone1;
+    if (d.phone_sales2)  document.getElementById('ct-phone-sales2').value   = d.phone_sales2;
+    if (d.phone2)        document.getElementById('ct-phone2').value         = d.phone2;
+    if (d.phone_docs2)   document.getElementById('ct-phone-docs2').value    = d.phone_docs2;
     if (d.email1)     document.getElementById('ct-email1').value    = d.email1;
     if (d.email2)     document.getElementById('ct-email2').value    = d.email2;
     if (d.email3)     document.getElementById('ct-email3').value    = d.email3;
@@ -1344,6 +1344,7 @@ async function saveToGeneral(data, statusId) {
 
 window.saveCompany = () => saveToGeneral({
   name:        document.getElementById('co-name').value.trim(),
+  legalName:   document.getElementById('co-name').value.trim(),
   edrpou:      document.getElementById('co-edrpou').value.trim(),
   brand:       document.getElementById('co-brand').value.trim(),
   website:     document.getElementById('co-website').value.trim(),
@@ -1372,14 +1373,14 @@ window.testTelegram = async () => {
 };
 
 window.saveContacts = () => saveToGeneral({
-  phone1:   document.getElementById('ct-phone1').value.trim(),
-  phone2:   document.getElementById('ct-phone2').value.trim(),
-  phone3:   document.getElementById('ct-phone3').value.trim(),
-  phone4:   document.getElementById('ct-phone4').value.trim(),
-  email1:   document.getElementById('ct-email1').value.trim(),
-  email2:   document.getElementById('ct-email2').value.trim(),
-  email3:   document.getElementById('ct-email3').value.trim(),
-  address:  document.getElementById('ct-address').value.trim(),
+  phone1:        document.getElementById('ct-phone1').value.trim(),
+  phone_sales2:  document.getElementById('ct-phone-sales2').value.trim(),
+  phone2:        document.getElementById('ct-phone2').value.trim(),
+  phone_docs2:   document.getElementById('ct-phone-docs2').value.trim(),
+  email1:        document.getElementById('ct-email1').value.trim(),
+  email2:        document.getElementById('ct-email2').value.trim(),
+  email3:        document.getElementById('ct-email3').value.trim(),
+  address:       document.getElementById('ct-address').value.trim(),
 }, 'ct-status');
 
 window.saveSocials = () => saveToGeneral({
