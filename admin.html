@@ -1104,6 +1104,11 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <input type="text" id="kit-name" placeholder="Контроль пального">
         </div>
         <div class="form-group">
+          <label>Іконка (емодзі)</label>
+          <input type="text" id="kit-icon" placeholder="🚛" style="font-size:20px;width:80px">
+          <div class="input-hint">Один емодзі — відображається на картці</div>
+        </div>
+        <div class="form-group">
           <label>Підзаголовок / категорія</label>
           <input type="text" id="kit-subtitle" placeholder="Вантажний транспорт · БЮДЖЕТ">
         </div>
@@ -1338,12 +1343,16 @@ async function loadSettings() {
 
 async function saveToGeneral(data, statusId) {
   try {
+    // Видалити порожні рядки — щоб не перезаписувати існуючі значення пустотою
+    const clean = Object.fromEntries(
+      Object.entries(data).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
+    );
     const ref = doc(db, tenantRef('settings/general'));
     const snap = await getDoc(ref);
     if (snap.exists()) {
-      await updateDoc(ref, data);
+      await updateDoc(ref, clean);
     } else {
-      await setDoc(ref, data);
+      await setDoc(ref, clean);
     }
     const st = document.getElementById(statusId);
     st.style.display = 'inline-block';
@@ -1739,13 +1748,14 @@ window.openKitModal = (id) => {
     if (!k) return;
     document.getElementById('kit-id').value          = k.id;
     document.getElementById('kit-name').value        = k.name || '';
+    document.getElementById('kit-icon').value        = k.icon || '';
     document.getElementById('kit-subtitle').value    = k.subtitle || '';
     document.getElementById('kit-description').value = k.description || '';
     document.getElementById('kit-components').value  = (k.components||[]).join('\n');
     document.getElementById('kit-gradient').value    = k.gradient || '';
     document.getElementById('kit-active').checked    = k.active !== false;
   } else {
-    ['kit-id','kit-name','kit-subtitle','kit-description','kit-components','kit-gradient'].forEach(id => {
+    ['kit-id','kit-name','kit-icon','kit-subtitle','kit-description','kit-components','kit-gradient'].forEach(id => {
       document.getElementById(id).value = '';
     });
     document.getElementById('kit-active').checked = true;
@@ -1760,6 +1770,7 @@ window.saveKit = async () => {
   const components = componentsRaw ? componentsRaw.split('\n').map(s => s.trim()).filter(Boolean) : [];
   const data = {
     name,
+    icon:        document.getElementById('kit-icon').value.trim(),
     subtitle:    document.getElementById('kit-subtitle').value.trim(),
     description: document.getElementById('kit-description').value.trim(),
     components,
