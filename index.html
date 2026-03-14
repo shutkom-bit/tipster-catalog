@@ -6174,8 +6174,8 @@ window.renderFirestoreKits = async function() {
   const grid = document.getElementById('kits-grid');
   if (!grid) return;
 
-  const old = document.getElementById('kits-firestore-section');
-  if (old) old.remove();
+  const oldEl = document.getElementById('kits-firestore-section');
+  if (oldEl) oldEl.remove();
 
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/kits'));
@@ -6197,20 +6197,32 @@ window.renderFirestoreKits = async function() {
       <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;padding-top:20px;border-top:1px solid var(--border)">
         Додаткові рішення
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
         ${fsKits.map(k => {
-          const gradient = k.gradient || 'linear-gradient(135deg,#2571d0,#1a3a6b)';
+          const accentColor = k.gradient
+            ? k.gradient.match(/#[0-9a-fA-F]{6}/)?.[0] || 'var(--accent)'
+            : 'var(--accent)';
           const components = (k.components || []).map(c =>
-            `<div style="font-size:12px;color:rgba(255,255,255,.85);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.1)">${c}</div>`
+            `<div style="padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:5px;font-size:11px;font-family:'IBM Plex Mono',monospace;white-space:nowrap">${c}</div>`
           ).join('');
-          return `<div style="border-radius:14px;overflow:hidden;background:${gradient};color:#fff;padding:22px 20px;display:flex;flex-direction:column;gap:10px">
-            <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.75">${k.subtitle||'Готове рішення'}</div>
-            <div style="font-size:18px;font-weight:800;line-height:1.2">${k.name||''}</div>
-            ${k.description ? `<div style="font-size:12.5px;opacity:.85;line-height:1.5">${k.description}</div>` : ''}
-            ${components ? `<div style="margin-top:4px;display:flex;flex-direction:column;gap:2px">${components}</div>` : ''}
+          return `<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;transition:box-shadow 0.2s"
+                      onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,0.12)'"
+                      onmouseout="this.style.boxShadow='none'">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <div style="font-size:26px">${k.icon || '📦'}</div>
+              <div>
+                <div style="font-size:15px;font-weight:700">${k.name||''}</div>
+                <div style="width:32px;height:2px;background:${accentColor};border-radius:2px;margin-top:3px"></div>
+              </div>
+            </div>
+            ${k.subtitle ? `<div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">${k.subtitle}</div>` : ''}
+            ${k.description ? `<div style="font-size:12.5px;color:var(--text-3);line-height:1.6;margin-bottom:14px">${k.description}</div>` : ''}
+            ${components ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">${components}</div>` : ''}
             <button onclick="sendKitOrder('${(k.name||'').replace(/'/g,"\'")}')"
-              style="margin-top:8px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">
-              Замовити комплект
+              style="margin-top:auto;background:var(--accent);border:none;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s"
+              onmouseover="this.style.background='var(--accent-dark,#1a5ab8)'"
+              onmouseout="this.style.background='var(--accent)'">
+              Замовити комплект →
             </button>
           </div>`;
         }).join('')}
