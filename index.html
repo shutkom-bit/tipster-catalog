@@ -6234,6 +6234,97 @@ window.renderFirestoreKits = async function() {
   }
 };
 
+// ── Завантажити тарифи з Firestore ───────────────────
+window.loadFirestoreTariffs = async function() {
+  try {
+    const snap = await getDocs(collection(db, 'tenants/tipster/tariffs'));
+    if (snap.empty) return;
+    const fsTariffs = [];
+    snap.forEach(d => {
+      const t = d.data();
+      if (t.active === false) return;
+      fsTariffs.push(t);
+    });
+    if (!fsTariffs.length) return;
+    // Замінити TARIFFS_DATA
+    if (typeof TARIFFS_DATA !== 'undefined') {
+      TARIFFS_DATA.length = 0;
+      fsTariffs.forEach(t => TARIFFS_DATA.push(t));
+    }
+    // Перерендерити якщо секція відкрита
+    window._tariffsRendered = false;
+    if (typeof _tariffsRendered !== 'undefined') _tariffsRendered = false;
+    const sec = document.getElementById('sec-tariffs');
+    if (sec && sec.classList.contains('active')) {
+      if (typeof renderTariffs === 'function') renderTariffs();
+    }
+  } catch(e) { console.warn('loadFirestoreTariffs:', e); }
+};
+
+// ── Завантажити монтаж з Firestore ───────────────────
+window.loadFirestoreInstall = async function() {
+  try {
+    const snap = await getDocs(collection(db, 'tenants/tipster/install'));
+    if (snap.empty) return;
+    const fsInstall = [];
+    snap.forEach(d => {
+      const s = d.data();
+      if (s.active === false) return;
+      fsInstall.push(s);
+    });
+    if (!fsInstall.length) return;
+    // Замінити INSTALL_SERVICES
+    if (typeof INSTALL_SERVICES !== 'undefined') {
+      INSTALL_SERVICES.length = 0;
+      fsInstall.forEach(s => INSTALL_SERVICES.push(s));
+    }
+    // Перерендерити якщо секція відкрита
+    window._installRendered = false;
+    if (typeof _installRendered !== 'undefined') _installRendered = false;
+    const sec = document.getElementById('sec-install');
+    if (sec && sec.classList.contains('active')) {
+      if (typeof renderInstall === 'function') renderInstall();
+    }
+  } catch(e) { console.warn('loadFirestoreInstall:', e); }
+};
+
+// ── Завантажити SIM-карти з Firestore ────────────────
+window.loadFirestoreSimcards = async function() {
+  try {
+    const snap = await getDocs(collection(db, 'tenants/tipster/simcards'));
+    if (snap.empty) return;
+    const fsSims = [];
+    snap.forEach(d => {
+      const s = d.data();
+      if (s.active === false) return;
+      fsSims.push({
+        code:      s.code || '',
+        name:      s.name || '',
+        spec:      s.spec || '',
+        price_uah: s.price || 0,
+        brand:     s.brand || 'other',
+        currency:  'UAH',
+        partnerPrice: s.price || 0,
+        retailPrice:  s.price || 0,
+        series:    'SIM',
+        program:   'SIM',
+        _fromFirestore: true,
+      });
+    });
+    if (!fsSims.length) return;
+    // Оновити extraEquipment.sim
+    if (typeof extraEquipment !== 'undefined') {
+      extraEquipment.sim = fsSims;
+    }
+    // Додати в cartRegistry
+    fsSims.forEach(s => {
+      if (typeof cartRegistry !== 'undefined') {
+        cartRegistry.set(s.code, { article: s.code, name: s.name, spec: s.spec, _uah: s.price_uah, note: s.price_uah + ' ₴' });
+      }
+    });
+  } catch(e) { console.warn('loadFirestoreSimcards:', e); }
+};
+
 // ── Рендер секції Контакти з Firestore даних ─────────
 function renderContactsSection(d) {
   // Subtitle
@@ -6402,6 +6493,9 @@ onAuthStateChanged(auth, async (user) => {
         applyRole(role);
         loadTenantSettings();
         loadFirestoreProducts();
+        loadFirestoreTariffs();
+        loadFirestoreInstall();
+        loadFirestoreSimcards();
       } else {
         // Новий користувач без профілю — показати pending
         showOverlay('pending-overlay');
