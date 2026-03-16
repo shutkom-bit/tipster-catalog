@@ -6304,15 +6304,13 @@ window.loadFirestoreInstall = async function() {
         if (!existingCodes.has(s.code)) INSTALL_SERVICES.push(s);
       });
     }
-    // Скинути кеш і перерендерити завжди
-    const insSec = document.getElementById('sec-install');
-    if (insSec) {
-      const ic = document.getElementById('install-container');
-      if (ic) ic.innerHTML = '';
-      if (typeof renderInstall === 'function') {
-        window._installRendered = false;
-        renderInstall();
-      }
+    // Скинути кеш — renderInstall сам перерендерить при наступному відкритті секції
+    window._installRendered = false;
+    // Якщо контейнер вже в DOM — перерендерити одразу
+    const ic = document.getElementById('install-container');
+    if (ic) {
+      ic.innerHTML = '';
+      if (typeof renderInstall === 'function') renderInstall();
     }
   } catch(e) { console.warn('loadFirestoreInstall:', e); }
 };
