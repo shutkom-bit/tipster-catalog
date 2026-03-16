@@ -4658,7 +4658,7 @@ function showSection(id) {
   if (id === 'drp')          renderDRP();
   if (id === 'configurator') renderConfigurator();
   if (id === 'overview')     renderOverview();
-  if (id === 'install')      renderInstall();
+  if (id === 'install')      { renderInstall(); if(window.loadFirestoreInstall) window.loadFirestoreInstall(); }
   if (id === 'tariffs')      renderTariffs();
   if (id === 'navixy')       renderNavixy();
   if (id === 'kits')         { renderKits(); renderPOD(); renderPOD2(); }
@@ -6297,6 +6297,7 @@ window.loadFirestoreInstall = async function() {
       fsInstall.push(s);
     });
     if (!fsInstall.length) return;
+
     // Доповнити INSTALL_SERVICES (уникаємо дублікатів по code)
     if (typeof INSTALL_SERVICES !== 'undefined') {
       const existingCodes = new Set(INSTALL_SERVICES.map(s => s.code));
@@ -6304,13 +6305,25 @@ window.loadFirestoreInstall = async function() {
         if (!existingCodes.has(s.code)) INSTALL_SERVICES.push(s);
       });
     }
-    // Скинути кеш — renderInstall сам перерендерить при наступному відкритті секції
-    window._installRendered = false;
-    // Якщо контейнер вже в DOM — перерендерити одразу
-    const ic = document.getElementById('install-container');
-    if (ic) {
-      ic.innerHTML = '';
-      if (typeof renderInstall === 'function') renderInstall();
+
+    // Знайти таблицю послуг і додати нові рядки напряму
+    const tbody = document.querySelector('#install-container tbody');
+    if (tbody) {
+      const existingCodes = new Set(
+        Array.from(tbody.querySelectorAll('tr[data-code]')).map(r => r.dataset.code)
+      );
+      fsInstall.forEach(s => {
+        if (existingCodes.has(s.code)) return;
+        const tr = document.createElement('tr');
+        tr.dataset.code = s.code;
+        tr.innerHTML = `
+          <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3)">${s.code}</td>
+          <td style="font-weight:600">${s.name}</td>
+          <td style="color:var(--text-2);font-size:12.5px">${s.spec||''}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700">${s.price||0} ₴</td>
+          <td><button class="btn-add-cart" onclick="addToCartById('${s.code}')">+</button></td>`;
+        tbody.appendChild(tr);
+      });
     }
   } catch(e) { console.warn('loadFirestoreInstall:', e); }
 };
