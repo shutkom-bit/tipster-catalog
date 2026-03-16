@@ -4855,8 +4855,14 @@ function makeCard(item, currency='USD') {
     const brandStyles = {
       kyivstar: { bg:'linear-gradient(135deg,#003087 0%,#0050A0 100%)', accent:'#FFD700', btn:'background:#FFD700;color:#003087;border:none;font-weight:700' },
       vodafone: { bg:'linear-gradient(135deg,#E60000 0%,#cc0000 100%)', accent:'#fff',    btn:'background:#fff;color:#E60000;border:none;font-weight:700' },
+      lifecell: { bg:'linear-gradient(135deg,#FF6600 0%,#e55a00 100%)', accent:'#fff',    btn:'background:#fff;color:#FF6600;border:none;font-weight:700' },
       roaming:  { bg:'linear-gradient(135deg,#1a6b3a 0%,#155c30 100%)', accent:'#fff',    btn:'background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.5);font-weight:700' },
+      eu:       { bg:'linear-gradient(135deg,#1a6b3a 0%,#155c30 100%)', accent:'#fff',    btn:'background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.5);font-weight:700' },
     };
+    // Якщо є кастомний колір — використовуємо його
+    if (item.color && !brandStyles[item.brand]) {
+      brandStyles[item.brand] = { bg: item.color, accent:'#fff', btn:'background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.5);font-weight:700' };
+    }
     const bs = brandStyles[item.brand] || null;
     if (bs) {
       return `<div class="card sim-brand-card" style="background:${bs.bg};border:none;color:#fff;position:relative;overflow:hidden">
@@ -5900,7 +5906,7 @@ function renderTariffs() {
                 <div class="tariff-price">${t.price} <span class="tariff-currency">₴</span><span class="tariff-period">/${t.period}</span></div>
                 <div class="tariff-flip-hint">Натисніть для деталей →</div>
               </div>
-              <div class="tariff-flip-back">
+              <div class="tariff-flip-back" style="${t.color ? 'background:'+t.color+';border-color:'+t.color : ''}">
                 <div class="tariff-back-name">${t.name}</div>
                 <div class="tariff-back-spec">${t.spec}</div>
                 <div class="tariff-back-price">${t.price} ₴/${t.period}</div>
