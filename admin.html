@@ -1399,8 +1399,13 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <div class="input-hint">Використовується тільки якщо оператор = "Інший"</div>
         </div>
         <div class="form-group span-2">
-          <label>Опис</label>
-          <textarea id="sim-spec" placeholder="Фізична SIM (nano/micro/standard)…" style="min-height:60px"></textarea>
+          <label>Короткий опис (відображається на передній стороні)</label>
+          <textarea id="sim-spec" placeholder="Фізична SIM (nano/micro/standard)…" style="min-height:50px"></textarea>
+        </div>
+        <div class="form-group span-2">
+          <label>Детальний опис тарифу (зворотня сторона картки)</label>
+          <textarea id="sim-description" placeholder="Опис умов тарифу, включених послуг, обмежень…" style="min-height:80px"></textarea>
+          <div class="input-hint">Відображається при перевертанні картки в каталозі</div>
         </div>
         <div class="form-group">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
@@ -2384,10 +2389,11 @@ window.openSimModal = (id) => {
     document.getElementById('sim-color-hex').value   = s.color || '#2571d0';
     document.getElementById('sim-color-prev').style.background = s.color || '#2571d0';
     document.getElementById('sim-price').value = s.price || '';
-    document.getElementById('sim-spec').value  = s.spec || '';
+    document.getElementById('sim-spec').value        = s.spec || '';
+    document.getElementById('sim-description').value = s.description || '';
     document.getElementById('sim-active').checked = s.active !== false;
   } else {
-    ['sim-id','sim-code','sim-name','sim-price','sim-spec'].forEach(id => document.getElementById(id).value = '');
+    ['sim-id','sim-code','sim-name','sim-price','sim-spec','sim-description'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('sim-brand').value = 'kyivstar';
     document.getElementById('sim-active').checked = true;
   }
@@ -2400,10 +2406,11 @@ window.saveSim = async () => {
   if (!code || !name) { toast('Заповніть код і назву', 'error'); return; }
   const data = {
     code, name,
-    brand:    document.getElementById('sim-brand').value,
-    color:    document.getElementById('sim-color-hex').value.trim() || '',
-    price:    parseFloat(document.getElementById('sim-price').value) || 0,
-    spec:     document.getElementById('sim-spec').value.trim(),
+    brand:       document.getElementById('sim-brand').value,
+    color:       document.getElementById('sim-color-hex').value.trim() || '',
+    price:       parseFloat(document.getElementById('sim-price').value) || 0,
+    spec:        document.getElementById('sim-spec').value.trim(),
+    description: document.getElementById('sim-description').value.trim(),
     active:   document.getElementById('sim-active').checked,
     updatedAt: serverTimestamp(),
   };
