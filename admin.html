@@ -1274,6 +1274,15 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <label>Період</label>
           <input type="text" id="tar-period" placeholder="міс">
         </div>
+        <div class="form-group">
+          <label>Колір картки</label>
+          <div class="color-row">
+            <input type="color" id="tar-color" value="#2571d0" oninput="updateColorPreview('tar-color','tar-color-prev')">
+            <div class="color-preview" id="tar-color-prev" style="background:#2571d0"></div>
+            <input type="text" id="tar-color-hex" value="#2571d0" style="font-family:'IBM Plex Mono',monospace;font-size:12px" oninput="syncColorHex('tar-color','tar-color-hex','tar-color-prev')">
+          </div>
+          <div class="input-hint">Колір зворотньої сторони картки в каталозі</div>
+        </div>
         <div class="form-group span-2">
           <label>Опис</label>
           <textarea id="tar-spec" placeholder="300 МБ трафік, Kyivstar/Vodafone…" style="min-height:60px"></textarea>
@@ -1372,12 +1381,22 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
             <option value="kyivstar">Kyivstar</option>
             <option value="vodafone">Vodafone</option>
             <option value="lifecell">lifecell</option>
+            <option value="eu">Roaming EU</option>
             <option value="other">Інший</option>
           </select>
         </div>
         <div class="form-group">
           <label>Ціна (₴) *</label>
           <input type="number" id="sim-price" placeholder="35" min="0">
+        </div>
+        <div class="form-group">
+          <label>Кастомний колір (для оператора "Інший")</label>
+          <div class="color-row">
+            <input type="color" id="sim-color" value="#2571d0" oninput="updateColorPreview('sim-color','sim-color-prev')">
+            <div class="color-preview" id="sim-color-prev" style="background:#2571d0"></div>
+            <input type="text" id="sim-color-hex" value="#2571d0" style="font-family:'IBM Plex Mono',monospace;font-size:12px" oninput="syncColorHex('sim-color','sim-color-hex','sim-color-prev')">
+          </div>
+          <div class="input-hint">Використовується тільки якщо оператор = "Інший"</div>
         </div>
         <div class="form-group span-2">
           <label>Опис</label>
@@ -2160,6 +2179,9 @@ window.openTariffModal = (id) => {
     document.getElementById('tar-id').value          = t.id;
     document.getElementById('tar-code').value        = t.code || '';
     document.getElementById('tar-name').value        = t.name || '';
+    document.getElementById('tar-color').value       = t.color || '#2571d0';
+    document.getElementById('tar-color-hex').value   = t.color || '#2571d0';
+    document.getElementById('tar-color-prev').style.background = t.color || '#2571d0';
     document.getElementById('tar-price').value       = t.price || '';
     document.getElementById('tar-period').value      = t.period || 'міс';
     document.getElementById('tar-spec').value        = t.spec || '';
@@ -2168,6 +2190,9 @@ window.openTariffModal = (id) => {
     document.getElementById('tar-active').checked   = t.active !== false;
   } else {
     ['tar-id','tar-code','tar-name','tar-price','tar-spec','tar-app-ios','tar-app-android'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('tar-color').value = '#2571d0';
+    document.getElementById('tar-color-hex').value = '#2571d0';
+    document.getElementById('tar-color-prev').style.background = '#2571d0';
     document.getElementById('tar-period').value = 'міс';
     document.getElementById('tar-active').checked = true;
   }
@@ -2180,6 +2205,7 @@ window.saveTariff = async () => {
   if (!code || !name) { toast('Заповніть код і назву', 'error'); return; }
   const data = {
     code, name,
+    color:      document.getElementById('tar-color-hex').value.trim() || '#2571d0',
     price:      parseFloat(document.getElementById('tar-price').value) || 0,
     period:     document.getElementById('tar-period').value.trim() || 'міс',
     spec:       document.getElementById('tar-spec').value.trim(),
@@ -2354,6 +2380,9 @@ window.openSimModal = (id) => {
     document.getElementById('sim-code').value  = s.code || '';
     document.getElementById('sim-name').value  = s.name || '';
     document.getElementById('sim-brand').value = s.brand || 'kyivstar';
+    document.getElementById('sim-color').value       = s.color || '#2571d0';
+    document.getElementById('sim-color-hex').value   = s.color || '#2571d0';
+    document.getElementById('sim-color-prev').style.background = s.color || '#2571d0';
     document.getElementById('sim-price').value = s.price || '';
     document.getElementById('sim-spec').value  = s.spec || '';
     document.getElementById('sim-active').checked = s.active !== false;
@@ -2372,6 +2401,7 @@ window.saveSim = async () => {
   const data = {
     code, name,
     brand:    document.getElementById('sim-brand').value,
+    color:    document.getElementById('sim-color-hex').value.trim() || '',
     price:    parseFloat(document.getElementById('sim-price').value) || 0,
     spec:     document.getElementById('sim-spec').value.trim(),
     active:   document.getElementById('sim-active').checked,
