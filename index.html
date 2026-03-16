@@ -2288,7 +2288,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
 
 /* ═══════════════════════════ AI CHAT WIDGET ═══════════════════════════ */
 #ai-chat-btn {
-  position: fixed; bottom: 24px; right: 24px; z-index: 9000;
+  position: fixed; bottom: 24px; right: 24px; z-index: 10000;
   width: 52px; height: 52px; border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), #06b6d4);
   border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(0,84,166,0.35);
@@ -2306,7 +2306,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
 }
 
 #ai-chat-panel {
-  position: fixed; bottom: 86px; right: 24px; z-index: 9001;
+  position: fixed; bottom: 86px; right: 24px; z-index: 10001;
   width: 380px; height: 520px;
   background: #ffffff; border: 1px solid var(--border);
   border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.18);
@@ -6938,7 +6938,7 @@ window.fbGoogleLogin = async function() {
 
 </div></div></div></div></div>
 <!-- ═══════════════ AI CHAT WIDGET ═══════════════ -->
-<button id="ai-chat-btn" onclick="chatToggle()" title="AI-помічник TIPSTER">
+<button id="ai-chat-btn" onclick="if(window.chatToggle){window.chatToggle();}else{this.style.animation='shake 0.3s';}" title="AI-помічник TIPSTER">
   🤖
   <div class="chat-badge" id="chat-badge" style="display:none">1</div>
 </button>
@@ -6950,7 +6950,7 @@ window.fbGoogleLogin = async function() {
       <div class="chat-name">TIPSTER AI</div>
       <div class="chat-status">Онлайн · відповідає миттєво</div>
     </div>
-    <button id="ai-chat-close" onclick="chatToggle()">✕</button>
+    <button id="ai-chat-close" onclick="window.chatToggle()">✕</button>
   </div>
 
   <div id="ai-chat-messages">
