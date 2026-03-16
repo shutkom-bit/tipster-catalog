@@ -6314,14 +6314,18 @@ window.loadFirestoreInstall = async function() {
       );
       fsInstall.forEach(s => {
         if (existingCodes.has(s.code)) return;
+        const price = s.price || 0;
+        if (typeof cartRegistry !== 'undefined') {
+          cartRegistry.set(s.code, { article: s.code, name: s.name, spec: s.spec||'', _uah: price, note: price + ' ₴' });
+        }
         const tr = document.createElement('tr');
         tr.dataset.code = s.code;
         tr.innerHTML = `
           <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3)">${s.code}</td>
-          <td style="font-weight:600">${s.name}</td>
-          <td style="color:var(--text-2);font-size:12.5px">${s.spec||''}</td>
-          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700">${s.price||0} ₴</td>
-          <td><button class="btn-add-cart" onclick="addToCartById('${s.code}')">+</button></td>`;
+          <td style="font-weight:500">${s.name}</td>
+          <td style="font-size:12px;color:var(--text-2)">${s.spec||''}</td>
+          <td style="font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:600;color:var(--accent)">${price.toLocaleString('uk-UA')} ₴</td>
+          <td><button class="btn-add-cart" onclick="addToCartById('${s.code}')">+ Кошик</button></td>`;
         tbody.appendChild(tr);
       });
     }
