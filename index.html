@@ -6611,6 +6611,161 @@ window.fbGoogleLogin = async function() {
 // AI CHAT — TIPSTER помічник
 // ═══════════════════════════════════════════
 (function() {
+// ════════════════════════════════════════════
+
+</script>
+<!-- ══ PRIVACY MODAL ══ -->
+<div id="privacy-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 16px">
+  <div style="max-width:720px;margin:0 auto;background:var(--bg);border-radius:14px;padding:32px 36px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+    <button onclick="closePrivacyModal()" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border:none;background:var(--bg-card);border-radius:50%;cursor:pointer;font-size:16px;color:var(--text-2);display:flex;align-items:center;justify-content:center">✕</button>
+    
+    <div style="font-size:11px;color:var(--text-3);margin-bottom:4px;font-family:'IBM Plex Mono',monospace">ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
+    <h2 style="margin:0 0 4px;font-size:20px;font-weight:700">Політика конфіденційності</h2>
+    <div style="font-size:11px;color:var(--text-3);margin-bottom:24px">hub.tipster.ua · Редакція від 09 березня 2026 року</div>
+
+    <div style="font-size:13px;line-height:1.75;color:var(--text)">
+
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:var(--text-3)">
+        Реєструючись на Порталі, користувач надає згоду на обробку своїх персональних даних відповідно до умов цієї Політики.
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">1. Загальні положення</div>
+        <p style="margin:0 0 8px">1.1. Ця Політика конфіденційності визначає порядок збору, зберігання, використання та захисту персональних даних користувачів закритого B2B-порталу <strong>hub.tipster.ua</strong> (далі — «Портал»).</p>
+        <p style="margin:0 0 8px">1.2. Оператором персональних даних є Товариство з обмеженою відповідальністю <strong>«ТРЕКАВТО»</strong> (ЄДРПОУ 38872343), далі — «Компанія».</p>
+        <p style="margin:0 0 8px">1.3. Реєструючись на Порталі, користувач надає згоду на обробку своїх персональних даних відповідно до умов цієї Політики.</p>
+        <p style="margin:0">1.4. Портал є закритим корпоративним ресурсом. Доступ надається виключно авторизованим партнерам та клієнтам Компанії після ручної перевірки та підтвердження адміністратором.</p>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">2. Персональні дані, що збираються</div>
+        <p style="margin:0 0 8px">2.1. При реєстрації та використанні Порталу Компанія збирає такі персональні дані:</p>
+        <ul style="margin:0 0 8px;padding-left:20px;line-height:2">
+          <li><strong>Ім'я та прізвище</strong> — для ідентифікації користувача та персоналізації комунікації;</li>
+          <li><strong>Адреса електронної пошти (email)</strong> — для авторизації, сповіщень та зв'язку;</li>
+          <li><strong>Номер телефону</strong> — для верифікації та оперативного зв'язку;</li>
+          <li><strong>Назва компанії</strong> — для визначення ролі та категорії доступу (партнер / клієнт).</li>
+        </ul>
+        <p style="margin:0 0 8px">2.2. Пароль зберігається у зашифрованому вигляді засобами Firebase Authentication (Google LLC) і є недоступним для Компанії.</p>
+        <p style="margin:0">2.3. Портал не збирає дані платіжних карток, паспортні дані або іншу чутливу інформацію.</p>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">3. Мета обробки персональних даних</div>
+        <p style="margin:0 0 8px">3.1. Зібрані персональні дані використовуються виключно для:</p>
+        <ul style="margin:0 0 8px;padding-left:20px;line-height:2">
+          <li>надання доступу до Порталу та його функціоналу;</li>
+          <li>ідентифікації користувача та визначення його ролі (партнер / клієнт);</li>
+          <li>обробки та виконання замовлень, оформлених через Портал;</li>
+          <li>комунікації щодо замовлень, актуальних цін та оновлень каталогу;</li>
+          <li>адміністрування облікових записів та забезпечення безпеки.</li>
+        </ul>
+        <p style="margin:0">3.2. Компанія не використовує персональні дані для реклами третіх сторін або передачі третім особам з комерційною метою.</p>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">4. Зберігання та захист даних</div>
+        <p style="margin:0 0 8px">4.1. Персональні дані зберігаються в хмарній базі даних Firebase Firestore (Google LLC, США) з використанням шифрування даних у спокої та при передачі (TLS/SSL).</p>
+        <p style="margin:0 0 8px">4.2. Доступ до персональних даних мають виключно авторизовані адміністратори Компанії.</p>
+        <p style="margin:0 0 8px">4.3. Компанія вживає організаційних і технічних заходів для захисту персональних даних від несанкціонованого доступу, втрати або знищення.</p>
+        <p style="margin:0">4.4. Дані зберігаються протягом строку дії облікового запису та не більше 3 (трьох) років після його видалення або деактивації.</p>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">5. Передача даних третім особам</div>
+        <p style="margin:0 0 8px">5.1. Компанія не продає та не передає персональні дані третім особам, крім таких випадків:</p>
+        <ul style="margin:0 0 8px;padding-left:20px;line-height:2">
+          <li><strong>Google LLC (Firebase)</strong> — як технічний провайдер платформи аутентифікації та бази даних;</li>
+          <li>виконання вимог законодавства України або обґрунтованих запитів державних органів.</li>
+        </ul>
+        <p style="margin:0">5.2. Google LLC дотримується стандартів захисту персональних даних згідно з GDPR. Детальніше: firebase.google.com/support/privacy</p>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">6. Права користувача</div>
+        <p style="margin:0 0 8px">6.1. Відповідно до Закону України «Про захист персональних даних» користувач має право:</p>
+        <ul style="margin:0 0 8px;padding-left:20px;line-height:2">
+          <li>отримати інформацію про свої персональні дані, що обробляються Компанією;</li>
+          <li>вимагати виправлення або видалення своїх персональних даних;</li>
+          <li>відкликати згоду на обробку персональних даних;</li>
+          <li>вимагати обмеження обробки своїх даних.</li>
+        </ul>
+        <p style="margin:0 0 8px">6.2. Для реалізації своїх прав звертайтесь:</p>
+        <div style="background:var(--bg-card);border-radius:6px;padding:10px 14px;margin-bottom:8px;line-height:2">
+          <div>📧 <strong>Email:</strong> <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="600f060609030520141201030b0115140f4e030f0d4e1501">[email&#160;protected]</span></a></div>
+          <div>📞 <strong>Телефон:</strong> +38 (044) 451-66-17</div>
+        </div>
+        <p style="margin:0">6.3. Запит розглядається протягом 10 робочих днів з дати отримання.</p>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">7. Файли cookie та технічні дані</div>
+        <p style="margin:0 0 8px">7.1. Портал використовує технічні cookie файли Firebase Authentication для підтримки сесії авторизованого користувача. Ці файли є необхідними для роботи Порталу і не містять персональних даних третіх осіб.</p>
+        <p style="margin:0 0 8px">7.2. Портал не використовує рекламні, аналітичні або маркетингові cookie файли.</p>
+        <p style="margin:0">7.3. Портал не відображає рекламу та не передає дані рекламним мережам.</p>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">8. Зміни до Політики конфіденційності</div>
+        <p style="margin:0 0 8px">8.1. Компанія залишає за собою право вносити зміни до цієї Політики. Про суттєві зміни користувачі будуть повідомлені через Портал або на вказану електронну адресу.</p>
+        <p style="margin:0">8.2. Продовження використання Порталу після публікації змін означає згоду користувача з оновленою Політикою.</p>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:16px;margin-top:8px">
+        <div style="font-weight:600;font-size:13px;margin-bottom:10px">9. Контактна інформація</div>
+        <div style="font-size:12.5px;line-height:2;color:var(--text-2)">
+          <div>ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
+          <div>Email: <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="83ece5e5eae0e6c3f7f1e2e0e8e2f6f7ecade0eceeadf6e2">[email&#160;protected]</span></a></div>
+          <div>Телефон: <a href="tel:+380444516617" style="color:var(--accent)">+38 (044) 451-66-17</a></div>
+          <div>Вебсайт: <a href="https://tipster.ua" target="_blank" style="color:var(--accent)">tipster.ua</a></div>
+      
+
+</div></div></div></div></div>
+<!-- ═══════════════ AI CHAT WIDGET ═══════════════ -->
+<button id="ai-chat-btn" onclick="window.chatToggle && window.chatToggle()" title="AI-помічник TIPSTER">
+  🤖
+  <div class="chat-badge" id="chat-badge" style="display:none">1</div>
+</button>
+
+<div id="ai-chat-panel">
+  <div id="ai-chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-info">
+      <div class="chat-name">TIPSTER AI</div>
+      <div class="chat-status">Онлайн · відповідає миттєво</div>
+    </div>
+    <button id="ai-chat-close" onclick="window.chatToggle()">✕</button>
+  </div>
+
+  <div id="ai-chat-messages">
+    <!-- Повідомлення додаються JS -->
+  </div>
+
+  <div id="ai-chat-suggestions">
+    <button class="chat-suggestion" onclick="chatSend('Які трекери є для легкового авто?')">Трекери для авто</button>
+    <button class="chat-suggestion" onclick="chatSend('Яка ціна FMC920?')">Ціна FMC920</button>
+    <button class="chat-suggestion" onclick="chatSend('Які тарифи SIM є?')">Тарифи SIM</button>
+    <button class="chat-suggestion" onclick="chatSend('Скільки коштує монтаж?')">Монтаж</button>
+  </div>
+
+  <div id="ai-chat-input-row">
+    <input id="ai-chat-input" type="text" placeholder="Запитайте про трекери, ціни, тарифи…"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatSend();}">
+    <button id="ai-chat-send" onclick="chatSend()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+    </button>
+  </div>
+</div>
+<!-- ════════════════════════════════════════════════ -->
+
+
+<script>
+// ── AI Chat Widget ──
+
+// Заглушки — будуть перевизначені нижче
+window.chatToggle = window.chatToggle || function() {};
+window.chatSend   = window.chatSend   || function() {};
+
   function buildSystemPrompt() {
     const usd = parseFloat(document.getElementById('usdRate')?.value) || 41.20;
     const eur = parseFloat(document.getElementById('eurRate')?.value) || 44.50;
@@ -6827,151 +6982,7 @@ window.fbGoogleLogin = async function() {
     }
   };
 })();
-// ════════════════════════════════════════════
 
 </script>
-<!-- ══ PRIVACY MODAL ══ -->
-<div id="privacy-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 16px">
-  <div style="max-width:720px;margin:0 auto;background:var(--bg);border-radius:14px;padding:32px 36px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
-    <button onclick="closePrivacyModal()" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border:none;background:var(--bg-card);border-radius:50%;cursor:pointer;font-size:16px;color:var(--text-2);display:flex;align-items:center;justify-content:center">✕</button>
-    
-    <div style="font-size:11px;color:var(--text-3);margin-bottom:4px;font-family:'IBM Plex Mono',monospace">ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
-    <h2 style="margin:0 0 4px;font-size:20px;font-weight:700">Політика конфіденційності</h2>
-    <div style="font-size:11px;color:var(--text-3);margin-bottom:24px">hub.tipster.ua · Редакція від 09 березня 2026 року</div>
-
-    <div style="font-size:13px;line-height:1.75;color:var(--text)">
-
-      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:12px;color:var(--text-3)">
-        Реєструючись на Порталі, користувач надає згоду на обробку своїх персональних даних відповідно до умов цієї Політики.
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">1. Загальні положення</div>
-        <p style="margin:0 0 8px">1.1. Ця Політика конфіденційності визначає порядок збору, зберігання, використання та захисту персональних даних користувачів закритого B2B-порталу <strong>hub.tipster.ua</strong> (далі — «Портал»).</p>
-        <p style="margin:0 0 8px">1.2. Оператором персональних даних є Товариство з обмеженою відповідальністю <strong>«ТРЕКАВТО»</strong> (ЄДРПОУ 38872343), далі — «Компанія».</p>
-        <p style="margin:0 0 8px">1.3. Реєструючись на Порталі, користувач надає згоду на обробку своїх персональних даних відповідно до умов цієї Політики.</p>
-        <p style="margin:0">1.4. Портал є закритим корпоративним ресурсом. Доступ надається виключно авторизованим партнерам та клієнтам Компанії після ручної перевірки та підтвердження адміністратором.</p>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">2. Персональні дані, що збираються</div>
-        <p style="margin:0 0 8px">2.1. При реєстрації та використанні Порталу Компанія збирає такі персональні дані:</p>
-        <ul style="margin:0 0 8px;padding-left:20px;line-height:2">
-          <li><strong>Ім'я та прізвище</strong> — для ідентифікації користувача та персоналізації комунікації;</li>
-          <li><strong>Адреса електронної пошти (email)</strong> — для авторизації, сповіщень та зв'язку;</li>
-          <li><strong>Номер телефону</strong> — для верифікації та оперативного зв'язку;</li>
-          <li><strong>Назва компанії</strong> — для визначення ролі та категорії доступу (партнер / клієнт).</li>
-        </ul>
-        <p style="margin:0 0 8px">2.2. Пароль зберігається у зашифрованому вигляді засобами Firebase Authentication (Google LLC) і є недоступним для Компанії.</p>
-        <p style="margin:0">2.3. Портал не збирає дані платіжних карток, паспортні дані або іншу чутливу інформацію.</p>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">3. Мета обробки персональних даних</div>
-        <p style="margin:0 0 8px">3.1. Зібрані персональні дані використовуються виключно для:</p>
-        <ul style="margin:0 0 8px;padding-left:20px;line-height:2">
-          <li>надання доступу до Порталу та його функціоналу;</li>
-          <li>ідентифікації користувача та визначення його ролі (партнер / клієнт);</li>
-          <li>обробки та виконання замовлень, оформлених через Портал;</li>
-          <li>комунікації щодо замовлень, актуальних цін та оновлень каталогу;</li>
-          <li>адміністрування облікових записів та забезпечення безпеки.</li>
-        </ul>
-        <p style="margin:0">3.2. Компанія не використовує персональні дані для реклами третіх сторін або передачі третім особам з комерційною метою.</p>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">4. Зберігання та захист даних</div>
-        <p style="margin:0 0 8px">4.1. Персональні дані зберігаються в хмарній базі даних Firebase Firestore (Google LLC, США) з використанням шифрування даних у спокої та при передачі (TLS/SSL).</p>
-        <p style="margin:0 0 8px">4.2. Доступ до персональних даних мають виключно авторизовані адміністратори Компанії.</p>
-        <p style="margin:0 0 8px">4.3. Компанія вживає організаційних і технічних заходів для захисту персональних даних від несанкціонованого доступу, втрати або знищення.</p>
-        <p style="margin:0">4.4. Дані зберігаються протягом строку дії облікового запису та не більше 3 (трьох) років після його видалення або деактивації.</p>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">5. Передача даних третім особам</div>
-        <p style="margin:0 0 8px">5.1. Компанія не продає та не передає персональні дані третім особам, крім таких випадків:</p>
-        <ul style="margin:0 0 8px;padding-left:20px;line-height:2">
-          <li><strong>Google LLC (Firebase)</strong> — як технічний провайдер платформи аутентифікації та бази даних;</li>
-          <li>виконання вимог законодавства України або обґрунтованих запитів державних органів.</li>
-        </ul>
-        <p style="margin:0">5.2. Google LLC дотримується стандартів захисту персональних даних згідно з GDPR. Детальніше: firebase.google.com/support/privacy</p>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">6. Права користувача</div>
-        <p style="margin:0 0 8px">6.1. Відповідно до Закону України «Про захист персональних даних» користувач має право:</p>
-        <ul style="margin:0 0 8px;padding-left:20px;line-height:2">
-          <li>отримати інформацію про свої персональні дані, що обробляються Компанією;</li>
-          <li>вимагати виправлення або видалення своїх персональних даних;</li>
-          <li>відкликати згоду на обробку персональних даних;</li>
-          <li>вимагати обмеження обробки своїх даних.</li>
-        </ul>
-        <p style="margin:0 0 8px">6.2. Для реалізації своїх прав звертайтесь:</p>
-        <div style="background:var(--bg-card);border-radius:6px;padding:10px 14px;margin-bottom:8px;line-height:2">
-          <div>📧 <strong>Email:</strong> <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="600f060609030520141201030b0115140f4e030f0d4e1501">[email&#160;protected]</span></a></div>
-          <div>📞 <strong>Телефон:</strong> +38 (044) 451-66-17</div>
-        </div>
-        <p style="margin:0">6.3. Запит розглядається протягом 10 робочих днів з дати отримання.</p>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">7. Файли cookie та технічні дані</div>
-        <p style="margin:0 0 8px">7.1. Портал використовує технічні cookie файли Firebase Authentication для підтримки сесії авторизованого користувача. Ці файли є необхідними для роботи Порталу і не містять персональних даних третіх осіб.</p>
-        <p style="margin:0 0 8px">7.2. Портал не використовує рекламні, аналітичні або маркетингові cookie файли.</p>
-        <p style="margin:0">7.3. Портал не відображає рекламу та не передає дані рекламним мережам.</p>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">8. Зміни до Політики конфіденційності</div>
-        <p style="margin:0 0 8px">8.1. Компанія залишає за собою право вносити зміни до цієї Політики. Про суттєві зміни користувачі будуть повідомлені через Портал або на вказану електронну адресу.</p>
-        <p style="margin:0">8.2. Продовження використання Порталу після публікації змін означає згоду користувача з оновленою Політикою.</p>
-      </div>
-
-      <div style="border-top:1px solid var(--border);padding-top:16px;margin-top:8px">
-        <div style="font-weight:600;font-size:13px;margin-bottom:10px">9. Контактна інформація</div>
-        <div style="font-size:12.5px;line-height:2;color:var(--text-2)">
-          <div>ТОВ «ТРЕКАВТО» · ЄДРПОУ 38872343</div>
-          <div>Email: <a data-u="office" data-d="trackauto.com.ua" href="#" onclick="var e=this.dataset.u+'@'+this.dataset.d;this.href='mailto:'+e;return true;" style="color:var(--accent)"><span class="__cf_email__" data-cfemail="83ece5e5eae0e6c3f7f1e2e0e8e2f6f7ecade0eceeadf6e2">[email&#160;protected]</span></a></div>
-          <div>Телефон: <a href="tel:+380444516617" style="color:var(--accent)">+38 (044) 451-66-17</a></div>
-          <div>Вебсайт: <a href="https://tipster.ua" target="_blank" style="color:var(--accent)">tipster.ua</a></div>
-      
-
-</div></div></div></div></div>
-<!-- ═══════════════ AI CHAT WIDGET ═══════════════ -->
-<button id="ai-chat-btn" onclick="if(window.chatToggle){window.chatToggle();}else{this.style.animation='shake 0.3s';}" title="AI-помічник TIPSTER">
-  🤖
-  <div class="chat-badge" id="chat-badge" style="display:none">1</div>
-</button>
-
-<div id="ai-chat-panel">
-  <div id="ai-chat-header">
-    <div class="chat-avatar">🤖</div>
-    <div class="chat-info">
-      <div class="chat-name">TIPSTER AI</div>
-      <div class="chat-status">Онлайн · відповідає миттєво</div>
-    </div>
-    <button id="ai-chat-close" onclick="window.chatToggle()">✕</button>
-  </div>
-
-  <div id="ai-chat-messages">
-    <!-- Повідомлення додаються JS -->
-  </div>
-
-  <div id="ai-chat-suggestions">
-    <button class="chat-suggestion" onclick="chatSend('Які трекери є для легкового авто?')">Трекери для авто</button>
-    <button class="chat-suggestion" onclick="chatSend('Яка ціна FMC920?')">Ціна FMC920</button>
-    <button class="chat-suggestion" onclick="chatSend('Які тарифи SIM є?')">Тарифи SIM</button>
-    <button class="chat-suggestion" onclick="chatSend('Скільки коштує монтаж?')">Монтаж</button>
-  </div>
-
-  <div id="ai-chat-input-row">
-    <input id="ai-chat-input" type="text" placeholder="Запитайте про трекери, ціни, тарифи…"
-      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatSend();}">
-    <button id="ai-chat-send" onclick="chatSend()">
-      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
-    </button>
-  </div>
-</div>
-<!-- ════════════════════════════════════════════════ -->
 </body>
 </html>
