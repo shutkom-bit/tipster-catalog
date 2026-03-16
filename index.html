@@ -1931,6 +1931,40 @@ body[data-role="admin"]   .nvx-partner-view { display: block; }
 }
 .tariff-back-cta:hover { opacity: .9; }
 
+/* SIM flip cards */
+.sim-flip {
+  height: 200px;
+  perspective: 800px;
+  cursor: pointer;
+}
+.sim-flip-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+  transform-style: preserve-3d;
+}
+.sim-flip.is-flipped .sim-flip-inner { transform: rotateY(180deg); }
+.sim-flip-front, .sim-flip-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+}
+.sim-flip-back {
+  transform: rotateY(180deg);
+  color: #fff;
+}
+.sim-flip-hint {
+  font-size: 10px;
+  color: rgba(255,255,255,.6);
+  margin-top: auto;
+  text-align: center;
+}
+
 /* ── Wiki login card ── */
 .wiki-login-card {
   display: flex;
@@ -4865,15 +4899,26 @@ function makeCard(item, currency='USD') {
     }
     const bs = brandStyles[item.brand] || null;
     if (bs) {
-      return `<div class="card sim-brand-card" style="background:${bs.bg};border:none;color:#fff;position:relative;overflow:hidden">
-        <div style="font-size:13.5px;font-weight:700;color:#fff;margin-bottom:6px">${item.name}</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.82);line-height:1.55;margin-bottom:12px">${item.spec}</div>
-        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:14px">
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:700;color:${bs.accent}">${fmt(item.price_uah)}</span>
-          <span style="font-size:14px;color:${bs.accent}">₴</span>
-          <span style="font-size:11px;color:rgba(255,255,255,.65)">разова оплата</span>
+      const descText = item.description || item.spec || '';
+      return `<div class="sim-flip" onclick="this.classList.toggle('is-flipped')">
+        <div class="sim-flip-inner">
+          <div class="sim-flip-front" style="background:${bs.bg};border:none;color:#fff">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:6px">${item.brand?.toUpperCase()||'SIM'}</div>
+            <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">${item.name}</div>
+            <div style="display:flex;align-items:baseline;gap:5px;margin-top:auto;margin-bottom:4px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:700;color:${bs.accent}">${fmt(item.price_uah)}</span>
+              <span style="font-size:13px;color:${bs.accent}">₴</span>
+            </div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.6)">разова оплата</div>
+            <div class="sim-flip-hint">Натисніть для деталей →</div>
+          </div>
+          <div class="sim-flip-back" style="background:${bs.bg};border:none">
+            <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px">${item.name}</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.85);line-height:1.55;flex:1">${descText}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:${bs.accent};margin-bottom:10px">${fmt(item.price_uah)} ₴ · разова оплата</div>
+            <button class="btn-add-cart" style="width:100%;justify-content:center;${bs.btn}" onclick="event.stopPropagation();addToCartById('${cartCode}')">+ У кошик</button>
+          </div>
         </div>
-        <button class="btn-add-cart" style="width:100%;justify-content:center;${bs.btn}" onclick="addToCartById('${cartCode}')">+ У кошик</button>
       </div>`;
     }
     return `<div class="card">
@@ -6342,11 +6387,12 @@ window.loadFirestoreSimcards = async function() {
       const s = d.data();
       if (s.active === false) return;
       fsSims.push({
-        code:      s.code || '',
-        name:      s.name || '',
-        spec:      s.spec || '',
-        price_uah: s.price || 0,
-        brand:     s.brand || 'other',
+        code:        s.code || '',
+        name:        s.name || '',
+        spec:        s.spec || '',
+        description: s.description || '',
+        price_uah:   s.price || 0,
+        brand:       s.brand || 'other',
         currency:  'UAH',
         partnerPrice: s.price || 0,
         retailPrice:  s.price || 0,
