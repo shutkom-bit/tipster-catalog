@@ -551,6 +551,21 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         Готові рішення
         <span class="nav-count" id="nav-cnt-kits">—</span>
       </div>
+      <div class="nav-item" onclick="showPage('tariffs')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 1"/></svg>
+        Тарифи
+        <span class="nav-count" id="nav-cnt-tariffs">—</span>
+      </div>
+      <div class="nav-item" onclick="showPage('install')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+        Монтаж / Сервіс
+        <span class="nav-count" id="nav-cnt-install">—</span>
+      </div>
+      <div class="nav-item" onclick="showPage('simcards')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="10" height="12" rx="2"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        SIM-карти
+        <span class="nav-count" id="nav-cnt-simcards">—</span>
+      </div>
       <div class="nav-item" onclick="showPage('brands')">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="8,2 10,6 14,6.5 11,9.5 11.5,14 8,12 4.5,14 5,9.5 2,6.5 6,6"/></svg>
         Бренди
@@ -612,6 +627,21 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <div class="stat-label">Користувачі</div>
           <div class="stat-value" id="st-users">—</div>
           <div class="stat-sub">зареєстровано</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Тарифи</div>
+          <div class="stat-value" id="st-tariffs">—</div>
+          <div class="stat-sub">активних</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Послуги монтажу</div>
+          <div class="stat-value" id="st-install">—</div>
+          <div class="stat-sub">позицій</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">SIM-карти</div>
+          <div class="stat-value" id="st-simcards">—</div>
+          <div class="stat-sub">тарифів</div>
         </div>
       </div>
 
@@ -944,6 +974,78 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
   </main>
 </div>
 
+<!-- ══ ТАРИФИ ══════════════════════════════════════════ -->
+    <div class="page-section" id="page-tariffs">
+      <div class="page-title">Тарифи SIM</div>
+      <div class="page-subtitle">Тарифні плани для SIM-карт моніторингу</div>
+      <div class="toolbar">
+        <button class="btn btn-primary" onclick="openTariffModal()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
+          Додати тариф
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Код</th><th>Назва</th><th>Ціна</th><th>Період</th><th>Опис</th><th>Статус</th><th style="width:100px">Дії</th>
+            </tr>
+          </thead>
+          <tbody id="tariffs-tbody">
+            <tr><td colspan="7" class="loading"><div class="spinner"></div> Завантаження...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ МОНТАЖ ════════════════════════════════════════ -->
+    <div class="page-section" id="page-install">
+      <div class="page-title">Монтаж та сервіс</div>
+      <div class="page-subtitle">Послуги встановлення та налаштування обладнання</div>
+      <div class="toolbar">
+        <button class="btn btn-primary" onclick="openInstallModal()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
+          Додати послугу
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Код</th><th>Послуга</th><th>Ціна (₴)</th><th>Опис</th><th>Статус</th><th style="width:100px">Дії</th>
+            </tr>
+          </thead>
+          <tbody id="install-tbody">
+            <tr><td colspan="6" class="loading"><div class="spinner"></div> Завантаження...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ SIM-КАРТИ ══════════════════════════════════════ -->
+    <div class="page-section" id="page-simcards">
+      <div class="page-title">SIM-карти</div>
+      <div class="page-subtitle">Фізичні SIM-карти для GPS-трекерів</div>
+      <div class="toolbar">
+        <button class="btn btn-primary" onclick="openSimModal()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
+          Додати SIM
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Код</th><th>Назва</th><th>Оператор</th><th>Ціна (₴)</th><th>Опис</th><th>Статус</th><th style="width:100px">Дії</th>
+            </tr>
+          </thead>
+          <tbody id="simcards-tbody">
+            <tr><td colspan="7" class="loading"><div class="spinner"></div> Завантаження...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
 <!-- ══ MODAL: ТОВАР ══════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-product">
   <div class="modal">
@@ -1143,6 +1245,159 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
   </div>
 </div>
 
+<!-- ══ MODAL: ТАРИФ ════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-tariff">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-tariff-title">Новий тариф</div>
+      <button class="modal-close" onclick="closeModal('modal-tariff')">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l12 12M14 2L2 14"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="tar-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Код *</label>
+          <input type="text" id="tar-code" placeholder="TAR-BASE" style="font-family:'IBM Plex Mono',monospace">
+        </div>
+        <div class="form-group">
+          <label>Назва *</label>
+          <input type="text" id="tar-name" placeholder="Base 300">
+        </div>
+        <div class="form-group">
+          <label>Ціна (₴) *</label>
+          <input type="number" id="tar-price" placeholder="300" min="0">
+        </div>
+        <div class="form-group">
+          <label>Період</label>
+          <input type="text" id="tar-period" placeholder="міс">
+        </div>
+        <div class="form-group span-2">
+          <label>Опис</label>
+          <textarea id="tar-spec" placeholder="300 МБ трафік, Kyivstar/Vodafone…" style="min-height:60px"></textarea>
+        </div>
+        <div class="form-group">
+          <label>App Store (посилання)</label>
+          <input type="url" id="tar-app-ios" placeholder="https://apps.apple.com/…">
+        </div>
+        <div class="form-group">
+          <label>Google Play (посилання)</label>
+          <input type="url" id="tar-app-android" placeholder="https://play.google.com/…">
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle"><input type="checkbox" id="tar-active" checked><span class="toggle-slider"></span></label>
+            Активний
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-tariff')">Скасувати</button>
+      <button class="btn btn-danger btn-sm" id="tar-delete-btn" onclick="deleteTariff()" style="display:none">Видалити</button>
+      <button class="btn btn-primary" onclick="saveTariff()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: МОНТАЖ ═══════════════════════════════════ -->
+<div class="modal-overlay" id="modal-install">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-install-title">Нова послуга</div>
+      <button class="modal-close" onclick="closeModal('modal-install')">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l12 12M14 2L2 14"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ins-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Код *</label>
+          <input type="text" id="ins-code" placeholder="SVC-MONT-LA" style="font-family:'IBM Plex Mono',monospace">
+        </div>
+        <div class="form-group">
+          <label>Назва *</label>
+          <input type="text" id="ins-name" placeholder="Монтаж легкове авто">
+        </div>
+        <div class="form-group">
+          <label>Ціна (₴) *</label>
+          <input type="number" id="ins-price" placeholder="1600" min="0">
+        </div>
+        <div class="form-group span-2">
+          <label>Опис</label>
+          <textarea id="ins-spec" placeholder="Встановлення трекера у легкове авто…" style="min-height:60px"></textarea>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle"><input type="checkbox" id="ins-active" checked><span class="toggle-slider"></span></label>
+            Активна
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-install')">Скасувати</button>
+      <button class="btn btn-danger btn-sm" id="ins-delete-btn" onclick="deleteInstall()" style="display:none">Видалити</button>
+      <button class="btn btn-primary" onclick="saveInstall()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: SIM ═══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-sim">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-sim-title">Нова SIM</div>
+      <button class="modal-close" onclick="closeModal('modal-sim')">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l12 12M14 2L2 14"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="sim-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Код *</label>
+          <input type="text" id="sim-code" placeholder="SIM-KS" style="font-family:'IBM Plex Mono',monospace">
+        </div>
+        <div class="form-group">
+          <label>Назва *</label>
+          <input type="text" id="sim-name" placeholder="SIM-карта Kyivstar 24 МБ">
+        </div>
+        <div class="form-group">
+          <label>Оператор</label>
+          <select id="sim-brand" style="padding:8px 11px;border:1px solid var(--border);border-radius:7px;font-family:inherit;font-size:13px;background:var(--bg-card);outline:none">
+            <option value="kyivstar">Kyivstar</option>
+            <option value="vodafone">Vodafone</option>
+            <option value="lifecell">lifecell</option>
+            <option value="other">Інший</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ціна (₴) *</label>
+          <input type="number" id="sim-price" placeholder="35" min="0">
+        </div>
+        <div class="form-group span-2">
+          <label>Опис</label>
+          <textarea id="sim-spec" placeholder="Фізична SIM (nano/micro/standard)…" style="min-height:60px"></textarea>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle"><input type="checkbox" id="sim-active" checked><span class="toggle-slider"></span></label>
+            Активна
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-sim')">Скасувати</button>
+      <button class="btn btn-danger btn-sm" id="sim-delete-btn" onclick="deleteSim()" style="display:none">Видалити</button>
+      <button class="btn btn-primary" onclick="saveSim()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ TOAST ════════════════════════════════════════════ -->
 <div class="toast" id="toast"></div>
 
@@ -1235,6 +1490,9 @@ onAuthStateChanged(auth, async (user) => {
       loadBrands(),
       loadKits(),
       loadUsers(),
+      loadTariffs(),
+      loadInstall(),
+      loadSimcards(),
     ]);
     updateStats();
   } else {
@@ -1854,6 +2112,295 @@ function renderUsers() {
     </tr>`;
   }).join('');
 }
+
+// ════════════════════════════════════════════════════
+// ТАРИФИ
+// ════════════════════════════════════════════════════
+let _tariffs = [];
+let _editingTariff = null;
+
+async function loadTariffs() {
+  try {
+    const snap = await getDocs(collection(db, tenantRef('tariffs')));
+    _tariffs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderTariffs();
+  } catch(e) { console.warn('loadTariffs:', e); }
+}
+
+function renderTariffs() {
+  const tbody = document.getElementById('tariffs-tbody');
+  if (!tbody) return;
+  document.getElementById('nav-cnt-tariffs').textContent = _tariffs.length;
+  document.getElementById('st-tariffs').textContent = _tariffs.length;
+  if (!_tariffs.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="padding:20px;text-align:center;color:var(--text-3)">Тарифів ще немає.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = _tariffs.map(t => `
+    <tr>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-2)">${t.code||'—'}</td>
+      <td style="font-weight:500">${t.name||'—'}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-weight:600">${t.price||0} ₴</td>
+      <td style="font-size:12px;color:var(--text-2)">${t.period||'міс'}</td>
+      <td style="font-size:12px;color:var(--text-2);max-width:200px">${t.spec||'—'}</td>
+      <td><span class="badge ${t.active!==false?'badge-green':'badge-red'}">${t.active!==false?'Активний':'Неактивний'}</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="openTariffModal('${t.id}')">Редагувати</button></td>
+    </tr>`).join('');
+}
+
+window.openTariffModal = (id) => {
+  _editingTariff = id || null;
+  const isEdit = !!id;
+  document.getElementById('modal-tariff-title').textContent = isEdit ? 'Редагувати тариф' : 'Новий тариф';
+  document.getElementById('tar-delete-btn').style.display = isEdit ? 'inline-flex' : 'none';
+  if (isEdit) {
+    const t = _tariffs.find(x => x.id === id);
+    if (!t) return;
+    document.getElementById('tar-id').value          = t.id;
+    document.getElementById('tar-code').value        = t.code || '';
+    document.getElementById('tar-name').value        = t.name || '';
+    document.getElementById('tar-price').value       = t.price || '';
+    document.getElementById('tar-period').value      = t.period || 'міс';
+    document.getElementById('tar-spec').value        = t.spec || '';
+    document.getElementById('tar-app-ios').value     = t.appIos || '';
+    document.getElementById('tar-app-android').value = t.appAndroid || '';
+    document.getElementById('tar-active').checked   = t.active !== false;
+  } else {
+    ['tar-id','tar-code','tar-name','tar-price','tar-spec','tar-app-ios','tar-app-android'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('tar-period').value = 'міс';
+    document.getElementById('tar-active').checked = true;
+  }
+  document.getElementById('modal-tariff').classList.add('open');
+};
+
+window.saveTariff = async () => {
+  const code = document.getElementById('tar-code').value.trim();
+  const name = document.getElementById('tar-name').value.trim();
+  if (!code || !name) { toast('Заповніть код і назву', 'error'); return; }
+  const data = {
+    code, name,
+    price:      parseFloat(document.getElementById('tar-price').value) || 0,
+    period:     document.getElementById('tar-period').value.trim() || 'міс',
+    spec:       document.getElementById('tar-spec').value.trim(),
+    appIos:     document.getElementById('tar-app-ios').value.trim(),
+    appAndroid: document.getElementById('tar-app-android').value.trim(),
+    active:     document.getElementById('tar-active').checked,
+    updatedAt:  serverTimestamp(),
+  };
+  try {
+    if (_editingTariff) {
+      await updateDoc(doc(db, tenantRef('tariffs'), _editingTariff), data);
+      const idx = _tariffs.findIndex(t => t.id === _editingTariff);
+      if (idx >= 0) _tariffs[idx] = { id: _editingTariff, ...data };
+      toast('Тариф оновлено ✓');
+    } else {
+      data.createdAt = serverTimestamp();
+      const ref = await addDoc(collection(db, tenantRef('tariffs')), data);
+      _tariffs.push({ id: ref.id, ...data });
+      toast('Тариф додано ✓');
+    }
+    renderTariffs();
+    closeModal('modal-tariff');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.deleteTariff = async () => {
+  if (!_editingTariff || !confirm('Видалити тариф?')) return;
+  try {
+    await deleteDoc(doc(db, tenantRef('tariffs'), _editingTariff));
+    _tariffs = _tariffs.filter(t => t.id !== _editingTariff);
+    renderTariffs(); closeModal('modal-tariff'); toast('Тариф видалено');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+// ════════════════════════════════════════════════════
+// МОНТАЖ / СЕРВІС
+// ════════════════════════════════════════════════════
+let _install = [];
+let _editingInstall = null;
+
+async function loadInstall() {
+  try {
+    const snap = await getDocs(collection(db, tenantRef('install')));
+    _install = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderInstallAdmin();
+  } catch(e) { console.warn('loadInstall:', e); }
+}
+
+function renderInstallAdmin() {
+  const tbody = document.getElementById('install-tbody');
+  if (!tbody) return;
+  document.getElementById('nav-cnt-install').textContent = _install.length;
+  document.getElementById('st-install').textContent = _install.length;
+  if (!_install.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="padding:20px;text-align:center;color:var(--text-3)">Послуг ще немає.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = _install.map(s => `
+    <tr>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-2)">${s.code||'—'}</td>
+      <td style="font-weight:500">${s.name||'—'}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-weight:600">${s.price||0} ₴</td>
+      <td style="font-size:12px;color:var(--text-2);max-width:200px">${s.spec||'—'}</td>
+      <td><span class="badge ${s.active!==false?'badge-green':'badge-red'}">${s.active!==false?'Активна':'Неактивна'}</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="openInstallModal('${s.id}')">Редагувати</button></td>
+    </tr>`).join('');
+}
+
+window.openInstallModal = (id) => {
+  _editingInstall = id || null;
+  const isEdit = !!id;
+  document.getElementById('modal-install-title').textContent = isEdit ? 'Редагувати послугу' : 'Нова послуга';
+  document.getElementById('ins-delete-btn').style.display = isEdit ? 'inline-flex' : 'none';
+  if (isEdit) {
+    const s = _install.find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('ins-id').value    = s.id;
+    document.getElementById('ins-code').value  = s.code || '';
+    document.getElementById('ins-name').value  = s.name || '';
+    document.getElementById('ins-price').value = s.price || '';
+    document.getElementById('ins-spec').value  = s.spec || '';
+    document.getElementById('ins-active').checked = s.active !== false;
+  } else {
+    ['ins-id','ins-code','ins-name','ins-price','ins-spec'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('ins-active').checked = true;
+  }
+  document.getElementById('modal-install').classList.add('open');
+};
+
+window.saveInstall = async () => {
+  const code = document.getElementById('ins-code').value.trim();
+  const name = document.getElementById('ins-name').value.trim();
+  if (!code || !name) { toast('Заповніть код і назву', 'error'); return; }
+  const data = {
+    code, name,
+    price:    parseFloat(document.getElementById('ins-price').value) || 0,
+    spec:     document.getElementById('ins-spec').value.trim(),
+    active:   document.getElementById('ins-active').checked,
+    updatedAt: serverTimestamp(),
+  };
+  try {
+    if (_editingInstall) {
+      await updateDoc(doc(db, tenantRef('install'), _editingInstall), data);
+      const idx = _install.findIndex(s => s.id === _editingInstall);
+      if (idx >= 0) _install[idx] = { id: _editingInstall, ...data };
+      toast('Послугу оновлено ✓');
+    } else {
+      data.createdAt = serverTimestamp();
+      const ref = await addDoc(collection(db, tenantRef('install')), data);
+      _install.push({ id: ref.id, ...data });
+      toast('Послугу додано ✓');
+    }
+    renderInstallAdmin();
+    closeModal('modal-install');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.deleteInstall = async () => {
+  if (!_editingInstall || !confirm('Видалити послугу?')) return;
+  try {
+    await deleteDoc(doc(db, tenantRef('install'), _editingInstall));
+    _install = _install.filter(s => s.id !== _editingInstall);
+    renderInstallAdmin(); closeModal('modal-install'); toast('Послугу видалено');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+// ════════════════════════════════════════════════════
+// SIM-КАРТИ
+// ════════════════════════════════════════════════════
+let _simcards = [];
+let _editingSim = null;
+
+async function loadSimcards() {
+  try {
+    const snap = await getDocs(collection(db, tenantRef('simcards')));
+    _simcards = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderSimcards();
+  } catch(e) { console.warn('loadSimcards:', e); }
+}
+
+function renderSimcards() {
+  const tbody = document.getElementById('simcards-tbody');
+  if (!tbody) return;
+  document.getElementById('nav-cnt-simcards').textContent = _simcards.length;
+  document.getElementById('st-simcards').textContent = _simcards.length;
+  if (!_simcards.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="padding:20px;text-align:center;color:var(--text-3)">SIM-карт ще немає.</td></tr>';
+    return;
+  }
+  const brandLabels = { kyivstar:'Kyivstar', vodafone:'Vodafone', lifecell:'lifecell', other:'Інший' };
+  tbody.innerHTML = _simcards.map(s => `
+    <tr>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-2)">${s.code||'—'}</td>
+      <td style="font-weight:500">${s.name||'—'}</td>
+      <td><span class="badge badge-blue">${brandLabels[s.brand]||s.brand||'—'}</span></td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-weight:600">${s.price||0} ₴</td>
+      <td style="font-size:12px;color:var(--text-2);max-width:180px">${s.spec||'—'}</td>
+      <td><span class="badge ${s.active!==false?'badge-green':'badge-red'}">${s.active!==false?'Активна':'Неактивна'}</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="openSimModal('${s.id}')">Редагувати</button></td>
+    </tr>`).join('');
+}
+
+window.openSimModal = (id) => {
+  _editingSim = id || null;
+  const isEdit = !!id;
+  document.getElementById('modal-sim-title').textContent = isEdit ? 'Редагувати SIM' : 'Нова SIM';
+  document.getElementById('sim-delete-btn').style.display = isEdit ? 'inline-flex' : 'none';
+  if (isEdit) {
+    const s = _simcards.find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('sim-id').value    = s.id;
+    document.getElementById('sim-code').value  = s.code || '';
+    document.getElementById('sim-name').value  = s.name || '';
+    document.getElementById('sim-brand').value = s.brand || 'kyivstar';
+    document.getElementById('sim-price').value = s.price || '';
+    document.getElementById('sim-spec').value  = s.spec || '';
+    document.getElementById('sim-active').checked = s.active !== false;
+  } else {
+    ['sim-id','sim-code','sim-name','sim-price','sim-spec'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('sim-brand').value = 'kyivstar';
+    document.getElementById('sim-active').checked = true;
+  }
+  document.getElementById('modal-sim').classList.add('open');
+};
+
+window.saveSim = async () => {
+  const code = document.getElementById('sim-code').value.trim();
+  const name = document.getElementById('sim-name').value.trim();
+  if (!code || !name) { toast('Заповніть код і назву', 'error'); return; }
+  const data = {
+    code, name,
+    brand:    document.getElementById('sim-brand').value,
+    price:    parseFloat(document.getElementById('sim-price').value) || 0,
+    spec:     document.getElementById('sim-spec').value.trim(),
+    active:   document.getElementById('sim-active').checked,
+    updatedAt: serverTimestamp(),
+  };
+  try {
+    if (_editingSim) {
+      await updateDoc(doc(db, tenantRef('simcards'), _editingSim), data);
+      const idx = _simcards.findIndex(s => s.id === _editingSim);
+      if (idx >= 0) _simcards[idx] = { id: _editingSim, ...data };
+      toast('SIM оновлено ✓');
+    } else {
+      data.createdAt = serverTimestamp();
+      const ref = await addDoc(collection(db, tenantRef('simcards')), data);
+      _simcards.push({ id: ref.id, ...data });
+      toast('SIM додано ✓');
+    }
+    renderSimcards();
+    closeModal('modal-sim');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.deleteSim = async () => {
+  if (!_editingSim || !confirm('Видалити SIM?')) return;
+  try {
+    await deleteDoc(doc(db, tenantRef('simcards'), _editingSim));
+    _simcards = _simcards.filter(s => s.id !== _editingSim);
+    renderSimcards(); closeModal('modal-sim'); toast('SIM видалено');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
 
 window.changeUserRole = async (uid, role) => {
   if (!role) return;
