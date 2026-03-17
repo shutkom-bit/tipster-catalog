@@ -2144,10 +2144,11 @@ async function loadUsers() {
 }
 
 const ROLE_LABELS = {
-  admin:   { label: 'Адмін',    cls: 'badge-red'    },
-  partner: { label: 'Партнер',  cls: 'badge-blue'   },
-  client:  { label: 'Клієнт',   cls: 'badge-green'  },
+  admin:   { label: 'Адмін',       cls: 'badge-red'    },
+  partner: { label: 'Партнер',     cls: 'badge-blue'   },
+  client:  { label: 'Клієнт',      cls: 'badge-green'  },
   pending: { label: 'На розгляді', cls: 'badge-orange' },
+  blocked: { label: 'Заблокований', cls: 'badge-red'   },
 };
 
 function renderUsers() {
@@ -2174,6 +2175,7 @@ function renderUsers() {
           <option value="client">→ Клієнт</option>
           <option value="pending">→ На розгляді</option>
           <option value="admin">→ Адмін</option>
+          <option value="blocked" style="color:#dc2626">🚫 Заблокувати</option>
         </select>
       </td>
     </tr>`;
@@ -2484,7 +2486,10 @@ window.deleteSim = async () => {
 
 window.changeUserRole = async (uid, role) => {
   if (!role) return;
-  if (!confirm(`Змінити роль користувача на «${ROLE_LABELS[role]?.label || role}»?`)) {
+  const confirmMsg = role === 'blocked'
+    ? `⚠️ Заблокувати цього користувача? Він більше не матиме доступу до каталогу.`
+    : `Змінити роль користувача на «${ROLE_LABELS[role]?.label || role}»?`;
+  if (!confirm(confirmMsg)) {
     // Reset select
     loadUsers(); return;
   }
