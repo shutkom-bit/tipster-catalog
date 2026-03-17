@@ -536,6 +536,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="nav-item active" onclick="showPage('dashboard')">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
         Дашборд
+      <div class="nav-item" onclick="showPage('navixy')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1"/><line x1="4" y1="13" x2="4" y2="16"/><line x1="12" y1="13" x2="12" y2="16"/><line x1="2" y1="16" x2="14" y2="16"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/></svg>
+        Navixy Platform
+      </div>
       </div>
     </div>
 
@@ -570,10 +574,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="8,2 10,6 14,6.5 11,9.5 11.5,14 8,12 4.5,14 5,9.5 2,6.5 6,6"/></svg>
         Бренди
         <span class="nav-count" id="nav-cnt-brands">—</span>
-      </div>
-      <div class="nav-item" onclick="showPage('navixy')">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1"/><line x1="4" y1="13" x2="4" y2="16"/><line x1="12" y1="13" x2="12" y2="16"/><line x1="2" y1="16" x2="14" y2="16"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/></svg>
-        Navixy Platform
       </div>
     </div>
 
@@ -1004,90 +1004,31 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
     <div class="page-section" id="page-navixy">
       <div class="page-title">Navixy Platform</div>
       <div class="page-subtitle">Управління тарифами платформи GPS-моніторингу</div>
-
       <div style="display:inline-flex;background:var(--sidebar-bg);border:1px solid var(--border);border-radius:8px;padding:3px;gap:3px;margin-bottom:24px">
-        <button id="adm-tab-cloud" onclick="admNvxTab('cloud')"
-          style="padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;background:var(--accent);font-family:inherit;transition:all 0.18s;box-shadow:0 1px 4px rgba(37,113,208,0.18)">
-          Cloud / Хост
-        </button>
-        <button id="adm-tab-op" onclick="admNvxTab('op')"
-          style="padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);background:transparent;font-family:inherit;transition:all 0.18s">
-          On-Premise
-        </button>
+        <button id="adm-tab-cloud" onclick="admNvxTab('cloud')" style="padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;background:var(--accent);font-family:inherit">Cloud / Хост</button>
+        <button id="adm-tab-op" onclick="admNvxTab('op')" style="padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);background:transparent;font-family:inherit">On-Premise</button>
       </div>
-
       <div id="adm-panel-cloud">
-        <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:#f0f6ff;border:1px solid #c3d9f7;border-radius:6px;margin-bottom:20px;font-size:12.5px;color:var(--accent)">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v4M8 11v1"/></svg>
-          Хмарний тариф — лише перегляд. Для зміни зверніться до менеджера Navixy.
-        </div>
+        <div style="padding:8px 14px;background:#f0f6ff;border:1px solid #c3d9f7;border-radius:6px;margin-bottom:20px;font-size:12.5px;color:var(--accent);display:inline-block">Хмарний тариф — лише перегляд.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:820px;margin-bottom:24px">
-          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:6px">Активація</div>
-            <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace">$500</div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:2px">одноразово</div>
-          </div>
-          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:6px">Premium / Google Maps</div>
-            <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">$3.00</div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:2px">/юніт/міс</div>
-          </div>
-          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:6px">Basic / OpenStreetMap</div>
-            <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">$2.80</div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:2px">/юніт/міс</div>
-          </div>
-          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:6px">Мін. платіж/міс</div>
-            <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace">$199</div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:2px">при малій кількості юнітів</div>
-          </div>
+          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-3);margin-bottom:6px">Активація</div><div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace">$500</div><div style="font-size:11px;color:var(--text-3)">одноразово</div></div>
+          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-3);margin-bottom:6px">Premium / Google Maps</div><div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">$3.00</div><div style="font-size:11px;color:var(--text-3)">/юніт/міс</div></div>
+          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-3);margin-bottom:6px">Basic / OpenStreetMap</div><div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">$2.80</div><div style="font-size:11px;color:var(--text-3)">/юніт/міс</div></div>
+          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-3);margin-bottom:6px">Мін. платіж/міс</div><div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace">$199</div></div>
         </div>
-        <button class="btn btn-secondary" onclick="admNvxPDF()" style="display:inline-flex;align-items:center;gap:7px">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6z"/><polyline points="9,2 9,6 13,6"/><line x1="5" y1="9" x2="11" y2="9"/><line x1="5" y1="11" x2="9" y2="11"/></svg>
-          Завантажити PDF — Navixy Platform
-        </button>
+        <button class="btn btn-secondary" onclick="admNvxPDF()" style="display:inline-flex;align-items:center;gap:7px">Завантажити PDF — Navixy Platform</button>
       </div>
-
       <div id="adm-panel-op" style="display:none">
-        <div style="margin-bottom:16px">
-          <a href="https://www.navixy.com/docs/on-premise/on-premise/how-to-guide/requirements" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--accent);text-decoration:none;font-weight:500">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="10" height="12" rx="1"/><path d="M5 5h6M5 8h6M5 11h3"/></svg>
-            Вимоги до системи On-Premise
-          </a>
-        </div>
+        <div style="margin-bottom:16px"><a href="https://www.navixy.com/docs/on-premise/on-premise/how-to-guide/requirements" target="_blank" style="color:var(--accent);font-size:12.5px;font-weight:500">Вимоги до системи On-Premise</a></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:860px;margin-bottom:20px">
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:8px">Гарантійний платіж ($)</div>
-            <input type="number" id="nvx-op-guarantee" placeholder="1000" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--text)">
-            <div style="font-size:11px;color:var(--text-3);margin-top:6px">З них $500 зараховується на баланс рахунку</div>
-          </div>
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:8px">Premium GIS ($/юніт/міс)</div>
-            <input type="number" id="nvx-op-refprice" placeholder="2.99" step="0.01" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">
-            <div style="font-size:11px;color:var(--text-3);margin-top:6px">On-Premise Premium</div>
-          </div>
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:8px">Basic GIS ($/юніт/міс)</div>
-            <input type="number" id="nvx-op-basicprice" placeholder="2.67" step="0.01" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--text)">
-            <div style="font-size:11px;color:var(--text-3);margin-top:6px">On-Premise Basic</div>
-          </div>
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:8px">Мін. рахунок/міс ($)</div>
-            <input type="number" id="nvx-op-minbill" placeholder="500" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--text)">
-          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-3);margin-bottom:8px">Гарантійний платіж ($)</div><input type="number" id="nvx-op-guarantee" placeholder="1000" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;color:var(--text)"><div style="font-size:11px;color:var(--text-3);margin-top:6px">З них $500 зараховується на баланс</div></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-3);margin-bottom:8px">Premium GIS ($/юніт/міс)</div><input type="number" id="nvx-op-refprice" placeholder="2.99" step="0.01" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;color:var(--accent)"></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-3);margin-bottom:8px">Basic GIS ($/юніт/міс)</div><input type="number" id="nvx-op-basicprice" placeholder="2.67" step="0.01" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;color:var(--text)"></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text-3);margin-bottom:8px">Мін. рахунок/міс ($)</div><input type="number" id="nvx-op-minbill" placeholder="500" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;color:var(--text)"></div>
         </div>
         <div style="margin-bottom:20px;max-width:560px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-            <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);font-family:'IBM Plex Mono',monospace">Таблиця знижок за обсягом</span>
-            <button class="btn btn-secondary btn-sm" onclick="admNvxAddRow()">+ Рядок</button>
-          </div>
-          <div class="table-wrap" style="max-width:560px">
-            <table class="data-table" id="nvx-volume-table">
-              <thead><tr><th>Юніти</th><th>$/юніт/міс</th><th>Рахунок ($)</th><th style="width:40px"></th></tr></thead>
-              <tbody id="nvx-volume-tbody"></tbody>
-            </table>
-          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-3)">Таблиця знижок за обсягом</span><button class="btn btn-secondary btn-sm" onclick="admNvxAddRow()">+ Рядок</button></div>
+          <div class="table-wrap"><table class="data-table" id="nvx-volume-table"><thead><tr><th>Юніти</th><th>$/юніт/міс</th><th>Рахунок ($)</th><th style="width:40px"></th></tr></thead><tbody id="nvx-volume-tbody"></tbody></table></div>
         </div>
         <div style="display:flex;gap:10px;align-items:center">
           <button class="btn btn-primary" onclick="admNvxSave()">Зберегти</button>
@@ -2557,20 +2498,18 @@ window.changeUserRole = async (uid, role) => {
 };
 
 
-// ════════════ NAVIXY ADMIN ════════════
+// NAVIXY ADMIN
 window.admNvxTab = function(tab) {
   var isCloud = tab === 'cloud';
   document.getElementById('adm-panel-cloud').style.display = isCloud ? 'block' : 'none';
   document.getElementById('adm-panel-op').style.display    = isCloud ? 'none'  : 'block';
-  var on  = 'padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;background:var(--accent);font-family:inherit;transition:all 0.18s;box-shadow:0 1px 4px rgba(37,113,208,0.18)';
-  var off = 'padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);background:transparent;font-family:inherit;transition:all 0.18s';
+  var on  = 'padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;background:var(--accent);font-family:inherit';
+  var off = 'padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);background:transparent;font-family:inherit';
   document.getElementById('adm-tab-cloud').style.cssText = isCloud  ? on : off;
   document.getElementById('adm-tab-op').style.cssText    = !isCloud ? on : off;
   if (!isCloud) admNvxLoad();
 };
-
 var _admNvxLoaded = false;
-
 function admNvxLoad() {
   if (_admNvxLoaded) return;
   getDoc(doc(db, tenantRef('settings/navixy_onpremise'))).then(function(snap) {
@@ -2580,128 +2519,83 @@ function admNvxLoad() {
     document.getElementById('nvx-op-refprice').value   = d.refPrice   || 2.99;
     document.getElementById('nvx-op-basicprice').value = d.basicPrice || 2.67;
     document.getElementById('nvx-op-minbill').value    = d.minBill    || 500;
-    var rows = d.volumeRows || [
-      {units:50,price:2.99,monthly:500},{units:150,price:2.97,monthly:500},
-      {units:250,price:2.92,monthly:730},{units:350,price:2.90,monthly:1015},
-      {units:450,price:2.88,monthly:1296},{units:550,price:2.86,monthly:1573},
-      {units:650,price:2.83,monthly:1840},{units:750,price:2.83,monthly:2122},
-      {units:850,price:2.81,monthly:2388},{units:950,price:2.79,monthly:2650}
-    ];
+    var rows = d.volumeRows || [{units:50,price:2.99,monthly:500},{units:150,price:2.97,monthly:500},{units:250,price:2.92,monthly:730},{units:350,price:2.90,monthly:1015},{units:450,price:2.88,monthly:1296},{units:550,price:2.86,monthly:1573},{units:650,price:2.83,monthly:1840},{units:750,price:2.83,monthly:2122},{units:850,price:2.81,monthly:2388},{units:950,price:2.79,monthly:2650}];
     admNvxRenderRows(rows);
-  }).catch(function(e) { console.warn('admNvxLoad:', e); });
+  }).catch(function(e) { console.warn(e); });
 }
-
 function admNvxRenderRows(rows) {
   var tbody = document.getElementById('nvx-volume-tbody');
   if (!tbody) return;
   tbody.innerHTML = rows.map(function(r) {
-    return '<tr>' +
-      '<td><input type="number" value="' + r.units + '" style="width:80px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:monospace;font-size:12px"></td>' +
-      '<td><input type="number" value="' + r.price + '" step="0.01" style="width:80px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:monospace;font-size:12px"></td>' +
-      '<td><input type="number" value="' + r.monthly + '" style="width:90px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:monospace;font-size:12px"></td>' +
-      '<td><button onclick="this.closest('tr').remove()" style="padding:3px 8px;border:1px solid var(--border);background:var(--bg);border-radius:4px;cursor:pointer;font-size:11px">x</button></td>' +
-      '</tr>';
+    return '<tr><td><input type="number" value="'+r.units+'" style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td><td><input type="number" value="'+r.price+'" step="0.01" style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td><td><input type="number" value="'+r.monthly+'" style="width:90px;padding:4px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td><td><button onclick="this.closest('tr').remove()" style="padding:2px 6px;border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:11px">x</button></td></tr>';
   }).join('');
 }
-
 window.admNvxAddRow = function() {
   var tbody = document.getElementById('nvx-volume-tbody');
   var tr = document.createElement('tr');
-  tr.innerHTML = '<td><input type="number" value="0" style="width:80px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:monospace;font-size:12px"></td>' +
-    '<td><input type="number" value="0" step="0.01" style="width:80px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:monospace;font-size:12px"></td>' +
-    '<td><input type="number" value="0" style="width:90px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:monospace;font-size:12px"></td>' +
-    '<td><button onclick="this.closest('tr').remove()" style="padding:3px 8px;border:1px solid var(--border);background:var(--bg);border-radius:4px;cursor:pointer;font-size:11px">x</button></td>';
+  tr.innerHTML = '<td><input type="number" value="0" style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td><td><input type="number" value="0" step="0.01" style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td><td><input type="number" value="0" style="width:90px;padding:4px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td><td><button onclick="this.closest('tr').remove()" style="padding:2px 6px;border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:11px">x</button></td>';
   tbody.appendChild(tr);
 };
-
 window.admNvxSave = async function() {
-  var status = document.getElementById('nvx-save-status');
-  status.textContent = 'Збереження...';
+  var st = document.getElementById('nvx-save-status');
+  st.textContent = 'Збереження...';
   var rows = Array.from(document.querySelectorAll('#nvx-volume-tbody tr')).map(function(tr) {
-    var inp = tr.querySelectorAll('input');
-    return { units: +inp[0].value, price: +inp[1].value, monthly: +inp[2].value };
+    var i = tr.querySelectorAll('input');
+    return {units:+i[0].value, price:+i[1].value, monthly:+i[2].value};
   });
   try {
-    var data = {
-      guarantee:  +document.getElementById('nvx-op-guarantee').value  || 1000,
-      refPrice:   +document.getElementById('nvx-op-refprice').value   || 2.99,
-      basicPrice: +document.getElementById('nvx-op-basicprice').value || 2.67,
-      minBill:    +document.getElementById('nvx-op-minbill').value    || 500,
-      volumeRows: rows,
-      updatedAt:  serverTimestamp()
-    };
-    await setDoc(doc(db, tenantRef('settings/navixy_onpremise')), data);
-    status.textContent = 'Збережено';
+    await setDoc(doc(db, tenantRef('settings/navixy_onpremise')), {
+      guarantee:  +(document.getElementById('nvx-op-guarantee').value)  || 1000,
+      refPrice:   +(document.getElementById('nvx-op-refprice').value)   || 2.99,
+      basicPrice: +(document.getElementById('nvx-op-basicprice').value) || 2.67,
+      minBill:    +(document.getElementById('nvx-op-minbill').value)    || 500,
+      volumeRows: rows, updatedAt: serverTimestamp()
+    });
+    st.textContent = 'Збережено';
     toast('Navixy On-Premise збережено');
-    setTimeout(function() { status.textContent = ''; }, 3000);
-  } catch(e) {
-    status.textContent = 'Помилка: ' + e.message;
-    toast('Помилка: ' + e.message, 'error');
-  }
+    setTimeout(function() { st.textContent = ''; }, 3000);
+  } catch(e) { st.textContent = 'Помилка'; toast('Помилка: '+e.message, 'error'); }
 };
-
 window.admNvxPDF = function() {
   var s = document.createElement('script');
   s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
   s.onload = function() {
     var jsPDF = window.jspdf.jsPDF;
-    var pdoc = new jsPDF({ unit: 'mm', format: 'a4' });
-    var W=210, M=18;
-    pdoc.setFillColor(37,113,208); pdoc.rect(0,0,W,28,'F');
-    pdoc.setTextColor(255,255,255); pdoc.setFontSize(18); pdoc.setFont('helvetica','bold');
-    pdoc.text('Navixy Platform', M, 12);
-    pdoc.setFontSize(9); pdoc.setFont('helvetica','normal');
-    pdoc.text('GPS-monitoring & Telematics — Partner Pricing', M, 19);
-    pdoc.text('TIPSTER  |  tipster.ua  |  +38(095)654-66-44', M, 24);
-    var y = 36;
-    function sec(t) {
-      pdoc.setFillColor(240,242,247); pdoc.rect(M,y-4,W-M*2,8,'F');
-      pdoc.setTextColor(37,113,208); pdoc.setFontSize(9); pdoc.setFont('helvetica','bold');
-      pdoc.text(t.toUpperCase(), M+2, y+1); y+=10;
-    }
-    function row(l,v) {
-      pdoc.setTextColor(94,102,115); pdoc.setFontSize(8.5); pdoc.setFont('helvetica','normal');
-      pdoc.text(l, M+2, y);
-      pdoc.setTextColor(26,28,33); pdoc.setFont('helvetica','bold');
-      pdoc.text(String(v), 120, y);
-      pdoc.setDrawColor(225,229,240); pdoc.line(M,y+2,W-M,y+2); y+=7;
-    }
+    var pd = new jsPDF({unit:'mm',format:'a4'});
+    var W=210, M=18, y=36;
+    pd.setFillColor(37,113,208); pd.rect(0,0,W,28,'F');
+    pd.setTextColor(255,255,255); pd.setFontSize(18); pd.setFont('helvetica','bold');
+    pd.text('Navixy Platform', M, 12);
+    pd.setFontSize(9); pd.setFont('helvetica','normal');
+    pd.text('GPS-monitoring — Partner Pricing', M, 19);
+    pd.text('TIPSTER  |  tipster.ua  |  +38(095)654-66-44', M, 24);
+    function sec(t){pd.setFillColor(240,242,247);pd.rect(M,y-4,W-M*2,8,'F');pd.setTextColor(37,113,208);pd.setFontSize(9);pd.setFont('helvetica','bold');pd.text(t.toUpperCase(),M+2,y+1);y+=10;}
+    function row(l,v){pd.setTextColor(94,102,115);pd.setFontSize(8.5);pd.setFont('helvetica','normal');pd.text(l,M+2,y);pd.setTextColor(26,28,33);pd.setFont('helvetica','bold');pd.text(String(v),120,y);pd.setDrawColor(225,229,240);pd.line(M,y+2,W-M,y+2);y+=7;}
     sec('Cloud / Хост тариф');
-    row('Активацiя (одноразово)', '$500');
-    row('Premium / Google Maps', '$3.00 / юніт / міс');
-    row('Basic / OpenStreetMap', '$2.80 / юніт / міс');
-    row('Мінімальний платіж/міс', '$199 / міс');
+    row('Активація (одноразово)','$500');
+    row('Premium / Google Maps','$3.00 / юніт / міс');
+    row('Basic / OpenStreetMap','$2.80 / юніт / міс');
+    row('Мінімальний платіж/міс','$199 / міс');
     y+=4;
-    var g  = +(document.getElementById('nvx-op-guarantee') && document.getElementById('nvx-op-guarantee').value)  || 1000;
-    var rp = +(document.getElementById('nvx-op-refprice')  && document.getElementById('nvx-op-refprice').value)   || 2.99;
-    var bp = +(document.getElementById('nvx-op-basicprice')&& document.getElementById('nvx-op-basicprice').value) || 2.67;
-    var mb = +(document.getElementById('nvx-op-minbill')   && document.getElementById('nvx-op-minbill').value)    || 500;
-    sec('On-Premise / Standalone тариф');
-    row('Гарантійний платіж (одноразово)', '$'+g+' ($500 на баланс рахунку)');
-    row('On-Premise Premium / Google Maps', '$'+rp.toFixed(2)+' / юніт / міс');
-    row('On-Premise Basic / OpenStreetMap', '$'+bp.toFixed(2)+' / юніт / міс');
-    row('Мінімальний рахунок/міс', '$'+mb+' / міс');
+    var g  = +(document.getElementById('nvx-op-guarantee')  ? document.getElementById('nvx-op-guarantee').value  : 0) || 1000;
+    var rp = +(document.getElementById('nvx-op-refprice')   ? document.getElementById('nvx-op-refprice').value   : 0) || 2.99;
+    var bp = +(document.getElementById('nvx-op-basicprice') ? document.getElementById('nvx-op-basicprice').value : 0) || 2.67;
+    var mb = +(document.getElementById('nvx-op-minbill')    ? document.getElementById('nvx-op-minbill').value    : 0) || 500;
+    sec('On-Premise тариф');
+    row('Гарантійний платіж (одноразово)','$'+g+' ($500 на баланс рахунку)');
+    row('On-Premise Premium / Google Maps','$'+rp.toFixed(2)+' / юніт / міс');
+    row('On-Premise Basic / OpenStreetMap','$'+bp.toFixed(2)+' / юніт / міс');
+    row('Мінімальний рахунок/міс','$'+mb+' / міс');
     y+=4;
     sec('Регламент оплат');
-    var schedule = [
-      '1-го — формування рахунку за попередній місяць',
-      '9-го — термін оплати',
-      '10-го — блокування Admin Panel при несплаті',
-      '15-го — повне відключення, дані не зберігаються'
-    ];
-    schedule.forEach(function(line) {
-      pdoc.setTextColor(94,102,115); pdoc.setFontSize(8.5); pdoc.setFont('helvetica','normal');
-      pdoc.text('- ' + line, M+2, y); y+=6;
-    });
-    pdoc.setFillColor(240,242,247); pdoc.rect(0,285,W,12,'F');
-    pdoc.setTextColor(94,102,115); pdoc.setFontSize(7.5); pdoc.setFont('helvetica','normal');
-    pdoc.text('Сформовано: '+new Date().toLocaleDateString('uk-UA')+'  |  TIPSTER  |  office@trackauto.com.ua', M, 292);
-    pdoc.save('Navixy_Platform_Pricing_TIPSTER.pdf');
+    ['1-го - формування рахунку','9-го - термін оплати','10-го - блокування Admin Panel','15-го - повне відключення'].forEach(function(l){pd.setTextColor(94,102,115);pd.setFontSize(8.5);pd.setFont('helvetica','normal');pd.text('- '+l,M+2,y);y+=6;});
+    pd.setFillColor(240,242,247);pd.rect(0,285,W,12,'F');pd.setTextColor(94,102,115);pd.setFontSize(7.5);pd.setFont('helvetica','normal');
+    pd.text('TIPSTER  |  office@trackauto.com.ua  |  '+new Date().toLocaleDateString('uk-UA'),M,292);
+    pd.save('Navixy_Platform_Pricing_TIPSTER.pdf');
     toast('PDF завантажено');
   };
   document.head.appendChild(s);
 };
-
 </script>
 </body>
 </html>
