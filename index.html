@@ -2519,6 +2519,10 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         Bitrek
         <span class="count" id="cnt-bitrek">0</span>
       </div>
+      <div class="nav-item" id="nav-cargo" onclick="showSection('cargo')" style="display:none">
+        Cargo
+        <span class="count" id="cnt-cargo">0</span>
+      </div>
       <div class="nav-item" id="nav-other-brands" onclick="showSection('other-brands')" style="display:none">
         Інші бренди
         <span class="count" id="cnt-other-brands">0</span>
@@ -2771,6 +2775,24 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
       </div>
 
       <!-- ══════════ ACCESSORIES + EXTRA ══════════ -->
+      <div class="page-section" id="sec-cargo">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)">Cargo</span>
+          </div>
+          <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
+            Обладнання бренду Cargo.
+          </div>
+        </div>
+        <div class="filters-row" style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <div class="search-box">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-3)"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+            <input type="text" id="cargo-search" placeholder="Пошук…" oninput="renderCargo()">
+          </div>
+        </div>
+        <div id="cargo-table-wrap"></div>
+      </div>
+
       <div class="page-section" id="sec-other-brands">
         <div class="page-header">
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
@@ -4770,6 +4792,7 @@ function showSection(id) {
   // Render on demand
   if (id === 'teltonika')    renderTeltonika();
   if (id === 'bitrek')       renderBitrek();
+  if (id === 'cargo')        renderCargo();
   if (id === 'other-brands') renderOtherBrands();
   if (id === 'accessories')  { renderAccessories(); renderExtra(); }
   if (id === 'extra')        { showSection('accessories'); return; }
@@ -4926,12 +4949,23 @@ function renderBitrek() {
 // ════════════════════════════════════════════════════════
 //  RENDER ACCESSORIES
 // ════════════════════════════════════════════════════════
+function renderCargo() {
+  const q = (document.getElementById('cargo-search')?.value || '').trim().toLowerCase();
+  const items = products
+    .filter(p => p.brand === 'Cargo')
+    .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
+                       (p.code||'').toLowerCase().includes(q) ||
+                       (p.article||'').toLowerCase().includes(q));
+  const wrap = document.getElementById('cargo-table-wrap');
+  if (wrap) wrap.innerHTML = buildTable(items, {}, true);
+}
+
 function renderOtherBrands() {
   const q      = (document.getElementById('other-search')?.value || '').trim().toLowerCase();
   const brand  = document.getElementById('other-brand-filter')?.value || '';
 
   // Всі товари НЕ Teltonika і НЕ Bitrek
-  const knownBrands = new Set(['Teltonika', 'Bitrek']);
+  const knownBrands = new Set(['Teltonika', 'Bitrek', 'Cargo']);
   const items = products
     .filter(p => !knownBrands.has(p.brand))
     .filter(p => !brand || p.brand === brand)
@@ -6384,10 +6418,18 @@ async function loadFirestoreProducts() {
       console.log(`Firestore: додано ${added} товарів`);
 
       // Показати пункт "Інші бренди" в sidebar і оновити лічильник
-      const knownBrands = new Set(['Teltonika', 'Bitrek']);
+      const knownBrands = new Set(['Teltonika', 'Bitrek', 'Cargo']);
       const otherCount = products.filter(p => !knownBrands.has(p.brand)).length;
       if (otherCount > 0) {
-        const navOther = document.getElementById('nav-other-brands');
+        // Показати Cargo
+      const cargoCount = products.filter(p => p.brand === 'Cargo').length;
+      if (cargoCount > 0) {
+        const navCargo = document.getElementById('nav-cargo');
+        if (navCargo) navCargo.style.display = '';
+        const cntCargo = document.getElementById('cnt-cargo');
+        if (cntCargo) cntCargo.textContent = cargoCount;
+      }
+      const navOther = document.getElementById('nav-other-brands');
         if (navOther) navOther.style.display = '';
         const cntOther = document.getElementById('cnt-other-brands');
         if (cntOther) cntOther.textContent = otherCount;
