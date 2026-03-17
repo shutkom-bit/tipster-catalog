@@ -6990,11 +6990,16 @@ ${roleLabel}
 🕐 ${new Date().toLocaleString('uk-UA')}
 
 ✅ Підтвердіть: Firebase → Firestore → users`;
-    fetch((window._tgToken ? `https://api.telegram.org/bot${window._tgToken}/sendMessage` : 'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage'), {
+    // Надсилаємо Telegram — з логуванням помилок
+    const tgToken  = window._tgToken  || '8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4';
+    const tgChatId = window._tgChatId || '69110103';
+    fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ chat_id: window._tgChatId || '69110103', text: tgMsg, parse_mode: 'Markdown' })
-    }).catch(()=>{});
+      body: JSON.stringify({ chat_id: tgChatId, text: tgMsg, parse_mode: 'Markdown' })
+    }).then(r => r.json()).then(d => {
+      if (!d.ok) console.warn('TG registration error:', d.description);
+    }).catch(e => console.warn('TG registration fetch error:', e.message));
     // Показати pending overlay
     showOverlay('pending-overlay');
   } catch(e) {
