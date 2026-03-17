@@ -571,6 +571,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         Бренди
         <span class="nav-count" id="nav-cnt-brands">—</span>
       </div>
+      <div class="nav-item" onclick="showPage('navixy')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1"/><line x1="4" y1="13" x2="4" y2="16"/><line x1="12" y1="13" x2="12" y2="16"/><line x1="2" y1="16" x2="14" y2="16"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/></svg>
+        Navixy Platform
+      </div>
     </div>
 
     <div class="nav-section">
@@ -992,6 +996,100 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
             <tr><td colspan="7" class="loading"><div class="spinner"></div> Завантаження...</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+
+    <!-- ══ NAVIXY PLATFORM ══════════════════════════════ -->
+    <div class="page-section" id="page-navixy">
+      <div class="page-title">Navixy Platform</div>
+      <div class="page-subtitle">Управління тарифами платформи GPS-моніторингу</div>
+
+      <!-- Вкладки -->
+      <div style="display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:0">
+        <button class="nvx-tab active" id="tab-cloud" onclick="nvxSwitchTab('cloud')" style="padding:8px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);font-family:inherit;margin-bottom:-1px">☁️ Cloud / Хост</button>
+        <button class="nvx-tab" id="tab-onpremise" onclick="nvxSwitchTab('onpremise')" style="padding:8px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);border-bottom:2px solid transparent;font-family:inherit;margin-bottom:-1px">🖥 On-Premise</button>
+      </div>
+
+      <!-- ── CLOUD вкладка ── -->
+      <div id="nvx-panel-cloud">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:#f0f6ff;border:1px solid #c3d9f7;border-radius:6px;margin-bottom:20px;font-size:12.5px;color:var(--accent)">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v4M8 11v1"/></svg>
+          Хмарний тариф — лише перегляд. Для зміни зверніться до менеджера Navixy.
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;max-width:700px;margin-bottom:20px">
+          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:6px">Активація</div>
+            <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace">$500</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px">одноразово</div>
+          </div>
+          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:6px">Premium (Google Maps)</div>
+            <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">$3.00</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px">/юніт/міс</div>
+          </div>
+          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:6px">Basic (OpenStreetMap)</div>
+            <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">$2.80</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px">/юніт/міс</div>
+          </div>
+          <div style="padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:6px">Мін. платіж/міс</div>
+            <div style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace">$199</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px">при малій кількості юнітів</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ON-PREMISE вкладка ── -->
+      <div id="nvx-panel-onpremise" style="display:none">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <span style="font-size:13px;color:var(--text-2)">Квотація:</span>
+          <input type="text" id="nvx-op-quotation" placeholder="BADM, 13.03.2026" style="width:180px;padding:5px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:inherit;color:var(--text)">
+          <span style="font-size:13px;color:var(--text-2)">Дійсна до:</span>
+          <input type="date" id="nvx-op-valid" style="padding:5px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:inherit;color:var(--text)">
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;max-width:740px;margin-bottom:24px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:8px">Гарантійний платіж ($)</div>
+            <input type="number" id="nvx-op-guarantee" placeholder="1000" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--text)">
+            <div style="font-size:11px;color:var(--text-3);margin-top:6px">З них $500 зараховується на баланс рахунку</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:8px">Reference price ($/юніт/міс)</div>
+            <input type="number" id="nvx-op-refprice" placeholder="2.99" step="0.01" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)">
+            <div style="font-size:11px;color:var(--text-3);margin-top:6px">Максимальна ціна за юніт (без знижки)</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:8px">Мін. місячний рахунок ($)</div>
+            <input type="number" id="nvx-op-minbill" placeholder="500" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--text)">
+          </div>
+        </div>
+
+        <!-- Таблиця знижок -->
+        <div style="margin-bottom:20px;max-width:560px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);font-family:'IBM Plex Mono',monospace">Таблиця знижок за об'ємом</div>
+            <button class="btn btn-secondary btn-sm" onclick="nvxAddVolumeRow()">+ Рядок</button>
+          </div>
+          <div class="table-wrap" style="max-width:560px">
+            <table class="data-table" id="nvx-volume-table">
+              <thead><tr><th>Юніти (≤)</th><th>$/юніт/міс</th><th>Рахунок/міс ($)</th><th style="width:50px"></th></tr></thead>
+              <tbody id="nvx-volume-tbody"></tbody>
+            </table>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="nvxAddVolumeRow()" style="margin-top:8px">+ Додати рядок</button>
+        </div>
+
+        <!-- Кнопки -->
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn btn-primary" onclick="nvxSaveOnPremise()">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M13 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V5l-2-3z"/><polyline points="9,2 9,6 13,6"/><path d="M7 13v-4H5v4"/></svg>
+            Зберегти
+          </button>
+          <span id="nvx-save-status" style="font-size:12px;color:var(--text-3)"></span>
+        </div>
       </div>
     </div>
 
@@ -2453,6 +2551,118 @@ window.changeUserRole = async (uid, role) => {
     renderUsers();
     toast(`Роль змінено на «${ROLE_LABELS[role]?.label}» ✓`);
   } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+
+// ════════════════════════════════════════════════════
+// NAVIXY PLATFORM
+// ════════════════════════════════════════════════════
+
+window.nvxSwitchTab = function(tab) {
+  document.getElementById('nvx-panel-cloud').style.display     = tab === 'cloud'     ? 'block' : 'none';
+  document.getElementById('nvx-panel-onpremise').style.display = tab === 'onpremise' ? 'block' : 'none';
+  document.getElementById('tab-cloud').style.cssText     = tab === 'cloud'
+    ? 'padding:8px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);font-family:inherit;margin-bottom:-1px'
+    : 'padding:8px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);border-bottom:2px solid transparent;font-family:inherit;margin-bottom:-1px';
+  document.getElementById('tab-onpremise').style.cssText = tab === 'onpremise'
+    ? 'padding:8px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);font-family:inherit;margin-bottom:-1px'
+    : 'padding:8px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);border-bottom:2px solid transparent;font-family:inherit;margin-bottom:-1px';
+  if (tab === 'onpremise') nvxLoadOnPremise();
+};
+
+let _nvxOpData = null;
+
+async function nvxLoadOnPremise() {
+  if (_nvxOpData) return; // вже завантажено
+  try {
+    const snap = await getDoc(doc(db, tenantRef('settings/navixy_onpremise')));
+    const d = snap.exists() ? snap.data() : {};
+    _nvxOpData = d;
+    document.getElementById('nvx-op-quotation').value = d.quotation || 'BADM, 13.03.2026';
+    document.getElementById('nvx-op-valid').value     = d.validTill  || '2026-04-13';
+    document.getElementById('nvx-op-guarantee').value = d.guarantee  || 1000;
+    document.getElementById('nvx-op-refprice').value  = d.refPrice   || 2.99;
+    document.getElementById('nvx-op-minbill').value   = d.minBill    || 500;
+    // Таблиця знижок
+    const rows = d.volumeRows || [
+      {units:50,  price:2.99, monthly:500},
+      {units:150, price:2.97, monthly:500},
+      {units:250, price:2.92, monthly:730},
+      {units:350, price:2.90, monthly:1015},
+      {units:450, price:2.88, monthly:1296},
+      {units:550, price:2.86, monthly:1573},
+      {units:650, price:2.83, monthly:1840},
+      {units:750, price:2.83, monthly:2122},
+      {units:850, price:2.81, monthly:2388},
+      {units:950, price:2.79, monthly:2650},
+    ];
+    nvxRenderVolumeTable(rows);
+  } catch(e) { console.warn('nvxLoadOnPremise:', e); }
+}
+
+function nvxRenderVolumeTable(rows) {
+  const tbody = document.getElementById('nvx-volume-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = rows.map((r, i) => `
+    <tr>
+      <td><input type="number" value="${r.units}"   onchange="nvxUpdateRow(${i},'units',this.value)"   style="width:80px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:12px"></td>
+      <td><input type="number" value="${r.price}"   onchange="nvxUpdateRow(${i},'price',this.value)"   step="0.01" style="width:80px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:12px"></td>
+      <td><input type="number" value="${r.monthly}" onchange="nvxUpdateRow(${i},'monthly',this.value)" style="width:90px;padding:4px 7px;border:1px solid var(--border);border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:12px"></td>
+      <td><button onclick="nvxRemoveRow(${i})" style="padding:3px 8px;border:1px solid var(--border);background:var(--bg);border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-3)">✕</button></td>
+    </tr>`).join('');
+}
+
+let _nvxRows = [];
+
+function nvxGetRows() {
+  const tbody = document.getElementById('nvx-volume-tbody');
+  if (!tbody) return [];
+  return Array.from(tbody.querySelectorAll('tr')).map(tr => {
+    const inputs = tr.querySelectorAll('input');
+    return {
+      units:   parseFloat(inputs[0].value) || 0,
+      price:   parseFloat(inputs[1].value) || 0,
+      monthly: parseFloat(inputs[2].value) || 0,
+    };
+  });
+}
+
+window.nvxUpdateRow = function(i, field, val) { /* зміни зчитуються при збереженні */ };
+
+window.nvxRemoveRow = function(i) {
+  const rows = nvxGetRows();
+  rows.splice(i, 1);
+  nvxRenderVolumeTable(rows);
+};
+
+window.nvxAddVolumeRow = function() {
+  const rows = nvxGetRows();
+  rows.push({ units: 0, price: 0, monthly: 0 });
+  nvxRenderVolumeTable(rows);
+};
+
+window.nvxSaveOnPremise = async function() {
+  const statusEl = document.getElementById('nvx-save-status');
+  statusEl.textContent = 'Збереження…';
+  try {
+    const data = {
+      quotation:  document.getElementById('nvx-op-quotation').value.trim(),
+      validTill:  document.getElementById('nvx-op-valid').value,
+      guarantee:  parseFloat(document.getElementById('nvx-op-guarantee').value) || 1000,
+      refPrice:   parseFloat(document.getElementById('nvx-op-refprice').value)  || 2.99,
+      minBill:    parseFloat(document.getElementById('nvx-op-minbill').value)   || 500,
+      volumeRows: nvxGetRows(),
+      updatedAt:  serverTimestamp(),
+    };
+    await setDoc(doc(db, tenantRef('settings/navixy_onpremise')), data);
+    _nvxOpData = data;
+    statusEl.textContent = '✓ Збережено';
+    toast('Navixy On-Premise оновлено ✓');
+    setTimeout(() => statusEl.textContent = '', 3000);
+  } catch(e) {
+    statusEl.textContent = 'Помилка: ' + e.message;
+    toast('Помилка збереження: ' + e.message, 'error');
+  }
 };
 
 </script>
