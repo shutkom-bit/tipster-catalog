@@ -3166,19 +3166,6 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
               <span style="font-size:12.5px;color:var(--accent);font-weight:600">B2B · Partner — комерційні умови</span>
             </div>
 
-          <!-- Активація -->
-          <div class="section">
-            <div class="section-title"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0"><circle cx="6" cy="8" r="3"/><line x1="8.5" y1="8" x2="14" y2="8"/><line x1="12" y1="8" x2="12" y2="10"/></svg> Одноразова активація</div>
-            <div style="display:flex;align-items:center;gap:20px;padding:16px;background:var(--bg);border:1px solid var(--border);border-radius:6px;max-width:560px">
-              <div style="flex:1">
-                <div style="font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px">Активація платформи</div>
-                <div style="font-size:11.5px;color:var(--text-3)">Одноразова передоплата для підключення партнерського облікового запису</div>
-              </div>
-              <div style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:var(--text);white-space:nowrap">$500</div>
-              <button class="tb-btn" style="border:1px solid var(--border);white-space:nowrap" onclick="nvxAddActivation()">+ Кошик</button>
-            </div>
-          </div>
-
           <!-- Плани — вкладки Cloud / On-Premise -->
           <div class="section" id="nvx-plans-tabs-section">
             <div class="section-title">
@@ -3186,20 +3173,29 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
               Щомісячні плани — ціна за юніт
             </div>
 
-            <!-- Tab switcher -->
-            <div style="display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid var(--border);width:fit-content">
+            <!-- Toggle switcher — кнопки-перемикач -->
+            <div style="display:inline-flex;background:var(--sidebar-bg);border:1px solid var(--border);border-radius:8px;padding:3px;gap:3px;margin-bottom:24px">
               <button id="nvx-tab-cloud" onclick="nvxSwitchPlansTab('cloud')"
-                style="padding:8px 20px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-2px;font-family:inherit;transition:all 0.15s">
-                ☁️ Cloud / Хост
+                style="padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;background:var(--accent);font-family:inherit;transition:all 0.18s;box-shadow:0 1px 4px rgba(37,113,208,0.18)">
+                Cloud / Хост
               </button>
               <button id="nvx-tab-onpremise" onclick="nvxSwitchPlansTab('onpremise')"
-                style="padding:8px 20px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);border-bottom:2px solid transparent;margin-bottom:-2px;font-family:inherit;transition:all 0.15s">
-                🖥 On-Premise
+                style="padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);background:transparent;font-family:inherit;transition:all 0.18s">
+                On-Premise
               </button>
             </div>
 
             <!-- ══ CLOUD панель ══ -->
             <div id="nvx-panel-cloud">
+              <!-- Активація Cloud -->
+              <div style="display:flex;align-items:center;gap:20px;padding:16px;background:var(--bg);border:1px solid var(--border);border-radius:6px;max-width:560px;margin-bottom:20px">
+                <div style="flex:1">
+                  <div style="font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px">Активація платформи</div>
+                  <div style="font-size:11.5px;color:var(--text-3)">Одноразова передоплата для підключення партнерського облікового запису</div>
+                </div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:var(--text);white-space:nowrap">$500</div>
+                <button class="tb-btn" style="border:1px solid var(--border);white-space:nowrap" onclick="nvxAddActivation()">+ Кошик</button>
+              </div>
               <div class="nvx-warn-box" style="margin-bottom:16px">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--tag-orange-text);flex-shrink:0"><path d="M8 2L15 14H1z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="12.5" r=".5" fill="currentColor"/></svg>
                 <span>Мінімальна щомісячна плата — <b>$199</b>.</span>
@@ -6121,9 +6117,10 @@ function nvxSwitchPlansTab(tab) {
   const isCloud = tab === 'cloud';
   document.getElementById('nvx-panel-cloud').style.display      = isCloud ? 'block' : 'none';
   document.getElementById('nvx-panel-onpremise').style.display  = isCloud ? 'none'  : 'block';
-  const baseStyle = 'padding:8px 20px;border:none;background:none;cursor:pointer;font-size:13px;font-family:inherit;transition:all 0.15s;margin-bottom:-2px;';
-  document.getElementById('nvx-tab-cloud').style.cssText      = baseStyle + (isCloud ? 'font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);' : 'font-weight:500;color:var(--text-2);border-bottom:2px solid transparent;');
-  document.getElementById('nvx-tab-onpremise').style.cssText  = baseStyle + (!isCloud ? 'font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);' : 'font-weight:500;color:var(--text-2);border-bottom:2px solid transparent;');
+  const activeStyle  = 'padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;background:var(--accent);font-family:inherit;transition:all 0.18s;box-shadow:0 1px 4px rgba(37,113,208,0.18)';
+  const inactiveStyle = 'padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-2);background:transparent;font-family:inherit;transition:all 0.18s';
+  document.getElementById('nvx-tab-cloud').style.cssText      = isCloud  ? activeStyle : inactiveStyle;
+  document.getElementById('nvx-tab-onpremise').style.cssText  = !isCloud ? activeStyle : inactiveStyle;
 }
 
 function nvxOpSelectPlan(plan) {
