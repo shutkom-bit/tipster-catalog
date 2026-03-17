@@ -2653,7 +2653,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
           <div class="page-props">
             <span class="prop-chip">🗓 Оновлено: Березень 2026</span>
             <span class="prop-chip">💶 Ціни: EUR / USD</span>
-            <span class="prop-chip">🏷 2 бренди</span>
+            <span class="prop-chip">🏷 4 бренди</span>
           </div>
         </div>
 
@@ -2693,6 +2693,16 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
             <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('bitrek'); filterBitrekSeries('4G Трекери')">Трекери 4G</button>
             <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('bitrek'); filterBitrekSeries('Датчики')">Датчики</button>
             <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('bitrek'); filterBitrekSeries('Відео')">Відео</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">CARGO</div>
+          <div class="section-desc">Український виробник M2M-пристроїв з 2012 року. GPS-маяки та трекери власного виробництва: серії Spy (автономні маяки) та Unit (трекери з підключенням до живлення). Гарантія 12 місяців.</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('cargo')">Переглянути всі →</button>
+            <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('cargo'); document.getElementById('cargo-series').value='Spy'; renderCargo()">Spy — маяки</button>
+            <button class="tb-btn" style="border:1px solid var(--border)" onclick="showSection('cargo'); document.getElementById('cargo-series').value='Unit'; renderCargo()">Unit — трекери</button>
           </div>
         </div>
         
@@ -2781,7 +2791,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
             <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)">Cargo</span>
           </div>
           <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
-            Автономні GPS-маяки та трекери бренду CARGO.
+            Український виробник M2M-пристроїв з 2012 року займається розробкою та виробництвом пристроїв для GPS-моніторингу. Зарекомендував себе на ринку як надійний виробник та постачальник національного виробництва.
           </div>
         </div>
         <div class="filters-row" style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -2789,6 +2799,12 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-3)"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
             <input type="text" id="cargo-search" placeholder="Пошук…" oninput="renderCargo()">
           </div>
+          <select class="filter-select" id="cargo-series" onchange="renderCargo()">
+            <option value="">Всі серії</option>
+            <option value="Spy">Spy (маяки)</option>
+            <option value="Unit">Unit (трекери)</option>
+            <option value="CU3 SOS">CU3 SOS</option>
+          </select>
         </div>
         <div id="cargo-table-wrap"></div>
       </div>
@@ -4950,9 +4966,11 @@ function renderBitrek() {
 //  RENDER ACCESSORIES
 // ════════════════════════════════════════════════════════
 function renderCargo() {
-  const q = (document.getElementById('cargo-search')?.value || '').trim().toLowerCase();
+  const q      = (document.getElementById('cargo-search')?.value || '').trim().toLowerCase();
+  const series = document.getElementById('cargo-series')?.value || '';
   const items = products
     .filter(p => p.brand === 'CARGO')
+    .filter(p => !series || (p.series||'').includes(series) || (p.name||'').includes(series))
     .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
                        (p.code||'').toLowerCase().includes(q) ||
                        (p.article||'').toLowerCase().includes(q));
