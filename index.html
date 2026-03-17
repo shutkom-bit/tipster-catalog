@@ -1211,6 +1211,8 @@ body[data-role="client"] th.cell-retail { display: table-cell !important; }
 body[data-role="client"] #auth-user-bar,
 body[data-role="partner"] #auth-user-bar,
 body[data-role="admin"] #auth-user-bar { display: flex !important; }
+
+/* blocked — auth bar не показуємо, ціни приховані (дефолт) */
 /* Партнер — показуємо все */
 body[data-role="partner"] .cell-partner,
 body[data-role="partner"] th.cell-partner,
@@ -3972,7 +3974,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
 </div>
 
 
-<div id="blocked-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:24px">
+<div id="blocked-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);padding:24px">
   <div class="auth-box" style="text-align:center;max-width:420px">
     <div style="font-size:48px;margin-bottom:16px">🚫</div>
     <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:800;font-size:20px;color:var(--text);margin-bottom:10px">Акаунт заблокований</div>
@@ -4452,7 +4454,13 @@ function hideForgotPassword() {
 function showOverlay(id) {
   ['login-overlay','register-overlay','pending-overlay','blocked-overlay'].forEach(function(oid){
     var el = document.getElementById(oid);
-    if (el) el.style.display = oid === id ? 'flex' : 'none';
+    if (oid === id) {
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+      el.style.justifyContent = 'center';
+    } else {
+      if (el) el.style.display = 'none';
+    }
   });
 }
 function showLogin() { showOverlay('login-overlay'); }
@@ -6375,7 +6383,7 @@ function renderAll() {
 // ══════════════════════════════════════════════════════════
 import { initializeApp }                        from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail,
-         createUserWithEmailAndPassword,
+         createUserWithEmailAndPassword, sendEmailVerification,
          signOut, onAuthStateChanged,
          GoogleAuthProvider, signInWithPopup }  from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 import { getFirestore, doc, setDoc,
