@@ -508,7 +508,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <input type="password" id="adm-pass" placeholder="Пароль"
              style="padding:10px 13px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;outline:none"
              onkeydown="if(event.key==='Enter')adminLogin()">
-      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:10px" onclick="adminLogin()">
+      <button id="adm-login-btn" class="btn btn-primary" style="width:100%;justify-content:center;padding:10px" onclick="adminLogin()">
         Увійти
       </button>
     </div>
@@ -1508,7 +1508,9 @@ window.adminLogin = async () => {
   const email = document.getElementById('adm-email').value.trim();
   const pass  = document.getElementById('adm-pass').value;
   const errEl = document.getElementById('auth-error');
+  const btn   = document.getElementById('adm-login-btn');
   errEl.style.display = 'none';
+  if (btn) { btn.disabled = true; btn.textContent = 'Вхід...'; }
   try {
     const cred = await signInWithEmailAndPassword(auth, email, pass);
     // Перевіримо чи це адмін
@@ -1517,12 +1519,27 @@ window.adminLogin = async () => {
       await signOut(auth);
       errEl.textContent = 'Доступ заборонено. Тільки для адміністраторів.';
       errEl.style.display = 'block';
+      if (btn) { btn.disabled = false; btn.textContent = 'Увійти'; }
       return;
     }
+    // Успішний вхід — показуємо панель
+    document.getElementById('auth-overlay').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('hdr-email').textContent = cred.user.email;
+    const h = new Date().getHours();
+    const greeting = h < 12 ? 'Доброго ранку' : h < 18 ? 'Добрий день' : 'Добрий вечір';
+    document.getElementById('dash-greeting').textContent =
+      greeting + '! Ласкаво просимо до панелі управління TIPSTER.';
+    await Promise.all([
+      loadSettings(), loadProducts(), loadBrands(), loadKits(),
+      loadUsers(), loadTariffs(), loadInstall(), loadSimcards(),
+    ]);
+    updateStats();
   } catch(e) {
     errEl.textContent = e.code === 'auth/invalid-credential'
       ? 'Невірний email або пароль' : e.message;
     errEl.style.display = 'block';
+    if (btn) { btn.disabled = false; btn.textContent = 'Увійти'; }
   }
 };
 
