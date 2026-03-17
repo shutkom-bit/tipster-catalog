@@ -3332,22 +3332,11 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
               <!-- On-Premise volume table -->
               <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;max-width:740px">
                 <div>
-                  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:10px;font-family:'IBM Plex Mono',monospace">Pay-as-you-Go — знижки за об'ємом</div>
+                  <div id="nvx-op-vol-label" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin-bottom:6px;font-family:'IBM Plex Mono',monospace">Premium (Google Maps)</div>
                   <div class="db-table-wrap">
                     <table class="nvx-vol-table">
                       <thead><tr><th>Юніти</th><th>$/юніт/міс</th><th>Рахунок/міс</th></tr></thead>
-                      <tbody>
-                        <tr class="highlight"><td class="mono">&le;&nbsp;50</td><td class="mono">$2.99</td><td class="mono">$500 <span style="font-size:10px;color:var(--text-3)">(мін.)</span></td></tr>
-                        <tr><td class="mono">&le;&nbsp;150</td><td class="mono">$2.97</td><td class="mono">$500 <span style="font-size:10px;color:var(--text-3)">(мін.)</span></td></tr>
-                        <tr><td class="mono">&le;&nbsp;250</td><td class="mono">$2.92</td><td class="mono">$730</td></tr>
-                        <tr><td class="mono">&le;&nbsp;350</td><td class="mono">$2.90</td><td class="mono">$1,015</td></tr>
-                        <tr><td class="mono">&le;&nbsp;450</td><td class="mono">$2.88</td><td class="mono">$1,296</td></tr>
-                        <tr><td class="mono">&le;&nbsp;550</td><td class="mono">$2.86</td><td class="mono">$1,573</td></tr>
-                        <tr><td class="mono">&le;&nbsp;650</td><td class="mono">$2.83</td><td class="mono">$1,840</td></tr>
-                        <tr><td class="mono">&le;&nbsp;750</td><td class="mono">$2.83</td><td class="mono">$2,122</td></tr>
-                        <tr><td class="mono">&le;&nbsp;850</td><td class="mono">$2.81</td><td class="mono">$2,388</td></tr>
-                        <tr><td class="mono">&le;&nbsp;950</td><td class="mono">$2.79</td><td class="mono">$2,650</td></tr>
-                      </tbody>
+                      <tbody id="nvx-op-vol-tbody"></tbody>
                     </table>
                   </div>
                 </div>
@@ -6157,6 +6146,51 @@ function nvxSwitchPlansTab(tab) {
   document.getElementById('nvx-tab-onpremise').style.cssText  = !isCloud ? activeStyle : inactiveStyle;
 }
 
+const NVX_OP_VOL = {
+  'op-premium': [
+    {u:50,  p:2.99, m:500,  min:true},
+    {u:150, p:2.97, m:500,  min:true},
+    {u:250, p:2.92, m:730},
+    {u:350, p:2.90, m:1015},
+    {u:450, p:2.88, m:1296},
+    {u:550, p:2.86, m:1573},
+    {u:650, p:2.83, m:1840},
+    {u:750, p:2.83, m:2122},
+    {u:850, p:2.81, m:2388},
+    {u:950, p:2.79, m:2650},
+  ],
+  'op-basic': [
+    {u:50,  p:2.67, m:500,  min:true},
+    {u:150, p:2.65, m:500,  min:true},
+    {u:250, p:2.61, m:652},
+    {u:350, p:2.59, m:906},
+    {u:450, p:2.57, m:1157},
+    {u:550, p:2.55, m:1402},
+    {u:650, p:2.52, m:1640},
+    {u:750, p:2.52, m:1893},
+    {u:850, p:2.50, m:2129},
+    {u:950, p:2.49, m:2364},
+  ]
+};
+
+function nvxRenderOpVol(plan) {
+  const tbody = document.getElementById('nvx-op-vol-tbody');
+  const label = document.getElementById('nvx-op-vol-label');
+  if (!tbody) return;
+  const rows = NVX_OP_VOL[plan] || NVX_OP_VOL['op-premium'];
+  if (label) {
+    label.textContent = plan === 'op-premium' ? 'Premium (Google Maps)' : 'Basic (OpenStreetMap)';
+    label.style.color = plan === 'op-premium' ? 'var(--accent)' : 'var(--text-2)';
+  }
+  tbody.innerHTML = rows.map((r,i) =>
+    '<tr'+(i===0?' class="highlight"':'')+'>'+
+    '<td class="mono">&le;&nbsp;'+r.u+'</td>'+
+    '<td class="mono">$'+r.p.toFixed(2)+'</td>'+
+    '<td class="mono">$'+r.m.toLocaleString('en-US')+(r.min?' <span style="font-size:10px;color:var(--text-3)">(мін.)</span>':'')+'</td>'+
+    '</tr>'
+  ).join('');
+}
+
 function nvxOpSelectPlan(plan) {
   const lbl = document.getElementById('nvx-op-plan-label');
   if (lbl) lbl.textContent = plan==='op-premium' ? 'Premium (Google Maps)' : 'Basic (OpenStreetMap)';
@@ -6164,6 +6198,7 @@ function nvxOpSelectPlan(plan) {
     c.classList.toggle('selected', c.dataset.plan === plan);
   });
   window._nvxOpPlan = plan;
+  nvxRenderOpVol(plan);
 }
 window._nvxOpPlan = 'op-premium';
 
@@ -6190,6 +6225,7 @@ function renderNavixy() {
   if (_nvxRendered) return;
   _nvxRendered = true;
   nvxRenderCloudVol(_nvxPlan || 'premium');
+  nvxRenderOpVol(window._nvxOpPlan || 'op-premium');
 }
 
 // Register cart items on load
