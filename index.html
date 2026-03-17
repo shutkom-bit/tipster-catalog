@@ -2781,7 +2781,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
             <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)">Cargo</span>
           </div>
           <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
-            Обладнання бренду Cargo.
+            Автономні GPS-маяки та трекери бренду CARGO.
           </div>
         </div>
         <div class="filters-row" style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -4952,7 +4952,7 @@ function renderBitrek() {
 function renderCargo() {
   const q = (document.getElementById('cargo-search')?.value || '').trim().toLowerCase();
   const items = products
-    .filter(p => p.brand === 'Cargo')
+    .filter(p => p.brand === 'CARGO')
     .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
                        (p.code||'').toLowerCase().includes(q) ||
                        (p.article||'').toLowerCase().includes(q));
@@ -4965,7 +4965,7 @@ function renderOtherBrands() {
   const brand  = document.getElementById('other-brand-filter')?.value || '';
 
   // Всі товари НЕ Teltonika і НЕ Bitrek
-  const knownBrands = new Set(['Teltonika', 'Bitrek', 'Cargo']);
+  const knownBrands = new Set(['Teltonika', 'Bitrek', 'CARGO']);
   const items = products
     .filter(p => !knownBrands.has(p.brand))
     .filter(p => !brand || p.brand === brand)
@@ -6418,11 +6418,11 @@ async function loadFirestoreProducts() {
       console.log(`Firestore: додано ${added} товарів`);
 
       // Показати пункт "Інші бренди" в sidebar і оновити лічильник
-      const knownBrands = new Set(['Teltonika', 'Bitrek', 'Cargo']);
+      const knownBrands = new Set(['Teltonika', 'Bitrek', 'CARGO']);
       const otherCount = products.filter(p => !knownBrands.has(p.brand)).length;
       if (otherCount > 0) {
         // Показати Cargo
-      const cargoCount = products.filter(p => p.brand === 'Cargo').length;
+      const cargoCount = products.filter(p => p.brand === 'CARGO').length;
       if (cargoCount > 0) {
         const navCargo = document.getElementById('nav-cargo');
         if (navCargo) navCargo.style.display = '';
