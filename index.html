@@ -1194,8 +1194,12 @@ body {
 
 
 /* ── Ролі: ціни ── */
-/* Дефолт (без ролі) — все видиме (до логіну) */
-/* Клієнт/pending — ховаємо партнерські, показуємо РРЦ */
+/* Дефолт (без ролі) — всі ціни приховані */
+.cell-partner, th.cell-partner,
+.cell-retail,  th.cell-retail,
+.cell-price-eur, th.cell-price-eur { display: none !important; }
+
+/* Клієнт/pending — тільки РРЦ */
 body[data-role="client"] .cell-partner,
 body[data-role="client"] th.cell-partner,
 body[data-role="client"] .cell-price-eur,
@@ -3968,6 +3972,23 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
 </div>
 
 
+<div id="blocked-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:24px">
+  <div class="auth-box" style="text-align:center;max-width:420px">
+    <div style="font-size:48px;margin-bottom:16px">🚫</div>
+    <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:800;font-size:20px;color:var(--text);margin-bottom:10px">Акаунт заблокований</div>
+    <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;margin-bottom:24px">
+      Доступ до каталогу обмежено.<br>
+      Якщо ви вважаєте це помилкою — зверніться до менеджера TIPSTER.
+    </div>
+    <a href="tel:+380956546644" style="display:block;padding:10px 24px;background:var(--accent);color:#fff;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:10px">
+      📞 Зателефонувати менеджеру
+    </a>
+    <button onclick="if(window.fbSignOut)fbSignOut();" style="padding:8px 24px;background:none;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text-2);cursor:pointer;font-family:inherit;width:100%">
+      Вийти з акаунту
+    </button>
+  </div>
+</div>
+
 <div id="pending-overlay" style="display:none">
   <div class="auth-box" style="text-align:center">
     <svg style="height:32px;width:auto;display:block;margin:0 auto 20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1201 256" xml:space="preserve"><path fill="#FF512F" d="M1174.2,124.3c0.7,0.7,1.1,1.4,1.7,1.5c16.3,5.3,20.4,18.2,21.1,33.4c0.3,6.9,0.7,13.8,1.3,20.7
@@ -4028,10 +4049,13 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
       Зазвичай це займає <strong>до 24 годин</strong> у робочі дні.<br>
       Після підтвердження натисніть <strong>"Перевірити статус"</strong>.
     </div>
-    <button class="auth-btn" onclick="window.refreshUserRole && window.refreshUserRole()" style="background:var(--accent)">
+    <button class="auth-btn" onclick="window.refreshUserRole && window.refreshUserRole()" style="background:var(--accent);margin-bottom:8px">
       🔄 Перевірити статус акаунту
     </button>
-    <button onclick="if(window.fbSignOut)fbSignOut();" style="margin-top:8px;background:none;border:none;color:var(--text-3);font-size:12px;cursor:pointer;font-family:inherit;text-decoration:underline">Вийти з акаунту</button>
+    <button class="auth-btn" onclick="hideOverlays()" style="background:var(--sidebar-bg);color:var(--text-2);border:1px solid var(--border);margin-bottom:8px">
+      👁 Переглянути каталог без цін
+    </button>
+    <button onclick="if(window.fbSignOut)fbSignOut();" style="margin-top:4px;background:none;border:none;color:var(--text-3);font-size:12px;cursor:pointer;font-family:inherit;text-decoration:underline">Вийти з акаунту</button>
   </div>
 </div>
 
@@ -4406,7 +4430,7 @@ const SECTION_LABELS = {
 
 // Fallback for hideOverlays (overridden by Firebase module when loaded)
 function hideOverlays() {
-  ['login-overlay','register-overlay','pending-overlay'].forEach(function(id){
+  ['login-overlay','register-overlay','pending-overlay','blocked-overlay'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -4426,7 +4450,7 @@ function hideForgotPassword() {
 }
 
 function showOverlay(id) {
-  ['login-overlay','register-overlay','pending-overlay'].forEach(function(oid){
+  ['login-overlay','register-overlay','pending-overlay','blocked-overlay'].forEach(function(oid){
     var el = document.getElementById(oid);
     if (el) el.style.display = oid === id ? 'flex' : 'none';
   });
@@ -6765,13 +6789,13 @@ showOverlay('login-overlay');
 
 // ── Показати правильний overlay ───────────────────────────
 function showOverlay(id) {
-  ['login-overlay','register-overlay','pending-overlay'].forEach(oid => {
+  ['login-overlay','register-overlay','pending-overlay','blocked-overlay'].forEach(oid => {
     const el = document.getElementById(oid);
     if (el) el.style.display = oid === id ? 'flex' : 'none';
   });
 }
 function hideOverlays() {
-  ['login-overlay','register-overlay','pending-overlay'].forEach(oid => {
+  ['login-overlay','register-overlay','pending-overlay','blocked-overlay'].forEach(oid => {
     const el = document.getElementById(oid);
     if (el) el.style.display = 'none';
   });
@@ -6798,12 +6822,32 @@ function renderAll() {
 
 function applyRole(role) {
   window._fbRole = role;
-  // partner/admin — партнерські ціни
-  // client/pending — РРЦ ціни (pending бачить тільки РРЦ до підтвердження)
+
+  // Заблокований — overlay і виходимо
+  if (role === 'blocked') {
+    document.body.removeAttribute('data-role');
+    showOverlay('blocked-overlay');
+    updateAuthHeader();
+    return;
+  }
+
+  // Pending — показуємо overlay але залишаємо доступ до каталогу БЕЗ цін
+  if (role === 'pending') {
+    document.body.removeAttribute('data-role'); // без цін
+    showOverlay('pending-overlay');
+    updateAuthHeader();
+    // Завантажуємо дані (щоб каталог працював після "Переглянути")
+    loadTenantSettings();
+    loadFirestoreProducts();
+    loadFirestoreTariffs();
+    loadFirestoreInstall();
+    loadFirestoreSimcards();
+    return;
+  }
+
   if (role === 'partner' || role === 'admin') {
     document.body.setAttribute('data-role', 'partner');
   } else {
-    // client або pending — РРЦ
     document.body.setAttribute('data-role', 'client');
   }
   hideOverlays();
@@ -6816,7 +6860,7 @@ window.updateAuthHeader = function updateAuthHeader() {
   const role = window._fbRole || 'client';
   const bar  = document.getElementById('auth-user-bar');
   if (!bar || !user) return;
-  const roleLabel = { partner: '🤝 Партнер', client: 'Клієнт · РРЦ', admin: '⭐ Адмін', pending: '⏳ На розгляді' };
+  const roleLabel = { partner: '🤝 Партнер', client: 'Клієнт · РРЦ', admin: '⭐ Адмін', pending: '⏳ На розгляді', blocked: '🚫 Заблокований' };
   const pendingBanner = role === 'pending'
     ? '<span style="font-size:11px;background:#fff3cd;color:#856404;padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #ffc107;white-space:nowrap">⏳ На розгляді — РРЦ ціни</span>'
     : '';
@@ -6862,7 +6906,7 @@ onAuthStateChanged(auth, async (user) => {
         const data = snap.data();
         const role = data.role || 'pending';
         applyRole(role);
-        if (role !== 'pending') {
+        if (role !== 'pending' && role !== 'blocked') {
           loadTenantSettings();
           loadFirestoreProducts();
           loadFirestoreTariffs();
@@ -7019,7 +7063,13 @@ ${roleLabel}
     }).then(r => r.json()).then(d => {
       if (!d.ok) console.warn('TG registration error:', d.description);
     }).catch(e => console.warn('TG registration fetch error:', e.message));
+    // Email підтвердження реєстрації
+    try {
+      await sendEmailVerification(cred.user);
+    } catch(e) { console.warn('sendEmailVerification:', e); }
     // Показати pending overlay
+    window._fbUser = cred.user;
+    window._fbRole = 'pending';
     showOverlay('pending-overlay');
   } catch(e) {
     const msgs = {
@@ -7071,11 +7121,13 @@ window.fbGoogleLogin = async function() {
       const role = snap.data().role || 'pending';
       window._fbUser = user;
       applyRole(role);
-      loadTenantSettings();
-      loadFirestoreProducts();
-      loadFirestoreTariffs();
-      loadFirestoreInstall();
-      loadFirestoreSimcards();
+      if (role !== 'pending' && role !== 'blocked') {
+        loadTenantSettings();
+        loadFirestoreProducts();
+        loadFirestoreTariffs();
+        loadFirestoreInstall();
+        loadFirestoreSimcards();
+      }
     }
   } catch(e) {
     const msgs = {
