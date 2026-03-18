@@ -2545,7 +2545,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         <span class="count" id="cnt-cargo">0</span>
       </div>
       <div class="nav-item" id="nav-other-brands" onclick="showSection('other-brands')" style="display:none">
-        Інші бренди
+        Ігла
         <span class="count" id="cnt-other-brands">0</span>
       </div>
     </div>
@@ -2833,7 +2833,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
       <div class="page-section" id="sec-other-brands">
         <div class="page-header">
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
-            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)" id="other-brands-title">Інші бренди</span>
+            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)" id="other-brands-title">Ігла</span>
           </div>
           <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
             Обладнання від додаткових виробників та партнерів TIPSTER.
@@ -4206,8 +4206,78 @@ const PROGRAM_TAG = {
   "Монтаж":      "tag-gray",
 };
 
-// Товари завантажуються з Firebase через loadFirestoreProducts()
-let products = [];
+// Товари — статичний масив як fallback + доповнюється з Firebase
+const products = [
+  { mode:"fixed", code:"FMB900",    article:"FMB900AGCO01",        name:"FMB900",                                  currency:"USD", partnerPrice:37.80, retailPrice:41.40, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер початкового рівня. Компактний, вбудована антена GNSS/GSM. Ідеально для базового моніторингу транспорту." },
+  { mode:"fixed", code:"FMB910",    article:"FMB910AGCO01",        name:"FMB910",                                  currency:"USD", partnerPrice:43.20, retailPrice:47.09, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер з зовнішнього роз'єму антени. 1 SIM, вбудована батарея, компактний." },
+  { mode:"fixed", code:"FMB920",    article:"FMB920YJX01",         name:"FMB920",                                  currency:"USD", partnerPrice:46.80, retailPrice:51.75, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер з 2 SIM-картами та зовнішньою антеною. Підтримка резервного живлення." },
+  { mode:"fixed", code:"FMB930",    article:"FMB930YJX00",         name:"FMB930",                                  currency:"USD", partnerPrice:52.20, retailPrice:56.98, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер з підтримкою 90-240V. 2 SIM, зовнішня антена." },
+  { mode:"fixed", code:"FMB003",    article:"FMB003AGCO01",        name:"FMB003",                                  currency:"USD", partnerPrice:34.20, retailPrice:37.35, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"Мінімалістичний 2G трекер. Вбудована GNSS/GSM антена, 1 SIM." },
+  { mode:"fixed", code:"FMB010",    article:"FMB010AGCO01",        name:"FMB010",                                  currency:"USD", partnerPrice:37.80, retailPrice:41.40, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер з Bluetooth 4.0. Вбудована антена, 1 SIM, BLE датчики." },
+  { mode:"fixed", code:"FMB020",    article:"FMB020AGCO01",        name:"FMB020",                                  currency:"USD", partnerPrice:43.20, retailPrice:47.09, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер з Bluetooth 4.0 та 2 SIM. Зовнішня антена." },
+  { mode:"fixed", code:"FMB110",    article:"FMB110BBV801",        name:"FMB110",                                  currency:"USD", partnerPrice:43.20, retailPrice:47.09, series:"2G",    program:"ADVANCED", brand:"Teltonika", spec:"2G трекер із зовнішньою GNSS-антеною. 2 SIM-карти, резервне живлення, 4 digital I/O." },
+  { mode:"fixed", code:"FMB120",    article:"FMB120AGCO01",        name:"FMB120",                                  currency:"USD", partnerPrice:48.60, retailPrice:52.83, series:"2G",    program:"ADVANCED", brand:"Teltonika", spec:"2G Advanced трекер. Зовнішня антена, 2 SIM, 4 I/O, CAN." },
+  { mode:"fixed", code:"FMB122",    article:"FMB122AGCO01",        name:"FMB122",                                  currency:"USD", partnerPrice:54.00, retailPrice:58.97, series:"2G",    program:"ADVANCED", brand:"Teltonika", spec:"2G трекер з RS232/RS485 інтерфейсом. 2 SIM, 4 I/O." },
+  { mode:"fixed", code:"FMB125",    article:"FMB125AGCO01",        name:"FMB125",                                  currency:"USD", partnerPrice:56.70, retailPrice:61.56, series:"2G",    program:"ADVANCED", brand:"Teltonika", spec:"2G трекер з розширеними I/O. CAN, RS232/485, 2 SIM." },
+  { mode:"fixed", code:"FMB130",    article:"FMB130AGCO01",        name:"FMB130",                                  currency:"USD", partnerPrice:48.60, retailPrice:52.83, series:"2G",    program:"ADVANCED", brand:"Teltonika", spec:"2G трекер з 1-Wire та RS232. 2 SIM, 4 I/O." },
+  { mode:"fixed", code:"FMB140",    article:"FMB140AGCO01",        name:"FMB140",                                  currency:"USD", partnerPrice:54.00, retailPrice:58.97, series:"2G",    program:"ADVANCED", brand:"Teltonika", spec:"2G трекер з RS485 та 1-Wire. 2 SIM, Digital/Analog I/O." },
+  { mode:"fixed", code:"FMB150",    article:"FMB150AGCO01",        name:"FMB150",                                  currency:"USD", partnerPrice:62.10, retailPrice:67.12, series:"2G",    program:"ADVANCED", brand:"Teltonika", spec:"2G трекер для спецтехніки. 3 SIM, широкий діапазон живлення 10-100V." },
+  { mode:"fixed", code:"FMB900 90V",article:"FMB900AGCO01-90V",   name:"FMB900 (90-240V)",                        currency:"USD", partnerPrice:46.80, retailPrice:51.75, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"FMB900 з підтримкою 90-240V. Для транспорту з підвищеною напругою." },
+  { mode:"fixed", code:"FMC001",    article:"FMC001AGCO01",        name:"FMC001",                                  currency:"USD", partnerPrice:52.20, retailPrice:56.98, series:"4G",    program:"BASIC",    brand:"Teltonika", spec:"4G CAT1 базовий трекер. Вбудована антена, 1 SIM, BLE 4.0." },
+  { mode:"fixed", code:"FMC003",    article:"FMC003AGCO01",        name:"FMC003",                                  currency:"USD", partnerPrice:48.60, retailPrice:52.83, series:"4G",    program:"BASIC",    brand:"Teltonika", spec:"4G CAT1 мінімалістичний трекер. 1 SIM, вбудована GNSS антена." },
+  { mode:"fixed", code:"FMC920",    article:"FMC920YJX01",         name:"FMC920",                                  currency:"USD", partnerPrice:56.70, retailPrice:61.56, series:"4G",    program:"BASIC",    brand:"Teltonika", spec:"4G CAT1 трекер з 2 SIM. Зовнішня антена, резервне живлення." },
+  { mode:"fixed", code:"FMC130",    article:"FMC130KYXW01",        name:"FMC130 CAT1",                             currency:"USD", partnerPrice:49.50, retailPrice:54.45, series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 Advanced трекер із зовнішньою GNSS-антеною. 2 SIM, резервне живлення, 4 I/O." },
+  { mode:"fixed", code:"FMC150",    article:"FMC150AGCO01",        name:"FMC150",                                  currency:"USD", partnerPrice:76.50, retailPrice:82.89, series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 трекер для спецтехніки. 10-100V, 3 SIM, широкий I/O." },
+  { mode:"fixed", code:"FMC640",    article:"FMC640AGCO01",        name:"FMC640",                                  currency:"USD", partnerPrice:94.50, retailPrice:102.60,series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 трекер з CAN-шиною та OBD2. 2 SIM, Bluetooth." },
+  { mode:"fixed", code:"FMC800",    article:"FMC800AGCO01",        name:"FMC800",                                  currency:"USD", partnerPrice:85.50, retailPrice:92.88, series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 трекер з LVCAN та RS232/485. 2 SIM, розширені I/O." },
+  { mode:"fixed", code:"FMC880",    article:"FMC880AGCO01",        name:"FMC880",                                  currency:"USD", partnerPrice:99.00, retailPrice:107.46,series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 трекер з розширеним CAN та J1939. 2 SIM, I/O." },
+  { mode:"fixed", code:"FMC125",    article:"FMC125AGCO01",        name:"FMC125",                                  currency:"USD", partnerPrice:67.50, retailPrice:73.53, series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 трекер з RS232/RS485. 2 SIM, 4 I/O." },
+  { mode:"fixed", code:"FMC140",    article:"FMC140AGCO01",        name:"FMC140",                                  currency:"USD", partnerPrice:72.00, retailPrice:78.30, series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 трекер з RS485 та 1-Wire. 2 SIM." },
+  { mode:"fixed", code:"FTC134",    article:"FTC134AAAA01",        name:"FTC134 CAT1",                             currency:"USD", partnerPrice:71.10, retailPrice:78.21, series:"FTC",   program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 Advanced трекер FTC. Зовнішні антени GNSS/LTE, резервне живлення, I/O." },
+  { mode:"fixed", code:"FTC130",    article:"FTC130AAAA01",        name:"FTC130",                                  currency:"USD", partnerPrice:63.00, retailPrice:68.85, series:"FTC",   program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 FTC трекер. Зовнішня антена, 2 SIM, I/O." },
+  { mode:"fixed", code:"FTC920",    article:"FTC920AAAA01",        name:"FTC920",                                  currency:"USD", partnerPrice:58.50, retailPrice:64.17, series:"FTC",   program:"BASIC",    brand:"Teltonika", spec:"4G CAT1 FTC базовий трекер. 2 SIM, зовнішня антена." },
+  { mode:"fixed", code:"FTC921",    article:"FTC921AAAA01",        name:"FTC921",                                  currency:"USD", partnerPrice:63.00, retailPrice:68.85, series:"FTC",   program:"BASIC",    brand:"Teltonika", spec:"4G CAT1 FTC трекер з BLE. 2 SIM." },
+  { mode:"fixed", code:"TAT100",    article:"TAT100AGCO01",        name:"TAT100",                                  currency:"USD", partnerPrice:54.00, retailPrice:58.97, series:"Assets",program:"ASSETS",   brand:"Teltonika", spec:"4G CAT-M1/NB-IoT маяк. Магнітне кріплення, до 6 років роботи від батареї." },
+  { mode:"fixed", code:"TAT140",    article:"TAT140AGCO01",        name:"TAT140",                                  currency:"USD", partnerPrice:67.50, retailPrice:73.53, series:"Assets",program:"ASSETS",   brand:"Teltonika", spec:"4G CAT-M1/NB-IoT маяк підвищеної ємності. Магнітне кріплення." },
+  { mode:"fixed", code:"TAT240",    article:"TAT240AGCO01",        name:"TAT240",                                  currency:"USD", partnerPrice:81.00, retailPrice:88.02, series:"Assets",program:"ASSETS",   brand:"Teltonika", spec:"4G CAT-M1/NB-IoT + BLE маяк. Розширені сенсори." },
+  { mode:"fixed", code:"GH5200",    article:"GH5200AGCO01",        name:"GH5200",                                  currency:"USD", partnerPrice:49.50, retailPrice:53.82, series:"Assets",program:"ASSETS",   brand:"Teltonika", spec:"2G персональний трекер з SOS-кнопкою. Вологозахист IPX7." },
+  { mode:"fixed", code:"TMT250",    article:"TMT250AGCO01",        name:"TMT250",                                  currency:"USD", partnerPrice:90.00, retailPrice:97.74, series:"Assets",program:"ASSETS",   brand:"Teltonika", spec:"4G персональний трекер з Bluetooth та NFC." },
+  { mode:"fixed", code:"TFT100",    article:"TFT100AGCO01",        name:"TFT100",                                  currency:"USD", partnerPrice:85.50, retailPrice:92.88, series:"Assets",program:"ASSETS",   brand:"Teltonika", spec:"4G CAT-M1 трекер для активів без живлення. Сонячна батарея." },
+  { mode:"fixed", code:"TST100",    article:"TST100AGCO01",        name:"TST100",                                  currency:"USD", partnerPrice:40.50, retailPrice:44.01, series:"Assets",program:"ASSETS",   brand:"Teltonika", spec:"BLE маяк для відстеження активів. Bluetooth 4.0." },
+  { mode:"fixed", code:"EYE SENSOR",article:"EYES1000AGCO01",     name:"EYE Sensor",                              currency:"USD", partnerPrice:27.00, retailPrice:29.43, series:"Assets",program:"ASSETS",   brand:"Teltonika", spec:"BLE датчик вологості, температури та руху." },
+  { mode:"fixed", code:"FMM001",    article:"FMM001AGCO01",        name:"FMM001",                                  currency:"USD", partnerPrice:63.00, retailPrice:68.58, series:"4G",    program:"BASIC",    brand:"Teltonika", spec:"4G CAT-M1/NB-IoT мінімалістичний трекер. 1 SIM." },
+  { mode:"fixed", code:"FMM003",    article:"FMM003AGCO01",        name:"FMM003",                                  currency:"USD", partnerPrice:58.50, retailPrice:63.54, series:"4G",    program:"BASIC",    brand:"Teltonika", spec:"4G CAT-M1 трекер. Вбудована антена, 1 SIM." },
+  { mode:"fixed", code:"FMM920",    article:"FMM920AGCO01",        name:"FMM920",                                  currency:"USD", partnerPrice:67.50, retailPrice:73.53, series:"4G",    program:"BASIC",    brand:"Teltonika", spec:"4G CAT-M1 трекер з 2 SIM та зовнішньою антеною." },
+  { mode:"fixed", code:"FMM130",    article:"FMM130AGCO01",        name:"FMM130",                                  currency:"USD", partnerPrice:72.00, retailPrice:78.30, series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT-M1 Advanced трекер. 2 SIM, I/O, RS232." },
+  { mode:"fixed", code:"FMM640",    article:"FMM640AGCO01",        name:"FMM640",                                  currency:"USD", partnerPrice:99.00, retailPrice:107.46,series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT-M1 трекер з CAN. 2 SIM, Bluetooth." },
+  { mode:"fixed", code:"FMM800",    article:"FMM800AGCO01",        name:"FMM800",                                  currency:"USD", partnerPrice:90.00, retailPrice:97.74, series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT-M1 трекер з LVCAN та RS232/485." },
+  { mode:"fixed", code:"FMP100",    article:"FMP100AGCO01",        name:"FMP100",                                  currency:"USD", partnerPrice:81.00, retailPrice:88.02, series:"4G",    program:"ADVANCED", brand:"Teltonika", spec:"4G CAT1 трекер для мотоциклів. Водонепроникний, 2 SIM." },
+  // Bitrek
+  { mode:"fixed", code:"BI 910 TREK",     article:"BI910TREK",         name:"BI 910 TREK",                         currency:"USD", partnerPrice:111.10,retailPrice:130.00,series:"Трекери",program:"CAN+RS485", brand:"Bitrek", spec:"4G трекер з CAN J1939/OBD та RS485. 2 SIM, вбудована антена." },
+  { mode:"fixed", code:"BI 868 TREK",     article:"BI868TREK",         name:"BI 868 TREK",                         currency:"USD", partnerPrice:91.80, retailPrice:108.00,series:"Трекери",program:"CAN",       brand:"Bitrek", spec:"4G трекер з CAN J1939. 2 SIM." },
+  { mode:"fixed", code:"BI 530 R TREK",   article:"BI530RTREK",        name:"BI 530 R TREK",                       currency:"USD", partnerPrice:74.25, retailPrice:87.00, series:"Трекери",program:"RS485",     brand:"Bitrek", spec:"4G трекер з RS485. 2 SIM, зовнішня антена." },
+  { mode:"fixed", code:"BI 530 C TREK",   article:"BI530CTREK",        name:"BI 530 C TREK",                       currency:"USD", partnerPrice:74.25, retailPrice:87.00, series:"Трекери",program:"CAN",       brand:"Bitrek", spec:"4G трекер з CAN. 2 SIM." },
+  { mode:"fixed", code:"BI 522 L TREK",   article:"BI522LTREK",        name:"BI 522 L TREK",                       currency:"USD", partnerPrice:65.70, retailPrice:77.00, series:"Трекери",program:"BASIC",     brand:"Bitrek", spec:"4G LTE базовий трекер Bitrek. 2 SIM, зовнішня антена." },
+  { mode:"fixed", code:"BI 450 TREK",     article:"BI450TREK",         name:"BI 450 TREK",                         currency:"USD", partnerPrice:42.75, retailPrice:50.00, series:"Трекери",program:"BASIC",     brand:"Bitrek", spec:"2G/4G базовий трекер Bitrek. 1 SIM." },
+  { mode:"fixed", code:"BI 420 TREK",     article:"BI420TREK",         name:"BI 420 TREK",                         currency:"USD", partnerPrice:37.35, retailPrice:44.00, series:"Трекери",program:"BASIC",     brand:"Bitrek", spec:"2G базовий трекер Bitrek. 1 SIM, вбудована антена." },
+  { mode:"fixed", code:"BI 410 TREK",     article:"BI410TREK",         name:"BI 410 TREK",                         currency:"USD", partnerPrice:32.40, retailPrice:38.00, series:"Трекери",program:"BASIC",     brand:"Bitrek", spec:"2G мінімалістичний трекер. 1 SIM." },
+  { mode:"fixed", code:"BI FLSensor 700", article:"BIFLSENSOR700",     name:"BI FLSensor v.8 700мм",               currency:"USD", partnerPrice:68.85, retailPrice:80.00, series:"ДРП",    program:"Паливо",    brand:"Bitrek", spec:"Ємнісний датчик рівня палива RS485, 700 мм." },
+  { mode:"fixed", code:"BI FLSensor 1500",article:"BIFLSENSOR1500",    name:"BI FLSensor v.8 1500мм",              currency:"USD", partnerPrice:76.95, retailPrice:90.00, series:"ДРП",    program:"Паливо",    brand:"Bitrek", spec:"Ємнісний датчик рівня палива RS485, 1500 мм." },
+  { mode:"fixed", code:"BI FLSensor 3000",article:"BIFLSENSOR3000",    name:"BI FLSensor v.8 3000мм",              currency:"USD", partnerPrice:89.10, retailPrice:104.00,series:"ДРП",    program:"Паливо",    brand:"Bitrek", spec:"Ємнісний датчик рівня палива RS485, 3000 мм." },
+  { mode:"fixed", code:"BI FLB",          article:"BIFLB",             name:"BI FLB (BLE 5.4)",                    currency:"USD", partnerPrice:85.50, retailPrice:100.00,series:"ДРП",    program:"Паливо",    brand:"Bitrek", spec:"Бездротовий датчик рівня палива BLE 5.4. Заміна батареї." },
+  { mode:"fixed", code:"BI-BLTHIM",       article:"BI-BLTHIM",         name:"Датчик BI-BLTHIM",                    currency:"USD", partnerPrice:27.00, retailPrice:32.00, series:"Датчики",program:"BLE",       brand:"Bitrek", spec:"BLE датчик вологості і температури." },
+  // Ігла ДРП
+  { mode:"fixed", code:"IGLA-400-1000",  article:"ДВРП-400-1000",  name:"ДВРП «Ігла» 400, 700, 1000 мм",    currency:"USD", partnerPrice:58.62, retailPrice:66.99, series:"ДВРП", program:"Ємкісний", brand:"Ігла", spec:"Ємнісний датчик рівня палива RS485. Довжини: 400, 700, 1000 мм. Гарантія 36 міс." },
+  { mode:"fixed", code:"IGLA-1500-2000", article:"ДВРП-1500-2000", name:"ДВРП «Ігла» 1500, 2000 мм",       currency:"USD", partnerPrice:68.81, retailPrice:78.64, series:"ДВРП", program:"Ємкісний", brand:"Ігла", spec:"Ємнісний датчик рівня палива RS485. Довжини: 1500, 2000 мм. Гарантія 36 міс." },
+  { mode:"fixed", code:"IGLA-3000",      article:"ДВРП-3000",      name:"ДВРП «Ігла» 3000 мм",              currency:"USD", partnerPrice:79.00, retailPrice:90.29, series:"ДВРП", program:"Ємкісний", brand:"Ігла", spec:"Ємнісний датчик рівня палива RS485. Довжина 3000 мм. Гарантія 36 міс." },
+  { mode:"fixed", code:"IGLA-CFG",       article:"ІГЛА-КФГ",       name:"Конфігуратор Ігла",                currency:"USD", partnerPrice:58.62, retailPrice:66.99, series:"Аксесуари", program:"Конфігуратор", brand:"Ігла", spec:"Конфігуратор для налаштування датчиків Ігла." },
+  { mode:"fixed", code:"IGLA-DT01",      article:"DT-01-RS485",    name:"Датчик температури DT-01/RS-485",  currency:"USD", partnerPrice:58.62, retailPrice:66.99, series:"Аксесуари", program:"Температура", brand:"Ігла", spec:"Датчик температури RS-485 для систем моніторингу." },
+  { mode:"fixed", code:"IGLA-MOUNT",     article:"ІГЛА-МОНТАЖ",    name:"Монтажний комплект Ігла",          currency:"USD", partnerPrice:7.65,  retailPrice:8.74,  series:"Аксесуари", program:"Монтаж", brand:"Ігла", spec:"Монтажний комплект для встановлення датчиків Ігла." },
+  { mode:"fixed", code:"IGLA-CBL-75",    article:"ІГЛА-КБЛ-7.5М",  name:"Кабель ДВРП 7.5 м з роз'ємом",   currency:"USD", partnerPrice:10.19, retailPrice:11.65, series:"Аксесуари", program:"Кабелі", brand:"Ігла", spec:"Кабель підключення датчика Ігла 7.5 м." },
+  { mode:"fixed", code:"IGLA-CBL-10",    article:"ІГЛА-КБЛ-10М",   name:"Кабель ДВРП 10 м з роз'ємом",    currency:"USD", partnerPrice:12.74, retailPrice:14.56, series:"Аксесуари", program:"Кабелі", brand:"Ігла", spec:"Кабель підключення датчика Ігла 10 м." },
+  { mode:"fixed", code:"IGLA-CBL-21",    article:"ІГЛА-КБЛ-2+1",   name:"Кабель ДВРП (2+1) з роз'ємом",   currency:"USD", partnerPrice:14.78, retailPrice:16.89, series:"Аксесуари", program:"Кабелі", brand:"Ігла", spec:"Кабель підключення Y-типу для 2 датчиків Ігла." },
+  { mode:"fixed", code:"IGLA-CBL-CFG",   article:"ІГЛА-КБЛ-КФГ",   name:"Кабель Конфігуратора з роз'ємом", currency:"USD", partnerPrice:13.25, retailPrice:15.15, series:"Аксесуари", program:"Кабелі", brand:"Ігла", spec:"Кабель для конфігуратора Ігла." },
+];
 
 // ── Accessories data ────────────────────────────────────────
 const accessories = {
@@ -4224,17 +4294,7 @@ const accessories = {
     { code:"ACC-BAT-1000",   article:"BAT-LION-1000",   name:"Резервна батарея 3.7V 1000mAh",program:"Батарея", series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:9.00,  retailPrice:14.00, spec:"Li-Ion, 3.7V 1000mAh, замінна батарея для трекерів" },
     { code:"ACC-FUSE-2A",    article:"FUSE-2A-HOLD",    name:"Запобіжник 2A + тримач",       program:"Кабель",  series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:1.50,  retailPrice:3.00,  spec:"Стандартний запобіжник для захисту живлення трекера" },
   ],
-  sim: [
-    { code:'SIM-KS',  name:"SIM-карта Kyivstar 24 МБ Multi",
-      spec:"Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.",
-      price_uah:35, url:null, brand:'kyivstar' },
-    { code:'SIM-VF',  name:"SIM-карта Vodafone 24 МБ Multi",
-      spec:"Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.",
-      price_uah:35, url:null, brand:'vodafone' },
-    { code:'SIM-EU',  name:"SIM Roaming (EU+UA)",
-      spec:"Фізична Multi-SIM. Вартість сплачується один раз при замовленні. Мінімальне замовлення — 10 шт.",
-      price_uah:250, url:null, brand:'roaming' },
-  ],
+  sim: [] // завантажується з Firebase,
   mount: [
     { code:"ACC-MNT-DIN",  article:"MNT-DIN-RAIL",   name:"Кронштейн DIN для трекера",     program:"Монтаж",  series:"Монтаж",  brand:"Аксесуар", currency:"USD", partnerPrice:5.00, retailPrice:8.00,  spec:"Металевий кронштейн на DIN-рейку для монтажу в щиток" },
     { code:"ACC-MNT-3M",   article:"MNT-3M-VHB",     name:"Двосторонній скотч 3M (5шт)",   program:"Монтаж",  series:"Монтаж",  brand:"Аксесуар", currency:"USD", partnerPrice:3.00, retailPrice:5.00,  spec:"3M VHB, 25x50mm, для монтажу трекера на кузов" },
@@ -4925,7 +4985,7 @@ function renderOtherBrands() {
   // Оновити заголовок
   const title = document.getElementById('other-brands-title');
   if (title && brand) title.textContent = brand;
-  else if (title) title.textContent = 'Інші бренди';
+  else if (title) title.textContent = 'Ігла';
 
   const wrap = document.getElementById('other-brands-table-wrap');
   if (wrap) wrap.innerHTML = buildTable(items, {}, true);
@@ -6298,14 +6358,16 @@ async function loadTenantSettings() {
   }
 }
 
-// ── Завантажити товари з Firebase (єдине джерело) ──
+// ── Завантажити товари з Firebase і доповнити статичний масив ──
 async function loadFirestoreProducts() {
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/products'));
-    products = [];
+    if (snap.empty) return; // статичні залишаються
+    const existingCodes = new Set(products.map(p => p.code || p.article || ''));
     snap.forEach(d => {
       const p = d.data();
       if (p.active === false) return;
+      if (existingCodes.has(p.code || p.article || '')) return; // не дублюємо
       products.push({
         mode:         'fixed',
         code:         p.code || p.article || d.id,
@@ -6461,57 +6523,26 @@ window.loadFirestoreInstall = async function() {
 window.loadFirestoreSimcards = async function() {
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/simcards'));
-    if (snap.empty) return;
-    const fsSims = [];
+    accessories.sim = [];
     snap.forEach(d => {
       const s = d.data();
       if (s.active === false) return;
-      fsSims.push({
-        code:        s.code || '',
-        name:        s.name || '',
-        spec:        s.spec || '',
+      accessories.sim.push({
+        code:      s.code || '',
+        name:      s.name || '',
+        spec:      s.spec || '',
+        price_uah: s.price || 0,
+        brand:     s.brand || 'other',
+        color:     s.color || '',
         description: s.description || '',
-        price_uah:   s.price || 0,
-        brand:       s.brand || 'other',
-        currency:  'UAH',
-        partnerPrice: s.price || 0,
-        retailPrice:  s.price || 0,
-        series:    'SIM',
-        program:   'SIM',
-        _fromFirestore: true,
       });
     });
-    if (!fsSims.length) return;
-    // Оновити accessories.sim (звідти renderTariffs бере SIM-карти)
-    if (typeof accessories !== 'undefined') {
-      const existingCodes = new Set((accessories.sim || []).map(s => s.code));
-      if (!accessories.sim) accessories.sim = [];
-      fsSims.forEach(s => {
-        if (!existingCodes.has(s.code)) accessories.sim.push(s);
-      });
-    }
-    // Також оновити extraEquipment.sim
-    if (typeof extraEquipment !== 'undefined') {
-      const existingCodes2 = new Set((extraEquipment.sim || []).map(s => s.code));
-      if (!extraEquipment.sim) extraEquipment.sim = [];
-      fsSims.forEach(s => {
-        if (!existingCodes2.has(s.code)) extraEquipment.sim.push(s);
-      });
-    }
-    // Додати в cartRegistry
-    fsSims.forEach(s => {
-      if (typeof cartRegistry !== 'undefined') {
-        cartRegistry.set(s.code, { article: s.code, name: s.name, spec: s.spec, _uah: s.price_uah, note: s.price_uah + ' ₴' });
-      }
-    });
-    // Скинути кеш тарифів щоб SIM оновились
+    // Якщо тарифи вже рендерились — скидаємо кеш
     window._tariffsRendered = false;
-    const tarContainer = document.getElementById('tariffs-container');
-    if (tarContainer) tarContainer.innerHTML = '';
-    if (typeof renderTariffs === 'function') renderTariffs();
+    const tc = document.getElementById('tariffs-container');
+    if (tc && tc.innerHTML) { tc.innerHTML = ''; }
   } catch(e) { console.warn('loadFirestoreSimcards:', e); }
 };
-
 // ── Рендер секції Контакти з Firestore даних ─────────
 function renderContactsSection(d) {
   // Subtitle
