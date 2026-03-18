@@ -980,6 +980,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="page-title">Тарифи SIM</div>
       <div class="page-subtitle">Тарифні плани для SIM-карт моніторингу</div>
       <div class="toolbar">
+        <button class="btn btn-secondary" onclick="adminImportTariffs()" title="Завантажити стандартні тарифи у Firebase">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
+          Імпорт початкових даних
+        </button>
         <button class="btn btn-primary" onclick="openTariffModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати тариф
@@ -1042,6 +1046,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="page-title">Монтаж та сервіс</div>
       <div class="page-subtitle">Послуги встановлення та налаштування обладнання</div>
       <div class="toolbar">
+        <button class="btn btn-secondary" onclick="adminImportInstall()" title="Завантажити стандартні послуги у Firebase">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
+          Імпорт початкових даних
+        </button>
         <button class="btn btn-primary" onclick="openInstallModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати послугу
@@ -2601,6 +2609,70 @@ window.admNvxPDF = function() {
   };
   document.head.appendChild(s);
 };
+
+// ════════════════════════════════════════════════════
+// ІМПОРТ ПОЧАТКОВИХ ДАНИХ У FIREBASE
+// ════════════════════════════════════════════════════
+window.adminImportInstall = async function() {
+  if (!confirm('Імпортувати стандартні послуги у Firebase? Існуючі записи з такими самими кодами НЕ будуть перезаписані.')) return;
+  const DEFAULT_INSTALL = [
+    { code:'SVC-CONFIG',    name:'Налаштування трекера',        price:600,  spec:'Конфігурація FMB/FTC/BI серії, тестування зв\'язку', active:true },
+    { code:'SVC-MONT-LA',   name:'Монтаж легкове авто',         price:1600, spec:'Встановлення трекера у легкове авто, прихована проводка', active:true },
+    { code:'SVC-MONT-TR',   name:'Монтаж вантажівка/автобус',   price:2400, spec:'Встановлення трекера у вантажний транспорт або автобус', active:true },
+    { code:'SVC-MONT-SP',   name:'Монтаж спецтехніка',          price:3200, spec:'Встановлення на спецтехніку, нестандартні схеми', active:true },
+    { code:'SVC-TAR-S',     name:'Активація тарифу',            price:1200, spec:'Підключення SIM-карти, налаштування APN, тест зв\'язку', active:true },
+    { code:'SVC-IGNITON',   name:'Підключення запалення',       price:400,  spec:'Підключення до шини запалення авто', active:true },
+    { code:'SVC-RELAY',     name:'Встановлення реле',           price:800,  spec:'Монтаж реле блокування двигуна', active:true },
+    { code:'SVC-TEMP',      name:'Температурний датчик',        price:600,  spec:'Встановлення датчика температури в кузов або двигун', active:true },
+    { code:'SVC-FUEL',      name:'Датчик рівня палива',         price:2200, spec:'Монтаж ємнісного датчика ДРП в бак', active:true },
+    { code:'SVC-IBUTTON',   name:'Ідентифікатор водія',         price:500,  spec:'Встановлення зчитувача iButton, прив\'язка до платформи', active:true },
+    { code:'SVC-CHECK',     name:'Діагностика обладнання',      price:400,  spec:'Перевірка трекера, аналіз логів, усунення несправностей', active:true },
+    { code:'SVC-DISMANTLE', name:'Демонтаж трекера',            price:400,  spec:'Зняття трекера та відновлення штатної проводки', active:true },
+  ];
+  try {
+    // Завантажуємо існуючі коди
+    const snap = await getDocs(collection(db, tenantRef('install')));
+    const existingCodes = new Set(snap.docs.map(d => d.data().code));
+    let added = 0;
+    for (const s of DEFAULT_INSTALL) {
+      if (!existingCodes.has(s.code)) {
+        await addDoc(collection(db, tenantRef('install')), { ...s, createdAt: serverTimestamp() });
+        added++;
+      }
+    }
+    toast(added > 0 ? `Імпортовано ${added} послуг ✓` : 'Всі послуги вже існують', added > 0 ? 'success' : 'info');
+    loadInstall();
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.adminImportTariffs = async function() {
+  if (!confirm('Імпортувати стандартні тарифи у Firebase? Існуючі записи НЕ будуть перезаписані.')) return;
+  const DEFAULT_TARIFFS = [
+    { code:'TAR-BASE',  name:'Base 300',     price:300, period:'міс', spec:'300 МБ трафік, Kyivstar/Vodafone, GPS тільки трафік', active:true },
+    { code:'TAR-FUEL',  name:'Fuel-Can 330', price:330, period:'міс', spec:'330 МБ трафік + CAN-дані, ДВРП підтримка', active:true },
+    { code:'TAR-RENT',  name:'Rent 460',     price:460, period:'міс', spec:'460 МБ, 2 SIM + роумінг EU, оренда трекера включена', active:true },
+    { code:'TAR-PERS',  name:'Personal 250', price:250, period:'міс', spec:'250 МБ, базовий трекінг, 1 SIM. Мобільний додаток X-GPS Tracker.',
+      appIos:'https://apps.apple.com/us/app/x-gps-tracker/id1612047534',
+      appAndroid:'https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker', active:true },
+    { code:'TAR-ROAM',  name:'Roaming 400',  price:400, period:'міс', spec:'Тарифний план "Україна 30" + Країни ЄС. Роумінг EU + UA.', active:true },
+    { code:'TAR-TIPS',  name:'Tipster 140',  price:140, period:'міс', spec:'140 МБ, TIPSTER фіксований IP, M2M', active:true },
+    { code:'TAR-HOLD',  name:'Hold 90',      price:90,  period:'міс', spec:'Режим утримання, мінімальний трафік, без авто-оновлень', active:true },
+  ];
+  try {
+    const snap = await getDocs(collection(db, tenantRef('tariffs')));
+    const existingCodes = new Set(snap.docs.map(d => d.data().code));
+    let added = 0;
+    for (const t of DEFAULT_TARIFFS) {
+      if (!existingCodes.has(t.code)) {
+        await addDoc(collection(db, tenantRef('tariffs')), { ...t, createdAt: serverTimestamp() });
+        added++;
+      }
+    }
+    toast(added > 0 ? `Імпортовано ${added} тарифів ✓` : 'Всі тарифи вже існують', added > 0 ? 'success' : 'info');
+    loadTariffs();
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
 </script>
 </body>
 </html>
