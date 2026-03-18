@@ -2545,7 +2545,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         <span class="count" id="cnt-cargo">0</span>
       </div>
       <div class="nav-item" id="nav-other-brands" onclick="showSection('other-brands')" style="display:none">
-        Ігла
+        Інші бренди
         <span class="count" id="cnt-other-brands">0</span>
       </div>
     </div>
@@ -2833,7 +2833,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
       <div class="page-section" id="sec-other-brands">
         <div class="page-header">
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
-            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)" id="other-brands-title">Ігла</span>
+            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)" id="other-brands-title">Інші бренди</span>
           </div>
           <div class="page-subtitle" style="font-size:13.5px;line-height:1.65;color:var(--text-2);max-width:820px">
             Обладнання від додаткових виробників та партнерів TIPSTER.
@@ -4224,7 +4224,17 @@ const accessories = {
     { code:"ACC-BAT-1000",   article:"BAT-LION-1000",   name:"Резервна батарея 3.7V 1000mAh",program:"Батарея", series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:9.00,  retailPrice:14.00, spec:"Li-Ion, 3.7V 1000mAh, замінна батарея для трекерів" },
     { code:"ACC-FUSE-2A",    article:"FUSE-2A-HOLD",    name:"Запобіжник 2A + тримач",       program:"Кабель",  series:"Живлення",brand:"Аксесуар", currency:"USD", partnerPrice:1.50,  retailPrice:3.00,  spec:"Стандартний запобіжник для захисту живлення трекера" },
   ],
-  sim: [] // завантажується з Firebase,
+  sim: [
+    { code:'SIM-KS',  name:"SIM-карта Kyivstar 24 МБ Multi",
+      spec:"Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.",
+      price_uah:35, url:null, brand:'kyivstar' },
+    { code:'SIM-VF',  name:"SIM-карта Vodafone 24 МБ Multi",
+      spec:"Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.",
+      price_uah:35, url:null, brand:'vodafone' },
+    { code:'SIM-EU',  name:"SIM Roaming (EU+UA)",
+      spec:"Фізична Multi-SIM. Вартість сплачується один раз при замовленні. Мінімальне замовлення — 10 шт.",
+      price_uah:250, url:null, brand:'roaming' },
+  ],
   mount: [
     { code:"ACC-MNT-DIN",  article:"MNT-DIN-RAIL",   name:"Кронштейн DIN для трекера",     program:"Монтаж",  series:"Монтаж",  brand:"Аксесуар", currency:"USD", partnerPrice:5.00, retailPrice:8.00,  spec:"Металевий кронштейн на DIN-рейку для монтажу в щиток" },
     { code:"ACC-MNT-3M",   article:"MNT-3M-VHB",     name:"Двосторонній скотч 3M (5шт)",   program:"Монтаж",  series:"Монтаж",  brand:"Аксесуар", currency:"USD", partnerPrice:3.00, retailPrice:5.00,  spec:"3M VHB, 25x50mm, для монтажу трекера на кузов" },
@@ -4915,7 +4925,7 @@ function renderOtherBrands() {
   // Оновити заголовок
   const title = document.getElementById('other-brands-title');
   if (title && brand) title.textContent = brand;
-  else if (title) title.textContent = 'Ігла';
+  else if (title) title.textContent = 'Інші бренди';
 
   const wrap = document.getElementById('other-brands-table-wrap');
   if (wrap) wrap.innerHTML = buildTable(items, {}, true);
@@ -6451,26 +6461,57 @@ window.loadFirestoreInstall = async function() {
 window.loadFirestoreSimcards = async function() {
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/simcards'));
-    accessories.sim = [];
+    if (snap.empty) return;
+    const fsSims = [];
     snap.forEach(d => {
       const s = d.data();
       if (s.active === false) return;
-      accessories.sim.push({
-        code:      s.code || '',
-        name:      s.name || '',
-        spec:      s.spec || '',
-        price_uah: s.price || 0,
-        brand:     s.brand || 'other',
-        color:     s.color || '',
+      fsSims.push({
+        code:        s.code || '',
+        name:        s.name || '',
+        spec:        s.spec || '',
         description: s.description || '',
+        price_uah:   s.price || 0,
+        brand:       s.brand || 'other',
+        currency:  'UAH',
+        partnerPrice: s.price || 0,
+        retailPrice:  s.price || 0,
+        series:    'SIM',
+        program:   'SIM',
+        _fromFirestore: true,
       });
     });
-    // Якщо тарифи вже рендерились — скидаємо кеш
+    if (!fsSims.length) return;
+    // Оновити accessories.sim (звідти renderTariffs бере SIM-карти)
+    if (typeof accessories !== 'undefined') {
+      const existingCodes = new Set((accessories.sim || []).map(s => s.code));
+      if (!accessories.sim) accessories.sim = [];
+      fsSims.forEach(s => {
+        if (!existingCodes.has(s.code)) accessories.sim.push(s);
+      });
+    }
+    // Також оновити extraEquipment.sim
+    if (typeof extraEquipment !== 'undefined') {
+      const existingCodes2 = new Set((extraEquipment.sim || []).map(s => s.code));
+      if (!extraEquipment.sim) extraEquipment.sim = [];
+      fsSims.forEach(s => {
+        if (!existingCodes2.has(s.code)) extraEquipment.sim.push(s);
+      });
+    }
+    // Додати в cartRegistry
+    fsSims.forEach(s => {
+      if (typeof cartRegistry !== 'undefined') {
+        cartRegistry.set(s.code, { article: s.code, name: s.name, spec: s.spec, _uah: s.price_uah, note: s.price_uah + ' ₴' });
+      }
+    });
+    // Скинути кеш тарифів щоб SIM оновились
     window._tariffsRendered = false;
-    const tc = document.getElementById('tariffs-container');
-    if (tc && tc.innerHTML) { tc.innerHTML = ''; }
+    const tarContainer = document.getElementById('tariffs-container');
+    if (tarContainer) tarContainer.innerHTML = '';
+    if (typeof renderTariffs === 'function') renderTariffs();
   } catch(e) { console.warn('loadFirestoreSimcards:', e); }
 };
+
 // ── Рендер секції Контакти з Firestore даних ─────────
 function renderContactsSection(d) {
   // Subtitle
