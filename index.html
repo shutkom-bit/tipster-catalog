@@ -1206,6 +1206,20 @@ body[data-role="client"] .cell-price-eur,
 body[data-role="client"] th.cell-price-eur { display: none !important; }
 body[data-role="client"] .cell-retail,
 body[data-role="client"] th.cell-retail { display: table-cell !important; }
+body[data-role="client"] div.cell-retail,
+body[data-role="client"] button.cell-retail { display: block !important; }
+body[data-role="partner"] div.cell-retail,
+body[data-role="partner"] button.cell-retail { display: block !important; }
+body[data-role="admin"] div.cell-retail,
+body[data-role="admin"] button.cell-retail { display: block !important; }
+/* Картки аксесуарів — ціни */
+body[data-role="client"] .card-price-val.partner,
+body[data-role="client"] .card-price-eur { display: none !important; }
+body[data-role="client"] .card-price-val.retail { display: block !important; }
+body[data-role="partner"] .card-price-val,
+body[data-role="partner"] .card-price-eur,
+body[data-role="admin"] .card-price-val,
+body[data-role="admin"] .card-price-eur { display: block !important; }
 
 /* ── Auth bar завжди видимий після логіну ── */
 body[data-role="client"] #auth-user-bar,
@@ -4965,7 +4979,7 @@ function buildTable(items, urlMap, showSpec) {
           <td class="cell-price-eur">${p.retailPrice.toFixed(2)} ${p.currency}</td>
           <td class="cell-partner">${fmt(partner)} ₴</td>
           <td class="cell-retail">${fmt(retail)} ₴</td>
-          <td><button class="btn-add-cart" onclick="addToCartById('${p.code}')">+</button></td>
+          <td class="cell-retail"><button class="btn-add-cart" onclick="addToCartById('${p.code}')">+</button></td>
         </tr>`;
       }).join('')}
     </tbody>
@@ -5088,7 +5102,7 @@ function makeCard(item, currency='USD') {
             <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px">${item.name}</div>
             <div style="font-size:12px;color:rgba(255,255,255,.85);line-height:1.55;flex:1">${descText}</div>
             <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:${bs.accent};margin-bottom:10px">${fmt(item.price_uah)} ₴ · разова оплата</div>
-            <button class="btn-add-cart" style="width:100%;justify-content:center;${bs.btn}" onclick="event.stopPropagation();addToCartById('${cartCode}')">+ У кошик</button>
+            <button class="btn-add-cart cell-retail" style="width:100%;justify-content:center;${bs.btn}" onclick="event.stopPropagation();addToCartById('${cartCode}')">+ У кошик</button>
           </div>
         </div>
       </div>`;
@@ -5103,7 +5117,7 @@ function makeCard(item, currency='USD') {
           <div class="card-price-eur">разова оплата</div>
         </div>
       </div>
-      <button class="btn-add-cart" style="margin-top:10px;width:100%;justify-content:center" onclick="addToCartById('${cartCode}')">+ У кошик</button>
+      <button class="btn-add-cart cell-retail" style="margin-top:10px;width:100%;justify-content:center" onclick="addToCartById('${cartCode}')">+ У кошик</button>
     </div>`;
   }
   const priceHtml = item.note
@@ -5129,8 +5143,8 @@ function makeCard(item, currency='USD') {
     return `<div class="card">
       <div class="card-title">${nameHtml}</div>
       <div class="card-spec">${item.spec}</div>
-      <div class="card-prices">${priceHtml}</div>
-      <button class="btn-add-cart" style="margin-top:10px;width:100%;justify-content:center" onclick="addToCartById('${cCode}')">+ У кошик</button>
+      <div class="card-prices cell-retail">${priceHtml}</div>
+      <button class="btn-add-cart cell-retail" style="margin-top:10px;width:100%;justify-content:center" onclick="addToCartById('${cCode}')">+ У кошик</button>
     </div>`;
   }
   return `<div class="card">
@@ -6064,7 +6078,7 @@ function renderInstall() {
         <table class="db-table">
           <thead><tr>
             <th>Код</th><th>Послуга</th><th>Опис</th>
-            <th style="text-align:right">Вартість, ₴</th><th></th>
+            <th class="cell-retail" style="text-align:right">Вартість, ₴</th><th class="cell-retail"></th>
           </tr></thead>
           <tbody>
             ${INSTALL_SERVICES.map(s => {
@@ -6074,8 +6088,8 @@ function renderInstall() {
                 <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3)">${s.code}</td>
                 <td style="font-weight:500">${s.name}</td>
                 <td style="font-size:12px;color:var(--text-2)">${s.spec}</td>
-                <td style="font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:600;color:var(--accent)">${s.price.toLocaleString('uk-UA')} ₴</td>
-                <td><button class="btn-add-cart" onclick="addToCartById('${id}')">+ Кошик</button></td>
+                <td class="cell-retail" style="font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:600;color:var(--accent)">${s.price.toLocaleString('uk-UA')} ₴</td>
+                <td><button class="btn-add-cart cell-retail" onclick="addToCartById('${id}')">+ Кошик</button></td>
               </tr>`;
             }).join('')}
           </tbody>
@@ -6120,13 +6134,13 @@ function renderTariffs() {
               <div class="tariff-flip-front">
                 <div class="tariff-code">${t.code}</div>
                 <div class="tariff-name">${t.name}</div>
-                <div class="tariff-price">${t.price} <span class="tariff-currency">₴</span><span class="tariff-period">/${t.period}</span></div>
+                <div class="tariff-price cell-retail">${t.price} <span class="tariff-currency">₴</span><span class="tariff-period">/${t.period}</span></div>
                 <div class="tariff-flip-hint">Натисніть для деталей →</div>
               </div>
               <div class="tariff-flip-back" style="${t.color ? 'background:'+t.color+';border-color:'+t.color : ''}">
                 <div class="tariff-back-name">${t.name}</div>
                 <div class="tariff-back-spec">${t.spec}</div>
-                <div class="tariff-back-price">${t.price} ₴/${t.period}</div>
+                <div class="tariff-back-price cell-retail">${t.price} ₴/${t.period}</div>
                 ${t.appIos || t.appAndroid ? `<div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
                   ${t.appIos ? `<a href="${t.appIos}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.18);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.35)">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -6135,7 +6149,7 @@ function renderTariffs() {
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.341L5.42 2.065a1.5 1.5 0 00-2.419 1.77l6.108 8.386-6.108 8.385a1.5 1.5 0 002.419 1.77l12.103-13.276a1.5 1.5 0 000-3.759z"/></svg>
                     Google Play</a>` : ''}
                 </div>` : ''}
-                <button class="btn-add-cart tariff-back-cta" onclick="event.stopPropagation();addToCartById('${t.code}')">+ Додати в кошик</button>
+                <button class="btn-add-cart tariff-back-cta cell-retail" onclick="event.stopPropagation();addToCartById('${t.code}')">+ Додати в кошик</button>
               </div>
             </div>
           </div>`;
@@ -6651,8 +6665,8 @@ window.loadFirestoreInstall = async function() {
           <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3)">${s.code}</td>
           <td style="font-weight:500">${s.name}</td>
           <td style="font-size:12px;color:var(--text-2)">${s.spec||''}</td>
-          <td style="font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:600;color:var(--accent)">${price.toLocaleString('uk-UA')} ₴</td>
-          <td><button class="btn-add-cart" onclick="addToCartById('${s.code}')">+ Кошик</button></td>`;
+          <td class="cell-retail" style="font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:600;color:var(--accent)">${price.toLocaleString('uk-UA')} ₴</td>
+          <td class="cell-retail"><button class="btn-add-cart" onclick="addToCartById('${s.code}')">+ Кошик</button></td>`;
         tbody.appendChild(tr);
       });
     }
