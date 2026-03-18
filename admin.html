@@ -1086,6 +1086,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="page-title">SIM-карти</div>
       <div class="page-subtitle">Фізичні SIM-карти для GPS-трекерів</div>
       <div class="toolbar">
+        <button class="btn btn-secondary" onclick="adminImportSIM()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
+          Імпорт SIM-карт (3)
+        </button>
         <button class="btn btn-primary" onclick="openSimModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати SIM
@@ -2825,6 +2829,38 @@ window.adminImportDRP = async function() {
     {code:'IGLA-CBL-CFG',article:'ІГЛА-КБЛ-КФГ',name:'Кабель Конфігуратора з роз\'ємом',currency:'USD',partnerPrice:13.25,retailPrice:15.15,series:'Аксесуари',program:'Кабелі',brand:'Ігла',spec:'Кабель для підключення конфігуратора до датчика; з роз\'ємами',active:true}
   ];
   await _importProducts(DATA, 'ДРП (Ігла)');
+};
+
+
+// ════════════════════════════════════════════════════
+// ІМПОРТ SIM-КАРТ
+// ════════════════════════════════════════════════════
+window.adminImportSIM = async function() {
+  if (!confirm('Імпортувати 3 SIM-карти у Firebase? Дублі пропускаються.')) return;
+  const DATA = [
+    { code:'SIM-KS', name:'SIM-карта Kyivstar 24 МБ Multi',
+      spec:'Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.',
+      price:35, brand:'kyivstar', active:true },
+    { code:'SIM-VF', name:'SIM-карта Vodafone 24 МБ Multi',
+      spec:'Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.',
+      price:35, brand:'vodafone', active:true },
+    { code:'SIM-EU', name:'SIM Roaming (EU+UA)',
+      spec:'Фізична Multi-SIM. Вартість сплачується один раз при замовленні. Мінімальне замовлення — 10 шт.',
+      price:250, brand:'roaming', active:true },
+  ];
+  try {
+    const snap = await getDocs(collection(db, tenantRef('simcards')));
+    const existingCodes = new Set(snap.docs.map(d => d.data().code || ''));
+    let added = 0;
+    for (const s of DATA) {
+      if (!existingCodes.has(s.code)) {
+        await addDoc(collection(db, tenantRef('simcards')), { ...s, createdAt: serverTimestamp() });
+        added++;
+      }
+    }
+    toast(added > 0 ? `Імпортовано ${added} SIM-карт ✓` : 'SIM-карти вже існують');
+    loadSimcards();
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
 };
 
 </script>
