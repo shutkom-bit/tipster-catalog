@@ -4069,7 +4069,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
     <button class="auth-btn" onclick="window.refreshUserRole && window.refreshUserRole()" style="background:var(--accent);margin-bottom:8px">
       🔄 Перевірити статус акаунту
     </button>
-    <button class="auth-btn" onclick="hideOverlays()" style="background:var(--sidebar-bg);color:var(--text-2);border:1px solid var(--border);margin-bottom:8px">
+    <button class="auth-btn" onclick="window._pendingBrowsing=true;hideOverlays();" style="background:var(--sidebar-bg);color:var(--text-2);border:1px solid var(--border);margin-bottom:8px">
       👁 Переглянути каталог без цін
     </button>
     <button onclick="if(window.fbSignOut)fbSignOut();" style="margin-top:4px;background:none;border:none;color:var(--text-3);font-size:12px;cursor:pointer;font-family:inherit;text-decoration:underline">Вийти з акаунту</button>
@@ -6833,6 +6833,7 @@ function hideOverlays() {
 
 // ── Вихід з акаунту ──────────────────────────────────────
 window.fbSignOut = async function() {
+  window._pendingBrowsing = false;
   try {
     await signOut(auth);
   } catch(e) {
@@ -6864,8 +6865,11 @@ function applyRole(role) {
   // Pending — overlay поверх каталогу, без цін
   if (role === 'pending') {
     document.body.removeAttribute('data-role');
-    showOverlay('pending-overlay');
     updateAuthHeader();
+    // Якщо юзер вже обрав "Переглянути без цін" — не показуємо overlay знову
+    if (!window._pendingBrowsing) {
+      showOverlay('pending-overlay');
+    }
     return;
   }
 
@@ -6906,11 +6910,19 @@ window.updateAuthHeader = function updateAuthHeader() {
 window.refreshUserRole = async function() {
   const user = window._fbUser;
   if (!user) return;
+  window._pendingBrowsing = false; // скидаємо — щоб показати нову роль
   try {
     const snap = await getDoc(doc(db, 'users', user.uid));
     if (snap.exists()) {
       const role = snap.data().role || 'pending';
       applyRole(role);
+      if (role !== 'pending') {
+        loadTenantSettings();
+        loadFirestoreProducts();
+        loadFirestoreTariffs();
+        loadFirestoreInstall();
+        loadFirestoreSimcards();
+      }
     }
   } catch(e) { console.warn('refreshUserRole:', e); }
 };
