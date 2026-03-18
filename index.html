@@ -4207,7 +4207,7 @@ const PROGRAM_TAG = {
 };
 
 // Товари — статичний масив як fallback + доповнюється з Firebase
-const products = [
+window.products = [
   { mode:"fixed", code:"FMB900",    article:"FMB900AGCO01",        name:"FMB900",                                  currency:"USD", partnerPrice:37.80, retailPrice:41.40, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер початкового рівня. Компактний, вбудована антена GNSS/GSM. Ідеально для базового моніторингу транспорту." },
   { mode:"fixed", code:"FMB910",    article:"FMB910AGCO01",        name:"FMB910",                                  currency:"USD", partnerPrice:43.20, retailPrice:47.09, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер з зовнішнього роз'єму антени. 1 SIM, вбудована батарея, компактний." },
   { mode:"fixed", code:"FMB920",    article:"FMB920YJX01",         name:"FMB920",                                  currency:"USD", partnerPrice:46.80, retailPrice:51.75, series:"2G",    program:"BASIC",    brand:"Teltonika", spec:"2G трекер з 2 SIM-картами та зовнішньою антеною. Підтримка резервного живлення." },
@@ -6306,6 +6306,7 @@ function renderAll() {
 </div>
 
 <script type="module">
+// Alias для доступу до глобального масиву products
 // ══════════════════════════════════════════════════════════
 //  FIREBASE — Auth + Firestore
 // ══════════════════════════════════════════════════════════
@@ -6363,12 +6364,13 @@ async function loadFirestoreProducts() {
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/products'));
     if (snap.empty) return; // статичні залишаються
-    const existingCodes = new Set(products.map(p => p.code || p.article || ''));
+    const prods = window.products || [];
+    const existingCodes = new Set(prods.map(p => p.code || p.article || ''));
     snap.forEach(d => {
       const p = d.data();
       if (p.active === false) return;
       if (existingCodes.has(p.code || p.article || '')) return; // не дублюємо
-      products.push({
+      prods.push({
         mode:         'fixed',
         code:         p.code || p.article || d.id,
         article:      p.article || p.code || '',
@@ -6388,10 +6390,11 @@ async function loadFirestoreProducts() {
     // Оновлюємо лічильники sidebar
     const knownBrands = new Set(['Teltonika', 'Bitrek', 'CARGO']);
 
-    const tltCount   = products.filter(p => p.brand === 'Teltonika').length;
-    const bitCount   = products.filter(p => p.brand === 'Bitrek').length;
-    const cargoCount = products.filter(p => p.brand === 'CARGO').length;
-    const otherCount = products.filter(p => !knownBrands.has(p.brand) && p.brand !== 'Ігла').length;
+    const allProds   = window.products || [];
+    const tltCount   = allProds.filter(p => p.brand === 'Teltonika').length;
+    const bitCount   = allProds.filter(p => p.brand === 'Bitrek').length;
+    const cargoCount = allProds.filter(p => p.brand === 'CARGO').length;
+    const otherCount = allProds.filter(p => !knownBrands.has(p.brand) && p.brand !== 'Ігла').length;
 
     const setCount = (id, n) => { const el = document.getElementById(id); if(el) el.textContent = n; };
     const setVis   = (id, show) => { const el = document.getElementById(id); if(el) el.style.display = show ? '' : 'none'; };
