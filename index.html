@@ -4776,6 +4776,10 @@ function filterBitrekSeries(s) {
 // ════════════════════════════════════════════════════════
 //  RENDER OVERVIEW
 // ════════════════════════════════════════════════════════
+function isIgla(brand) {
+  return brand === 'Ігла' || brand === 'Igla' || brand === 'ІГЛА' || brand === 'igla';
+}
+
 function renderOverview() {
   const _p = window.products || [];
   const tlt = _p.filter(p => p.brand === 'Teltonika');
@@ -4787,7 +4791,7 @@ function renderOverview() {
   const cntIglaOv = document.getElementById('cnt-other-brands');
   if(navIglaOv) navIglaOv.style.display = iglaOv.length>0?'':'none';
   if(cntIglaOv) cntIglaOv.textContent = iglaOv.length;
-  const igla = products.filter(p => p.brand === 'Ігла');
+  const igla = products.filter(p => isIgla(p.brand));
   const cntIgla = document.getElementById('cnt-igla');
   if (cntIgla) cntIgla.textContent = igla.length;
   document.getElementById('overview-stats').innerHTML = `
@@ -4902,7 +4906,7 @@ function renderOtherBrands() {
 
   // Тільки Ігла
   const items = (window.products||[])
-    .filter(p => p.brand === 'Ігла')
+    .filter(p => isIgla(p.brand))
     .filter(p => !brand || p.brand === brand)
     .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
                        (p.code||'').toLowerCase().includes(q) ||
@@ -6319,7 +6323,7 @@ async function loadFirestoreProducts() {
     });
 
     // Лічильники sidebar
-    const knownBrands = new Set(['Teltonika','Bitrek','CARGO']);
+    const knownBrands = new Set(['Teltonika','Bitrek','CARGO','Ігла','Igla','ІГЛА','igla']);
     const tltCount   = window.products.filter(p => p.brand==='Teltonika').length;
     const bitCount   = window.products.filter(p => p.brand==='Bitrek').length;
     const cargoCount = window.products.filter(p => p.brand==='CARGO').length;
