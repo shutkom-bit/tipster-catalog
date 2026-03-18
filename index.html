@@ -4777,8 +4777,9 @@ function filterBitrekSeries(s) {
 //  RENDER OVERVIEW
 // ════════════════════════════════════════════════════════
 function renderOverview() {
-  const tlt = products.filter(p => p.brand === 'Teltonika');
-  const bit = products.filter(p => p.brand === 'Bitrek');
+  const _p = window.products || [];
+  const tlt = _p.filter(p => p.brand === 'Teltonika');
+  const bit = _p.filter(p => p.brand === 'Bitrek');
   document.getElementById('cnt-teltonika').textContent = tlt.length;
   document.getElementById('cnt-bitrek').textContent = bit.length;
   const iglaOv = (window.products||[]).filter(p=>p.brand==='Ігла');
@@ -4790,7 +4791,7 @@ function renderOverview() {
   const cntIgla = document.getElementById('cnt-igla');
   if (cntIgla) cntIgla.textContent = igla.length;
   document.getElementById('overview-stats').innerHTML = `
-    <div class="stat-box"><div class="stat-box-label">Всього позицій</div><div class="stat-box-val">${products.length}</div></div>
+    <div class="stat-box"><div class="stat-box-label">Всього позицій</div><div class="stat-box-val">${(window.products||[]).length}</div></div>
     <div class="stat-box"><div class="stat-box-label">Teltonika</div><div class="stat-box-val">${tlt.length}</div></div>
     <div class="stat-box"><div class="stat-box-label">Bitrek</div><div class="stat-box-val">${bit.length}</div></div>
     <div class="stat-box"><div class="stat-box-label">Ігла (ДРП)</div><div class="stat-box-val">${igla.length}</div></div>
@@ -4860,7 +4861,7 @@ function renderTeltonika() {
   const q = document.getElementById('tlt-search').value.trim().toLowerCase();
   const series = document.getElementById('tlt-series').value;
   const program = document.getElementById('tlt-program').value;
-  const items = products.filter(p => p.brand === 'Teltonika')
+  const items = (window.products||[]).filter(p => p.brand === 'Teltonika')
     .filter(p => !series || p.series === series)
     .filter(p => !program || p.program === program)
     .filter(p => !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || (p.article||'').toLowerCase().includes(q));
@@ -4873,7 +4874,7 @@ function renderTeltonika() {
 function renderBitrek() {
   const q = document.getElementById('bit-search').value.trim().toLowerCase();
   const series = document.getElementById('bit-series').value;
-  const items = products.filter(p => p.brand === 'Bitrek')
+  const items = (window.products||[]).filter(p => p.brand === 'Bitrek')
     .filter(p => !series || p.series === series)
     .filter(p => !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || (p.article||'').toLowerCase().includes(q));
   document.getElementById('bit-table-wrap').innerHTML = buildTable(items, BITREK_URL, false);
@@ -4885,7 +4886,7 @@ function renderBitrek() {
 function renderCargo() {
   const q      = (document.getElementById('cargo-search')?.value || '').trim().toLowerCase();
   const series = document.getElementById('cargo-series')?.value || '';
-  const items = products
+  const items = (window.products||[])
     .filter(p => p.brand === 'CARGO')
     .filter(p => !series || (p.series||'').includes(series) || (p.name||'').includes(series))
     .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
@@ -4910,7 +4911,7 @@ function renderOtherBrands() {
   // Оновити фільтр брендів
   const sel = document.getElementById('other-brand-filter');
   if (sel) {
-    const brands = [...new Set(products.filter(p => !knownBrands.has(p.brand)).map(p => p.brand).filter(Boolean))];
+    const brands = [...new Set((window.products||[]).filter(p => !knownBrands.has(p.brand)).map(p => p.brand).filter(Boolean))];
     const current = sel.value;
     sel.innerHTML = '<option value="">Всі бренди</option>' +
       brands.map(b => `<option value="${b}" ${b===current?'selected':''}>${b}</option>`).join('');
@@ -5288,15 +5289,15 @@ const PROD_META = {
 // ════════════════════════════════════════════════════════
 function renderDRP() {
   // Bitrek fuel sensors
-  const bitrekFuel = products.filter(p => p.brand==='Bitrek' && (p.series==='ДРП' || p.program==='Паливо'));
+  const bitrekFuel = (window.products||[]).filter(p => p.brand==='Bitrek' && (p.series==='ДРП' || p.program==='Паливо'));
   document.getElementById('drp-bitrek-table').innerHTML = buildTable(bitrekFuel, BITREK_URL, false);
 
   // Ігла sensors (all — ДВРП + accessories)
-  const iglaAll = products.filter(p => p.brand==='Ігла');
+  const iglaAll = (window.products||[]).filter(p => p.brand==='Ігла');
   document.getElementById('drp-igla-table').innerHTML = buildTable(iglaAll, {}, false);
 
   // Teltonika with RS485 (compatible with fuel sensors)
-  const tltRS = products.filter(p => p.brand==='Teltonika' && (PROD_META[p.code]||[]).includes('RS485'));
+  const tltRS = (window.products||[]).filter(p => p.brand==='Teltonika' && (PROD_META[p.code]||[]).includes('RS485'));
   document.getElementById('drp-teltonika-table').innerHTML = buildTable(tltRS, TELTONIKA_URL, false);
 }
 
