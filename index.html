@@ -4865,7 +4865,7 @@ function showSection(id) {
   if (id === 'drp')          renderDRP();
   if (id === 'configurator') renderConfigurator();
   if (id === 'overview')     renderOverview();
-  if (id === 'install')      { renderInstall(); if(window.loadFirestoreInstall) window.loadFirestoreInstall(); }
+  if (id === 'install')      renderInstall();
   if (id === 'tariffs')      renderTariffs();
   if (id === 'navixy')       renderNavixy();
   if (id === 'kits')         { renderKits(); renderPOD(); renderPOD2(); }
@@ -6053,30 +6053,17 @@ function cartShowToast(msg) {
 // ══════════════════════════════════════════════════════════
 // INSTALL SERVICES
 // ══════════════════════════════════════════════════════════
-const INSTALL_SERVICES = [
-  { code:'SVC-CONFIG', name:'Налаштування трекера', price:600, spec:'Конфігурація FMB/FTC/BI серії, тестування зв\'язку' },
-  { code:'SVC-MONT-LA', name:'Монтаж легкове авто', price:1600, spec:'Встановлення трекера у легкове авто, прихована проводка' },
-  { code:'SVC-MONT-TR', name:'Монтаж вантажівка/автобус', price:2400, spec:'Встановлення трекера у вантажний транспорт або автобус' },
-  { code:'SVC-MONT-SP', name:'Монтаж спецтехніка', price:3200, spec:'Встановлення на спецтехніку, нестандартні схеми' },
-  { code:'SVC-TAR-S', name:'Активація тарифу', price:1200, spec:'Підключення SIM-карти, налаштування APN, тест зв\'язку' },
-  { code:'SVC-IGNITON', name:'Підключення запалення', price:400, spec:'Підключення до шини запалення авто' },
-  { code:'SVC-RELAY', name:'Встановлення реле', price:800, spec:'Монтаж реле блокування двигуна' },
-  { code:'SVC-TEMP', name:'Температурний датчик', price:600, spec:'Встановлення датчика температури в кузов або двигун' },
-  { code:'SVC-FUEL', name:'Датчик рівня палива', price:2200, spec:'Монтаж ємнісного датчика ДРП в бак' },
-  { code:'SVC-IBUTTON', name:'Ідентифікатор водія', price:500, spec:'Встановлення зчитувача iButton, прив\'язка до платформи' },
-  { code:'SVC-CHECK', name:'Діагностика обладнання', price:400, spec:'Перевірка трекера, аналіз логів, усунення несправностей' },
-  { code:'SVC-DISMANTLE', name:'Демонтаж трекера', price:400, spec:'Зняття трекера та відновлення штатної проводки' },
-];
+// Послуги завантажуються виключно з Firebase (admin panel)
+let INSTALL_SERVICES = [];
 
-window._installRendered = false;
-let _installRendered = false;
 function renderInstall() {
-  if (window._installRendered) return;
-  window._installRendered = true;
-  _installRendered = true;
   const container = document.getElementById('install-container');
   if (!container) return;
-  const eur = parseFloat(document.getElementById('eurRate')?.value || 44.5);
+  if (!INSTALL_SERVICES.length) {
+    container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-3);font-size:13px">⏳ Завантаження послуг…</div>';
+    return;
+  }
+  const active = INSTALL_SERVICES.filter(s => s.active !== false);
   container.innerHTML = `
     <div class="section">
       <div class="section-title">Послуги встановлення та налаштування</div>
@@ -6087,16 +6074,16 @@ function renderInstall() {
             <th class="cell-retail" style="text-align:right">Вартість, ₴</th><th class="cell-retail"></th>
           </tr></thead>
           <tbody>
-            ${INSTALL_SERVICES.map(s => {
+            ${active.map(s => {
               const id = s.code;
-              cartRegistry.set(id, { article:id, name:s.name, spec:s.spec, _uah:s.price, note: s.price + ' ₴' });
-              return `<tr data-code="${id}">
-                <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3)">${s.code}</td>
-                <td style="font-weight:500">${s.name}</td>
-                <td style="font-size:12px;color:var(--text-2)">${s.spec}</td>
-                <td class="cell-retail" style="font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:600;color:var(--accent)">${s.price.toLocaleString('uk-UA')} ₴</td>
-                <td><button class="btn-add-cart cell-retail" onclick="addToCartById('${id}')">+ Кошик</button></td>
-              </tr>`;
+              cartRegistry.set(id, { article:id, name:s.name, spec:s.spec||'', _uah:s.price||0, note:(s.price||0)+' ₴' });
+              return '<tr data-code="'+id+'">' +
+                '<td style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;color:var(--text-3)">'+s.code+'</td>' +
+                '<td style="font-weight:500">'+s.name+'</td>' +
+                '<td style="font-size:12px;color:var(--text-2)">'+(s.spec||'')+'</td>' +
+                '<td class="cell-retail" style="font-family:\'IBM Plex Mono\',monospace;text-align:right;font-weight:600;color:var(--accent)">'+(s.price||0).toLocaleString('uk-UA')+' ₴</td>' +
+                '<td><button class="btn-add-cart cell-retail" onclick="addToCartById(\''+id+'\')">+ Кошик</button></td>' +
+                '</tr>';
             }).join('')}
           </tbody>
         </table>
@@ -6107,24 +6094,12 @@ function renderInstall() {
 // ══════════════════════════════════════════════════════════
 // TARIFFS
 // ══════════════════════════════════════════════════════════
-const TARIFFS_DATA = [
-  { code:'TAR-BASE',    name:'Base 300',     price:300,  period:'міс', spec:'300 МБ трафік, Kyivstar/Vodafone, GPS тільки трафік' },
-  { code:'TAR-FUEL',    name:'Fuel-Can 330', price:330,  period:'міс', spec:'330 МБ трафік + CAN-дані, ДВРП підтримка' },
-  { code:'TAR-RENT',    name:'Rent 460',     price:460,  period:'міс', spec:'460 МБ, 2 SIM + роумінг EU, оренда трекера включена' },
-  { code:'TAR-PERS',    name:'Personal 250', price:250,  period:'міс', spec:'250 МБ, базовий трекінг, 1 SIM. Мобільний додаток X-GPS Tracker.',
-    appIos:'https://apps.apple.com/us/app/x-gps-tracker/id1612047534',
-    appAndroid:'https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker' },
-  { code:'TAR-ROAM',    name:'Roaming 400',  price:400,  period:'міс', spec:'Тарифний план "Україна 30" + Країни ЄС. Роумінг EU + UA.' },
-  { code:'TAR-TIPS',    name:'Tipster 140',  price:140,  period:'міс', spec:'140 МБ, TIPSTER фіксований IP, M2M' },
-  { code:'TAR-HOLD',    name:'Hold 90',      price:90,   period:'міс', spec:'Режим утримання, мінімальний трафік, без авто-оновлень' },
-];
+// Тарифи завантажуються виключно з Firebase (admin panel)
+let TARIFFS_DATA = [];
 
-window._tariffsRendered = false;
-let _tariffsRendered = false;
 function renderTariffs() {
   if (window._tariffsRendered) return;
   window._tariffsRendered = true;
-  _tariffsRendered = true;
   const c = document.getElementById('tariffs-container');
   if (!c) return;
   const simItems = accessories.sim || [];
@@ -6595,40 +6570,18 @@ window.renderFirestoreKits = async function() {
 window.loadFirestoreTariffs = async function() {
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/tariffs'));
-    if (snap.empty) return;
-    const fsTariffs = [];
-    snap.forEach(d => {
-      const t = d.data();
-      if (t.active === false) return;
-      fsTariffs.push(t);
+    TARIFFS_DATA = [];
+    snap.forEach(d => { TARIFFS_DATA.push(d.data()); });
+    // Реєструємо в кошику
+    TARIFFS_DATA.filter(t => t.active !== false).forEach(t => {
+      cartRegistry.set(t.code, { article:t.code, name:'Тариф '+t.name, spec:t.spec||'', _uah:t.price||0, note:(t.price||0)+' ₴/міс' });
     });
-    if (!fsTariffs.length) return;
-    // Доповнити TARIFFS_DATA (уникаємо дублікатів по code)
-    if (typeof TARIFFS_DATA !== 'undefined') {
-      const existingCodes = new Set(TARIFFS_DATA.map(t => t.code));
-      fsTariffs.forEach(t => {
-        if (!existingCodes.has(t.code)) TARIFFS_DATA.push(t);
-        else {
-          // Оновити існуючий запис
-          const idx = TARIFFS_DATA.findIndex(x => x.code === t.code);
-          if (idx >= 0) TARIFFS_DATA[idx] = t;
-        }
-      });
-    }
-    // Скинути кеш і перерендерити завжди
-    if (typeof window !== 'undefined') window._tariffsRendered = false;
-    // Хак для доступу до змінної в іншому script scope
-    const tarSec = document.getElementById('sec-tariffs');
-    if (tarSec) {
-      // Очистити контейнер щоб примусити перерендер
-      const tc = document.getElementById('tariffs-container');
-      if (tc) tc.innerHTML = '';
-      // Викликати renderTariffs через глобальний scope
-      if (typeof renderTariffs === 'function') {
-        window._tariffsRendered = false;
-        renderTariffs();
-      }
-    }
+    // Рендеримо якщо секція відкрита
+    window._tariffsRendered = false;
+    const tc = document.getElementById('tariffs-container');
+    if (tc) tc.innerHTML = '';
+    const sec = document.getElementById('sec-tariffs');
+    if (sec && sec.classList.contains('active')) renderTariffs();
   } catch(e) { console.warn('loadFirestoreTariffs:', e); }
 };
 
@@ -6636,46 +6589,15 @@ window.loadFirestoreTariffs = async function() {
 window.loadFirestoreInstall = async function() {
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/install'));
-    if (snap.empty) return;
-    const fsInstall = [];
-    snap.forEach(d => {
-      const s = d.data();
-      if (s.active === false) return;
-      fsInstall.push(s);
+    INSTALL_SERVICES = [];
+    snap.forEach(d => { INSTALL_SERVICES.push(d.data()); });
+    // Реєструємо в кошику
+    INSTALL_SERVICES.filter(s => s.active !== false).forEach(s => {
+      cartRegistry.set(s.code, { article:s.code, name:s.name, spec:s.spec||'', _uah:s.price||0, note:(s.price||0)+' ₴' });
     });
-    if (!fsInstall.length) return;
-
-    // Доповнити INSTALL_SERVICES (уникаємо дублікатів по code)
-    if (typeof INSTALL_SERVICES !== 'undefined') {
-      const existingCodes = new Set(INSTALL_SERVICES.map(s => s.code));
-      fsInstall.forEach(s => {
-        if (!existingCodes.has(s.code)) INSTALL_SERVICES.push(s);
-      });
-    }
-
-    // Знайти таблицю послуг і додати нові рядки напряму
-    const tbody = document.querySelector('#install-container tbody');
-    if (tbody) {
-      const existingCodes = new Set(
-        Array.from(tbody.querySelectorAll('tr[data-code]')).map(r => r.dataset.code)
-      );
-      fsInstall.forEach(s => {
-        if (existingCodes.has(s.code)) return;
-        const price = s.price || 0;
-        if (typeof cartRegistry !== 'undefined') {
-          cartRegistry.set(s.code, { article: s.code, name: s.name, spec: s.spec||'', _uah: price, note: price + ' ₴' });
-        }
-        const tr = document.createElement('tr');
-        tr.dataset.code = s.code;
-        tr.innerHTML = `
-          <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3)">${s.code}</td>
-          <td style="font-weight:500">${s.name}</td>
-          <td style="font-size:12px;color:var(--text-2)">${s.spec||''}</td>
-          <td class="cell-retail" style="font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:600;color:var(--accent)">${price.toLocaleString('uk-UA')} ₴</td>
-          <td class="cell-retail"><button class="btn-add-cart" onclick="addToCartById('${s.code}')">+ Кошик</button></td>`;
-        tbody.appendChild(tr);
-      });
-    }
+    // Рендеримо якщо секція відкрита
+    const sec = document.getElementById('sec-install');
+    if (sec && sec.classList.contains('active')) renderInstall();
   } catch(e) { console.warn('loadFirestoreInstall:', e); }
 };
 
