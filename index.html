@@ -4851,6 +4851,11 @@ function renderOverview() {
   const bit = products.filter(p => p.brand === 'Bitrek');
   document.getElementById('cnt-teltonika').textContent = tlt.length;
   document.getElementById('cnt-bitrek').textContent = bit.length;
+  const iglaItems = products.filter(p => p.brand === 'Ігла');
+  const navIgla = document.getElementById('nav-other-brands');
+  const cntIgla = document.getElementById('cnt-other-brands');
+  if (navIgla) navIgla.style.display = iglaItems.length > 0 ? '' : 'none';
+  if (cntIgla) cntIgla.textContent = iglaItems.length;
   const igla = products.filter(p => p.brand === 'Ігла');
   const cntIgla = document.getElementById('cnt-igla');
   if (cntIgla) cntIgla.textContent = igla.length;
@@ -4967,7 +4972,7 @@ function renderOtherBrands() {
   // Всі товари НЕ Teltonika і НЕ Bitrek
   const knownBrands = new Set(['Teltonika', 'Bitrek', 'CARGO']);
   const items = products
-    .filter(p => !knownBrands.has(p.brand))
+    .filter(p => p.brand === 'Ігла')
     .filter(p => !brand || p.brand === brand)
     .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
                        (p.code||'').toLowerCase().includes(q) ||
@@ -6364,12 +6369,24 @@ async function loadFirestoreProducts() {
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/products'));
     if (snap.empty) return; // статичні залишаються
+
+    // Будуємо Set по ВСІХ можливих ключах — code і article
     const prods = window.products || [];
-    const existingCodes = new Set(prods.map(p => p.code || p.article || ''));
+    const existingKeys = new Set();
+    prods.forEach(p => {
+      if (p.code)    existingKeys.add(p.code.trim().toLowerCase());
+      if (p.article) existingKeys.add(p.article.trim().toLowerCase());
+    });
+
     snap.forEach(d => {
       const p = d.data();
       if (p.active === false) return;
-      if (existingCodes.has(p.code || p.article || '')) return; // не дублюємо
+      // Перевіряємо і code і article
+      const codeKey    = (p.code    || '').trim().toLowerCase();
+      const articleKey = (p.article || '').trim().toLowerCase();
+      if ((codeKey && existingKeys.has(codeKey)) ||
+          (articleKey && existingKeys.has(articleKey))) return; // дубль
+
       prods.push({
         mode:         'fixed',
         code:         p.code || p.article || d.id,
@@ -6389,12 +6406,14 @@ async function loadFirestoreProducts() {
 
     // Оновлюємо лічильники sidebar
     const knownBrands = new Set(['Teltonika', 'Bitrek', 'CARGO']);
+    const allProds = window.products || [];
 
-    const allProds   = window.products || [];
     const tltCount   = allProds.filter(p => p.brand === 'Teltonika').length;
     const bitCount   = allProds.filter(p => p.brand === 'Bitrek').length;
     const cargoCount = allProds.filter(p => p.brand === 'CARGO').length;
-    const otherCount = allProds.filter(p => !knownBrands.has(p.brand) && p.brand !== 'Ігла').length;
+    // Ігла — показуємо в "Ігла" (nav-other-brands)
+    const iglaCount  = allProds.filter(p => p.brand === 'Ігла').length;
+    const otherCount = allProds.filter(p => !knownBrands.has(p.brand)).length; // включає Ігла
 
     const setCount = (id, n) => { const el = document.getElementById(id); if(el) el.textContent = n; };
     const setVis   = (id, show) => { const el = document.getElementById(id); if(el) el.style.display = show ? '' : 'none'; };
@@ -6403,8 +6422,9 @@ async function loadFirestoreProducts() {
     setCount('cnt-bitrek', bitCount);
     setVis('nav-cargo', cargoCount > 0);
     setCount('cnt-cargo', cargoCount);
-    setVis('nav-other-brands', otherCount > 0);
-    setCount('cnt-other-brands', otherCount);
+    // Ігла в сайдбарі — показуємо якщо є товари з brand=Ігла
+    setVis('nav-other-brands', iglaCount > 0);
+    setCount('cnt-other-brands', iglaCount);
 
     // Рендеримо активну секцію
     if (typeof renderOverview === 'function') renderOverview();
