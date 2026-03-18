@@ -4912,19 +4912,9 @@ function renderOtherBrands() {
                        (p.code||'').toLowerCase().includes(q) ||
                        (p.article||'').toLowerCase().includes(q));
 
-  // Оновити фільтр брендів
-  const sel = document.getElementById('other-brand-filter');
-  if (sel) {
-    const brands = [...new Set((window.products||[]).filter(p => !knownBrands.has(p.brand)).map(p => p.brand).filter(Boolean))];
-    const current = sel.value;
-    sel.innerHTML = '<option value="">Всі бренди</option>' +
-      brands.map(b => `<option value="${b}" ${b===current?'selected':''}>${b}</option>`).join('');
-  }
-
   // Оновити заголовок
   const title = document.getElementById('other-brands-title');
-  if (title && brand) title.textContent = brand;
-  else if (title) title.textContent = 'Ігла';
+  if (title) title.textContent = 'Ігла';
 
   const wrap = document.getElementById('other-brands-table-wrap');
   if (wrap) wrap.innerHTML = buildTable(items, {}, true);
