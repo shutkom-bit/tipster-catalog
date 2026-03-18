@@ -5612,7 +5612,10 @@ function applyRates(rateUSD, rateEUR, dateStr, source) {
 async function fetchNBURates() {
   setNBUStatus('loading', 'завантаження…');
   try {
-    const res  = await fetch(WORKER_RATES_URL, { signal: AbortSignal.timeout(8000) });
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const res  = await fetch(WORKER_RATES_URL, { signal: ctrl.signal });
+    clearTimeout(timer);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const resp = await res.json();
 
@@ -5654,13 +5657,14 @@ async function fetchNBURates() {
   }
 }
 function onRateChange() {
-  // Re-render whichever section is active
   const active = document.querySelector('.page-section.active');
   if (!active) return;
   const id = active.id.replace('sec-', '');
   if (id === 'overview')     renderOverview();
   if (id === 'teltonika')    renderTeltonika();
   if (id === 'bitrek')       renderBitrek();
+  if (id === 'cargo')        { if(typeof renderCargo==='function') renderCargo(); }
+  if (id === 'other-brands') { if(typeof renderOtherBrands==='function') renderOtherBrands(); }
   if (id === 'accessories')  { renderAccessories(); renderExtra(); }
   if (id === 'extra')        { showSection('accessories'); return; }
   if (id === 'drp')          renderDRP();
@@ -5675,6 +5679,8 @@ function onRateChange() {
 showSection('overview');
 // Auto-fetch NBU on load
 fetchNBURates();
+// Автооновлення курсу кожні 60 хвилин
+setInterval(fetchNBURates, 60 * 60 * 1000);
 // При зміні орієнтації — закрити sidebar і перерахувати mobile mode
 window.addEventListener('orientationchange', () => {
   setTimeout(() => {
