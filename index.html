@@ -1211,6 +1211,7 @@ body[data-role="client"] th.cell-retail { display: table-cell !important; }
 body[data-role="client"] #auth-user-bar,
 body[data-role="partner"] #auth-user-bar,
 body[data-role="admin"] #auth-user-bar { display: flex !important; }
+/* pending і blocked — auth bar через JS */
 
 /* blocked — auth bar не показуємо, ціни приховані (дефолт) */
 /* Партнер — показуємо все */
@@ -3974,7 +3975,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
 </div>
 
 
-<div id="blocked-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);padding:24px">
+<div id="blocked-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:24px">
   <div class="auth-box" style="text-align:center;max-width:420px">
     <div style="font-size:48px;margin-bottom:16px">🚫</div>
     <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:800;font-size:20px;color:var(--text);margin-bottom:10px">Акаунт заблокований</div>
@@ -3991,7 +3992,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
   </div>
 </div>
 
-<div id="pending-overlay" style="display:none">
+<div id="pending-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:24px">
   <div class="auth-box" style="text-align:center">
     <svg style="height:32px;width:auto;display:block;margin:0 auto 20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1201 256" xml:space="preserve"><path fill="#FF512F" d="M1174.2,124.3c0.7,0.7,1.1,1.4,1.7,1.5c16.3,5.3,20.4,18.2,21.1,33.4c0.3,6.9,0.7,13.8,1.3,20.7
 	c0.3,2.9,1.7,5.6,2.2,8.5c1,4.7,1,9.1-6,8.9c-8-0.3-9.6-1.4-10.1-9.9c-0.6-9.4-1.3-18.7-1.7-28.1c0-7.5-2.8-14.8-7.7-20.4
@@ -6799,7 +6800,14 @@ showOverlay('login-overlay');
 function showOverlay(id) {
   ['login-overlay','register-overlay','pending-overlay','blocked-overlay'].forEach(oid => {
     const el = document.getElementById(oid);
-    if (el) el.style.display = oid === id ? 'flex' : 'none';
+    if (!el) return;
+    if (oid === id) {
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+      el.style.justifyContent = 'center';
+    } else {
+      el.style.display = 'none';
+    }
   });
 }
 function hideOverlays() {
@@ -6839,17 +6847,11 @@ function applyRole(role) {
     return;
   }
 
-  // Pending — показуємо overlay але залишаємо доступ до каталогу БЕЗ цін
+  // Pending — overlay поверх каталогу, без цін
   if (role === 'pending') {
-    document.body.removeAttribute('data-role'); // без цін
+    document.body.removeAttribute('data-role');
     showOverlay('pending-overlay');
     updateAuthHeader();
-    // Завантажуємо дані (щоб каталог працював після "Переглянути")
-    loadTenantSettings();
-    loadFirestoreProducts();
-    loadFirestoreTariffs();
-    loadFirestoreInstall();
-    loadFirestoreSimcards();
     return;
   }
 
@@ -6870,7 +6872,7 @@ window.updateAuthHeader = function updateAuthHeader() {
   if (!bar || !user) return;
   const roleLabel = { partner: '🤝 Партнер', client: 'Клієнт · РРЦ', admin: '⭐ Адмін', pending: '⏳ На розгляді', blocked: '🚫 Заблокований' };
   const pendingBanner = role === 'pending'
-    ? '<span style="font-size:11px;background:#fff3cd;color:#856404;padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #ffc107;white-space:nowrap">⏳ На розгляді — РРЦ ціни</span>'
+    ? '<span style="font-size:11px;background:#fff3cd;color:#856404;padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #ffc107;white-space:nowrap">⏳ Очікує підтвердження</span>'
     : '';
   bar.innerHTML = `
     <span style="font-size:12px;color:var(--text-2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${user.email}</span>
@@ -6879,6 +6881,10 @@ window.updateAuthHeader = function updateAuthHeader() {
     <button onclick="fbSignOut()" style="font-size:11px;padding:3px 12px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;color:var(--text-2);font-family:'IBM Plex Sans',sans-serif;white-space:nowrap;flex-shrink:0">Вийти</button>
   `;
   bar.style.cssText = 'display:flex!important;align-items:center;gap:6px;flex-shrink:0;font-family:"IBM Plex Sans",sans-serif';
+  // pending — кнопка "перевірити статус" у хедері
+  if (role === 'pending') {
+    bar.innerHTML += '<button onclick="window.refreshUserRole&&window.refreshUserRole()" style="font-size:11px;padding:3px 10px;border:1px solid #ffc107;border-radius:4px;background:#fff3cd;cursor:pointer;color:#856404;font-family:inherit;white-space:nowrap;flex-shrink:0">🔄 Перевірити статус</button>';
+  }
 }
 
 // ── Auth state listener ───────────────────────────────────
@@ -6899,8 +6905,9 @@ onAuthStateChanged(auth, async (user) => {
   localStorage.removeItem('navixy_partner_access');
   localStorage.removeItem('catalog_role');
   if (user) {
-    // Якщо роль вже застосована цим же юзером — не перезавантажувати
-    if (window._fbUser && window._fbUser.uid === user.uid && window._fbRole && window._fbRole !== 'pending') {
+    // Якщо роль вже застосована цим же юзером і це не pending/blocked — не перезавантажувати
+    if (window._fbUser && window._fbUser.uid === user.uid &&
+        window._fbRole && window._fbRole !== 'pending' && window._fbRole !== 'blocked') {
       return;
     }
     window._fbUser = user;
@@ -6914,7 +6921,8 @@ onAuthStateChanged(auth, async (user) => {
         const data = snap.data();
         const role = data.role || 'pending';
         applyRole(role);
-        if (role !== 'pending' && role !== 'blocked') {
+        if (role !== 'blocked') {
+          // pending теж завантажує дані — бачить каталог без цін
           loadTenantSettings();
           loadFirestoreProducts();
           loadFirestoreTariffs();
