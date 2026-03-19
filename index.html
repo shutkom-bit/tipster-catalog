@@ -4524,7 +4524,7 @@ function renderKits() {
   const rate = parseFloat(document.getElementById('usdRate')?.value) || 41.20;
 
   // Отримати продукти з глобального масиву
-  const allP = typeof products !== 'undefined' ? products : [];
+  const allP = window.products || [];
 
   const categories = [
     {
