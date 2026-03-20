@@ -3121,6 +3121,12 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
             <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;max-width:720px">
               Navixy — це гнучка платформа, яка працює як для кінцевих користувачів через партнерів, так і як основа для власного GPS-бізнесу чи корпоративного рішення enterprise-рівня.
             </div>
+            <div style="margin-top:16px">
+              <button onclick="nvxGeneratePDF()" class="tb-btn" style="display:inline-flex;align-items:center;gap:7px;padding:8px 18px;font-size:13px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-family:inherit;font-weight:600">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12v2h10v-2"/><path d="M8 2v8"/><polyline points="5,7 8,10 11,7"/></svg>
+                Завантажити PDF — Navixy Platform
+              </button>
+            </div>
           </div>
 
           <!-- ══ КЛІЄНТСЬКИЙ БЛОК (client/pending) ══ -->
@@ -6097,6 +6103,253 @@ const NVX_CLOUD_VOL = {
     {u:650,p:2.65,m:1722},{u:750,p:2.65,m:1988},{u:850,p:2.63,m:2236},{u:950,p:2.61,m:2480}
   ]
 };
+
+
+// ── Генерація PDF Navixy Platform ──────────────────────────
+window.nvxGeneratePDF = function() {
+  try {
+    const { jsPDF } = window.jspdf;
+    if (!jsPDF) { alert('PDF бібліотека ще завантажується. Спробуйте ще раз.'); return; }
+
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const W = 210, M = 14;
+    let y = 16;
+
+    // Кольори
+    const BLUE   = [37, 113, 208];
+    const DARK   = [22, 28, 40];
+    const GRAY   = [100, 110, 130];
+    const LGRAY  = [230, 234, 240];
+    const WHITE  = [255, 255, 255];
+    const ORANGE = [245, 158, 11];
+
+    // ── Шапка ──
+    doc.setFillColor(...BLUE);
+    doc.rect(0, 0, W, 26, 'F');
+    doc.setTextColor(...WHITE);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('TIPSTER', M, 11);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Офіційний партнер Navixy · tipster.ua', M, 17);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Navixy Platform', W - M, 11, { align: 'right' });
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Комерційна пропозиція', W - M, 17, { align: 'right' });
+
+    // Дата
+    doc.setFontSize(8);
+    doc.setTextColor(...LGRAY);
+    const dateStr = new Date().toLocaleDateString('uk-UA', { day:'2-digit', month:'long', year:'numeric' });
+    doc.text('Сформовано: ' + dateStr, W - M, 22, { align: 'right' });
+
+    y = 34;
+
+    // ── CLOUD секція ──
+    doc.setFillColor(...BLUE);
+    doc.roundedRect(M, y, W - M*2, 7, 2, 2, 'F');
+    doc.setTextColor(...WHITE);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text('CLOUD — Хмарна платформа', M + 4, y + 4.8);
+    y += 11;
+
+    // Активація
+    doc.setTextColor(...DARK);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text('Одноразова активація партнерського акаунту:', M, y);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...BLUE);
+    doc.text('$499', W - M, y, { align: 'right' });
+    y += 5;
+
+    // Мін платіж
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...GRAY);
+    doc.text('Мінімальний щомісячний платіж: $199', M, y);
+    y += 8;
+
+    // Плани Cloud — таблиця
+    doc.autoTable({
+      startY: y,
+      margin: { left: M, right: M },
+      head: [['План', 'Базова ціна / юніт / міс', 'GIS', 'Модулі']],
+      body: [
+        ['Premium', '$3.00', 'Google Maps', '8 модулів'],
+        ['Basic',   '$2.80', 'OpenStreetMap', '4 модулі + Basic GIS'],
+      ],
+      headStyles: { fillColor: BLUE, textColor: WHITE, fontSize: 8, fontStyle: 'bold' },
+      bodyStyles: { fontSize: 8, textColor: DARK },
+      alternateRowStyles: { fillColor: [245, 248, 255] },
+      columnStyles: { 0: { fontStyle: 'bold' } },
+      tableLineColor: LGRAY, tableLineWidth: 0.2,
+      theme: 'grid',
+    });
+    y = doc.lastAutoTable.finalY + 6;
+
+    // Таблиця знижок Cloud Premium
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...DARK);
+    doc.text('Pay-as-you-Go — знижки за об'ємом (Cloud Premium)', M, y);
+    y += 3;
+
+    const cloudRows = NVX_CLOUD_VOL.premium.map(r => [
+      '≤ ' + r.u + ' юн.',
+      '$' + r.p.toFixed(2),
+      '$' + r.m.toLocaleString('en-US') + (r.min ? ' (мін.)' : '')
+    ]);
+    doc.autoTable({
+      startY: y,
+      margin: { left: M, right: M + 80 },
+      head: [['Юніти', '$/юніт/міс', 'Рахунок/міс']],
+      body: cloudRows,
+      headStyles: { fillColor: [240, 245, 255], textColor: BLUE, fontSize: 7.5, fontStyle: 'bold' },
+      bodyStyles: { fontSize: 7.5, textColor: DARK },
+      rowPageBreak: 'avoid',
+      alternateRowStyles: { fillColor: [248, 250, 255] },
+      tableLineColor: LGRAY, tableLineWidth: 0.2,
+      theme: 'grid',
+    });
+
+    // Таблиця знижок Cloud Basic — поруч
+    const xRight = M + (W - M*2) / 2 + 4;
+    const startYBasic = y;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...DARK);
+    doc.text('Cloud Basic', xRight, startYBasic);
+
+    const cloudBasicRows = NVX_CLOUD_VOL.basic.map(r => [
+      '≤ ' + r.u + ' юн.',
+      '$' + r.p.toFixed(2),
+      '$' + r.m.toLocaleString('en-US') + (r.min ? ' (мін.)' : '')
+    ]);
+    doc.autoTable({
+      startY: startYBasic + 3,
+      margin: { left: xRight, right: M },
+      head: [['Юніти', '$/юніт/міс', 'Рахунок/міс']],
+      body: cloudBasicRows,
+      headStyles: { fillColor: [240, 245, 255], textColor: GRAY, fontSize: 7.5, fontStyle: 'bold' },
+      bodyStyles: { fontSize: 7.5, textColor: DARK },
+      alternateRowStyles: { fillColor: [250, 250, 252] },
+      tableLineColor: LGRAY, tableLineWidth: 0.2,
+      theme: 'grid',
+    });
+
+    y = Math.max(doc.lastAutoTable.finalY, doc.previousAutoTable?.finalY || 0) + 10;
+
+    // ── ON-PREMISE секція ──
+    doc.setFillColor(40, 50, 70);
+    doc.roundedRect(M, y, W - M*2, 7, 2, 2, 'F');
+    doc.setTextColor(...WHITE);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text('ON-PREMISE — Власна інфраструктура', M + 4, y + 4.8);
+    y += 11;
+
+    doc.setTextColor(...DARK);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text('Гарантійний платіж (одноразово):', M, y);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(40, 50, 70);
+    doc.text('$999', W - M, y, { align: 'right' });
+    y += 5;
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...GRAY);
+    doc.text('З них $500 зараховується на баланс. Мінімальний щомісячний платіж: $500', M, y);
+    y += 8;
+
+    // On-Premise Premium таблиця
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...DARK);
+    doc.text('On-Premise Premium', M, y);
+    y += 3;
+
+    const opPremRows = NVX_OP_VOL['op-premium'].map(r => [
+      '≤ ' + r.u + ' юн.',
+      '$' + r.p.toFixed(2),
+      '$' + r.m.toLocaleString('en-US') + (r.min ? ' (мін.)' : '')
+    ]);
+    doc.autoTable({
+      startY: y,
+      margin: { left: M, right: M + 80 },
+      head: [['Юніти', '$/юніт/міс', 'Рахунок/міс']],
+      body: opPremRows,
+      headStyles: { fillColor: [40, 50, 70], textColor: WHITE, fontSize: 7.5, fontStyle: 'bold' },
+      bodyStyles: { fontSize: 7.5, textColor: DARK },
+      alternateRowStyles: { fillColor: [248, 249, 252] },
+      tableLineColor: LGRAY, tableLineWidth: 0.2,
+      theme: 'grid',
+    });
+
+    const startYOpBasic = y;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...DARK);
+    doc.text('On-Premise Basic', xRight, startYOpBasic);
+
+    const opBasicRows = NVX_OP_VOL['op-basic'].map(r => [
+      '≤ ' + r.u + ' юн.',
+      '$' + r.p.toFixed(2),
+      '$' + r.m.toLocaleString('en-US') + (r.min ? ' (мін.)' : '')
+    ]);
+    doc.autoTable({
+      startY: startYOpBasic + 3,
+      margin: { left: xRight, right: M },
+      head: [['Юніти', '$/юніт/міс', 'Рахунок/міс']],
+      body: opBasicRows,
+      headStyles: { fillColor: [60, 70, 95], textColor: WHITE, fontSize: 7.5, fontStyle: 'bold' },
+      bodyStyles: { fontSize: 7.5, textColor: DARK },
+      alternateRowStyles: { fillColor: [248, 249, 252] },
+      tableLineColor: LGRAY, tableLineWidth: 0.2,
+      theme: 'grid',
+    });
+
+    y = Math.max(doc.lastAutoTable.finalY, doc.previousAutoTable?.finalY || 0) + 8;
+
+    // ── Регламент оплат ──
+    doc.setFillColor(...LGRAY);
+    doc.rect(M, y, W - M*2, 0.4, 'F');
+    y += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...DARK);
+    doc.text('Регламент оплат', M, y);
+    y += 4;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...GRAY);
+    const payment = [
+      'Рахунок формується 1-го числа за попередній місяць, оплата — до 9-го.',
+      'До 10-го несплата — тимчасове блокування Admin Panel.',
+      'До 15-го несплата — повне відключення; дані більше не зберігаються.',
+    ];
+    payment.forEach(line => { doc.text(line, M, y); y += 4.5; });
+
+    // ── Футер ──
+    const pageH = 297;
+    doc.setFillColor(...BLUE);
+    doc.rect(0, pageH - 12, W, 12, 'F');
+    doc.setTextColor(...WHITE);
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica', 'normal');
+    doc.text('TIPSTER · Офіційний партнер Navixy · tipster.ua · office@trackauto.com.ua', M, pageH - 4.5);
+    doc.text('Ціни вказані в USD. Актуальні на дату формування документу.', W - M, pageH - 4.5, { align: 'right' });
+
+    doc.save('Navixy-Platform-TIPSTER-' + new Date().toISOString().slice(0,10) + '.pdf');
+  } catch(e) {
+    console.error('PDF error:', e);
+    alert('Помилка генерації PDF: ' + e.message);
+  }
+};
+
 
 function nvxRenderCloudVol(plan) {
   const tbody = document.getElementById('nvx-cloud-vol-tbody');
