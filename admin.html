@@ -689,17 +689,9 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <option value="active">Активні</option>
           <option value="inactive">Неактивні</option>
         </select>
-        <button class="btn btn-secondary" onclick="adminImportTeltonika()">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
-          Імпорт Teltonika (64)
-        </button>
-        <button class="btn btn-secondary" onclick="adminImportBitrek()">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
-          Імпорт Bitrek (26)
-        </button>
-        <button class="btn btn-secondary" onclick="adminImportDRP()">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
-          Імпорт ДРП (10)
+        <button class="btn btn-secondary" onclick="adminCleanupDuplicates()" style="color:#dc2626;border-color:#fca5a5" title="Знайти і видалити дублі з Firebase">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 2,2 6,3"/><path d="M2 2a10 10 0 1 1 3 7"/></svg>
+          Видалити дублі
         </button>
         <button class="btn btn-primary" onclick="openProductModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
@@ -992,10 +984,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="page-title">Тарифи SIM</div>
       <div class="page-subtitle">Тарифні плани для SIM-карт моніторингу</div>
       <div class="toolbar">
-        <button class="btn btn-secondary" onclick="adminImportTariffs()" title="Завантажити стандартні тарифи у Firebase">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
-          Імпорт початкових даних
-        </button>
         <button class="btn btn-primary" onclick="openTariffModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати тариф
@@ -1058,10 +1046,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="page-title">Монтаж та сервіс</div>
       <div class="page-subtitle">Послуги встановлення та налаштування обладнання</div>
       <div class="toolbar">
-        <button class="btn btn-secondary" onclick="adminImportInstall()" title="Завантажити стандартні послуги у Firebase">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
-          Імпорт початкових даних
-        </button>
         <button class="btn btn-primary" onclick="openInstallModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати послугу
@@ -1086,10 +1070,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="page-title">SIM-карти</div>
       <div class="page-subtitle">Фізичні SIM-карти для GPS-трекерів</div>
       <div class="toolbar">
-        <button class="btn btn-secondary" onclick="adminImportSIM()">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
-          Імпорт SIM-карт (3)
-        </button>
         <button class="btn btn-primary" onclick="openSimModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати SIM
@@ -2168,11 +2148,10 @@ async function loadUsers() {
 }
 
 const ROLE_LABELS = {
-  admin:   { label: 'Адмін',       cls: 'badge-red'    },
-  partner: { label: 'Партнер',     cls: 'badge-blue'   },
-  client:  { label: 'Клієнт',      cls: 'badge-green'  },
+  admin:   { label: 'Адмін',    cls: 'badge-red'    },
+  partner: { label: 'Партнер',  cls: 'badge-blue'   },
+  client:  { label: 'Клієнт',   cls: 'badge-green'  },
   pending: { label: 'На розгляді', cls: 'badge-orange' },
-  blocked: { label: 'Заблокований', cls: 'badge-red'   },
 };
 
 function renderUsers() {
@@ -2199,7 +2178,6 @@ function renderUsers() {
           <option value="client">→ Клієнт</option>
           <option value="pending">→ На розгляді</option>
           <option value="admin">→ Адмін</option>
-          <option value="blocked" style="color:#dc2626">🚫 Заблокувати</option>
         </select>
       </td>
     </tr>`;
@@ -2510,10 +2488,7 @@ window.deleteSim = async () => {
 
 window.changeUserRole = async (uid, role) => {
   if (!role) return;
-  const confirmMsg = role === 'blocked'
-    ? `⚠️ Заблокувати цього користувача? Він більше не матиме доступу до каталогу.`
-    : `Змінити роль користувача на «${ROLE_LABELS[role]?.label || role}»?`;
-  if (!confirm(confirmMsg)) {
+  if (!confirm(`Змінити роль користувача на «${ROLE_LABELS[role]?.label || role}»?`)) {
     // Reset select
     loadUsers(); return;
   }
@@ -2627,240 +2602,42 @@ window.admNvxPDF = function() {
 };
 
 // ════════════════════════════════════════════════════
-// ІМПОРТ ПОЧАТКОВИХ ДАНИХ У FIREBASE
+// ВИДАЛЕННЯ ДУБЛІВ ТОВАРІВ
 // ════════════════════════════════════════════════════
-window.adminImportInstall = async function() {
-  if (!confirm('Імпортувати стандартні послуги у Firebase? Існуючі записи з такими самими кодами НЕ будуть перезаписані.')) return;
-  const DEFAULT_INSTALL = [
-    { code:'SVC-CONFIG',    name:'Налаштування трекера',        price:600,  spec:'Конфігурація FMB/FTC/BI серії, тестування зв\'язку', active:true },
-    { code:'SVC-MONT-LA',   name:'Монтаж легкове авто',         price:1600, spec:'Встановлення трекера у легкове авто, прихована проводка', active:true },
-    { code:'SVC-MONT-TR',   name:'Монтаж вантажівка/автобус',   price:2400, spec:'Встановлення трекера у вантажний транспорт або автобус', active:true },
-    { code:'SVC-MONT-SP',   name:'Монтаж спецтехніка',          price:3200, spec:'Встановлення на спецтехніку, нестандартні схеми', active:true },
-    { code:'SVC-TAR-S',     name:'Активація тарифу',            price:1200, spec:'Підключення SIM-карти, налаштування APN, тест зв\'язку', active:true },
-    { code:'SVC-IGNITON',   name:'Підключення запалення',       price:400,  spec:'Підключення до шини запалення авто', active:true },
-    { code:'SVC-RELAY',     name:'Встановлення реле',           price:800,  spec:'Монтаж реле блокування двигуна', active:true },
-    { code:'SVC-TEMP',      name:'Температурний датчик',        price:600,  spec:'Встановлення датчика температури в кузов або двигун', active:true },
-    { code:'SVC-FUEL',      name:'Датчик рівня палива',         price:2200, spec:'Монтаж ємнісного датчика ДРП в бак', active:true },
-    { code:'SVC-IBUTTON',   name:'Ідентифікатор водія',         price:500,  spec:'Встановлення зчитувача iButton, прив\'язка до платформи', active:true },
-    { code:'SVC-CHECK',     name:'Діагностика обладнання',      price:400,  spec:'Перевірка трекера, аналіз логів, усунення несправностей', active:true },
-    { code:'SVC-DISMANTLE', name:'Демонтаж трекера',            price:400,  spec:'Зняття трекера та відновлення штатної проводки', active:true },
-  ];
+window.adminCleanupDuplicates = async function() {
+  if (!confirm('Знайти і видалити дублі товарів з Firebase?\nЗалишиться тільки перший запис кожного коду. Решта буде видалена.')) return;
   try {
-    // Завантажуємо існуючі коди
-    const snap = await getDocs(collection(db, tenantRef('install')));
-    const existingCodes = new Set(snap.docs.map(d => d.data().code));
-    let added = 0;
-    for (const s of DEFAULT_INSTALL) {
-      if (!existingCodes.has(s.code)) {
-        await addDoc(collection(db, tenantRef('install')), { ...s, createdAt: serverTimestamp() });
-        added++;
-      }
-    }
-    toast(added > 0 ? `Імпортовано ${added} послуг ✓` : 'Всі послуги вже існують', added > 0 ? 'success' : 'info');
-    loadInstall();
-  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
-};
-
-window.adminImportTariffs = async function() {
-  if (!confirm('Імпортувати стандартні тарифи у Firebase? Існуючі записи НЕ будуть перезаписані.')) return;
-  const DEFAULT_TARIFFS = [
-    { code:'TAR-BASE',  name:'Base 300',     price:300, period:'міс', spec:'300 МБ трафік, Kyivstar/Vodafone, GPS тільки трафік', active:true },
-    { code:'TAR-FUEL',  name:'Fuel-Can 330', price:330, period:'міс', spec:'330 МБ трафік + CAN-дані, ДВРП підтримка', active:true },
-    { code:'TAR-RENT',  name:'Rent 460',     price:460, period:'міс', spec:'460 МБ, 2 SIM + роумінг EU, оренда трекера включена', active:true },
-    { code:'TAR-PERS',  name:'Personal 250', price:250, period:'міс', spec:'250 МБ, базовий трекінг, 1 SIM. Мобільний додаток X-GPS Tracker.',
-      appIos:'https://apps.apple.com/us/app/x-gps-tracker/id1612047534',
-      appAndroid:'https://play.google.com/store/apps/details?id=com.navixy.xgps.tracker', active:true },
-    { code:'TAR-ROAM',  name:'Roaming 400',  price:400, period:'міс', spec:'Тарифний план "Україна 30" + Країни ЄС. Роумінг EU + UA.', active:true },
-    { code:'TAR-TIPS',  name:'Tipster 140',  price:140, period:'міс', spec:'140 МБ, TIPSTER фіксований IP, M2M', active:true },
-    { code:'TAR-HOLD',  name:'Hold 90',      price:90,  period:'міс', spec:'Режим утримання, мінімальний трафік, без авто-оновлень', active:true },
-  ];
-  try {
-    const snap = await getDocs(collection(db, tenantRef('tariffs')));
-    const existingCodes = new Set(snap.docs.map(d => d.data().code));
-    let added = 0;
-    for (const t of DEFAULT_TARIFFS) {
-      if (!existingCodes.has(t.code)) {
-        await addDoc(collection(db, tenantRef('tariffs')), { ...t, createdAt: serverTimestamp() });
-        added++;
-      }
-    }
-    toast(added > 0 ? `Імпортовано ${added} тарифів ✓` : 'Всі тарифи вже існують', added > 0 ? 'success' : 'info');
-    loadTariffs();
-  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
-};
-
-
-// ════════════════════════════════════════════════════
-// ІМПОРТ ТРЕКЕРІВ ТА ДРП У FIREBASE
-// ════════════════════════════════════════════════════
-async function _importProducts(dataArray, label) {
-  try {
+    toast('Шукаємо дублі…');
     const snap = await getDocs(collection(db, tenantRef('products')));
-    const existingCodes = new Set(snap.docs.map(d => d.data().code || d.data().article || ''));
-    let added = 0;
-    for (const p of dataArray) {
-      const key = p.code || p.article || '';
-      if (!existingCodes.has(key)) {
-        await addDoc(collection(db, tenantRef('products')), { ...p, createdAt: serverTimestamp() });
-        added++;
+    const seen = {};
+    const toDelete = [];
+    snap.forEach(d => {
+      const data = d.data();
+      const key = (data.code || data.article || d.id).trim().toLowerCase();
+      if (seen[key]) {
+        toDelete.push({ id: d.id, code: data.code || data.article || d.id });
+      } else {
+        seen[key] = d.id;
       }
+    });
+
+    if (toDelete.length === 0) {
+      toast('Дублів не знайдено ✓');
+      return;
     }
-    toast(added > 0 ? label + ': імпортовано ' + added + ' товарів ✓' : label + ': всі товари вже існують');
+
+    let deleted = 0;
+    for (const item of toDelete) {
+      await deleteDoc(doc(db, tenantRef('products'), item.id));
+      deleted++;
+    }
+
+    toast(`Видалено ${deleted} дублів ✓`);
     loadProducts();
-  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
-}
-
-window.adminImportTeltonika = async function() {
-  if (!confirm('Імпортувати 64 товари Teltonika у Firebase? Дублі пропускаються.')) return;
-  const DATA = [
-    {code:'FMB900',article:'FMB900AGCO01',name:'FMB900',currency:'USD',partnerPrice:37.8,retailPrice:41.4,series:'2G',program:'BASIC',brand:'Teltonika',spec:'2G трекер початкового рівня. Компактний, вбудована антена GNSS/GSM. Ідеально для базового моніторингу транспорту.',active:true},
-    {code:'FMB910',article:'FMB91093IN01',name:'FMB910',currency:'USD',partnerPrice:37.8,retailPrice:41.2,series:'2G',program:'BASIC',brand:'Teltonika',spec:'2G трекер з розширеними входами/виходами. Цифрові та аналогові I/O. Підтримка датчиків і реле.',active:true},
-    {code:'FMB920',article:'FMB920AECORU',name:'FMB920',currency:'USD',partnerPrice:39.6,retailPrice:43.16,series:'2G',program:'BASIC',brand:'Teltonika',spec:'2G трекер з BLE 4.0. Зчитує маяки EYE, датчики температури та RFID. Компактний корпус.',active:true},
-    {code:'FMB930',article:'FMB930XR3C01',name:'FMB930 (90V)',currency:'USD',partnerPrice:39.6,retailPrice:43.16,series:'2G',program:'BASIC',brand:'Teltonika',spec:'2G трекер для вантажного транспорту. Вхід живлення 10–90V. CAN читання через зовнішній адаптер.',active:true},
-    {code:'FMB965',article:'FMB9653EQJ01',name:'FMB965 (IP67)',currency:'USD',partnerPrice:61.2,retailPrice:66.71,series:'2G',program:'BASIC',brand:'Teltonika',spec:'2G трекер із захистом IP67. Герметичний корпус, 4 цифрові входи. Для спецтехніки та вантажівок.',active:true},
-    {code:'FMT100',article:'FMT1001AFD01',name:'FMT100',currency:'USD',partnerPrice:59.4,retailPrice:64.75,series:'2G',program:'FAST&EASY',brand:'Teltonika',spec:'2G OBD трекер Plug&Play. Встановлення в OBD-II роз\\\'єм за 1 хвилину. Зчитує діагностику авто.',active:true},
-    {code:'FMT100G',article:'FMT1005RFD01',name:'FMT100 (+GYRO)',currency:'USD',partnerPrice:63.0,retailPrice:68.67,series:'2G',program:'FAST&EASY',brand:'Teltonika',spec:'2G OBD трекер з гіроскопом. Виявлення прискорення, удару та небезпечного водіння. Plug&Play.',active:true},
-    {code:'FMP100',article:'FMP100UEC301',name:'FMP100',currency:'USD',partnerPrice:50.4,retailPrice:54.94,series:'2G',program:'FAST&EASY',brand:'Teltonika',spec:'2G трекер від прикурювача. Живлення 12/24V, вбудований акумулятор. Встановлення без монтажу.',active:true},
-    {code:'FMB010',article:'FMB0101VHG01',name:'FMB010',currency:'USD',partnerPrice:45.0,retailPrice:49.05,series:'2G',program:'FAST&EASY',brand:'Teltonika',spec:'2G трекер FAST&EASY з вбудованою батареєю. Мінімальний монтаж, живлення від ACC лінії.',active:true},
-    {code:'FMB020',article:'FMB0204MNJ01',name:'FMB020',currency:'USD',partnerPrice:39.6,retailPrice:43.16,series:'2G',program:'FAST&EASY',brand:'Teltonika',spec:'2G трекер FAST&EASY. Розширена версія FMB010 з додатковим I/O. Простий монтаж.',active:true},
-    {code:'FMB001',article:'FMB001SDLY01',name:'FMB001 (OBD)',currency:'USD',partnerPrice:64.8,retailPrice:70.63,series:'2G',program:'OBD',brand:'Teltonika',spec:'2G OBD трекер. Зчитує понад 10 000 параметрів ECU. Plug&Play через OBD-II роз\\\'єм.',active:true},
-    {code:'FMB003',article:'FMB00377NJ01',name:'FMB003 (OBD)',currency:'USD',partnerPrice:75.6,retailPrice:82.4,series:'2G',program:'OBD',brand:'Teltonika',spec:'2G OBD трекер із захистом від несанкціонованого доступу. Зчитування J1939/FMS для вантажівок.',active:true},
-    {code:'FMB110',article:'FMB110BBV801',name:'FMB110',currency:'USD',partnerPrice:43.2,retailPrice:47.09,series:'2G',program:'ADVANCED',brand:'Teltonika',spec:'2G трекер із зовнішньою GNSS-антеною. 2 SIM-карти, резервне живлення, 4 digital I/O.',active:true},
-    {code:'FMB120',article:'FMB120B6XW01',name:'FMB120',currency:'USD',partnerPrice:46.8,retailPrice:51.01,series:'2G',program:'ADVANCED',brand:'Teltonika',spec:'2G трекер із зовнішніми антенами GNSS та GSM. Підвищена чутливість у складних умовах.',active:true},
-    {code:'FMB130',article:'FMB130B5XW01',name:'FMB130',currency:'USD',partnerPrice:51.3,retailPrice:55.92,series:'2G',program:'ADVANCED',brand:'Teltonika',spec:'2G трекер з вбудованою батареєю 170 mAh. Резервне живлення, сповіщення про відключення.',active:true},
-    {code:'FMB122',article:'FMB122BIOB01',name:'FMB122',currency:'USD',partnerPrice:51.3,retailPrice:55.92,series:'2G',program:'ADVANCED',brand:'Teltonika',spec:'2G трекер Advanced з GNSS-антеною. Покращена точність позиціонування для комерційного транспорту.',active:true},
-    {code:'FMB204',article:'FMB204BD9L01',name:'FMB204',currency:'USD',partnerPrice:66.6,retailPrice:72.59,series:'2G',program:'ADVANCED',brand:'Teltonika',spec:'2G трекер з 4 digital + 4 analog входами. Для складних інсталяцій із множинними датчиками.',active:true},
-    {code:'FMB209',article:'FMB2092N9L01',name:'FMB209',currency:'USD',partnerPrice:54.0,retailPrice:58.86,series:'2G',program:'ADVANCED',brand:'Teltonika',spec:'2G трекер Advanced з 1-Wire. Підтримка датчиків температури Dallas та iButton-ключів.',active:true},
-    {code:'FMB150L',article:'FMB150K5XW01',name:'FMB150',currency:'USD',partnerPrice:97.2,retailPrice:105.95,series:'2G',program:'CAN',brand:'Teltonika',spec:'2G CAN-трекер з LV-CAN200. Читання до 1000 параметрів шини CAN легкового авто без врізки.',active:true},
-    {code:'FMB150E',article:'FMB150K5J101',name:'FMB150 Extended',currency:'USD',partnerPrice:135.0,retailPrice:147.15,series:'2G',program:'CAN',brand:'Teltonika',spec:'2G CAN-трекер Extended. Підтримка LV-CAN200 + ALL-CAN300. Максимальна сумісність авто.',active:true},
-    {code:'FMB140L',article:'FMB1408TXWO1',name:'FMB140 LV-CAN200',currency:'USD',partnerPrice:117.0,retailPrice:127.53,series:'2G',program:'CAN',brand:'Teltonika',spec:'2G CAN-трекер з адаптером LV-CAN200. Бездротове підключення до шини CAN 2.0.',active:true},
-    {code:'FMB140A',article:'FMB140YNXWO1',name:'FMB140 ALL-CAN300',currency:'USD',partnerPrice:187.2,retailPrice:204.05,series:'2G',program:'CAN',brand:'Teltonika',spec:'2G CAN-трекер з адаптером ALL-CAN300. Сумісний із 400+ моделями авто. Без врізки.',active:true},
-    {code:'FMB240L',article:'FMB240BT2X01',name:'FMB240 IP67 LV-CAN200',currency:'USD',partnerPrice:128.7,retailPrice:140.28,series:'2G',program:'CAN',brand:'Teltonika',spec:'2G CAN-трекер IP67 з LV-CAN200. Герметичний корпус для комерційного транспорту.',active:true},
-    {code:'FMB240A',article:'FMB240YN2X01',name:'FMB240 IP67 ALL-CAN300',currency:'USD',partnerPrice:198.9,retailPrice:216.8,series:'2G',program:'CAN',brand:'Teltonika',spec:'2G CAN-трекер IP67 з ALL-CAN300. Захищений корпус + широка сумісність з авто.',active:true},
-    {code:'FMB125E',article:'FMB125BJOB01',name:'FMB125 External GPS',currency:'USD',partnerPrice:52.2,retailPrice:56.9,series:'2G',program:'PROFESSIONAL',brand:'Teltonika',spec:'2G Professional трекер із зовнішньою GNSS-антеною. Розширені I/O, 1-Wire, RS232/RS485.',active:true},
-    {code:'FMB125I',article:'FMB125BRRB01',name:'FMB125 Internal GPS',currency:'USD',partnerPrice:49.5,retailPrice:53.96,series:'2G',program:'PROFESSIONAL',brand:'Teltonika',spec:'2G Professional трекер з внутрішньою GNSS-антеною. 1-Wire, RS232, повний набір I/O.',active:true},
-    {code:'FMB225',article:'FMB225BR2X01',name:'FMB225 IP67',currency:'USD',partnerPrice:57.6,retailPrice:62.78,series:'2G',program:'PROFESSIONAL',brand:'Teltonika',spec:'2G Professional трекер IP67. Захищений корпус, RS232/RS485, 1-Wire. Для спецтехніки.',active:true},
-    {code:'ALLCAN3',article:'—',name:'ALLCAN300 Оновлення',currency:'USD',partnerPrice:79.2,retailPrice:93.0,series:'2G',program:'Оновлення',brand:'Teltonika',spec:'Прошивка ALL-CAN300 для оновлення сумісного CAN-адаптера до підтримки 400+ авто.',active:true},
-    {code:'EXTEND',article:'—',name:'Extended Оновлення',currency:'USD',partnerPrice:59.94,retailPrice:71.0,series:'2G',program:'Оновлення',brand:'Teltonika',spec:'Прошивка Extended для розширення функціоналу CAN-адаптера. Активує додаткові параметри.',active:true},
-    {code:'FMC920',article:'FMC9202MC01',name:'FMC920 CAT1',currency:'USD',partnerPrice:43.56,retailPrice:47.92,series:'4G',program:'BASIC',brand:'Teltonika',spec:'4G CAT1 трекер з BLE 4.0. Читає маяки EYE, датчики та RFID. Компактний, швидкий зв\\\'язок.',active:true},
-    {code:'FMC880',article:'FMC880LOFD01',name:'FMC880 CAT1',currency:'USD',partnerPrice:81.9,retailPrice:90.09,series:'4G',program:'FAST&EASY',brand:'Teltonika',spec:'4G CAT1 OBD трекер Plug&Play. Зчитує діагностику ECU, швидкий 4G зв\\\'язок. Без монтажу.',active:true},
-    {code:'FMC880G',article:'FMC880FGFD01',name:'FMC880 (+GYRO)',currency:'USD',partnerPrice:85.5,retailPrice:94.05,series:'4G',program:'FAST&EASY',brand:'Teltonika',spec:'4G CAT1 OBD трекер з гіроскопом. Виявлення небезпечного водіння + діагностика авто.',active:true},
-    {code:'FMC800',article:'FMC800TPNJ01',name:'FMC800 CAT1',currency:'USD',partnerPrice:86.4,retailPrice:95.04,series:'4G',program:'FAST&EASY',brand:'Teltonika',spec:'4G CAT1 трекер від прикурювача. Вбудований акумулятор, встановлення без інструментів.',active:true},
-    {code:'FMC003',article:'FMC003X4NJ01',name:'FMC003 CAT1 OBD',currency:'USD',partnerPrice:75.24,retailPrice:82.76,series:'4G',program:'OBD',brand:'Teltonika',spec:'4G CAT1 OBD трекер. Зчитує ECU-параметри через OBD-II, підтримка J1939/FMS для вантажівок.',active:true},
-    {code:'FMC130',article:'FMC130KYXW01',name:'FMC130 CAT1',currency:'USD',partnerPrice:49.5,retailPrice:54.45,series:'4G',program:'ADVANCED',brand:'Teltonika',spec:'4G CAT1 Advanced трекер із зовнішньою GNSS-антеною. 2 SIM, резервне живлення, 4 I/O.',active:true},
-    {code:'FMC230',article:'FMC230KY2X01',name:'FMC230',currency:'USD',partnerPrice:81.0,retailPrice:89.1,series:'4G',program:'ADVANCED',brand:'Teltonika',spec:'4G CAT1 трекер із зовнішніми антенами. Покращена стабільність зв\\\'язку у складних умовах.',active:true},
-    {code:'FMC234',article:'FMC234WC2X01',name:'FMC234 IP67',currency:'USD',partnerPrice:86.4,retailPrice:95.04,series:'4G',program:'ADVANCED',brand:'Teltonika',spec:'4G CAT1 трекер IP67. Герметичний корпус, зовнішні антени. Для комерційного транспорту.',active:true},
-    {code:'FMC150',article:'FMC150UAXW01',name:'FMC150',currency:'USD',partnerPrice:117.0,retailPrice:128.7,series:'4G',program:'CAN',brand:'Teltonika',spec:'4G CAT1 CAN-трекер з LV-CAN200. Бездротове зчитування CAN-шини легкових авто. 4G зв\\\'язок.',active:true},
-    {code:'FMC150E',article:'FMC150UAJ201',name:'FMC150 Extended',currency:'USD',partnerPrice:154.8,retailPrice:170.28,series:'4G',program:'CAN',brand:'Teltonika',spec:'4G CAT1 CAN-трекер Extended. LV-CAN200 + ALL-CAN300, максимальна сумісність + 4G.',active:true},
-    {code:'FMC250',article:'FMC2505NXW01',name:'FMC250 CAT1 IP67',currency:'USD',partnerPrice:128.7,retailPrice:141.57,series:'4G',program:'CAN',brand:'Teltonika',spec:'4G CAT1 CAN-трекер IP67. Герметичний корпус, LV-CAN200, швидкий 4G зв\\\'язок.',active:true},
-    {code:'FMC250E',article:'FMC2505NJ101',name:'FMC250 Extended IP67',currency:'USD',partnerPrice:166.5,retailPrice:183.15,series:'4G',program:'CAN',brand:'Teltonika',spec:'4G CAT1 CAN-трекер IP67 Extended. LV-CAN200 + ALL-CAN300 + IP67 + 4G CAT1.',active:true},
-    {code:'FMC125',article:'FMC125TLXW01',name:'FMC125 CAT1 EMEA',currency:'USD',partnerPrice:56.1,retailPrice:61.71,series:'4G',program:'PROFESSIONAL',brand:'Teltonika',spec:'4G CAT1 Professional трекер EMEA. RS232/RS485, 1-Wire, повний I/O. Для складних інсталяцій.',active:true},
-    {code:'FMC225',article:'FMC225832X01',name:'FMC225 IP67 EMEA',currency:'USD',partnerPrice:64.68,retailPrice:71.15,series:'4G',program:'PROFESSIONAL',brand:'Teltonika',spec:'4G CAT1 Professional IP67. Захищений корпус, RS232/RS485, 1-Wire. Для спецтехніки.',active:true},
-    {code:'FMC650',article:'FMC6501T5S01',name:'FMC650 CAT1',currency:'USD',partnerPrice:112.2,retailPrice:123.42,series:'4G',program:'PROFESSIONAL',brand:'Teltonika',spec:'4G CAT1 Professional трекер преміум-класу. Широкий діапазон живлення, RS232/RS485/1-Wire.',active:true},
-    {code:'FTC920',article:'FTC920AAPIL1',name:'FTC920',currency:'USD',partnerPrice:57.6,retailPrice:63.36,series:'FTC',program:'BASIC',brand:'Teltonika',spec:'4G CAT1 трекер серії FTC. Компактний, оптимізований для хмарних платформ Teltonika.',active:true},
-    {code:'FTC921',article:'FTC921RCXW01',name:'FTC921',currency:'USD',partnerPrice:59.4,retailPrice:65.34,series:'FTC',program:'BASIC',brand:'Teltonika',spec:'4G CAT1 трекер FTC із розширеними I/O. Цифрові входи, аналогові виходи, BLE.',active:true},
-    {code:'FTC924',article:'FTC924AAPIL1',name:'FTC924',currency:'USD',partnerPrice:63.0,retailPrice:69.3,series:'FTC',program:'BASIC',brand:'Teltonika',spec:'4G CAT1 трекер FTC з BLE 5.0. Підтримка маяків EYE та датчиків. Оновлений чіпсет.',active:true},
-    {code:'FTC927',article:'FTC927BPPIL1',name:'FTC927',currency:'USD',partnerPrice:66.6,retailPrice:73.26,series:'FTC',program:'BASIC',brand:'Teltonika',spec:'4G CAT1 трекер FTC НОВИНКА. BLE 5.0, покращена GNSS-чутливість, хмарна конфігурація.',active:true},
-    {code:'FTC961',article:'FTC961M8PIL1',name:'FTC961',currency:'USD',partnerPrice:79.2,retailPrice:87.12,series:'FTC',program:'BASIC',brand:'Teltonika',spec:'4G CAT1 трекер FTC з IP67. Герметичний захист, цифрові I/O, для зовнішніх інсталяцій.',active:true},
-    {code:'FTC965',article:'FTC965CLAA01',name:'FTC965',currency:'USD',partnerPrice:84.6,retailPrice:93.06,series:'FTC',program:'BASIC',brand:'Teltonika',spec:'4G CAT1 трекер FTC IP67 з BLE. Захищений корпус + бездротові датчики EYE.',active:true},
-    {code:'FTC880',article:'FTC880KVU801',name:'FTC880',currency:'USD',partnerPrice:76.5,retailPrice:84.15,series:'FTC',program:'FAST&EASY',brand:'Teltonika',spec:'4G CAT1 OBD трекер FTC. Plug&Play, зчитує ECU, хмарна конфігурація без ноутбука.',active:true},
-    {code:'FTC887',article:'FTC887XFNJ01',name:'FTC887',currency:'USD',partnerPrice:87.3,retailPrice:96.03,series:'FTC',program:'FAST&EASY',brand:'Teltonika',spec:'4G CAT1 OBD трекер FTC з гіроскопом. Eco-driving, аналіз водіння + діагностика авто.',active:true},
-    {code:'FTC134',article:'FTC134AAAA01',name:'FTC134 CAT1',currency:'USD',partnerPrice:71.1,retailPrice:78.21,series:'FTC',program:'ADVANCED',brand:'Teltonika',spec:'4G CAT1 Advanced трекер FTC. Зовнішні антени GNSS/LTE, резервне живлення, I/O.',active:true},
-    {code:'FTC305',article:'FTC305STAC01',name:'FTC305',currency:'USD',partnerPrice:113.4,retailPrice:124.74,series:'FTC',program:'E-MOBILITY',brand:'Teltonika',spec:'4G CAT1 трекер для електротранспорту. Зчитування параметрів BMS, SOC батареї, SAE J1939.',active:true},
-    {code:'FTC305W',article:'FTC305HEAB01',name:'FTC305 without casing',currency:'USD',partnerPrice:113.4,retailPrice:124.74,series:'FTC',program:'E-MOBILITY',brand:'Teltonika',spec:'4G CAT1 трекер E-Mobility без корпусу (монтаж всередині). BMS, SAE J1939, CAN.',active:true},
-    {code:'TAT100',article:'TAT100TSBAH0',name:'TAT100',currency:'USD',partnerPrice:77.4,retailPrice:85.14,series:'Assets',program:'AUTONOMOUS',brand:'Teltonika',spec:'Автономний GPS-маяк 2G. Вбудована батарея до 3 років. Магнітне кріплення, IPX7.',active:true},
-    {code:'TAT100B',article:'TAT1003CXW01',name:'TAT100 (3x batt.)',currency:'USD',partnerPrice:88.2,retailPrice:97.02,series:'Assets',program:'AUTONOMOUS',brand:'Teltonika',spec:'Автономний маяк 2G з 3 батареями. Потрійний ресурс — до 5 років автономної роботи.',active:true},
-    {code:'TAT140',article:'TAT1403UBP01',name:'TAT140 CAT1',currency:'USD',partnerPrice:108.0,retailPrice:118.8,series:'Assets',program:'AUTONOMOUS',brand:'Teltonika',spec:'Автономний маяк 4G CAT1. Вбудована батарея, магнітне кріплення, IPX7. Швидкий зв\\\'язок.',active:true},
-    {code:'TAT240',article:'TAT240R6BP01',name:'TAT240 (tamper) CAT1',currency:'USD',partnerPrice:124.2,retailPrice:136.62,series:'Assets',program:'AUTONOMOUS',brand:'Teltonika',spec:'4G CAT1 маяк з датчиком тамперу. Захист від несанкціонованого зняття + IPX7 + CAT1.',active:true},
-    {code:'ATC700-P',article:'ATC700AAAA01',name:'ATC700 CAT1 Персональний',currency:'USD',partnerPrice:61.6,retailPrice:86.4,series:'Assets',program:'AUTONOMOUS',brand:'Teltonika',spec:'Персональний трекер CAT1. Вбудована батарея, IPX7, BLE. Ідеально для відстеження людей та цінностей.',active:true},
-    {code:'GH5200',article:'GH5200TSTAA0',name:'GH5200',currency:'USD',partnerPrice:64.8,retailPrice:71.28,series:'Assets',program:'AUTONOMOUS',brand:'Teltonika',spec:'Промисловий GPS-трекер для важкої техніки. Захист IP67, CAN J1939/FMS, 10–100V живлення.',active:true},
-    {code:'TFT100C',article:'TFT100TSTAA0',name:'TFT100 (CAN)',currency:'USD',partnerPrice:86.4,retailPrice:95.04,series:'Assets',program:'E-MOBILITY',brand:'Teltonika',spec:'Трекер для електробусів та електровантажівок (CAN). Зчитування BMS, SOC, пробіг, зарядка.',active:true},
-    {code:'TFT100R',article:'TFT100TRSAC0',name:'TFT100 (RS232 or RS485)',currency:'USD',partnerPrice:82.8,retailPrice:91.08,series:'Assets',program:'E-MOBILITY',brand:'Teltonika',spec:'Трекер для електротранспорту (RS232/RS485). Параметри заряду, BMS, підключення до UART.',active:true},
-    {code:'TFT100U',article:'TFT100TURAD0',name:'TFT100 (UART)',currency:'USD',partnerPrice:75.6,retailPrice:83.16,series:'Assets',program:'E-MOBILITY',brand:'Teltonika',spec:'Трекер для електротранспорту (UART). BMS-моніторинг, SOC батареї, підтримка CAN-шини.',active:true}
-  ];
-  await _importProducts(DATA, 'Teltonika');
-};
-
-window.adminImportBitrek = async function() {
-  if (!confirm('Імпортувати 26 товарів Bitrek у Firebase? Дублі пропускаються.')) return;
-  const DATA = [
-    {code:'BI 910 TREK',article:'BI910TREK',name:'BI 910 TREK',currency:'USD',partnerPrice:111.1,retailPrice:130.0,series:'Трекери',program:'Advanced',brand:'Bitrek',spec:'Зовнішні GPS/GSM антени; RS485; CAN (FMS, j1939); 1-Wire; SIM:2, D_high:2, D_low:4, AIN:2, DOUT:2, АКБ:1000 mAh, Voice GSM',active:true},
-    {code:'BI 868 TREK',article:'BI868',name:'BI 868 TREK v10',currency:'USD',partnerPrice:70.4,retailPrice:82.0,series:'Трекери',program:'BLE',brand:'Bitrek',spec:'Вбудовані GPS/GSM антени; SIM:1, D_high:1, D_low:1, AIN:1, DOUT:1, АКБ:1000 mAh, BLE 4.0',active:true},
-    {code:'BI 522 L TREK',article:'BI522',name:'BI 522 L TREK',currency:'USD',partnerPrice:35.2,retailPrice:50.0,series:'Трекери',program:'CAN BLE',brand:'Bitrek',spec:'Вбудовані GPS/GSM антени; SIM:1, AIN:1, D_high:1, D_low:1, DOUT:1, АКБ:130 mAh, BLE 4.0, RS232',active:true},
-    {code:'BI 530 R TREK',article:'BI530К',name:'BI 530 R TREK v3',currency:'USD',partnerPrice:44.0,retailPrice:80.0,series:'Трекери',program:'CAN BLE',brand:'Bitrek',spec:'Вбудовані GPS/GSM антени; 1-Wire; RS485, SIM:1, D_low:2, AIN:2, DOUT:2, АКБ:130 mAh, BLE 4.0',active:true},
-    {code:'BI 310 Cicada',article:'BI310',name:'BI 310 Cicada v.2',currency:'USD',partnerPrice:73.7,retailPrice:72.0,series:'Трекери',program:'Автономний маяк',brand:'Bitrek',spec:'Зовнішні GPS/GSM антени; SIM:1; CAN (Connect-Bus); АКБ:1000 mAh',active:true},
-    {code:'BI 420 TREK',article:'BI420',name:'BI 420 TREK (4G)',currency:'USD',partnerPrice:83.6,retailPrice:92.0,series:'4G Трекери',program:'4G BLE',brand:'Bitrek',spec:'2G/4G LTE Cat 1, SIM:1, D_high:1, D_low:1, AIN:1, DOUT:1, АКБ:1000 mAh, BLE 4.0',active:true},
-    {code:'BI 410 TREK',article:'BI410',name:'BI 410 TREK (4G) NEW!',currency:'USD',partnerPrice:44.0,retailPrice:65.0,series:'4G Трекери',program:'BLE RS485',brand:'Bitrek',spec:'2G/4G LTE Cat 1, SIM:1, AIN:1, DOUT:1, АКБ:130 mAh, BLE 4.0, RS232 CanLog',active:true},
-    {code:'BI 530 C TREK',article:'BI530С',name:'BI 530 C TREK v3',currency:'USD',partnerPrice:85.8,retailPrice:90.0,series:'4G Трекери',program:'4G BLE',brand:'Bitrek',spec:'CAN 29bit(FMS,j1939)/11bit, 1-Wire, RS485, RS232, SIM:1, D_low:1, AIN:2, DOUT:1, АКБ:130 mAh, BLE 4.0',active:true},
-    {code:'BI 450 TREK',article:'BI4504G',name:'BI 450 TREK (4G)',currency:'USD',partnerPrice:112.2,retailPrice:120.0,series:'4G Трекери',program:'4G BLE',brand:'Bitrek',spec:'2G/4G LTE Cat 1, CAN:2, 1-Wire, RS485, RS232, SIM:1, D_high:1, D_low:2, AIN:2, DOUT:2, АКБ:130 mAh, BLE 4.0, Tachograph',active:true},
-    {code:'BLE-TAG',article:'BLETAG',name:'Мітка BLE',currency:'USD',partnerPrice:48.4,retailPrice:55.0,series:'BLE',program:'Мітки',brand:'Bitrek',spec:'Вбудована батарея; Автономність до 2 років',active:true},
-    {code:'BLE-TAG-BTN',article:'BLETAGBTN',name:'Мітка BLE (з кнопкою)',currency:'USD',partnerPrice:48.4,retailPrice:55.0,series:'BLE',program:'Мітки',brand:'Bitrek',spec:'Вбудована батарея; Автономність до 1 року',active:true},
-    {code:'BI FLB 1000',article:'BIBLTCIM',name:'BI FLB (1000) BLE',currency:'USD',partnerPrice:100.1,retailPrice:120.0,series:'ДРП',program:'Паливо',brand:'Bitrek',spec:'Бездротовий датчик рівня пального; BLE 5.4; до 4 років; Android додаток',active:true},
-    {code:'BI FLS 700',article:'BIBLTCEM',name:'BI FLSensor v.8 (700)',currency:'USD',partnerPrice:89.1,retailPrice:95.0,series:'ДРП',program:'Паливо',brand:'Bitrek',spec:'RS485; довжина кабелю 7м; монтажний комплект',active:true},
-    {code:'BI FLS 1500',article:'BIBLTHIM',name:'BI FLSensor v.8 (1500)',currency:'USD',partnerPrice:119.9,retailPrice:115.0,series:'ДРП',program:'Паливо',brand:'Bitrek',spec:'RS485; довжина кабелю 7м; монтажний комплект',active:true},
-    {code:'BI FLS 3000',article:'DS18B20',name:'BI FLSensor v.8 (3000)',currency:'USD',partnerPrice:148.47,retailPrice:155.0,series:'ДРП',program:'Паливо',brand:'Bitrek',spec:'RS485; довжина кабелю 7м; монтажний комплект',active:true},
-    {code:'mNVR S250 SD',article:'MNVRS250SD',name:'mNVR S250 SD',currency:'USD',partnerPrice:365.2,retailPrice:365.0,series:'Відео',program:'mNVR',brand:'Bitrek',spec:'4 камери; GPS/Glonass; Passive POE; WiFi; SD Card',active:true},
-    {code:'mNVR S260 SSD',article:'MNVRS260SSD',name:'mNVR S260 SSD',currency:'USD',partnerPrice:422.18,retailPrice:460.0,series:'Відео',program:'mNVR',brand:'Bitrek',spec:'4 камери; GPS/Glonass; Passive POE; WiFi; Kingston M2 SSD 240 ГБ',active:true},
-    {code:'mNVR S261 M2',article:'MNVRS261M2',name:'mNVR S261 M2',currency:'USD',partnerPrice:347.44,retailPrice:379.0,series:'Відео',program:'mNVR',brand:'Bitrek',spec:'4 камери; GPS/Glonass; Passive POE; WiFi; Слот SATA M2 SSD до 2 ТБ',active:true},
-    {code:'CAM-DAHUA',article:'CAMDAHUAIP',name:'Камера Dahua IP',currency:'USD',partnerPrice:92.4,retailPrice:97.0,series:'Відео',program:'Камери',brand:'Bitrek',spec:'IP-камера для mDVR; Роз\'єм живлення SP1310/P7',active:true},
-    {code:'CAN-READER',article:'CANREADER',name:'CAN Reader BITREK',currency:'USD',partnerPrice:33.0,retailPrice:40.0,series:'Аксесуари',program:'CAN',brand:'Bitrek',spec:'Безконтактний зчитувач CAN 29bit/11bit; не працює із запитами в шину CAN',active:true},
-    {code:'CAN-READER-L',article:'CANRDRLIGHT',name:'CAN Reader Light BITREK',currency:'USD',partnerPrice:27.5,retailPrice:35.0,series:'Аксесуари',program:'CAN',brand:'Bitrek',spec:'Безконтактний зчитувач CAN 29bit/11bit; безкорпусний; під стяжку',active:true},
-    {code:'NOZZLE',article:'NOZZLEBITREK',name:'Зчитувач Nozzle BITREK',currency:'USD',partnerPrice:38.5,retailPrice:46.0,series:'Аксесуари',program:'Форсунки',brand:'Bitrek',spec:'Зчитувач керуючого сигналу форсунок бензинового ДВЗ',active:true},
-    {code:'DS18B20',article:'DS18B20',name:'Датчик температури DS18B20',currency:'USD',partnerPrice:22.5,retailPrice:5.0,series:'Датчики',program:'Аксесуари',brand:'Bitrek',spec:'1-Wire; кабель 1.5м; IP65',active:true},
-    {code:'BI-BLTCIM',article:'BI-BLTCIM',name:'Датчик BI-BLTCIM',currency:'USD',partnerPrice:39.6,retailPrice:46.0,series:'Датчики',program:'Аксесуари',brand:'Bitrek',spec:'BLE; Вбудований сенсор температури; сумісний з BI 868/530R/530C',active:true},
-    {code:'BI-BLTCEM',article:'BI-BLTCEM',name:'Датчик BI-BLTCEM',currency:'USD',partnerPrice:46.2,retailPrice:52.0,series:'Датчики',program:'Аксесуари',brand:'Bitrek',spec:'BLE; Зовнішній сенсор температури; сумісний з BI 868/530R/530C',active:true},
-    {code:'BI-BLTHIM',article:'BI-BLTHIM',name:'Датчик BI-BLTHIM',currency:'USD',partnerPrice:41.8,retailPrice:50.0,series:'Датчики',program:'Аксесуари',brand:'Bitrek',spec:'BLE; Температура та вологість; сумісний з BI 868/530R/530C',active:true}
-  ];
-  await _importProducts(DATA, 'Bitrek');
-};
-
-window.adminImportDRP = async function() {
-  if (!confirm('Імпортувати 10 товарів Ігла/ДРП у Firebase? Дублі пропускаються.')) return;
-  const DATA = [
-    {code:'IGLA-400-1000',article:'ДВРП-400-1000',name:'ДВРП «Ігла» 400, 700, 1000 мм',currency:'USD',partnerPrice:58.62,retailPrice:66.99,series:'ДВРП',program:'Ємкісний',brand:'Ігла',spec:'Ємкісний датчик рівня палива; довжина 400/700/1000 мм; RS-485; точність ±0.7%; IP67; гарантія 36 міс.',active:true},
-    {code:'IGLA-1500-2000',article:'ДВРП-1500-2000',name:'ДВРП «Ігла» 1500, 2000 мм',currency:'USD',partnerPrice:68.81,retailPrice:78.64,series:'ДВРП',program:'Ємкісний',brand:'Ігла',spec:'Ємкісний датчик рівня палива; довжина 1500/2000 мм; RS-485; точність ±0.7%; IP67; гарантія 36 міс.',active:true},
-    {code:'IGLA-3000',article:'ДВРП-3000',name:'ДВРП «Ігла» 3000 мм',currency:'USD',partnerPrice:79.0,retailPrice:90.29,series:'ДВРП',program:'Ємкісний',brand:'Ігла',spec:'Ємкісний датчик рівня палива; довжина 3000 мм; RS-485; для великих баків; точність ±0.7%; IP67',active:true},
-    {code:'IGLA-CFG',article:'ІГЛА-КФГ',name:'Конфігуратор Ігла',currency:'USD',partnerPrice:58.62,retailPrice:66.99,series:'Аксесуари',program:'Конфігуратор',brand:'Ігла',spec:'Пристрій для налаштування та калібрування датчиків Ігла; USB-підключення; ПЗ в комплекті',active:true},
-    {code:'IGLA-DT01',article:'DT-01-RS485',name:'Датчик температури DT-01/RS-485',currency:'USD',partnerPrice:58.62,retailPrice:66.99,series:'Аксесуари',program:'Температура',brand:'Ігла',spec:'Цифровий датчик температури; RS-485; діапазон -40…+125°C; точність ±0.5°C; IP67',active:true},
-    {code:'IGLA-MOUNT',article:'ІГЛА-МОНТАЖ',name:'Монтажний комплект Ігла',currency:'USD',partnerPrice:7.65,retailPrice:8.74,series:'Аксесуари',program:'Монтаж',brand:'Ігла',spec:'Комплект для монтажу датчика: різьбовий штуцер, ущільнювачі, кріплення',active:true},
-    {code:'IGLA-CBL-75',article:'ІГЛА-КБЛ-7.5М',name:'Кабель ДВРП 7.5 м з роз\'ємом',currency:'USD',partnerPrice:10.19,retailPrice:11.65,series:'Аксесуари',program:'Кабелі',brand:'Ігла',spec:'Подовжувальний кабель з роз\'ємом для датчиків Ігла; довжина 7.5 м; IP54',active:true},
-    {code:'IGLA-CBL-10',article:'ІГЛА-КБЛ-10М',name:'Кабель ДВРП 10 м з роз\'ємом',currency:'USD',partnerPrice:12.74,retailPrice:14.56,series:'Аксесуари',program:'Кабелі',brand:'Ігла',spec:'Подовжувальний кабель з роз\'ємом для датчиків Ігла; довжина 10 м; IP54',active:true},
-    {code:'IGLA-CBL-21',article:'ІГЛА-КБЛ-2+1',name:'Кабель ДВРП (2+1) з роз\'ємом',currency:'USD',partnerPrice:14.78,retailPrice:16.89,series:'Аксесуари',program:'Кабелі',brand:'Ігла',spec:'Кабель для підключення двох датчиків до одного порту; з роз\'ємами; IP54',active:true},
-    {code:'IGLA-CBL-CFG',article:'ІГЛА-КБЛ-КФГ',name:'Кабель Конфігуратора з роз\'ємом',currency:'USD',partnerPrice:13.25,retailPrice:15.15,series:'Аксесуари',program:'Кабелі',brand:'Ігла',spec:'Кабель для підключення конфігуратора до датчика; з роз\'ємами',active:true}
-  ];
-  await _importProducts(DATA, 'ДРП (Ігла)');
-};
-
-
-// ════════════════════════════════════════════════════
-// ІМПОРТ SIM-КАРТ
-// ════════════════════════════════════════════════════
-window.adminImportSIM = async function() {
-  if (!confirm('Імпортувати 3 SIM-карти у Firebase? Дублі пропускаються.')) return;
-  const DATA = [
-    { code:'SIM-KS', name:'SIM-карта Kyivstar 24 МБ Multi',
-      spec:'Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.',
-      price:35, brand:'kyivstar', active:true },
-    { code:'SIM-VF', name:'SIM-карта Vodafone 24 МБ Multi',
-      spec:'Фізична SIM (nano/micro/standard). Вартість сплачується один раз при замовленні.',
-      price:35, brand:'vodafone', active:true },
-    { code:'SIM-EU', name:'SIM Roaming (EU+UA)',
-      spec:'Фізична Multi-SIM. Вартість сплачується один раз при замовленні. Мінімальне замовлення — 10 шт.',
-      price:250, brand:'roaming', active:true },
-  ];
-  try {
-    const snap = await getDocs(collection(db, tenantRef('simcards')));
-    const existingCodes = new Set(snap.docs.map(d => d.data().code || ''));
-    let added = 0;
-    for (const s of DATA) {
-      if (!existingCodes.has(s.code)) {
-        await addDoc(collection(db, tenantRef('simcards')), { ...s, createdAt: serverTimestamp() });
-        added++;
-      }
-    }
-    toast(added > 0 ? `Імпортовано ${added} SIM-карт ✓` : 'SIM-карти вже існують');
-    loadSimcards();
-  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+  } catch(e) {
+    console.error('cleanupDuplicates:', e);
+    toast('Помилка: ' + e.message, 'error');
+  }
 };
 
 </script>
