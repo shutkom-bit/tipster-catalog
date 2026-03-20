@@ -3299,6 +3299,14 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
                 </button>
                 <span style="font-size:11.5px;color:var(--text-3)">Обрано: <b id="nvx-plan-label" style="color:var(--text)">Premium (Google Maps)</b></span>
               </div>
+              <!-- Інфо-блок: що таке юніт -->
+              <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;max-width:740px;margin-bottom:18px;display:flex;gap:12px;align-items:flex-start">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);flex-shrink:0;margin-top:1px"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
+                <div style="font-size:12.5px;color:var(--text-2);line-height:1.75">
+                  <b style="color:var(--text)">Юніт</b> — будь-який пристрій (GPS-трекер або мобільний додаток X-GPS Tracker), який передав дані на сервери Navixy хоча б один раз протягом календарного місяця.<br>
+                  <b style="color:var(--text)">Pay-as-you-Go з об'ємними знижками</b> — рахунок формується на основі фактичної кількості активних юнітів за попередній місяць. Ціна за юніт автоматично зменшується зі збільшенням кількості підключених пристроїв — як показано в таблиці нижче.
+                </div>
+              </div>
               <!-- Cloud volume discounts — динамічна таблиця залежно від обраного плану -->
               <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-3);margin-bottom:10px;font-family:'IBM Plex Mono',monospace">Pay-as-you-Go — знижки за об'ємом</div>
               <div style="font-size:13px;color:var(--text-2);line-height:1.7;max-width:640px;margin-bottom:14px">
@@ -5381,7 +5389,7 @@ function renderConfigurator() {
   const special   = document.getElementById('cfg-special').value;
   const gen       = document.getElementById('cfg-gen').value;
 
-  let items = products.filter(p => p.mode === 'fixed');
+  let items = (window.products||[]).filter(p => p.mode === 'fixed');
 
   // ── базові фільтри ──
   if (brand)  items = items.filter(p => p.brand === brand);
@@ -6247,6 +6255,15 @@ window.nvxGeneratePDF = function() {
 </div>
 
 <div class="content">
+
+  <!-- Інфо блок -->
+  <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:7px;padding:10px 14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start">
+    <span style="color:#2563eb;font-size:14px;flex-shrink:0">ℹ</span>
+    <div style="font-size:8.5px;color:#1e3a5f;line-height:1.8">
+      <b>Юніт</b> — будь-який пристрій (GPS-трекер або мобільний додаток X-GPS Tracker), який передав дані на сервери Navixy хоча б один раз протягом календарного місяця.<br>
+      <b>Pay-as-you-Go з об'ємними знижками</b> — рахунок формується на основі фактичної кількості активних юнітів за попередній місяць. Ціна за юніт автоматично зменшується зі збільшенням кількості підключених пристроїв.
+    </div>
+  </div>
 
   <!-- CLOUD -->
   <div class="section-header cloud">☁ Cloud — Хмарна платформа</div>
