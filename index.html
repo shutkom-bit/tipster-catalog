@@ -6625,6 +6625,8 @@ async function loadTenantSettings() {
 
 // ── Завантажити товари з Firebase (єдине джерело) ──
 async function loadFirestoreProducts() {
+  // Якщо вже є товари — не перезавантажуємо (дані свіжі)
+  if (window.products && window.products.length > 0) return;
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/products'));
     window.products = [];
