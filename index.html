@@ -4864,6 +4864,57 @@ function buildTable(items, urlMap, showSpec) {
 // ════════════════════════════════════════════════════════
 //  RENDER TELTONIKA
 // ════════════════════════════════════════════════════════
+
+function sortBySeries(items, seriesOrder) {
+  return items.slice().sort((a, b) => {
+    const ai = seriesOrder.findIndex(s => (a.series||'').includes(s) || (a.program||'').includes(s) || (a.code||'').startsWith(s));
+    const bi = seriesOrder.findIndex(s => (b.series||'').includes(s) || (b.program||'').includes(s) || (b.code||'').startsWith(s));
+    const av = ai === -1 ? 999 : ai;
+    const bv = bi === -1 ? 999 : bi;
+    if (av !== bv) return av - bv;
+    return (a.name||'').localeCompare(b.name||'', 'uk');
+  });
+}
+function sortTeltonika(items) {
+  // FMB → FMC → FMM → FTC → Assets → решта; всередині серії — за кодом
+  const order = ['FMB','FMC','FMM','FTC','TAT','GH','TMT','TFT','TST','EYE'];
+  return items.slice().sort((a, b) => {
+    const getPrefix = p => { const m = (p.code||p.name||'').match(/^[A-Z]+/); return m ? m[0] : 'ZZZ'; };
+    const ai = order.indexOf(getPrefix(a));
+    const bi = order.indexOf(getPrefix(b));
+    const av = ai === -1 ? 999 : ai;
+    const bv = bi === -1 ? 999 : bi;
+    if (av !== bv) return av - bv;
+    return (a.code||'').localeCompare(b.code||'');
+  });
+}
+function sortBitrek(items) {
+  // 900 серія → 800 → 500 → 400 → 300 → ДРП → Датчики → решта
+  const getNum = p => {
+    const m = (p.code||p.name||'').match(/(\d{3})/);
+    return m ? parseInt(m[1]) : 0;
+  };
+  const isFL  = p => (p.series||'').includes('ДРП') || (p.name||'').includes('FLSensor') || (p.name||'').includes('FLB');
+  const isSensor = p => (p.series||'').includes('Датчик') || (p.code||'').includes('BLTHIM');
+  return items.slice().sort((a, b) => {
+    const catA = isFL(a) ? 1 : isSensor(a) ? 2 : 0;
+    const catB = isFL(b) ? 1 : isSensor(b) ? 2 : 0;
+    if (catA !== catB) return catA - catB;
+    if (catA === 0) return getNum(b) - getNum(a); // трекери — спадання (900→500→...)
+    return (a.name||'').localeCompare(b.name||'', 'uk');
+  });
+}
+function sortIgla(items) {
+  // ДВРП спочатку, потім аксесуари
+  const isDRP = p => (p.series||'').includes('ДВРП') || (p.series||'').includes('ДРП');
+  return items.slice().sort((a, b) => {
+    const catA = isDRP(a) ? 0 : 1;
+    const catB = isDRP(b) ? 0 : 1;
+    if (catA !== catB) return catA - catB;
+    return (a.name||'').localeCompare(b.name||'', 'uk');
+  });
+}
+
 function renderTeltonika() {
   const q = document.getElementById('tlt-search').value.trim().toLowerCase();
   const series = document.getElementById('tlt-series').value;
@@ -4872,7 +4923,8 @@ function renderTeltonika() {
     .filter(p => !series || p.series === series)
     .filter(p => !program || p.program === program)
     .filter(p => !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || (p.article||'').toLowerCase().includes(q));
-  document.getElementById('tlt-table-wrap').innerHTML = buildTable(items, TELTONIKA_URL, true);
+  const sortedTlt = sortTeltonika(items);
+  document.getElementById('tlt-table-wrap').innerHTML = buildTable(sortedTlt, TELTONIKA_URL, true);
 }
 
 // ════════════════════════════════════════════════════════
@@ -4884,7 +4936,8 @@ function renderBitrek() {
   const items = (window.products||[]).filter(p => p.brand === 'Bitrek')
     .filter(p => !series || p.series === series)
     .filter(p => !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || (p.article||'').toLowerCase().includes(q));
-  document.getElementById('bit-table-wrap').innerHTML = buildTable(items, BITREK_URL, false);
+  const sortedBit = sortBitrek(items);
+  document.getElementById('bit-table-wrap').innerHTML = buildTable(sortedBit, BITREK_URL, false);
 }
 
 // ════════════════════════════════════════════════════════
@@ -4920,7 +4973,8 @@ function renderOtherBrands() {
   if (title) title.textContent = 'Ігла';
 
   const wrap = document.getElementById('other-brands-table-wrap');
-  if (wrap) wrap.innerHTML = buildTable(items, {}, true);
+  const sortedIgla = sortIgla(items);
+  if (wrap) wrap.innerHTML = buildTable(sortedIgla, {}, true);
 }
 
 
@@ -6546,6 +6600,7 @@ function renderContactsSection(d) {
 window._fbUser = null;
 window._fbRole   = null;
 window._tgToken  = '8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4';
+window._tgChatId = '-1002674415575'; // груповий чат — для всіх реєстрацій
 window._tgChatId = '69110103'; // 'partner' | 'client' | 'admin' | 'pending'
 
 // Показати login overlay до перевірки сесії
@@ -6889,11 +6944,15 @@ window.fbGoogleLogin = async function() {
 🕐 ${new Date().toLocaleString('uk-UA')}
 
 ✅ Підтвердіть: Firebase → Firestore → users`;
-      fetch((window._tgToken ? `https://api.telegram.org/bot${window._tgToken}/sendMessage` : 'https://api.telegram.org/bot8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4/sendMessage'), {
+      const _gt = window._tgToken || '8627617844:AAEkSNrdoZlAfCUB8epJHMs2k4JDdsjkdD4';
+      const _gc = window._tgChatId || '-1002674415575';
+      fetch(`https://api.telegram.org/bot${_gt}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: '-1002674415575', text: tgMsg, parse_mode: 'Markdown' })
-      }).catch(() => {});
+        body: JSON.stringify({ chat_id: _gc, text: tgMsg, parse_mode: 'Markdown' })
+      }).then(r => r.json()).then(d => {
+        if (!d.ok) console.warn('TG Google reg error:', d.description);
+      }).catch(e => console.warn('TG Google fetch error:', e.message));
       // Явно показуємо pending — не чекаємо onAuthStateChanged
       window._fbUser = user;
       window._fbRole = 'pending';
