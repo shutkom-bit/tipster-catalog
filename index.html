@@ -4370,13 +4370,13 @@ function renderPOD() {
   if (!grid) return;
   var role = window._fbRole || 'client';
   var isPartner = role === 'partner' || role === 'admin';
-  var allP = (typeof products !== 'undefined' ? products : []).concat(
+  var allP = (window.products || []).concat(
     typeof extraEquipment !== 'undefined'
       ? Object.values(extraEquipment).reduce(function(a,b){ return a.concat(b); }, [])
       : []
   );
   function getUAH(code) {
-    var p = allP.find(function(x){ return x.code === code; });
+    var p = allP.find(function(x){ return x.code === code || x.name === code; });
     if (!p) return 0;
     var prices = calcPrices(p);
     return Math.round(isPartner ? prices.partner : prices.retail);
@@ -4442,13 +4442,13 @@ function renderPOD2() {
   if (!grid) return;
   var role = window._fbRole || 'client';
   var isPartner = role === 'partner' || role === 'admin';
-  var allP = (typeof products !== 'undefined' ? products : []).concat(
+  var allP = (window.products || []).concat(
     typeof extraEquipment !== 'undefined'
       ? Object.values(extraEquipment).reduce(function(a,b){ return a.concat(b); }, [])
       : []
   );
   function getUAH(code) {
-    var p = allP.find(function(x){ return x.code === code; });
+    var p = allP.find(function(x){ return x.code === code || x.name === code; });
     if (!p) return 0;
     var prices = calcPrices(p);
     return Math.round(isPartner ? prices.partner : prices.retail);
@@ -6624,17 +6624,9 @@ async function loadTenantSettings() {
 }
 
 // ── Завантажити товари з Firebase (єдине джерело) ──
-// Promise-lock для loadFirestoreProducts
-let _productsPromise = null;
 async function loadFirestoreProducts() {
-  // Якщо вже завантажується — чекаємо того ж Promise
-  if (_productsPromise) return _productsPromise;
-  // Якщо вже є товари — не перезавантажуємо
+  // Якщо вже є товари — не перезавантажуємо (дані свіжі)
   if (window.products && window.products.length > 0) return;
-  _productsPromise = _doLoadProducts();
-  try { await _productsPromise; } finally { _productsPromise = null; }
-}
-async function _doLoadProducts() {
   try {
     const snap = await getDocs(collection(db, 'tenants/tipster/products'));
     window.products = [];
