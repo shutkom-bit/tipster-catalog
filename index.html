@@ -6107,247 +6107,256 @@ const NVX_CLOUD_VOL = {
 
 // ── Генерація PDF Navixy Platform ──────────────────────────
 window.nvxGeneratePDF = function() {
-  try {
-    const { jsPDF } = window.jspdf;
-    if (!jsPDF) { alert('PDF бібліотека ще завантажується. Спробуйте ще раз.'); return; }
+  // Отримуємо On-Premise дані з Firebase якщо є
+  const opData = window._nvxOpSettings || {};
+  const opGuarantee  = opData.guarantee  || 999;
+  const opMinPayment = opData.minPayment || 500;
+  const opPremPrice  = opData.premPrice  || 2.99;
+  const opBasicPrice = opData.basicPrice || 2.67;
 
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const W = 210, M = 14;
-    let y = 16;
-
-    // Кольори
-    const BLUE   = [37, 113, 208];
-    const DARK   = [22, 28, 40];
-    const GRAY   = [100, 110, 130];
-    const LGRAY  = [230, 234, 240];
-    const WHITE  = [255, 255, 255];
-    const ORANGE = [245, 158, 11];
-
-    // ── Шапка ──
-    doc.setFillColor(...BLUE);
-    doc.rect(0, 0, W, 26, 'F');
-    doc.setTextColor(...WHITE);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.text('TIPSTER', M, 11);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Офіційний партнер Navixy · tipster.ua', M, 17);
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Navixy Platform', W - M, 11, { align: 'right' });
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Комерційна пропозиція', W - M, 17, { align: 'right' });
-
-    // Дата
-    doc.setFontSize(8);
-    doc.setTextColor(...LGRAY);
-    const dateStr = new Date().toLocaleDateString('uk-UA', { day:'2-digit', month:'long', year:'numeric' });
-    doc.text('Сформовано: ' + dateStr, W - M, 22, { align: 'right' });
-
-    y = 34;
-
-    // ── CLOUD секція ──
-    doc.setFillColor(...BLUE);
-    doc.roundedRect(M, y, W - M*2, 7, 2, 2, 'F');
-    doc.setTextColor(...WHITE);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.text('CLOUD — Хмарна платформа', M + 4, y + 4.8);
-    y += 11;
-
-    // Активація
-    doc.setTextColor(...DARK);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.text('Одноразова активація партнерського акаунту:', M, y);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...BLUE);
-    doc.text('$499', W - M, y, { align: 'right' });
-    y += 5;
-
-    // Мін платіж
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...GRAY);
-    doc.text('Мінімальний щомісячний платіж: $199', M, y);
-    y += 8;
-
-    // Плани Cloud — таблиця
-    doc.autoTable({
-      startY: y,
-      margin: { left: M, right: M },
-      head: [['План', 'Базова ціна / юніт / міс', 'GIS', 'Модулі']],
-      body: [
-        ['Premium', '$3.00', 'Google Maps', '8 модулів'],
-        ['Basic',   '$2.80', 'OpenStreetMap', '4 модулі + Basic GIS'],
-      ],
-      headStyles: { fillColor: BLUE, textColor: WHITE, fontSize: 8, fontStyle: 'bold' },
-      bodyStyles: { fontSize: 8, textColor: DARK },
-      alternateRowStyles: { fillColor: [245, 248, 255] },
-      columnStyles: { 0: { fontStyle: 'bold' } },
-      tableLineColor: LGRAY, tableLineWidth: 0.2,
-      theme: 'grid',
-    });
-    y = doc.lastAutoTable.finalY + 6;
-
-    // Таблиця знижок Cloud Premium
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...DARK);
-    doc.text('Pay-as-you-Go — знижки за обсягом (Cloud Premium)', M, y);
-    y += 3;
-
-    const cloudRows = NVX_CLOUD_VOL.premium.map(r => [
-      '≤ ' + r.u + ' юн.',
-      '$' + r.p.toFixed(2),
-      '$' + r.m.toLocaleString('en-US') + (r.min ? ' (мін.)' : '')
-    ]);
-    doc.autoTable({
-      startY: y,
-      margin: { left: M, right: M + 80 },
-      head: [['Юніти', '$/юніт/міс', 'Рахунок/міс']],
-      body: cloudRows,
-      headStyles: { fillColor: [240, 245, 255], textColor: BLUE, fontSize: 7.5, fontStyle: 'bold' },
-      bodyStyles: { fontSize: 7.5, textColor: DARK },
-      rowPageBreak: 'avoid',
-      alternateRowStyles: { fillColor: [248, 250, 255] },
-      tableLineColor: LGRAY, tableLineWidth: 0.2,
-      theme: 'grid',
-    });
-
-    // Таблиця знижок Cloud Basic — поруч
-    const xRight = M + (W - M*2) / 2 + 4;
-    const startYBasic = y;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...DARK);
-    doc.text('Cloud Basic', xRight, startYBasic);
-
-    const cloudBasicRows = NVX_CLOUD_VOL.basic.map(r => [
-      '≤ ' + r.u + ' юн.',
-      '$' + r.p.toFixed(2),
-      '$' + r.m.toLocaleString('en-US') + (r.min ? ' (мін.)' : '')
-    ]);
-    doc.autoTable({
-      startY: startYBasic + 3,
-      margin: { left: xRight, right: M },
-      head: [['Юніти', '$/юніт/міс', 'Рахунок/міс']],
-      body: cloudBasicRows,
-      headStyles: { fillColor: [240, 245, 255], textColor: GRAY, fontSize: 7.5, fontStyle: 'bold' },
-      bodyStyles: { fontSize: 7.5, textColor: DARK },
-      alternateRowStyles: { fillColor: [250, 250, 252] },
-      tableLineColor: LGRAY, tableLineWidth: 0.2,
-      theme: 'grid',
-    });
-
-    y = Math.max(doc.lastAutoTable.finalY, doc.previousAutoTable?.finalY || 0) + 10;
-
-    // ── ON-PREMISE секція ──
-    doc.setFillColor(40, 50, 70);
-    doc.roundedRect(M, y, W - M*2, 7, 2, 2, 'F');
-    doc.setTextColor(...WHITE);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.text('ON-PREMISE — Власна інфраструктура', M + 4, y + 4.8);
-    y += 11;
-
-    doc.setTextColor(...DARK);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.text('Гарантійний платіж (одноразово):', M, y);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(40, 50, 70);
-    doc.text('$999', W - M, y, { align: 'right' });
-    y += 5;
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...GRAY);
-    doc.text('З них $500 зараховується на баланс. Мінімальний щомісячний платіж: $500', M, y);
-    y += 8;
-
-    // On-Premise Premium таблиця
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...DARK);
-    doc.text('On-Premise Premium', M, y);
-    y += 3;
-
-    const opPremRows = NVX_OP_VOL['op-premium'].map(r => [
-      '≤ ' + r.u + ' юн.',
-      '$' + r.p.toFixed(2),
-      '$' + r.m.toLocaleString('en-US') + (r.min ? ' (мін.)' : '')
-    ]);
-    doc.autoTable({
-      startY: y,
-      margin: { left: M, right: M + 80 },
-      head: [['Юніти', '$/юніт/міс', 'Рахунок/міс']],
-      body: opPremRows,
-      headStyles: { fillColor: [40, 50, 70], textColor: WHITE, fontSize: 7.5, fontStyle: 'bold' },
-      bodyStyles: { fontSize: 7.5, textColor: DARK },
-      alternateRowStyles: { fillColor: [248, 249, 252] },
-      tableLineColor: LGRAY, tableLineWidth: 0.2,
-      theme: 'grid',
-    });
-
-    const startYOpBasic = y;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...DARK);
-    doc.text('On-Premise Basic', xRight, startYOpBasic);
-
-    const opBasicRows = NVX_OP_VOL['op-basic'].map(r => [
-      '≤ ' + r.u + ' юн.',
-      '$' + r.p.toFixed(2),
-      '$' + r.m.toLocaleString('en-US') + (r.min ? ' (мін.)' : '')
-    ]);
-    doc.autoTable({
-      startY: startYOpBasic + 3,
-      margin: { left: xRight, right: M },
-      head: [['Юніти', '$/юніт/міс', 'Рахунок/міс']],
-      body: opBasicRows,
-      headStyles: { fillColor: [60, 70, 95], textColor: WHITE, fontSize: 7.5, fontStyle: 'bold' },
-      bodyStyles: { fontSize: 7.5, textColor: DARK },
-      alternateRowStyles: { fillColor: [248, 249, 252] },
-      tableLineColor: LGRAY, tableLineWidth: 0.2,
-      theme: 'grid',
-    });
-
-    y = Math.max(doc.lastAutoTable.finalY, doc.previousAutoTable?.finalY || 0) + 8;
-
-    // ── Регламент оплат ──
-    doc.setFillColor(...LGRAY);
-    doc.rect(M, y, W - M*2, 0.4, 'F');
-    y += 6;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...DARK);
-    doc.text('Регламент оплат', M, y);
-    y += 4;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(...GRAY);
-    const payment = [
-      'Рахунок формується 1-го числа за попередній місяць, оплата — до 9-го.',
-      'До 10-го несплата — тимчасове блокування Admin Panel.',
-      'До 15-го несплата — повне відключення; дані більше не зберігаються.',
-    ];
-    payment.forEach(line => { doc.text(line, M, y); y += 4.5; });
-
-    // ── Футер ──
-    const pageH = 297;
-    doc.setFillColor(...BLUE);
-    doc.rect(0, pageH - 12, W, 12, 'F');
-    doc.setTextColor(...WHITE);
-    doc.setFontSize(7.5);
-    doc.setFont('helvetica', 'normal');
-    doc.text('TIPSTER · Офіційний партнер Navixy · tipster.ua · office@trackauto.com.ua', M, pageH - 4.5);
-    doc.text('Ціни вказані в USD. Актуальні на дату формування документу.', W - M, pageH - 4.5, { align: 'right' });
-
-    doc.save('Navixy-Platform-TIPSTER-' + new Date().toISOString().slice(0,10) + '.pdf');
-  } catch(e) {
-    console.error('PDF error:', e);
-    alert('Помилка генерації PDF: ' + e.message);
+  // Будуємо рядки таблиць
+  function buildVolRows(data) {
+    return data.map(r =>
+      `<tr${r.min?' class="min-row"':''}>
+        <td>&le;&nbsp;${r.u} юн.</td>
+        <td class="mono">$${r.p.toFixed(2)}</td>
+        <td class="mono">$${r.m.toLocaleString('en-US')}${r.min?' <span class="min-label">мін.</span>':''}</td>
+      </tr>`
+    ).join('');
   }
+
+  const dateStr = new Date().toLocaleDateString('uk-UA', {day:'2-digit',month:'long',year:'numeric'});
+
+  const html = `<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Navixy Platform — TIPSTER</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'IBM Plex Sans',Arial,sans-serif;font-size:10px;color:#1a1f2e;background:#fff;padding:0}
+  .mono{font-family:'IBM Plex Mono',monospace}
+
+  /* Шапка */
+  .header{background:linear-gradient(135deg,#1a3a6b 0%,#2563eb 100%);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:flex-start}
+  .header-left .brand{font-size:20px;font-weight:800;letter-spacing:-0.5px}
+  .header-left .sub{font-size:9px;opacity:0.7;margin-top:2px}
+  .header-right{text-align:right}
+  .header-right .doc-title{font-size:16px;font-weight:700}
+  .header-right .doc-sub{font-size:9px;opacity:0.7;margin-top:2px}
+  .header-right .doc-date{font-size:8px;opacity:0.55;margin-top:4px}
+
+  /* Контент */
+  .content{padding:14px 20px}
+
+  /* Секції */
+  .section-header{padding:6px 10px;border-radius:5px;color:#fff;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;margin-top:14px}
+  .section-header.cloud{background:linear-gradient(90deg,#2563eb,#0ea5e9)}
+  .section-header.onpremise{background:linear-gradient(90deg,#1e293b,#334155)}
+
+  /* Рядок метрик */
+  .metrics{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+  .metric{background:#f1f5ff;border:1px solid #dbeafe;border-radius:6px;padding:7px 12px;flex:1;min-width:140px}
+  .metric .label{font-size:8px;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px}
+  .metric .value{font-size:14px;font-weight:700;color:#2563eb;font-family:'IBM Plex Mono',monospace}
+  .metric .note{font-size:8px;color:#94a3b8;margin-top:1px}
+  .metric.dark .value{color:#334155}
+  .metric.dark{background:#f8fafc;border-color:#e2e8f0}
+
+  /* Таблиці */
+  .tables-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+  .table-wrap{}
+  .table-label{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#2563eb;margin-bottom:4px}
+  .table-label.basic{color:#64748b}
+  .table-label.op{color:#334155}
+  table{width:100%;border-collapse:collapse;font-size:8.5px}
+  thead tr{background:#eff6ff}
+  thead.op tr{background:#f1f5f9}
+  th{padding:4px 7px;text-align:left;font-weight:600;color:#1e3a5f;border-bottom:1px solid #dbeafe}
+  thead.op th{color:#334155;border-bottom-color:#cbd5e1}
+  td{padding:3.5px 7px;border-bottom:1px solid #f0f4ff;color:#1a1f2e}
+  tr.min-row td{background:#fffbeb}
+  .min-label{font-size:7px;color:#92400e;background:#fef3c7;padding:1px 4px;border-radius:3px;margin-left:3px}
+  tr:last-child td{border-bottom:none}
+
+  /* Плани */
+  .plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .plan-card{border:1px solid #dbeafe;border-radius:7px;padding:9px 12px}
+  .plan-card.recommended{border-color:#2563eb;background:#f0f7ff}
+  .plan-card .plan-name{font-weight:700;font-size:10px;margin-bottom:3px}
+  .plan-card .plan-price{font-size:16px;font-weight:800;color:#2563eb;font-family:'IBM Plex Mono',monospace}
+  .plan-card .plan-price span{font-size:9px;font-weight:400;color:#64748b}
+  .plan-card .plan-gis{font-size:8px;color:#64748b;margin-top:2px}
+  .plan-card .plan-badge{font-size:7px;background:#2563eb;color:#fff;padding:1px 6px;border-radius:10px;display:inline-block;margin-bottom:4px}
+  .plan-card.op .plan-price{color:#334155}
+  .plan-card.op.recommended{border-color:#334155;background:#f8fafc}
+  .plan-card.op .plan-badge{background:#334155}
+
+  /* Регламент */
+  .regulations{background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:9px 12px;margin-top:4px}
+  .regulations .reg-title{font-weight:700;font-size:9px;color:#92400e;margin-bottom:5px}
+  .regulations .reg-item{font-size:8.5px;color:#78350f;margin-bottom:3px;padding-left:10px;position:relative}
+  .regulations .reg-item::before{content:'•';position:absolute;left:2px}
+  .regulations .reg-item.warn{color:#dc2626}
+
+  /* Футер */
+  .footer{background:#1e293b;color:#94a3b8;padding:8px 20px;display:flex;justify-content:space-between;font-size:7.5px;margin-top:14px}
+
+  /* Кнопка друку */
+  .print-bar{background:#2563eb;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+  .print-bar .print-title{font-size:11px;font-weight:600}
+  .print-bar .print-hint{font-size:9px;opacity:0.7}
+  .btn-print{background:#fff;color:#2563eb;border:none;padding:7px 18px;border-radius:6px;font-weight:700;font-size:11px;cursor:pointer;font-family:inherit}
+  .btn-print:hover{background:#eff6ff}
+
+  @media print{
+    .print-bar{display:none!important}
+    body{padding:0}
+    .header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .section-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .plan-card.recommended{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .plan-badge{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    thead tr{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<!-- Панель друку (не друкується) -->
+<div class="print-bar">
+  <div>
+    <div class="print-title">Navixy Platform — Комерційна пропозиція TIPSTER</div>
+    <div class="print-hint">Ctrl+P або кнопка → зберегти як PDF</div>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨 Друк / Зберегти PDF</button>
+</div>
+
+<!-- Шапка -->
+<div class="header">
+  <div class="header-left">
+    <div class="brand">TIPSTER</div>
+    <div class="sub">Офіційний партнер Navixy · tipster.ua</div>
+  </div>
+  <div class="header-right">
+    <div class="doc-title">Navixy Platform</div>
+    <div class="doc-sub">Комерційна пропозиція</div>
+    <div class="doc-date">Сформовано: ${dateStr}</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- CLOUD -->
+  <div class="section-header cloud">☁ Cloud — Хмарна платформа</div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="label">Активація акаунту</div>
+      <div class="value">$499</div>
+      <div class="note">одноразово</div>
+    </div>
+    <div class="metric">
+      <div class="label">Мінімальний платіж</div>
+      <div class="value">$199</div>
+      <div class="note">щомісяця</div>
+    </div>
+  </div>
+
+  <div class="plans-grid">
+    <div class="plan-card recommended">
+      <div class="plan-badge">Рекомендовано</div>
+      <div class="plan-name">Premium (Google Maps)</div>
+      <div class="plan-price">$3.00 <span>/ юніт / міс</span></div>
+      <div class="plan-gis">8 модулів · Google Maps · Повний функціонал</div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">Basic (OpenStreetMap)</div>
+      <div class="plan-price">$2.80 <span>/ юніт / міс</span></div>
+      <div class="plan-gis">4 модулі · OpenStreetMap · Basic GIS</div>
+    </div>
+  </div>
+
+  <div class="tables-grid">
+    <div class="table-wrap">
+      <div class="table-label">Premium — знижки за обсягом</div>
+      <table><thead><tr><th>Юніти</th><th>$/юніт/міс</th><th>Рахунок/міс</th></tr></thead>
+      <tbody>${buildVolRows(NVX_CLOUD_VOL.premium)}</tbody></table>
+    </div>
+    <div class="table-wrap">
+      <div class="table-label basic">Basic — знижки за обсягом</div>
+      <table><thead><tr><th>Юніти</th><th>$/юніт/міс</th><th>Рахунок/міс</th></tr></thead>
+      <tbody>${buildVolRows(NVX_CLOUD_VOL.basic)}</tbody></table>
+    </div>
+  </div>
+
+  <!-- ON-PREMISE -->
+  <div class="section-header onpremise">⚙ On-Premise — Власна інфраструктура</div>
+
+  <div class="metrics">
+    <div class="metric dark">
+      <div class="label">Гарантійний платіж</div>
+      <div class="value">$${opGuarantee}</div>
+      <div class="note">одноразово · $500 на баланс</div>
+    </div>
+    <div class="metric dark">
+      <div class="label">Мінімальний платіж</div>
+      <div class="value">$${opMinPayment}</div>
+      <div class="note">щомісяця</div>
+    </div>
+  </div>
+
+  <div class="plans-grid">
+    <div class="plan-card op recommended">
+      <div class="plan-badge">Рекомендовано</div>
+      <div class="plan-name">On-Premise Premium (Google Maps)</div>
+      <div class="plan-price">$${opPremPrice.toFixed(2)} <span>/ юніт / міс</span></div>
+      <div class="plan-gis">Повний функціонал · Власний сервер</div>
+    </div>
+    <div class="plan-card op">
+      <div class="plan-name">On-Premise Basic (OpenStreetMap)</div>
+      <div class="plan-price">$${opBasicPrice.toFixed(2)} <span>/ юніт / міс</span></div>
+      <div class="plan-gis">Базовий функціонал · Власний сервер</div>
+    </div>
+  </div>
+
+  <div class="tables-grid">
+    <div class="table-wrap">
+      <div class="table-label op">On-Premise Premium</div>
+      <table><thead class="op"><tr><th>Юніти</th><th>$/юніт/міс</th><th>Рахунок/міс</th></tr></thead>
+      <tbody>${buildVolRows(NVX_OP_VOL['op-premium'])}</tbody></table>
+    </div>
+    <div class="table-wrap">
+      <div class="table-label op">On-Premise Basic</div>
+      <table><thead class="op"><tr><th>Юніти</th><th>$/юніт/міс</th><th>Рахунок/міс</th></tr></thead>
+      <tbody>${buildVolRows(NVX_OP_VOL['op-basic'])}</tbody></table>
+    </div>
+  </div>
+
+  <!-- Регламент -->
+  <div class="regulations">
+    <div class="reg-title">⏰ Регламент оплат</div>
+    <div class="reg-item">Рахунок формується 1-го числа за попередній місяць, оплата — до 9-го.</div>
+    <div class="reg-item warn">До 10-го несплата → тимчасове блокування Admin Panel.</div>
+    <div class="reg-item warn">До 15-го несплата → повне відключення; дані більше не зберігаються.</div>
+  </div>
+
+</div>
+
+<!-- Футер -->
+<div class="footer">
+  <span>TIPSTER · Офіційний партнер Navixy · tipster.ua · office@trackauto.com.ua</span>
+  <span>Ціни вказані в USD. Актуальні на дату формування документу.</span>
+</div>
+
+</body>
+</html>`;
+
+  const win = window.open('', '_blank', 'width=900,height=700');
+  if (!win) { alert('Дозвольте спливаючі вікна для цього сайту і спробуйте знову.'); return; }
+  win.document.write(html);
+  win.document.close();
 };
 
 
