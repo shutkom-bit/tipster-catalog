@@ -689,10 +689,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <option value="active">Активні</option>
           <option value="inactive">Неактивні</option>
         </select>
-        <button class="btn btn-secondary" onclick="adminCleanupDuplicates()" style="color:#dc2626;border-color:#fca5a5" title="Знайти і видалити дублі з Firebase">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 2,2 6,3"/><path d="M2 2a10 10 0 1 1 3 7"/></svg>
-          Видалити дублі
-        </button>
         <button class="btn btn-primary" onclick="openProductModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати товар
@@ -1125,11 +1121,38 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         </div>
         <div class="form-group">
           <label>Ціна партнер (USD) *</label>
-          <input type="number" id="p-price-partner" placeholder="45.60" step="0.01" min="0">
+          <input type="number" id="p-price-partner" placeholder="45.60" step="0.01" min="0" oninput="calcProductMargin()">
         </div>
         <div class="form-group">
           <label>Ціна РРЦ (USD) *</label>
-          <input type="number" id="p-price-retail" placeholder="64.00" step="0.01" min="0">
+          <input type="number" id="p-price-retail" placeholder="64.00" step="0.01" min="0" oninput="calcProductMargin()">
+        </div>
+        <div class="form-group span-2" id="cost-block" style="display:none">
+          <label>🔒 Вхідна ціна (cost, USD) — тільки для адміна</label>
+          <input type="number" id="p-cost" placeholder="32.00" step="0.01" min="0" oninput="calcProductMargin()" style="font-family:'IBM Plex Mono',monospace">
+        </div>
+        <!-- Блок аналітики маржі — тільки для адміна -->
+        <div class="form-group span-2" id="margin-block" style="display:none">
+          <label>📊 Аналітика маржі</label>
+          <div id="margin-analytics" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+            <div style="text-align:center">
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:4px">Націнка партнер</div>
+              <div id="m-markup-partner" style="font-size:18px;font-weight:700;color:var(--accent);font-family:'IBM Plex Mono',monospace">—</div>
+              <div id="m-margin-partner-usd" style="font-size:11px;color:var(--text-3);margin-top:2px">—</div>
+              <div id="m-margin-partner-uah" style="font-size:11px;color:var(--text-3)">—</div>
+            </div>
+            <div style="text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)">
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:4px">Націнка РРЦ</div>
+              <div id="m-markup-retail" style="font-size:18px;font-weight:700;color:#10b981;font-family:'IBM Plex Mono',monospace">—</div>
+              <div id="m-margin-retail-usd" style="font-size:11px;color:var(--text-3);margin-top:2px">—</div>
+              <div id="m-margin-retail-uah" style="font-size:11px;color:var(--text-3)">—</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:4px">Вхідна ціна</div>
+              <div id="m-cost-usd" style="font-size:18px;font-weight:700;color:var(--text-2);font-family:'IBM Plex Mono',monospace">—</div>
+              <div id="m-cost-uah" style="font-size:11px;color:var(--text-3);margin-top:2px">—</div>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label>Серія</label>
@@ -1534,6 +1557,8 @@ window.adminLogout = async () => {
   await signOut(auth);
 };
 
+// Відстежуємо роль для margin block
+window.onAuthStateChanged_orig = null;
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     // Перевіримо роль
@@ -1542,6 +1567,7 @@ onAuthStateChanged(auth, async (user) => {
       if (!snap.exists() || snap.data().role !== 'admin') {
         await signOut(auth); return;
       }
+      window._currentUserRole = 'admin';
     } catch(e) { /* продовжуємо */ }
 
     document.getElementById('auth-overlay').style.display = 'none';
@@ -1880,6 +1906,19 @@ window.openProductModal = (id) => {
     document.getElementById('p-promo').checked  = false;
     document.getElementById('p-new').checked    = false;
   }
+  // Показуємо cost і margin тільки адміну
+  const isAdmin = window._currentUserRole === 'admin';
+  document.getElementById('cost-block').style.display   = isAdmin ? '' : 'none';
+  document.getElementById('margin-block').style.display = isAdmin ? '' : 'none';
+
+  if (isEdit && isAdmin) {
+    const p = _products.find(x => x.id === id);
+    document.getElementById('p-cost').value = p && p.cost ? p.cost : '';
+    calcProductMargin();
+  } else if (!isEdit) {
+    document.getElementById('p-cost').value = '';
+  }
+
   openModal('modal-product');
 };
 
@@ -1904,6 +1943,9 @@ window.saveProduct = async () => {
     promo:        document.getElementById('p-promo').checked,
     isNew:        document.getElementById('p-new').checked,
     updatedAt:    serverTimestamp(),
+    ...(window._currentUserRole === 'admin' && document.getElementById('p-cost').value
+      ? { cost: parseFloat(document.getElementById('p-cost').value) || 0 }
+      : {}),
   };
   try {
     if (_editingProduct) {
@@ -2602,42 +2644,51 @@ window.admNvxPDF = function() {
 };
 
 // ════════════════════════════════════════════════════
-// ВИДАЛЕННЯ ДУБЛІВ ТОВАРІВ
+// АНАЛІТИКА МАРЖІ В МОДАЛЦІ ТОВАРУ
 // ════════════════════════════════════════════════════
-window.adminCleanupDuplicates = async function() {
-  if (!confirm('Знайти і видалити дублі товарів з Firebase?\nЗалишиться тільки перший запис кожного коду. Решта буде видалена.')) return;
-  try {
-    toast('Шукаємо дублі…');
-    const snap = await getDocs(collection(db, tenantRef('products')));
-    const seen = {};
-    const toDelete = [];
-    snap.forEach(d => {
-      const data = d.data();
-      const key = (data.code || data.article || d.id).trim().toLowerCase();
-      if (seen[key]) {
-        toDelete.push({ id: d.id, code: data.code || data.article || d.id });
-      } else {
-        seen[key] = d.id;
-      }
-    });
+window._currentUserRole = 'admin'; // буде оновлено після логіну
 
-    if (toDelete.length === 0) {
-      toast('Дублів не знайдено ✓');
-      return;
-    }
+window.calcProductMargin = function() {
+  const cost    = parseFloat(document.getElementById('p-cost')?.value) || 0;
+  const partner = parseFloat(document.getElementById('p-price-partner')?.value) || 0;
+  const retail  = parseFloat(document.getElementById('p-price-retail')?.value) || 0;
 
-    let deleted = 0;
-    for (const item of toDelete) {
-      await deleteDoc(doc(db, tenantRef('products'), item.id));
-      deleted++;
-    }
+  // Поточний курс USD — беремо з localStorage або дефолт
+  const usdRate = parseFloat(localStorage.getItem('nbu_usd') || '41.2') * 1.015 || 41.2;
 
-    toast(`Видалено ${deleted} дублів ✓`);
-    loadProducts();
-  } catch(e) {
-    console.error('cleanupDuplicates:', e);
-    toast('Помилка: ' + e.message, 'error');
-  }
+  const fmt  = (n) => n > 0 ? '$' + n.toFixed(2) : '—';
+  const fmtP = (n) => n > 0 ? '+' + n.toFixed(1) + '%' : '—';
+  const fmtH = (n) => n > 0 ? Math.round(n).toLocaleString('uk-UA') + ' ₴' : '—';
+
+  // Маржа партнер
+  const marginP     = partner - cost;
+  const markupP_pct = cost > 0 ? (marginP / cost * 100) : 0;
+  const marginP_uah = marginP * usdRate;
+
+  // Маржа РРЦ
+  const marginR     = retail - cost;
+  const markupR_pct = cost > 0 ? (marginR / cost * 100) : 0;
+  const marginR_uah = marginR * usdRate;
+
+  // Оновлюємо UI
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+
+  set('m-markup-partner',    cost > 0 ? fmtP(markupP_pct) : '—');
+  set('m-margin-partner-usd', cost > 0 ? fmt(marginP) + ' маржа' : 'Вкажіть cost');
+  set('m-margin-partner-uah', cost > 0 ? fmtH(marginP_uah) : '');
+
+  set('m-markup-retail',    cost > 0 ? fmtP(markupR_pct) : '—');
+  set('m-margin-retail-usd', cost > 0 ? fmt(marginR) + ' маржа' : 'Вкажіть cost');
+  set('m-margin-retail-uah', cost > 0 ? fmtH(marginR_uah) : '');
+
+  set('m-cost-usd', cost > 0 ? fmt(cost) : '—');
+  set('m-cost-uah', cost > 0 ? fmtH(cost * usdRate) : '');
+
+  // Колір націнки партнера — якщо менше 10% — червоний
+  const mpEl = document.getElementById('m-markup-partner');
+  if (mpEl) mpEl.style.color = markupP_pct < 10 ? '#dc2626' : markupP_pct < 20 ? '#f59e0b' : 'var(--accent)';
+  const mrEl = document.getElementById('m-markup-retail');
+  if (mrEl) mrEl.style.color = markupR_pct < 15 ? '#dc2626' : markupR_pct < 30 ? '#f59e0b' : '#10b981';
 };
 
 </script>
