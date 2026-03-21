@@ -1131,6 +1131,72 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <label>🔒 Вхідна ціна (cost, USD) — тільки для адміна</label>
           <input type="number" id="p-cost" placeholder="32.00" step="0.01" min="0" oninput="calcProductMargin()" style="font-family:'IBM Plex Mono',monospace">
         </div>
+
+        <!-- Калькулятор ціноутворення -->
+        <div class="form-group span-2" id="pricing-calc-block" style="display:none">
+          <label>🧮 Калькулятор ціноутворення</label>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:12px">
+
+            <!-- Рядок 1: ПДВ -->
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;white-space:nowrap;margin:0">
+                <label class="toggle" style="margin:0">
+                  <input type="checkbox" id="calc-vat" onchange="calcPricing()" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <span style="font-size:13px">ПДВ 20%</span>
+              </label>
+              <div style="font-size:12px;color:var(--text-3)">Вхідна з ПДВ:</div>
+              <div id="calc-cost-vat" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:var(--text)">—</div>
+            </div>
+
+            <!-- Рядок 2: Коефіцієнти -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div>
+                <label style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px">Коефіцієнт партнер</label>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <input type="range" id="calc-k-partner" min="1.05" max="2.00" step="0.01" value="1.15"
+                    oninput="document.getElementById('calc-k-partner-val').value=parseFloat(this.value).toFixed(2);calcPricing()"
+                    style="flex:1;accent-color:var(--accent)">
+                  <input type="number" id="calc-k-partner-val" value="1.15" min="1.05" max="2.00" step="0.01"
+                    oninput="document.getElementById('calc-k-partner').value=this.value;calcPricing()"
+                    style="width:60px;padding:4px 6px;border:1px solid var(--border);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-card);color:var(--text)">
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+                  <span style="font-size:11px;color:var(--text-3)">Ціна партнер:</span>
+                  <span id="calc-price-partner" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:var(--accent)">—</span>
+                </div>
+                <button onclick="applyPricingPartner()" style="margin-top:6px;width:100%;padding:5px;background:var(--accent);color:#fff;border:none;border-radius:5px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600">
+                  ↑ Підставити в поле партнера
+                </button>
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px">Коефіцієнт РРЦ</label>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <input type="range" id="calc-k-retail" min="1.05" max="2.50" step="0.01" value="1.40"
+                    oninput="document.getElementById('calc-k-retail-val').value=parseFloat(this.value).toFixed(2);calcPricing()"
+                    style="flex:1;accent-color:#10b981">
+                  <input type="number" id="calc-k-retail-val" value="1.40" min="1.05" max="2.50" step="0.01"
+                    oninput="document.getElementById('calc-k-retail').value=this.value;calcPricing()"
+                    style="width:60px;padding:4px 6px;border:1px solid var(--border);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-card);color:var(--text)">
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+                  <span style="font-size:11px;color:var(--text-3)">Ціна РРЦ:</span>
+                  <span id="calc-price-retail" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#10b981">—</span>
+                </div>
+                <button onclick="applyPricingRetail()" style="margin-top:6px;width:100%;padding:5px;background:#10b981;color:#fff;border:none;border-radius:5px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600">
+                  ↑ Підставити в поле РРЦ
+                </button>
+              </div>
+            </div>
+
+            <!-- Кнопка підставити обидва -->
+            <button onclick="applyPricingBoth()" style="padding:7px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-2);font-weight:600">
+              ↑ Підставити обидві ціни одразу
+            </button>
+          </div>
+        </div>
+
         <!-- Блок аналітики маржі — тільки для адміна -->
         <div class="form-group span-2" id="margin-block" style="display:none">
           <label>📊 Аналітика маржі</label>
@@ -1908,15 +1974,23 @@ window.openProductModal = (id) => {
   }
   // Показуємо cost і margin тільки адміну
   const isAdmin = window._currentUserRole === 'admin';
-  document.getElementById('cost-block').style.display   = isAdmin ? '' : 'none';
-  document.getElementById('margin-block').style.display = isAdmin ? '' : 'none';
+  document.getElementById('cost-block').style.display        = isAdmin ? '' : 'none';
+  document.getElementById('pricing-calc-block').style.display = isAdmin ? '' : 'none';
+  document.getElementById('margin-block').style.display       = isAdmin ? '' : 'none';
 
   if (isEdit && isAdmin) {
     const p = _products.find(x => x.id === id);
     document.getElementById('p-cost').value = p && p.cost ? p.cost : '';
     calcProductMargin();
+    calcPricing();
   } else if (!isEdit) {
     document.getElementById('p-cost').value = '';
+    document.getElementById('calc-k-partner').value = '1.15';
+    document.getElementById('calc-k-partner-val').value = '1.15';
+    document.getElementById('calc-k-retail').value = '1.40';
+    document.getElementById('calc-k-retail-val').value = '1.40';
+    document.getElementById('calc-vat').checked = true;
+    calcPricing();
   }
 
   openModal('modal-product');
@@ -2689,6 +2763,60 @@ window.calcProductMargin = function() {
   if (mpEl) mpEl.style.color = markupP_pct < 10 ? '#dc2626' : markupP_pct < 20 ? '#f59e0b' : 'var(--accent)';
   const mrEl = document.getElementById('m-markup-retail');
   if (mrEl) mrEl.style.color = markupR_pct < 15 ? '#dc2626' : markupR_pct < 30 ? '#f59e0b' : '#10b981';
+};
+
+
+// ════════════════════════════════════════════════════
+// КАЛЬКУЛЯТОР ЦІНОУТВОРЕННЯ
+// ════════════════════════════════════════════════════
+window.calcPricing = function() {
+  const cost  = parseFloat(document.getElementById('p-cost')?.value) || 0;
+  if (!cost) {
+    ['calc-cost-vat','calc-price-partner','calc-price-retail'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '—';
+    });
+    return;
+  }
+
+  const useVat = document.getElementById('calc-vat')?.checked !== false;
+  const kP     = parseFloat(document.getElementById('calc-k-partner')?.value) || 1.15;
+  const kR     = parseFloat(document.getElementById('calc-k-retail')?.value)  || 1.40;
+
+  const costVat     = useVat ? cost * 1.2 : cost;
+  const pricePartner = Math.ceil(costVat * kP * 100) / 100;
+  const priceRetail  = Math.ceil(costVat * kR * 100) / 100;
+
+  const fmt = (n) => '$' + n.toFixed(2);
+
+  const setTxt = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  setTxt('calc-cost-vat',      fmt(costVat) + (useVat ? ' (з ПДВ)' : ' (без ПДВ)'));
+  setTxt('calc-price-partner', fmt(pricePartner));
+  setTxt('calc-price-retail',  fmt(priceRetail));
+
+  // Також оновлюємо аналітику
+  if (typeof calcProductMargin === 'function') calcProductMargin();
+};
+
+window.applyPricingPartner = function() {
+  const val = document.getElementById('calc-price-partner')?.textContent?.replace('$','');
+  if (val && val !== '—') {
+    document.getElementById('p-price-partner').value = parseFloat(val).toFixed(2);
+    calcProductMargin();
+  }
+};
+
+window.applyPricingRetail = function() {
+  const val = document.getElementById('calc-price-retail')?.textContent?.replace('$','');
+  if (val && val !== '—') {
+    document.getElementById('p-price-retail').value = parseFloat(val).toFixed(2);
+    calcProductMargin();
+  }
+};
+
+window.applyPricingBoth = function() {
+  applyPricingPartner();
+  applyPricingRetail();
 };
 
 </script>
