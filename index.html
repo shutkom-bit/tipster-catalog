@@ -3121,7 +3121,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
             <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;max-width:720px">
               Navixy — це гнучка платформа, яка працює як для кінцевих користувачів через партнерів, так і як основа для власного GPS-бізнесу чи корпоративного рішення enterprise-рівня.
             </div>
-            <div style="margin-top:16px">
+            <div style="margin-top:16px" id="nvx-pdf-btn-wrap" style="display:none">
               <button onclick="nvxGeneratePDF()" class="tb-btn" style="display:inline-flex;align-items:center;gap:7px;padding:8px 18px;font-size:13px;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-family:inherit;font-weight:600">
                 <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12v2h10v-2"/><path d="M8 2v8"/><polyline points="5,7 8,10 11,7"/></svg>
                 Завантажити PDF — Navixy Platform
@@ -6955,6 +6955,9 @@ function applyRole(role) {
   } else {
     document.body.setAttribute('data-role', 'client');
   }
+  // PDF кнопка Navixy — тільки для партнерів і адмінів
+  const nvxPdfBtn = document.getElementById('nvx-pdf-btn-wrap');
+  if (nvxPdfBtn) nvxPdfBtn.style.display = (role === 'partner' || role === 'admin') ? '' : 'none';
   hideOverlays();
   updateAuthHeader();
   if (typeof renderAll === 'function') renderAll();
