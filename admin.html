@@ -2722,10 +2722,11 @@ window.admNvxPDF = function() {
 // ════════════════════════════════════════════════════
 window._currentUserRole = 'admin'; // буде оновлено після логіну
 
-window.calcProductMargin = function() {
+window.calcProductMargin = function(overridePartner, overrideRetail) {
   const cost    = parseFloat(document.getElementById('p-cost')?.value) || 0;
-  const partner = parseFloat(document.getElementById('p-price-partner')?.value) || 0;
-  const retail  = parseFloat(document.getElementById('p-price-retail')?.value) || 0;
+  // Якщо є override з калькулятора — використовуємо їх для preview
+  const partner = overridePartner || parseFloat(document.getElementById('p-price-partner')?.value) || 0;
+  const retail  = overrideRetail  || parseFloat(document.getElementById('p-price-retail')?.value)  || 0;
 
   // Поточний курс USD — беремо з localStorage або дефолт
   const usdRate = parseFloat(localStorage.getItem('nbu_usd') || '41.2') * 1.015 || 41.2;
@@ -2794,8 +2795,8 @@ window.calcPricing = function() {
   setTxt('calc-price-partner', fmt(pricePartner));
   setTxt('calc-price-retail',  fmt(priceRetail));
 
-  // Також оновлюємо аналітику
-  if (typeof calcProductMargin === 'function') calcProductMargin();
+  // Передаємо розраховані ціни в аналітику для live preview
+  if (typeof calcProductMargin === 'function') calcProductMargin(pricePartner, priceRetail);
 };
 
 window.applyPricingPartner = function() {
