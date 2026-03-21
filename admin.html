@@ -2723,7 +2723,10 @@ window.admNvxPDF = function() {
 window._currentUserRole = 'admin'; // буде оновлено після логіну
 
 window.calcProductMargin = function(overridePartner, overrideRetail) {
-  const cost    = parseFloat(document.getElementById('p-cost')?.value) || 0;
+  const costRaw = parseFloat(document.getElementById('p-cost')?.value) || 0;
+  // Якщо калькулятор активний — враховуємо ПДВ у базі
+  const useVat  = document.getElementById('calc-vat')?.checked !== false;
+  const cost    = costRaw > 0 ? (useVat ? costRaw * 1.2 : costRaw) : 0;
   // Якщо є override з калькулятора — використовуємо їх для preview
   const partner = overridePartner || parseFloat(document.getElementById('p-price-partner')?.value) || 0;
   const retail  = overrideRetail  || parseFloat(document.getElementById('p-price-retail')?.value)  || 0;
@@ -2756,8 +2759,8 @@ window.calcProductMargin = function(overridePartner, overrideRetail) {
   set('m-margin-retail-usd', cost > 0 ? fmt(marginR) + ' маржа' : 'Вкажіть cost');
   set('m-margin-retail-uah', cost > 0 ? fmtH(marginR_uah) : '');
 
-  set('m-cost-usd', cost > 0 ? fmt(cost) : '—');
-  set('m-cost-uah', cost > 0 ? fmtH(cost * usdRate) : '');
+  set('m-cost-usd', costRaw > 0 ? fmt(cost) + (useVat ? ' (з ПДВ)' : '') : '—');
+  set('m-cost-uah', costRaw > 0 ? fmtH(cost * usdRate) : '');
 
   // Колір націнки партнера — якщо менше 10% — червоний
   const mpEl = document.getElementById('m-markup-partner');
