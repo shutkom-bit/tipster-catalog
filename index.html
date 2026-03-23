@@ -2548,6 +2548,10 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         Ігла
         <span class="count" id="cnt-other-brands">0</span>
       </div>
+      <div class="nav-item" id="nav-tsec" onclick="showSection('tsec')" style="display:none">
+        Teltonika Security
+        <span class="count" id="cnt-tsec">0</span>
+      </div>
     </div>
 
     <div class="sidebar-section">
@@ -2904,6 +2908,35 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
           <div id="extra-sos"></div>
         </div>
 
+      </div>
+
+      <!-- ══════════ TELTONIKA SECURITY ══════════ -->
+      <div class="page-section" id="sec-tsec">
+        <div class="page-inner">
+          <div class="page-header">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+              <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:#dc2626">Teltonika Security</span>
+              <span style="font-size:12px;background:#fef2f2;color:#dc2626;padding:3px 10px;border-radius:10px;font-weight:600;border:1px solid #fecaca">🔒 Охоронні системи</span>
+            </div>
+            <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;max-width:700px">
+              Охоронне обладнання Teltonika Security Systems — автосигналізації з GPS/GSM, панелі охоронної сигналізації для будинку та офісу, бездротові датчики. Офіційний партнер TIPSTER.
+            </div>
+          </div>
+          <div class="toolbar">
+            <input type="text" id="tsec-search" placeholder="Пошук за назвою або кодом…" oninput="renderTsec()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);outline:none;flex:1;min-width:200px">
+            <select class="filter-select" id="tsec-series" onchange="renderTsec()">
+              <option value="">Всі категорії</option>
+              <option value="Панелі керування">Панелі керування</option>
+              <option value="Датчики">Датчики</option>
+              <option value="Комунікатори">Комунікатори</option>
+              <option value="Клавіатури">Клавіатури</option>
+              <option value="Автосигналізації">Автосигналізації</option>
+              <option value="Аксесуари">Аксесуари</option>
+              <option value="Аксесуари авто">Аксесуари авто</option>
+            </select>
+          </div>
+          <div id="tsec-table-wrap"></div>
+        </div>
       </div>
 
       <!-- ══════════ ДРП ══════════ -->
@@ -4740,6 +4773,7 @@ function showSection(id) {
   if (id === 'bitrek')       renderBitrek();
   if (id === 'cargo')        renderCargo();
   if (id === 'other-brands') renderOtherBrands();
+  if (id === 'tsec')         renderTsec();
   if (id === 'accessories')  { renderAccessories(); renderExtra(); }
   if (id === 'extra')        { showSection('accessories'); return; }
   if (id === 'drp')          renderDRP();
@@ -4968,6 +5002,25 @@ function renderCargo() {
                        (p.article||'').toLowerCase().includes(q));
   const wrap = document.getElementById('cargo-table-wrap');
   if (wrap) wrap.innerHTML = buildTable(items, {}, true);
+}
+
+
+// ════════════════════════════════════════════════════════
+//  RENDER TELTONIKA SECURITY
+// ════════════════════════════════════════════════════════
+function renderTsec() {
+  const q      = (document.getElementById('tsec-search')?.value || '').trim().toLowerCase();
+  const series = document.getElementById('tsec-series')?.value || '';
+  const items  = (window.products||[])
+    .filter(p => p.brand === 'Teltonika Security')
+    .filter(p => !series || p.series === series)
+    .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
+                       (p.code||'').toLowerCase().includes(q) ||
+                       (p.article||'').toLowerCase().includes(q));
+  const TSEC_URL = {};
+  (window.products||[]).filter(p=>p.brand==='Teltonika Security' && p.url).forEach(p=>{ TSEC_URL[p.code]=p.url; });
+  const wrap = document.getElementById('tsec-table-wrap');
+  if (wrap) wrap.innerHTML = buildTable(items, TSEC_URL, true);
 }
 
 function renderOtherBrands() {
@@ -5597,6 +5650,7 @@ function onRateChange() {
   if (id === 'bitrek')       renderBitrek();
   if (id === 'cargo')        { if(typeof renderCargo==='function') renderCargo(); }
   if (id === 'other-brands') { if(typeof renderOtherBrands==='function') renderOtherBrands(); }
+  if (id === 'tsec')         { if(typeof renderTsec==='function') renderTsec(); }
   if (id === 'accessories')  { renderAccessories(); renderExtra(); }
   if (id === 'extra')        { showSection('accessories'); return; }
   if (id === 'drp')          renderDRP();
@@ -6651,11 +6705,12 @@ async function loadFirestoreProducts() {
     });
 
     // Лічильники sidebar
-    const knownBrands = new Set(['Teltonika','Bitrek','CARGO','Ігла','Igla','ІГЛА','igla']);
+    const knownBrands = new Set(['Teltonika','Bitrek','CARGO','Ігла','Igla','ІГЛА','igla','Teltonika Security']);
     const tltCount   = window.products.filter(p => p.brand==='Teltonika').length;
     const bitCount   = window.products.filter(p => p.brand==='Bitrek').length;
     const cargoCount = window.products.filter(p => p.brand==='CARGO').length;
     const iglaCount  = window.products.filter(p => isIgla(p.brand)).length;
+    const tsecCount  = window.products.filter(p => p.brand==='Teltonika Security').length;
 
     const setCount = (id,n) => { const el=document.getElementById(id); if(el) el.textContent=n; };
     const setVis   = (id,v) => { const el=document.getElementById(id); if(el) el.style.display=v?'':'none'; };
@@ -6666,6 +6721,8 @@ async function loadFirestoreProducts() {
     setCount('cnt-cargo',      cargoCount);
     setVis('nav-other-brands', iglaCount > 0);
     setCount('cnt-other-brands', iglaCount);
+    setVis('nav-tsec',  tsecCount > 0);
+    setCount('cnt-tsec', tsecCount);
 
     if (typeof renderOverview==='function') renderOverview();
     const active = document.querySelector('.page-section.active');
@@ -6675,6 +6732,7 @@ async function loadFirestoreProducts() {
       if (id==='bitrek')       renderBitrek();
       if (id==='cargo')        renderCargo();
       if (id==='other-brands') renderOtherBrands();
+      if (id==='tsec')         renderTsec();
       if (id==='drp')          renderDRP();
     }
   } catch(e) { console.warn('loadFirestoreProducts:', e); }
