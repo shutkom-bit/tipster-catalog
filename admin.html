@@ -1123,12 +1123,24 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <label>Специфікація / характеристики</label>
           <input type="text" id="p-spec" placeholder="4G LTE Cat 1, Bluetooth 4.0, GNSS…">
         </div>
+        <div class="form-group span-2">
+          <label>Валюта цін</label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 14px;border:1px solid var(--border);border-radius:6px;font-size:13px" id="cur-usd-lbl">
+              <input type="radio" name="p-currency" id="p-cur-usd" value="USD" checked onchange="onCurrencyChange()" style="accent-color:var(--accent)"> USD
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 14px;border:1px solid var(--border);border-radius:6px;font-size:13px" id="cur-eur-lbl">
+              <input type="radio" name="p-currency" id="p-cur-eur" value="EUR" onchange="onCurrencyChange()" style="accent-color:#10b981"> EUR
+            </label>
+            <span id="cur-rate-hint" style="font-size:11px;color:var(--text-3)"></span>
+          </div>
+        </div>
         <div class="form-group">
-          <label>Ціна партнер (USD) *</label>
+          <label id="lbl-price-partner">Ціна партнер (USD) *</label>
           <input type="number" id="p-price-partner" placeholder="45.60" step="0.01" min="0" oninput="calcProductMargin()">
         </div>
         <div class="form-group">
-          <label>Ціна РРЦ (USD) *</label>
+          <label id="lbl-price-retail">Ціна РРЦ (USD) *</label>
           <input type="number" id="p-price-retail" placeholder="64.00" step="0.01" min="0" oninput="calcProductMargin()">
         </div>
         <div class="form-group span-2" id="cost-block" style="display:none">
@@ -1961,6 +1973,11 @@ window.openProductModal = (id) => {
     document.getElementById('p-spec').value          = p.spec || '';
     document.getElementById('p-price-partner').value = p.partnerPrice || '';
     document.getElementById('p-price-retail').value  = p.retailPrice || '';
+    // Встановлюємо валюту
+    const cur = p.currency || 'USD';
+    document.getElementById('p-cur-usd').checked = cur === 'USD';
+    document.getElementById('p-cur-eur').checked = cur === 'EUR';
+    onCurrencyChange();
     document.getElementById('p-series').value        = p.series || '';
     document.getElementById('p-url').value           = p.url || '';
     document.getElementById('p-description').value   = p.description || '';
@@ -1971,6 +1988,9 @@ window.openProductModal = (id) => {
     ['p-id','p-article','p-name','p-spec','p-price-partner','p-price-retail','p-series','p-url','p-description'].forEach(id => {
       document.getElementById(id).value = '';
     });
+    document.getElementById('p-cur-usd').checked = true;
+    document.getElementById('p-cur-eur').checked = false;
+    onCurrencyChange();
     document.getElementById('p-brand').value   = '';
     document.getElementById('p-active').checked = true;
     document.getElementById('p-promo').checked  = false;
@@ -2014,6 +2034,7 @@ window.saveProduct = async () => {
     spec:         document.getElementById('p-spec').value.trim(),
     partnerPrice: parseFloat(document.getElementById('p-price-partner').value) || 0,
     retailPrice:  parseFloat(document.getElementById('p-price-retail').value) || 0,
+    currency:     document.querySelector('input[name="p-currency"]:checked')?.value || 'USD',
     series:       document.getElementById('p-series').value.trim(),
     url:          document.getElementById('p-url').value.trim(),
     description:  document.getElementById('p-description').value.trim(),
@@ -2879,6 +2900,42 @@ window.adminImportTSEC = async function() {
     toast(added > 0 ? `Імпортовано ${added} товарів Teltonika Security ✓` : 'Всі товари вже існують');
     loadProducts();
   } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+
+// ════════════════════════════════════════════════════
+// ВИБІР ВАЛЮТИ В МОДАЛЦІ ТОВАРУ
+// ════════════════════════════════════════════════════
+window.onCurrencyChange = function() {
+  const cur = document.querySelector('input[name="p-currency"]:checked')?.value || 'USD';
+  const isEur = cur === 'EUR';
+
+  // Оновлюємо підписи полів
+  const lblP = document.getElementById('lbl-price-partner');
+  const lblR = document.getElementById('lbl-price-retail');
+  if (lblP) lblP.textContent = 'Ціна партнер (' + cur + ') *';
+  if (lblR) lblR.textContent = 'Ціна РРЦ (' + cur + ') *';
+
+  // Підказка з курсом
+  const hint = document.getElementById('cur-rate-hint');
+  if (hint) {
+    if (isEur) {
+      const eurRate = parseFloat(localStorage.getItem('nbu_eur') || '44.5') * 1.015;
+      hint.textContent = '1 EUR ≈ ' + eurRate.toFixed(2) + ' ₴ (курс ПБ)';
+    } else {
+      const usdRate = parseFloat(localStorage.getItem('nbu_usd') || '41.2') * 1.015;
+      hint.textContent = '1 USD ≈ ' + usdRate.toFixed(2) + ' ₴ (курс ПБ)';
+    }
+  }
+
+  // Підсвічуємо активну валюту
+  const usdLbl = document.getElementById('cur-usd-lbl');
+  const eurLbl = document.getElementById('cur-eur-lbl');
+  if (usdLbl) usdLbl.style.borderColor = !isEur ? 'var(--accent)' : 'var(--border)';
+  if (eurLbl) eurLbl.style.borderColor = isEur ? '#10b981' : 'var(--border)';
+
+  // Оновлюємо калькулятор маржі
+  if (typeof calcProductMargin === 'function') calcProductMargin();
 };
 
 </script>
