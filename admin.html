@@ -751,6 +751,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
               <th>Назва</th>
               <th>Колір</th>
               <th>Офіційний партнер</th>
+              <th>Публікація в каталозі</th>
               <th>Посилання</th>
               <th style="width:100px">Дії</th>
             </tr>
@@ -1273,6 +1274,15 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
               <span class="toggle-slider"></span>
             </label>
             Новинка (NEW)
+          </label>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <label class="toggle">
+              <input type="checkbox" id="p-instock" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            В наявності (відображається як "є в наявності")
           </label>
         </div>
       </div>
@@ -1898,7 +1908,8 @@ function renderProducts(items) {
       <td><span class="badge badge-blue">${p.brand || '—'}</span></td>
       <td style="font-family:'IBM Plex Mono',monospace">$${(p.partnerPrice||0).toFixed(2)}</td>
       <td style="font-family:'IBM Plex Mono',monospace">$${(p.retailPrice||0).toFixed(2)}</td>
-      <td><span class="badge ${p.active !== false ? 'badge-green' : 'badge-red'}">${p.active !== false ? 'Активний' : 'Неактивний'}</span></td>
+      <td><span class="badge ${p.active !== false ? 'badge-green' : 'badge-red'}">${p.active !== false ? 'Активний' : 'Неактивний'}</span>
+              ${p.active !== false ? `<span class="badge" style="background:${p.inStock!==false?'#dcfce7':'#fef3c7'};color:${p.inStock!==false?'#166534':'#92400e'};margin-top:2px;display:block">${p.inStock!==false?'✓ В наявності':'⏳ Під замовлення'}</span>` : ''}</td>
       <td>
         <button class="btn btn-secondary btn-sm" onclick="openProductModal('${p.id}')">Редагувати</button>
       </td>
@@ -1984,6 +1995,7 @@ window.openProductModal = (id) => {
     document.getElementById('p-active').checked      = p.active !== false;
     document.getElementById('p-promo').checked       = !!p.promo;
     document.getElementById('p-new').checked         = !!p.isNew;
+    document.getElementById('p-instock').checked     = p.inStock !== false;
   } else {
     ['p-id','p-article','p-name','p-spec','p-price-partner','p-price-retail','p-series','p-url','p-description'].forEach(id => {
       document.getElementById(id).value = '';
@@ -1992,9 +2004,10 @@ window.openProductModal = (id) => {
     document.getElementById('p-cur-eur').checked = false;
     onCurrencyChange();
     document.getElementById('p-brand').value   = '';
-    document.getElementById('p-active').checked = true;
-    document.getElementById('p-promo').checked  = false;
-    document.getElementById('p-new').checked    = false;
+    document.getElementById('p-active').checked   = true;
+    document.getElementById('p-promo').checked   = false;
+    document.getElementById('p-new').checked     = false;
+    document.getElementById('p-instock').checked = true;
   }
   // Показуємо cost і margin тільки адміну
   const isAdmin = window._currentUserRole === 'admin';
@@ -2041,6 +2054,7 @@ window.saveProduct = async () => {
     active:       document.getElementById('p-active').checked,
     promo:        document.getElementById('p-promo').checked,
     isNew:        document.getElementById('p-new').checked,
+    inStock:      document.getElementById('p-instock').checked,
     updatedAt:    serverTimestamp(),
     ...(window._currentUserRole === 'admin' && document.getElementById('p-cost').value
       ? { cost: parseFloat(document.getElementById('p-cost').value) || 0 }
@@ -2094,14 +2108,20 @@ function renderBrands() {
     return;
   }
   tbody.innerHTML = _brands.map(b => `
-    <tr>
+    <tr style="${b.published===false?'opacity:0.5':''}">
       <td style="font-weight:600;display:flex;align-items:center;gap:8px">
         <span style="width:10px;height:10px;border-radius:50%;background:${b.color||'#ccc'};flex-shrink:0;display:inline-block"></span>
         ${b.name}
       </td>
       <td><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px">${b.color||'—'}</span></td>
       <td>${b.official ? '<span class="badge badge-green">✓ Партнер</span>' : '<span class="badge" style="background:var(--tag-gray);color:var(--text-3)">—</span>'}</td>
-      <td>${b.url ? `<a href="${b.url}" target="_blank" style="color:var(--accent);font-size:12px">${b.url.replace('https://','')}</a>` : '—'}</td>
+      <td>
+        <label class="toggle" title="${b.published===false?'Вимкнено':'Активний'}">
+          <input type="checkbox" ${b.published!==false?'checked':''} onchange="toggleBrandPublished('${b.id}',this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+        <span style="font-size:11px;color:var(--text-3);margin-left:6px">${b.published===false?'Вимкнено':'Активний'}</span>
+      </td>
       <td><button class="btn btn-secondary btn-sm" onclick="openBrandModal('${b.id}')">Редагувати</button></td>
     </tr>
   `).join('');
@@ -2936,6 +2956,20 @@ window.onCurrencyChange = function() {
 
   // Оновлюємо калькулятор маржі
   if (typeof calcProductMargin === 'function') calcProductMargin();
+};
+
+
+// ════════════════════════════════════════════════════
+// ПУБЛІКАЦІЯ БРЕНДУ
+// ════════════════════════════════════════════════════
+window.toggleBrandPublished = async function(id, published) {
+  try {
+    await updateDoc(doc(db, tenantRef('brands'), id), { published, updatedAt: serverTimestamp() });
+    const b = _brands.find(x => x.id === id);
+    if (b) b.published = published;
+    renderBrands();
+    toast(published ? 'Бренд активовано в каталозі ✓' : 'Бренд вимкнено в каталозі');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
 };
 
 </script>
