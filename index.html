@@ -4885,9 +4885,10 @@ function buildTable(items, urlMap, showSpec) {
         const isPromo = PROMO_CODES.has(p.code);
         const isNew = NEW_CODES.has(p.code);
         const promoBadge = isPromo ? '<span class="promo-badge">🔥 Акція</span>' : (isNew ? '<span class="new-badge">✨ Новинка</span>' : '');
+        const inStockBadge = p.inStock===false ? '<span style="font-size:10px;background:#fef3c7;color:#92400e;padding:2px 7px;border-radius:4px;margin-left:6px;font-weight:600;white-space:nowrap">⚠ Немає</span>' : '';
         const nameHtml = url
-          ? `<a href="${url}" target="_blank">${p.name} <span class="link-icon">↗</span></a>${promoBadge}`
-          : p.name + promoBadge;
+          ? `<a href="${url}" target="_blank">${p.name} <span class="link-icon">↗</span></a>${promoBadge}${inStockBadge}`
+          : p.name + promoBadge + inStockBadge;
         const specHtml = (showSpec && p.spec) ? `<div class="cell-spec">${p.spec}</div>` : '';
         cartRegistry.set(p.code, { article: p.article||p.code, name: p.name, spec: p.spec||'', _uah: retail, note: null });
         return `<tr class="${isPromo ? 'promo-row' : isNew ? 'new-row' : ''}">
