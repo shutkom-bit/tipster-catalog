@@ -2922,20 +2922,48 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
               Охоронне обладнання Teltonika Security Systems — автосигналізації з GPS/GSM, панелі охоронної сигналізації для будинку та офісу, бездротові датчики. Офіційний партнер TIPSTER.
             </div>
           </div>
-          <div class="toolbar">
-            <input type="text" id="tsec-search" placeholder="Пошук за назвою або кодом…" oninput="renderTsec()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);outline:none;flex:1;min-width:200px">
-            <select class="filter-select" id="tsec-series" onchange="renderTsec()">
-              <option value="">Всі категорії</option>
-              <option value="Панелі керування">Панелі керування</option>
-              <option value="Датчики">Датчики</option>
-              <option value="Комунікатори">Комунікатори</option>
-              <option value="Клавіатури">Клавіатури</option>
-              <option value="Автосигналізації">Автосигналізації</option>
-              <option value="Аксесуари">Аксесуари</option>
-              <option value="Аксесуари авто">Аксесуари авто</option>
-            </select>
+
+          <!-- Вкладки: Авто / Будинок -->
+          <div style="display:flex;gap:4px;margin-bottom:20px;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:4px;width:fit-content">
+            <button id="tsec-tab-auto" onclick="tsecSwitchTab('auto')"
+              style="padding:7px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;background:var(--accent);color:#fff;transition:all 0.18s">
+              🚗 Охорона автомобіля
+            </button>
+            <button id="tsec-tab-home" onclick="tsecSwitchTab('home')"
+              style="padding:7px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:transparent;color:var(--text-2);transition:all 0.18s">
+              🏠 Охорона будинку
+            </button>
           </div>
-          <div id="tsec-table-wrap"></div>
+
+          <!-- Панель Авто -->
+          <div id="tsec-panel-auto">
+            <div class="toolbar" style="margin-bottom:16px">
+              <input type="text" id="tsec-search-auto" placeholder="Пошук…" oninput="renderTsec()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);outline:none;flex:1;min-width:200px">
+              <select class="filter-select" id="tsec-series-auto" onchange="renderTsec()">
+                <option value="">Всі категорії</option>
+                <option value="Автосигналізації">Автосигналізації</option>
+                <option value="Аксесуари авто">Аксесуари авто</option>
+              </select>
+            </div>
+            <div id="tsec-table-auto"></div>
+          </div>
+
+          <!-- Панель Будинок -->
+          <div id="tsec-panel-home" style="display:none">
+            <div class="toolbar" style="margin-bottom:16px">
+              <input type="text" id="tsec-search-home" placeholder="Пошук…" oninput="renderTsec()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);outline:none;flex:1;min-width:200px">
+              <select class="filter-select" id="tsec-series-home" onchange="renderTsec()">
+                <option value="">Всі категорії</option>
+                <option value="Панелі керування">Панелі керування</option>
+                <option value="Датчики">Датчики</option>
+                <option value="Комунікатори">Комунікатори</option>
+                <option value="Клавіатури">Клавіатури</option>
+                <option value="Аксесуари">Аксесуари</option>
+              </select>
+            </div>
+            <div id="tsec-table-home"></div>
+          </div>
+
         </div>
       </div>
 
@@ -5009,25 +5037,54 @@ function renderCargo() {
 // ════════════════════════════════════════════════════════
 //  RENDER TELTONIKA SECURITY
 // ════════════════════════════════════════════════════════
+// Поточна активна вкладка TSEC
+let _tsecTab = 'auto';
+
+function tsecSwitchTab(tab) {
+  _tsecTab = tab;
+  const isAuto = tab === 'auto';
+  document.getElementById('tsec-panel-auto').style.display = isAuto ? '' : 'none';
+  document.getElementById('tsec-panel-home').style.display = isAuto ? 'none' : '';
+  const activeStyle  = 'padding:7px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;background:var(--accent);color:#fff;transition:all 0.18s';
+  const inactiveStyle = 'padding:7px 20px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:transparent;color:var(--text-2);transition:all 0.18s';
+  document.getElementById('tsec-tab-auto').style.cssText = isAuto  ? activeStyle : inactiveStyle;
+  document.getElementById('tsec-tab-home').style.cssText = !isAuto ? activeStyle : inactiveStyle;
+  renderTsec();
+}
+
 function renderTsec() {
-  const q      = (document.getElementById('tsec-search')?.value || '').trim().toLowerCase();
-  const series = document.getElementById('tsec-series')?.value || '';
-  const SERIES_ORDER = ['Панелі керування','Датчики','Комунікатори','Клавіатури','Аксесуари','Автосигналізації','Аксесуари авто'];
-  const items  = (window.products||[])
-    .filter(p => p.brand === 'Teltonika Security')
-    .filter(p => !series || p.series === series)
-    .filter(p => !q || (p.name||'').toLowerCase().includes(q) ||
-                       (p.code||'').toLowerCase().includes(q) ||
-                       (p.article||'').toLowerCase().includes(q))
-    .sort((a,b) => {
-      const ai = SERIES_ORDER.indexOf(a.series||'');
-      const bi = SERIES_ORDER.indexOf(b.series||'');
-      return (ai===-1?99:ai) - (bi===-1?99:bi);
-    });
+  const AUTO_SERIES = ['Автосигналізації','Аксесуари авто'];
+  const HOME_SERIES = ['Панелі керування','Датчики','Комунікатори','Клавіатури','Аксесуари'];
+  const ORDER_AUTO = ['Автосигналізації','Аксесуари авто'];
+  const ORDER_HOME = ['Панелі керування','Датчики','Комунікатори','Клавіатури','Аксесуари'];
+
   const TSEC_URL = {};
-  (window.products||[]).filter(p=>p.brand==='Teltonika Security' && p.url).forEach(p=>{ TSEC_URL[p.code]=p.url; });
-  const wrap = document.getElementById('tsec-table-wrap');
-  if (wrap) wrap.innerHTML = buildTable(items, TSEC_URL, true);
+  (window.products||[]).filter(p=>p.brand==='Teltonika Security'&&p.url).forEach(p=>{ TSEC_URL[p.code]=p.url; });
+
+  // Авто
+  const qA = (document.getElementById('tsec-search-auto')?.value||'').trim().toLowerCase();
+  const sA = document.getElementById('tsec-series-auto')?.value||'';
+  const autoItems = (window.products||[])
+    .filter(p => p.brand==='Teltonika Security' && AUTO_SERIES.includes(p.series||''))
+    .filter(p => !sA || p.series===sA)
+    .filter(p => !qA || (p.name||'').toLowerCase().includes(qA)||(p.code||'').toLowerCase().includes(qA))
+    .sort((a,b)=>(ORDER_AUTO.indexOf(a.series||'')||99)-(ORDER_AUTO.indexOf(b.series||'')||99));
+  const wrapA = document.getElementById('tsec-table-auto');
+  if (wrapA) wrapA.innerHTML = buildTable(autoItems, TSEC_URL, true);
+
+  // Будинок
+  const qH = (document.getElementById('tsec-search-home')?.value||'').trim().toLowerCase();
+  const sH = document.getElementById('tsec-series-home')?.value||'';
+  const homeItems = (window.products||[])
+    .filter(p => p.brand==='Teltonika Security' && HOME_SERIES.includes(p.series||''))
+    .filter(p => !sH || p.series===sH)
+    .filter(p => !qH || (p.name||'').toLowerCase().includes(qH)||(p.code||'').toLowerCase().includes(qH))
+    .sort((a,b)=>{
+      const ai=ORDER_HOME.indexOf(a.series||''); const bi=ORDER_HOME.indexOf(b.series||'');
+      return (ai===-1?99:ai)-(bi===-1?99:bi);
+    });
+  const wrapH = document.getElementById('tsec-table-home');
+  if (wrapH) wrapH.innerHTML = buildTable(homeItems, TSEC_URL, true);
 }
 
 function renderOtherBrands() {
