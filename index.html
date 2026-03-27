@@ -5093,7 +5093,7 @@ function buildTable(items, urlMap, showSpec) {
     <tbody>
       ${items.map(p => {
         const { partner, retail } = calcPrices(p);
-        const url = (urlMap && urlMap[p.code]) ? urlMap[p.code] : (p.url || null);
+        const url = p.url || (urlMap && urlMap[p.code]) || null;
         const tagClass = PROGRAM_TAG[p.program] || 'tag-gray';
         const isPromo = PROMO_CODES.has(p.code);
         const isNew = NEW_CODES.has(p.code);
