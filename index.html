@@ -4986,7 +4986,7 @@ function isIgla(brand) {
 
 function renderOverview() {
   const _p = window.products || [];
-  const tlt = _p.filter(p => p.brand === 'Teltonika');
+  const tlt = _p.filter(p => p.brand === 'Teltonika' && !['CAN адаптери','EYE сенсори'].includes(p.series||''));
   const bit = _p.filter(p => p.brand === 'Bitrek');
   document.getElementById('cnt-teltonika').textContent = tlt.length;
   document.getElementById('cnt-bitrek').textContent = bit.length;
@@ -5184,7 +5184,10 @@ function renderTeltonika() {
   const q = document.getElementById('tlt-search').value.trim().toLowerCase();
   const series = document.getElementById('tlt-series').value;
   const program = document.getElementById('tlt-program').value;
+  // Виключаємо CAN адаптери і EYE сенсори — вони в "Аксесуари та обладнання"
+  const EXCLUDE_SERIES = ['CAN адаптери', 'EYE сенсори'];
   const items = (window.products||[]).filter(p => p.brand === 'Teltonika')
+    .filter(p => !EXCLUDE_SERIES.includes(p.series||''))
     .filter(p => !series || p.series === series)
     .filter(p => !program || p.program === program)
     .filter(p => !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || (p.article||'').toLowerCase().includes(q));
