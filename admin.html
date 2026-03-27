@@ -3003,6 +3003,106 @@ window.toggleBrandPublished = async function(id, published) {
   } catch(e) { toast('Помилка: ' + e.message, 'error'); }
 };
 
+
+// ════════════════════════════════════════════════════
+// ОНОВЛЕННЯ ЦІН TELTONIKA (БЕРЕЗЕНЬ 2026)
+// ════════════════════════════════════════════════════
+window.adminUpdateTeltonikaprices = async function() {
+  if (!confirm('Оновити ціни Teltonika (64 позицій) з прайсу Березень 2026?\nПоточні ціни будуть перезаписані.')) return;
+
+  const PRICES = {
+  'ALLCAN3': {cost:72.0, partnerPrice:79.2, retailPrice:115.2},
+  'ATC700-P': {cost:55.2, partnerPrice:60.72, retailPrice:88.32},
+  'EXTEND': {cost:54.0, partnerPrice:59.4, retailPrice:86.4},
+  'FMB001': {cost:43.2, partnerPrice:47.52, retailPrice:69.12},
+  'FMB003': {cost:50.4, partnerPrice:55.44, retailPrice:80.64},
+  'FMB010': {cost:30.0, partnerPrice:33.0, retailPrice:48.0},
+  'FMB020': {cost:36.0, partnerPrice:39.6, retailPrice:57.6},
+  'FMB110': {cost:28.8, partnerPrice:31.68, retailPrice:46.08},
+  'FMB120': {cost:31.2, partnerPrice:34.32, retailPrice:49.92},
+  'FMB122': {cost:34.2, partnerPrice:37.62, retailPrice:54.72},
+  'FMB125E': {cost:34.8, partnerPrice:38.28, retailPrice:55.68},
+  'FMB125I': {cost:33.0, partnerPrice:36.3, retailPrice:52.8},
+  'FMB130': {cost:31.2, partnerPrice:34.32, retailPrice:49.92},
+  'FMB140A': {cost:124.8, partnerPrice:137.28, retailPrice:199.68},
+  'FMB140L': {cost:78.0, partnerPrice:85.8, retailPrice:124.8},
+  'FMB150': {cost:64.8, partnerPrice:71.28, retailPrice:103.68},
+  'FMB150E': {cost:90.0, partnerPrice:99.0, retailPrice:144.0},
+  'FMB204': {cost:44.4, partnerPrice:48.84, retailPrice:71.04},
+  'FMB209': {cost:36.0, partnerPrice:39.6, retailPrice:57.6},
+  'FMB225': {cost:40.8, partnerPrice:44.88, retailPrice:65.28},
+  'FMB240A': {cost:132.6, partnerPrice:145.86, retailPrice:212.16},
+  'FMB240L': {cost:85.8, partnerPrice:94.38, retailPrice:137.28},
+  'FMB900': {cost:25.2, partnerPrice:27.72, retailPrice:40.32},
+  'FMB910': {cost:25.2, partnerPrice:27.72, retailPrice:40.32},
+  'FMB920': {cost:26.4, partnerPrice:29.04, retailPrice:42.24},
+  'FMB930': {cost:26.4, partnerPrice:29.04, retailPrice:42.24},
+  'FMB965': {cost:38.4, partnerPrice:42.24, retailPrice:61.44},
+  'FMC003': {cost:68.4, partnerPrice:75.24, retailPrice:109.44},
+  'FMC125': {cost:51.0, partnerPrice:56.1, retailPrice:81.6},
+  'FMC130': {cost:45.0, partnerPrice:49.5, retailPrice:72.0},
+  'FMC150': {cost:78.0, partnerPrice:85.8, retailPrice:124.8},
+  'FMC150E': {cost:103.2, partnerPrice:113.52, retailPrice:165.12},
+  'FMC225': {cost:58.8, partnerPrice:64.68, retailPrice:94.08},
+  'FMC230': {cost:54.0, partnerPrice:59.4, retailPrice:86.4},
+  'FMC234': {cost:57.6, partnerPrice:63.36, retailPrice:92.16},
+  'FMC250': {cost:87.0, partnerPrice:95.7, retailPrice:139.2},
+  'FMC250E': {cost:111.0, partnerPrice:122.1, retailPrice:177.6},
+  'FMC650': {cost:102.0, partnerPrice:112.2, retailPrice:163.2},
+  'FMC800': {cost:57.6, partnerPrice:63.36, retailPrice:92.16},
+  'FMC880': {cost:54.6, partnerPrice:60.06, retailPrice:87.36},
+  'FMC880G': {cost:57.0, partnerPrice:62.7, retailPrice:91.2},
+  'FMC920': {cost:39.6, partnerPrice:43.56, retailPrice:63.36},
+  'FMP100': {cost:33.6, partnerPrice:36.96, retailPrice:53.76},
+  'FMT100': {cost:39.6, partnerPrice:43.56, retailPrice:63.36},
+  'FMT100G': {cost:42.0, partnerPrice:46.2, retailPrice:67.2},
+  'FTC134': {cost:47.4, partnerPrice:52.14, retailPrice:75.84},
+  'FTC305': {cost:75.6, partnerPrice:83.16, retailPrice:120.96},
+  'FTC305W': {cost:75.6, partnerPrice:83.16, retailPrice:120.96},
+  'FTC880': {cost:51.0, partnerPrice:56.1, retailPrice:81.6},
+  'FTC887': {cost:58.2, partnerPrice:64.02, retailPrice:93.12},
+  'FTC920': {cost:38.4, partnerPrice:42.24, retailPrice:61.44},
+  'FTC921': {cost:39.6, partnerPrice:43.56, retailPrice:63.36},
+  'FTC924': {cost:42.0, partnerPrice:46.2, retailPrice:67.2},
+  'FTC927': {cost:44.4, partnerPrice:48.84, retailPrice:71.04},
+  'FTC961': {cost:52.8, partnerPrice:58.08, retailPrice:84.48},
+  'FTC965': {cost:56.4, partnerPrice:62.04, retailPrice:90.24},
+  'GH5200': {cost:43.2, partnerPrice:47.52, retailPrice:69.12},
+  'TAT100': {cost:51.6, partnerPrice:56.76, retailPrice:82.56},
+  'TAT100B': {cost:58.8, partnerPrice:64.68, retailPrice:94.08},
+  'TAT140': {cost:72.0, partnerPrice:79.2, retailPrice:115.2},
+  'TAT240': {cost:82.8, partnerPrice:91.08, retailPrice:132.48},
+  'TFT100C': {cost:57.6, partnerPrice:63.36, retailPrice:92.16},
+  'TFT100R': {cost:55.2, partnerPrice:60.72, retailPrice:88.32},
+  'TFT100U': {cost:50.4, partnerPrice:55.44, retailPrice:80.64}
+  };
+
+  try {
+    toast('Оновлення цін Teltonika...');
+    const snap = await getDocs(collection(db, tenantRef('products')));
+    let updated = 0, notFound = [];
+    for (const d of snap.docs) {
+      const data = d.data();
+      const code = (data.code || data.article || '').trim();
+      if (PRICES[code]) {
+        await updateDoc(doc(db, tenantRef('products'), d.id), {
+          cost:         PRICES[code].cost,
+          partnerPrice: PRICES[code].partnerPrice,
+          retailPrice:  PRICES[code].retailPrice,
+          currency:     'EUR',
+          updatedAt:    serverTimestamp(),
+        });
+        updated++;
+      } else {
+        notFound.push(code);
+      }
+    }
+    const msg = `Оновлено ${updated} позицій Teltonika ✓`;
+    console.log(msg, 'Не знайдено:', notFound.filter(c=>c&&c.startsWith('FM')));
+    toast(msg);
+    loadProducts();
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
 </script>
 </body>
 </html>
