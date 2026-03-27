@@ -2030,9 +2030,11 @@ window.openProductModal = (id) => {
 
   if (isEdit && isAdmin) {
     const p = _products.find(x => x.id === id);
-    document.getElementById('p-cost').value = p && p.cost ? p.cost : '';
-    calcProductMargin();
-    calcPricing();
+    // Спочатку встановлюємо значення — блоки вже видимі
+    const costVal = p && p.cost ? p.cost : '';
+    document.getElementById('p-cost').value = costVal;
+    // Невелика затримка щоб DOM оновився після display:block
+    setTimeout(() => { calcProductMargin(); calcPricing(); }, 50);
   } else if (!isEdit) {
     document.getElementById('p-cost').value = '';
     document.getElementById('calc-k-partner').value = '1.15';
@@ -2040,7 +2042,7 @@ window.openProductModal = (id) => {
     document.getElementById('calc-k-retail').value = '1.40';
     document.getElementById('calc-k-retail-val').value = '1.40';
     document.getElementById('calc-vat').checked = true;
-    calcPricing();
+    setTimeout(() => { calcPricing(); }, 50);
   }
 
   openModal('modal-product');
