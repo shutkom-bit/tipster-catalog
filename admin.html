@@ -693,6 +693,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
           Імпорт TSEC (31)
         </button>
+        <button class="btn btn-secondary" onclick="adminImportCANEye()" title="Імпорт CAN адаптерів та EYE сенсорів" style="border-color:#0054A6;color:#0054A6">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
+          Імпорт CAN/EYE (13)
+        </button>
                 <button class="btn btn-primary" onclick="openProductModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати товар
@@ -3100,6 +3104,45 @@ window.adminUpdateTeltonikaprices = async function() {
     const msg = `Оновлено ${updated} позицій Teltonika ✓`;
     console.log(msg, 'Не знайдено:', notFound.filter(c=>c&&c.startsWith('FM')));
     toast(msg);
+    loadProducts();
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+// ════════════════════════════════════════════════════
+// ІМПОРТ CAN/EYE АКСЕСУАРІВ TELTONIKA
+// ════════════════════════════════════════════════════
+window.adminImportCANEye = async function() {
+  if (!confirm('Імпортувати CAN адаптери та EYE сенсори Teltonika (13 позицій)?\nДублі пропускаються.')) return;
+
+  const DATA = [
+    {code:'CAN-CTRL',    article:'CAN-CONTROL',      name:'CAN-CONTROL',                    brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:62.0,  partnerPrice:68.20, retailPrice:99.20,  active:true, url:'https://wiki.teltonika-gps.com/view/CAN-CONTROL'},
+    {code:'CAN-CTRL-D',  article:'CAN-CONTROL-DTC',  name:'CAN-CONTROL + DTC',              brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:72.0,  partnerPrice:79.20, retailPrice:115.20, active:true, url:'https://wiki.teltonika-gps.com/view/CAN-CONTROL'},
+    {code:'CAN-CTRL-I',  article:'CAN-CONTROL-IMMO', name:'CAN-CONTROL + IMMO',             brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:88.0,  partnerPrice:96.80, retailPrice:140.80, active:true, url:'https://wiki.teltonika-gps.com/view/CAN-CONTROL'},
+    {code:'CAN-CTRL-DI', article:'CAN-CTRL-DTC-IMMO',name:'CAN-CONTROL + DTC + IMMO',      brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:99.0,  partnerPrice:108.90,retailPrice:158.40, active:true, url:'https://wiki.teltonika-gps.com/view/CAN-CONTROL'},
+    {code:'ALLCAN300',   article:'ALL-CAN300',        name:'ALL-CAN300',                     brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:83.0,  partnerPrice:91.30, retailPrice:132.80, active:true, url:'https://wiki.teltonika-gps.com/view/ALL-CAN300'},
+    {code:'LVCAN200',    article:'LV-CAN200',         name:'LV-CAN200',                      brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:42.0,  partnerPrice:46.20, retailPrice:67.20,  active:true, url:'https://wiki.teltonika-gps.com/view/LV-CAN200'},
+    {code:'LVCAN200-D',  article:'LV-CAN200-DTC',     name:'LV-CAN200 + DTC',               brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:48.0,  partnerPrice:52.80, retailPrice:76.80,  active:true, url:'https://wiki.teltonika-gps.com/view/LV-CAN200'},
+    {code:'ECAN02',      article:'ECAN02',             name:'ECAN02',                         brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:13.0,  partnerPrice:14.30, retailPrice:20.80,  active:true, url:'https://wiki.teltonika-gps.com/view/ECAN02'},
+    {code:'EYE-BCN',     article:'EYE-BEACON',        name:'EYE BEACON',                     brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:14.0,  partnerPrice:15.40, retailPrice:22.40,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Beacon'},
+    {code:'EYE-SNS',     article:'EYE-SENSOR',        name:'EYE SENSOR',                     brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:17.5,  partnerPrice:19.25, retailPrice:28.00,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Sensor'},
+    {code:'EYE-BCN-ATX', article:'EYE-BEACON-ATEX',   name:'EYE BEACON ATEX',                brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:21.0,  partnerPrice:23.10, retailPrice:33.60,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Beacon'},
+    {code:'EYE-SNS-ATX', article:'EYE-SENSOR-ATEX',   name:'EYE SENSOR ATEX',                brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:25.0,  partnerPrice:27.50, retailPrice:40.00,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Sensor'},
+    {code:'EYE-SNS-EN',  article:'EYE-SENSOR-EN12830','name':'EYE SENSOR EN12830',           brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:22.0,  partnerPrice:24.20, retailPrice:35.20,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Sensor'},
+  ];
+
+  try {
+    const snap = await getDocs(collection(db, tenantRef('products')));
+    const existingCodes = new Set(snap.docs.map(d => (d.data().code || d.data().article || '').trim().toLowerCase()));
+    let added = 0, skipped = 0;
+    for (const p of DATA) {
+      if (existingCodes.has(p.code.toLowerCase()) || existingCodes.has(p.article.toLowerCase())) {
+        skipped++;
+        continue;
+      }
+      await addDoc(collection(db, tenantRef('products')), { ...p, createdAt: serverTimestamp() });
+      added++;
+    }
+    toast(`Додано ${added} позицій, пропущено ${skipped} дублів ✓`);
     loadProducts();
   } catch(e) { toast('Помилка: ' + e.message, 'error'); }
 };
