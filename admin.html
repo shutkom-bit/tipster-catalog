@@ -693,10 +693,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
           Імпорт TSEC (31)
         </button>
-        <button class="btn btn-secondary" onclick="adminUpdateTSECPrices()" title="Оновити ціни TSEC з прайсу Березень 2026" style="border-color:#f59e0b;color:#92400e">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8a6 6 0 0111-4"/><path d="M14 8a6 6 0 01-11 4"/><polyline points="12,2 14,4 12,6"/><polyline points="4,10 2,12 4,14"/></svg>
-          Оновити ціни TSEC
-        </button>
                 <button class="btn btn-primary" onclick="openProductModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати товар
@@ -1248,6 +1244,13 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         <div class="form-group">
           <label>Посилання (wiki / сайт)</label>
           <input type="url" id="p-url" placeholder="https://wiki.teltonika-gps.com/…">
+        </div>
+        <div class="form-group">
+          <label>URL фото товару <span style="font-size:11px;color:var(--text-3)">(необов'язково — для FMB підтягується автоматично)</span></label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="url" id="p-image-url" placeholder="https://…/image.png" style="flex:1">
+            <img id="p-image-preview" src="" alt="" style="width:40px;height:40px;object-fit:contain;border:1px solid var(--border);border-radius:6px;display:none;background:var(--bg)">
+          </div>
         </div>
         <div class="form-group span-2">
           <label>Опис</label>
@@ -1988,6 +1991,10 @@ window.openProductModal = (id) => {
     document.getElementById('p-spec').value          = p.spec || '';
     document.getElementById('p-price-partner').value = p.partnerPrice || '';
     document.getElementById('p-price-retail').value  = p.retailPrice || '';
+    const imgUrlVal = p.imageUrl || '';
+    document.getElementById('p-image-url').value = imgUrlVal;
+    const prevEl = document.getElementById('p-image-preview');
+    if (imgUrlVal) { prevEl.src = imgUrlVal; prevEl.style.display = ''; } else { prevEl.style.display = 'none'; }
     // Встановлюємо валюту
     const cur = p.currency || 'USD';
     document.getElementById('p-cur-usd').checked = cur === 'USD';
@@ -2012,6 +2019,8 @@ window.openProductModal = (id) => {
     document.getElementById('p-promo').checked   = false;
     document.getElementById('p-new').checked     = false;
     document.getElementById('p-instock').checked = true;
+    document.getElementById('p-image-url').value = '';
+    document.getElementById('p-image-preview').style.display = 'none';
   }
   // Показуємо cost і margin тільки адміну
   const isAdmin = window._currentUserRole === 'admin';
@@ -2059,6 +2068,7 @@ window.saveProduct = async () => {
     promo:        document.getElementById('p-promo').checked,
     isNew:        document.getElementById('p-new').checked,
     inStock:      document.getElementById('p-instock').checked,
+    imageUrl:     document.getElementById('p-image-url').value.trim() || null,
     updatedAt:    serverTimestamp(),
     ...(window._currentUserRole === 'admin' && document.getElementById('p-cost').value
       ? { cost: parseFloat(document.getElementById('p-cost').value) || 0 }
@@ -2930,6 +2940,21 @@ window.adminImportTSEC = async function() {
 // ════════════════════════════════════════════════════
 // ВИБІР ВАЛЮТИ В МОДАЛЦІ ТОВАРУ
 // ════════════════════════════════════════════════════
+// Preview фото при введенні URL
+document.addEventListener('input', function(e) {
+  if (e.target.id === 'p-image-url') {
+    const preview = document.getElementById('p-image-preview');
+    const val = e.target.value.trim();
+    if (val) {
+      preview.src = val;
+      preview.style.display = '';
+      preview.onerror = () => { preview.style.display = 'none'; };
+    } else {
+      preview.style.display = 'none';
+    }
+  }
+});
+
 window.onCurrencyChange = function() {
   const cur = document.querySelector('input[name="p-currency"]:checked')?.value || 'USD';
   const isEur = cur === 'EUR';
@@ -2976,66 +3001,6 @@ window.toggleBrandPublished = async function(id, published) {
   } catch(e) { toast('Помилка: ' + e.message, 'error'); }
 };
 
-
-// ════════════════════════════════════════════════════
-// ОНОВЛЕННЯ ЦІН TELTONIKA SECURITY (БЕРЕЗЕНЬ 2026)
-// ════════════════════════════════════════════════════
-window.adminUpdateTSECPrices = async function() {
-  if (!confirm('Оновити ціни Teltonika Security (28 позицій) з прайсу Березень 2026?')) return;
-
-  const PRICES = {
-  'TSEC-205002': {cost:45.36, partnerPrice:49.9, retailPrice:64.8},
-  'TSEC-ANT4G': {cost:4.2, partnerPrice:4.62, retailPrice:6.0},
-  'TSEC-BF1': {cost:30.24, partnerPrice:33.26, retailPrice:43.2},
-  'TSEC-BK4VA': {cost:30.24, partnerPrice:33.26, retailPrice:43.2},
-  'TSEC-BP2VA': {cost:33.6, partnerPrice:36.96, retailPrice:48.0},
-  'TSEC-CAS6': {cost:33.6, partnerPrice:36.96, retailPrice:48.0},
-  'TSEC-DJAM2': {cost:21.84, partnerPrice:24.02, retailPrice:31.2},
-  'TSEC-DJAM2V': {cost:45.59, partnerPrice:50.15, retailPrice:54.27},
-  'TSEC-EXM800': {cost:23.52, partnerPrice:25.87, retailPrice:33.6},
-  'TSEC-GN7C-HP': {cost:56.99, partnerPrice:62.69, retailPrice:67.85},
-  'TSEC-GN7C-HUPS': {cost:128.89, partnerPrice:141.78, retailPrice:128.89},
-  'TSEC-GN7C-HUPS2': {cost:108.27, partnerPrice:119.09, retailPrice:128.89},
-  'TSEC-GN7C-PLUS': {cost:131.43, partnerPrice:144.58, retailPrice:156.47},
-  'TSEC-GN8-BASE': {cost:209.36, partnerPrice:230.3, retailPrice:249.24},
-  'TSEC-GN8-PREM': {cost:341.69, partnerPrice:375.86, retailPrice:406.78},
-  'TSEC-GN8-STD': {cost:213.71, partnerPrice:235.08, retailPrice:254.42},
-  'TSEC-GSV0G': {cost:99.12, partnerPrice:109.03, retailPrice:141.6},
-  'TSEC-GSV1PGE': {cost:120.96, partnerPrice:133.06, retailPrice:172.8},
-  'TSEC-GSVPG': {cost:75.6, partnerPrice:83.16, retailPrice:108.0},
-  'TSEC-IMB5': {cost:60.07, partnerPrice:66.08, retailPrice:71.51},
-  'TSEC-IMB6': {cost:49.73, partnerPrice:54.7, retailPrice:59.2},
-  'TSEC-KM24G': {cost:58.8, partnerPrice:64.68, retailPrice:84.0},
-  'TSEC-LT4': {cost:21.0, partnerPrice:23.1, retailPrice:30.0},
-  'TSEC-P64': {cost:71.4, partnerPrice:78.54, retailPrice:102.0},
-  'TSEC-S32GE': {cost:134.4, partnerPrice:147.84, retailPrice:192.0},
-  'TSEC-S32GM': {cost:84.0, partnerPrice:92.4, retailPrice:120.0},
-  'TSEC-TAG': {cost:24.78, partnerPrice:27.26, retailPrice:29.5},
-  'TSEC-TEMP': {cost:18.24, partnerPrice:20.07, retailPrice:21.72},
-  'TSEC-TRF30': {cost:13.44, partnerPrice:14.78, retailPrice:19.2},
-  'TSEC-US2': {cost:34.15, partnerPrice:37.56, retailPrice:40.65},
-  'TSEC-WLANP': {cost:47.04, partnerPrice:51.74, retailPrice:67.2}
-  };
-
-  try {
-    const snap = await getDocs(collection(db, tenantRef('products')));
-    let updated = 0, notFound = [];
-    for (const d of snap.docs) {
-      const code = d.data().code || d.data().article || '';
-      if (PRICES[code]) {
-        await updateDoc(doc(db, tenantRef('products'), d.id), {
-          cost:         PRICES[code].cost,
-          partnerPrice: PRICES[code].partnerPrice,
-          retailPrice:  PRICES[code].retailPrice,
-          updatedAt:    serverTimestamp(),
-        });
-        updated++;
-      }
-    }
-    toast(`Оновлено ${updated} позицій Teltonika Security ✓`);
-    loadProducts();
-  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
-};
 </script>
 </body>
 </html>
