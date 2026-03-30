@@ -693,9 +693,9 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
           Імпорт TSEC (31)
         </button>
-        <button class="btn btn-secondary" onclick="adminImportCANEye()" title="Імпорт CAN адаптерів та EYE сенсорів" style="border-color:#0054A6;color:#0054A6">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
-          Імпорт CAN/EYE (13)
+        <button class="btn btn-secondary" onclick="adminUpdateAccessorySpecs()" title="Оновити описи EYE/CAN аксесуарів" style="border-color:#7c3aed;color:#7c3aed">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a1 1 0 00-1 1v6a1 1 0 001 1h7"/><path d="M14 8H8M11 5l3 3-3 3"/></svg>
+          Оновити описи аксесуарів
         </button>
                 <button class="btn btn-primary" onclick="openProductModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
@@ -3009,140 +3009,46 @@ window.toggleBrandPublished = async function(id, published) {
 
 
 // ════════════════════════════════════════════════════
-// ОНОВЛЕННЯ ЦІН TELTONIKA (БЕРЕЗЕНЬ 2026)
+// ОНОВЛЕННЯ СПЕЦИФІКАЦІЙ АКСЕСУАРІВ TELTONIKA
 // ════════════════════════════════════════════════════
-window.adminUpdateTeltonikaprices = async function() {
-  if (!confirm('Оновити ціни Teltonika (64 позицій) з прайсу Березень 2026?\nПоточні ціни будуть перезаписані.')) return;
+window.adminUpdateAccessorySpecs = async function() {
+  if (!confirm('Оновити описи (spec) для EYE, CAN аксесуарів та датчиків температури?')) return;
 
-  const PRICES = {
-  'ALLCAN3': {cost:72.0, partnerPrice:79.2, retailPrice:115.2},
-  'ATC700-P': {cost:55.2, partnerPrice:60.72, retailPrice:88.32},
-  'EXTEND': {cost:54.0, partnerPrice:59.4, retailPrice:86.4},
-  'FMB001': {cost:43.2, partnerPrice:47.52, retailPrice:69.12},
-  'FMB003': {cost:50.4, partnerPrice:55.44, retailPrice:80.64},
-  'FMB010': {cost:30.0, partnerPrice:33.0, retailPrice:48.0},
-  'FMB020': {cost:36.0, partnerPrice:39.6, retailPrice:57.6},
-  'FMB110': {cost:28.8, partnerPrice:31.68, retailPrice:46.08},
-  'FMB120': {cost:31.2, partnerPrice:34.32, retailPrice:49.92},
-  'FMB122': {cost:34.2, partnerPrice:37.62, retailPrice:54.72},
-  'FMB125E': {cost:34.8, partnerPrice:38.28, retailPrice:55.68},
-  'FMB125I': {cost:33.0, partnerPrice:36.3, retailPrice:52.8},
-  'FMB130': {cost:31.2, partnerPrice:34.32, retailPrice:49.92},
-  'FMB140A': {cost:124.8, partnerPrice:137.28, retailPrice:199.68},
-  'FMB140L': {cost:78.0, partnerPrice:85.8, retailPrice:124.8},
-  'FMB150': {cost:64.8, partnerPrice:71.28, retailPrice:103.68},
-  'FMB150E': {cost:90.0, partnerPrice:99.0, retailPrice:144.0},
-  'FMB204': {cost:44.4, partnerPrice:48.84, retailPrice:71.04},
-  'FMB209': {cost:36.0, partnerPrice:39.6, retailPrice:57.6},
-  'FMB225': {cost:40.8, partnerPrice:44.88, retailPrice:65.28},
-  'FMB240A': {cost:132.6, partnerPrice:145.86, retailPrice:212.16},
-  'FMB240L': {cost:85.8, partnerPrice:94.38, retailPrice:137.28},
-  'FMB900': {cost:25.2, partnerPrice:27.72, retailPrice:40.32},
-  'FMB910': {cost:25.2, partnerPrice:27.72, retailPrice:40.32},
-  'FMB920': {cost:26.4, partnerPrice:29.04, retailPrice:42.24},
-  'FMB930': {cost:26.4, partnerPrice:29.04, retailPrice:42.24},
-  'FMB965': {cost:38.4, partnerPrice:42.24, retailPrice:61.44},
-  'FMC003': {cost:68.4, partnerPrice:75.24, retailPrice:109.44},
-  'FMC125': {cost:51.0, partnerPrice:56.1, retailPrice:81.6},
-  'FMC130': {cost:45.0, partnerPrice:49.5, retailPrice:72.0},
-  'FMC150': {cost:78.0, partnerPrice:85.8, retailPrice:124.8},
-  'FMC150E': {cost:103.2, partnerPrice:113.52, retailPrice:165.12},
-  'FMC225': {cost:58.8, partnerPrice:64.68, retailPrice:94.08},
-  'FMC230': {cost:54.0, partnerPrice:59.4, retailPrice:86.4},
-  'FMC234': {cost:57.6, partnerPrice:63.36, retailPrice:92.16},
-  'FMC250': {cost:87.0, partnerPrice:95.7, retailPrice:139.2},
-  'FMC250E': {cost:111.0, partnerPrice:122.1, retailPrice:177.6},
-  'FMC650': {cost:102.0, partnerPrice:112.2, retailPrice:163.2},
-  'FMC800': {cost:57.6, partnerPrice:63.36, retailPrice:92.16},
-  'FMC880': {cost:54.6, partnerPrice:60.06, retailPrice:87.36},
-  'FMC880G': {cost:57.0, partnerPrice:62.7, retailPrice:91.2},
-  'FMC920': {cost:39.6, partnerPrice:43.56, retailPrice:63.36},
-  'FMP100': {cost:33.6, partnerPrice:36.96, retailPrice:53.76},
-  'FMT100': {cost:39.6, partnerPrice:43.56, retailPrice:63.36},
-  'FMT100G': {cost:42.0, partnerPrice:46.2, retailPrice:67.2},
-  'FTC134': {cost:47.4, partnerPrice:52.14, retailPrice:75.84},
-  'FTC305': {cost:75.6, partnerPrice:83.16, retailPrice:120.96},
-  'FTC305W': {cost:75.6, partnerPrice:83.16, retailPrice:120.96},
-  'FTC880': {cost:51.0, partnerPrice:56.1, retailPrice:81.6},
-  'FTC887': {cost:58.2, partnerPrice:64.02, retailPrice:93.12},
-  'FTC920': {cost:38.4, partnerPrice:42.24, retailPrice:61.44},
-  'FTC921': {cost:39.6, partnerPrice:43.56, retailPrice:63.36},
-  'FTC924': {cost:42.0, partnerPrice:46.2, retailPrice:67.2},
-  'FTC927': {cost:44.4, partnerPrice:48.84, retailPrice:71.04},
-  'FTC961': {cost:52.8, partnerPrice:58.08, retailPrice:84.48},
-  'FTC965': {cost:56.4, partnerPrice:62.04, retailPrice:90.24},
-  'GH5200': {cost:43.2, partnerPrice:47.52, retailPrice:69.12},
-  'TAT100': {cost:51.6, partnerPrice:56.76, retailPrice:82.56},
-  'TAT100B': {cost:58.8, partnerPrice:64.68, retailPrice:94.08},
-  'TAT140': {cost:72.0, partnerPrice:79.2, retailPrice:115.2},
-  'TAT240': {cost:82.8, partnerPrice:91.08, retailPrice:132.48},
-  'TFT100C': {cost:57.6, partnerPrice:63.36, retailPrice:92.16},
-  'TFT100R': {cost:55.2, partnerPrice:60.72, retailPrice:88.32},
-  'TFT100U': {cost:50.4, partnerPrice:55.44, retailPrice:80.64}
+  const SPECS = {
+    // EYE сенсори
+    'EYE-BCN':     'BLE 4.0+ маяк (iBeacon/Eddystone). Відстеження вантажів, причепів, контейнерів, складська логістика. IP67, термін служби батареї до 10+ років.',
+    'EYE-SNS':     'BLE 4.0+ сенсор. Вимірювання температури, вологості, руху (акселерометр), магнітного поля. Холодова логістика, контроль дверей рефрижераторів. IP67, до 5+ років.',
+    'EYE-BCN-ATX': 'BLE 4.0+ маяк ATEX (вибухонебезпечні зони). iBeacon/Eddystone. IP67, сертифіковано для Ex-зон. До 10+ років.',
+    'EYE-SNS-ATX': 'BLE 4.0+ сенсор ATEX. Температура, вологість, рух. Вибухонебезпечні зони. IP67. До 5+ років.',
+    'EYE-SNS-EN':  'BLE 4.0+ сенсор EN12830. Моніторинг температури відповідно до стандарту EN12830 (холодова логістика). IP67.',
+    // CAN адаптери
+    'LVCAN200':    'CAN-адаптер для зчитування базових параметрів CAN-шини: рівень палива, одометр, VIN, витрата пального, оберти двигуна, температура двигуна, стан ручного гальма. Легкові та вантажні авто.',
+    'LVCAN200-D':  'LV-CAN200 + DTC. CAN-адаптер з читанням діагностичних кодів несправностей (DTC). Рівень палива, одометр, VIN, витрата, оберти, температура + діагностика.',
+    'ALLCAN300':   'Розширений CAN-адаптер для всіх типів транспортних засобів. Повний набір даних CAN-шини: паливо, пробіг, VIN, витрата, оберти, температура двигуна та інше.',
+    'CAN-CTRL':    'CAN-CONTROL адаптер. Зчитування даних з CAN-шини для керування транспортним засобом. Базова версія.',
+    'CAN-CTRL-D':  'CAN-CONTROL + DTC. Зчитування CAN-даних та діагностичних кодів несправностей.',
+    'CAN-CTRL-I':  'CAN-CONTROL + IMMO. Зчитування CAN-даних з функцією іммобілайзера.',
+    'CAN-CTRL-DI': 'CAN-CONTROL + DTC + IMMO. Повна версія: CAN-дані, діагностика (DTC) та іммобілайзер.',
+    'ECAN02':      'Безконтактний CAN-адаптер. Зчитування даних через ізоляцію проводів без пошкодження штатної проводки автомобіля.',
+    // Існуючі EYE через старі коди
+    'EXT-EYEBCN':  'BLE 4.0+ маяк (iBeacon/Eddystone). Відстеження вантажів, причепів, контейнерів, складська логістика. IP67, термін служби батареї до 10+ років.',
+    'EXT-EYESNS':  'BLE 4.0+ сенсор. Температура, вологість, рух (акселерометр), магнітне поле. Холодова логістика, контроль дверей. IP67, до 5+ років.',
   };
 
   try {
-    toast('Оновлення цін Teltonika...');
     const snap = await getDocs(collection(db, tenantRef('products')));
-    let updated = 0, notFound = [];
+    let updated = 0;
     for (const d of snap.docs) {
-      const data = d.data();
-      const code = (data.code || data.article || '').trim();
-      if (PRICES[code]) {
+      const code = (d.data().code || d.data().article || '').trim();
+      if (SPECS[code]) {
         await updateDoc(doc(db, tenantRef('products'), d.id), {
-          cost:         PRICES[code].cost,
-          partnerPrice: PRICES[code].partnerPrice,
-          retailPrice:  PRICES[code].retailPrice,
-          currency:     'EUR',
-          updatedAt:    serverTimestamp(),
+          spec: SPECS[code],
+          updatedAt: serverTimestamp(),
         });
         updated++;
-      } else {
-        notFound.push(code);
       }
     }
-    const msg = `Оновлено ${updated} позицій Teltonika ✓`;
-    console.log(msg, 'Не знайдено:', notFound.filter(c=>c&&c.startsWith('FM')));
-    toast(msg);
-    loadProducts();
-  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
-};
-
-// ════════════════════════════════════════════════════
-// ІМПОРТ CAN/EYE АКСЕСУАРІВ TELTONIKA
-// ════════════════════════════════════════════════════
-window.adminImportCANEye = async function() {
-  if (!confirm('Імпортувати CAN адаптери та EYE сенсори Teltonika (13 позицій)?\nДублі пропускаються.')) return;
-
-  const DATA = [
-    {code:'CAN-CTRL',    article:'CAN-CONTROL',      name:'CAN-CONTROL',                    brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:62.0,  partnerPrice:68.20, retailPrice:99.20,  active:true, url:'https://wiki.teltonika-gps.com/view/CAN-CONTROL'},
-    {code:'CAN-CTRL-D',  article:'CAN-CONTROL-DTC',  name:'CAN-CONTROL + DTC',              brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:72.0,  partnerPrice:79.20, retailPrice:115.20, active:true, url:'https://wiki.teltonika-gps.com/view/CAN-CONTROL'},
-    {code:'CAN-CTRL-I',  article:'CAN-CONTROL-IMMO', name:'CAN-CONTROL + IMMO',             brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:88.0,  partnerPrice:96.80, retailPrice:140.80, active:true, url:'https://wiki.teltonika-gps.com/view/CAN-CONTROL'},
-    {code:'CAN-CTRL-DI', article:'CAN-CTRL-DTC-IMMO',name:'CAN-CONTROL + DTC + IMMO',      brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:99.0,  partnerPrice:108.90,retailPrice:158.40, active:true, url:'https://wiki.teltonika-gps.com/view/CAN-CONTROL'},
-    {code:'ALLCAN300',   article:'ALL-CAN300',        name:'ALL-CAN300',                     brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:83.0,  partnerPrice:91.30, retailPrice:132.80, active:true, url:'https://wiki.teltonika-gps.com/view/ALL-CAN300'},
-    {code:'LVCAN200',    article:'LV-CAN200',         name:'LV-CAN200',                      brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:42.0,  partnerPrice:46.20, retailPrice:67.20,  active:true, url:'https://wiki.teltonika-gps.com/view/LV-CAN200'},
-    {code:'LVCAN200-D',  article:'LV-CAN200-DTC',     name:'LV-CAN200 + DTC',               brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:48.0,  partnerPrice:52.80, retailPrice:76.80,  active:true, url:'https://wiki.teltonika-gps.com/view/LV-CAN200'},
-    {code:'ECAN02',      article:'ECAN02',             name:'ECAN02',                         brand:'Teltonika', series:'CAN адаптери', program:'CAN', currency:'EUR', cost:13.0,  partnerPrice:14.30, retailPrice:20.80,  active:true, url:'https://wiki.teltonika-gps.com/view/ECAN02'},
-    {code:'EYE-BCN',     article:'EYE-BEACON',        name:'EYE BEACON',                     brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:14.0,  partnerPrice:15.40, retailPrice:22.40,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Beacon'},
-    {code:'EYE-SNS',     article:'EYE-SENSOR',        name:'EYE SENSOR',                     brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:17.5,  partnerPrice:19.25, retailPrice:28.00,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Sensor'},
-    {code:'EYE-BCN-ATX', article:'EYE-BEACON-ATEX',   name:'EYE BEACON ATEX',                brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:21.0,  partnerPrice:23.10, retailPrice:33.60,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Beacon'},
-    {code:'EYE-SNS-ATX', article:'EYE-SENSOR-ATEX',   name:'EYE SENSOR ATEX',                brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:25.0,  partnerPrice:27.50, retailPrice:40.00,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Sensor'},
-    {code:'EYE-SNS-EN',  article:'EYE-SENSOR-EN12830','name':'EYE SENSOR EN12830',           brand:'Teltonika', series:'EYE сенсори', program:'SENSORS', currency:'EUR', cost:22.0,  partnerPrice:24.20, retailPrice:35.20,  active:true, url:'https://wiki.teltonika-gps.com/view/EYE_Sensor'},
-  ];
-
-  try {
-    const snap = await getDocs(collection(db, tenantRef('products')));
-    const existingCodes = new Set(snap.docs.map(d => (d.data().code || d.data().article || '').trim().toLowerCase()));
-    let added = 0, skipped = 0;
-    for (const p of DATA) {
-      if (existingCodes.has(p.code.toLowerCase()) || existingCodes.has(p.article.toLowerCase())) {
-        skipped++;
-        continue;
-      }
-      await addDoc(collection(db, tenantRef('products')), { ...p, createdAt: serverTimestamp() });
-      added++;
-    }
-    toast(`Додано ${added} позицій, пропущено ${skipped} дублів ✓`);
+    toast(`Оновлено описи для ${updated} позицій ✓`);
     loadProducts();
   } catch(e) { toast('Помилка: ' + e.message, 'error'); }
 };
