@@ -2607,6 +2607,10 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
       <div class="nav-item" onclick="showSection('accessories')">
         Аксесуари та обладнання
       </div>
+      <div class="nav-item" id="nav-tel-acc" onclick="showSection('tel-acc')" style="color:#0f8644;font-weight:500">
+        Аксесуари Teltonika
+      </div>
+      </div>
       <div class="nav-item" onclick="showSection('tariffs')">
         Тарифи
       </div>
@@ -2908,7 +2912,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
       <div class="page-section" id="sec-accessories">
         <div class="page-header">
           <div class="page-title">Аксесуари та обладнання</div>
-          <div class="page-subtitle">Аксесуари та супутнє обладнання для GPS-трекерів: антени, живлення, SIM-карти, CAN-модулі, датчики, RFID та SOS-маяки.</div>
+          <div class="page-subtitle">Антени, кабелі живлення, монтажне приладдя, SIM-карти та SOS-кнопки для GPS-трекерів. CAN-адаптери та EYE-сенсори — у розділі <span onclick="showSection('tel-acc')" style="color:var(--accent);cursor:pointer;text-decoration:underline">Аксесуари Teltonika</span>.</div>
         </div>
 
         <div class="section">
@@ -2930,35 +2934,83 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         </div>
 
         <div class="section">
-          <div class="section-title">CAN-модулі</div>
-          <div class="section-desc">CAN-адаптери та модулі для зчитування даних шини. Ціни з ПДВ. <span style="font-size:11px;color:var(--text-3)">* DTC — діагностика кодів несправностей &nbsp;&nbsp;** IMMO — модуль іммобілайзера</span></div>
-          <div id="extra-can"></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">EYE Сенсори</div>
-          <div class="section-desc">BLE-маяки та сенсори для відстеження активів і моніторингу умов транспортування. Ціни з ПДВ.</div>
-          <div id="extra-sensors"></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">EYE Сенсори ATEX / EN12830</div>
-          <div class="section-desc">Сенсори для вибухонебезпечних зон та харчової промисловості (ATEX/IECEx/EN12830). Ціни з ПДВ.</div>
-          <div id="extra-eye"></div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">RFID та ідентифікація водія</div>
-          <div class="section-desc">Зчитувачі та ключі для ідентифікації водія. Ціни з ПДВ.</div>
-          <div id="extra-rfid"></div>
-        </div>
-
-        <div class="section">
           <div class="section-title">Кнопки та сигналізація</div>
           <div class="section-desc">SOS-кнопки, реле блокування, датчики нахилу та сигналізатори. Ціни з ПДВ.</div>
           <div id="extra-sos"></div>
         </div>
 
+      </div>
+
+      <!-- ══════════ TELTONIKA ACCESSORIES ══════════ -->
+      <div class="page-section" id="sec-tel-acc">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+            <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:#0f8644">Аксесуари Teltonika</span>
+            <span style="font-size:12px;background:#e7f6ec;color:#0f8644;padding:3px 10px;border-radius:10px;font-weight:600;border:1px solid #a7f3c8">GPS аксесуари</span>
+          </div>
+          <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;max-width:780px">
+            Офіційні аксесуари <a href="https://www.teltonika-gps.com/products/accessories" target="_blank" style="color:#0f8644;text-decoration:none;font-weight:600">Teltonika Telematics ↗</a> — CAN-адаптери, EYE BLE-сенсори та маяки, RFID-зчитувачі для ідентифікації водія. Повністю сумісні з усіма трекерами серій FMB/FMC. Ціни в EUR за курсом ПриватБанк.
+          </div>
+        </div>
+
+        <!-- Вкладки підрозділів -->
+        <div style="display:flex;gap:4px;margin-bottom:20px;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:4px;width:fit-content;flex-wrap:wrap">
+          <button id="tel-acc-tab-can" onclick="telAccSwitchTab('can')"
+            style="padding:7px 16px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;background:#0f8644;color:#fff;transition:all 0.18s">
+            CAN-адаптери
+          </button>
+          <button id="tel-acc-tab-eye" onclick="telAccSwitchTab('eye')"
+            style="padding:7px 16px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:transparent;color:var(--text-2);transition:all 0.18s">
+            EYE Сенсори
+          </button>
+          <button id="tel-acc-tab-atex" onclick="telAccSwitchTab('atex')"
+            style="padding:7px 16px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:transparent;color:var(--text-2);transition:all 0.18s">
+            ATEX / EN12830
+          </button>
+          <button id="tel-acc-tab-rfid" onclick="telAccSwitchTab('rfid')"
+            style="padding:7px 16px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:transparent;color:var(--text-2);transition:all 0.18s">
+            RFID / Ідентифікація
+          </button>
+        </div>
+
+        <!-- CAN-адаптери -->
+        <div id="tel-acc-panel-can">
+          <div class="section">
+            <div class="section-title">CAN-адаптери</div>
+            <div class="section-desc">
+              Модулі для зчитування даних з CAN-шини автомобіля без врізки в проводку: рівень палива, одометр, VIN, витрата, оберти, температура двигуна.
+              <span style="font-size:11px;color:var(--text-3)">&nbsp;&nbsp;* DTC — читання кодів несправностей &nbsp;&nbsp;** IMMO — іммобілайзер по CAN</span>
+            </div>
+            <div id="tel-acc-can-table"></div>
+          </div>
+        </div>
+
+        <!-- EYE Сенсори -->
+        <div id="tel-acc-panel-eye" style="display:none">
+          <div class="section">
+            <div class="section-title">EYE Сенсори & Маяки</div>
+            <div class="section-desc">BLE 4.0+ маяки та сенсори для відстеження вантажів, причепів, контролю температури та вологості. Підключаються бездротово до трекерів з BLE.</div>
+            <div id="tel-acc-eye-table"></div>
+          </div>
+        </div>
+
+        <!-- ATEX / EN12830 -->
+        <div id="tel-acc-panel-atex" style="display:none">
+          <div class="section">
+            <div class="section-title">EYE Сенсори ATEX / EN12830</div>
+            <div class="section-desc">Сертифіковані сенсори для вибухонебезпечних зон (ATEX/IECEx) та холодової логістики зі стандартом EN12830 для харчових та фармацевтичних вантажів.</div>
+            <div id="tel-acc-atex-table"></div>
+          </div>
+        </div>
+
+        <!-- RFID -->
+        <div id="tel-acc-panel-rfid" style="display:none">
+          <div class="section">
+            <div class="section-title">RFID та ідентифікація водія</div>
+            <div class="section-desc">Зчитувачі карток та ключів iButton/RFID для ідентифікації водія. Ціни в USD з ПДВ.</div>
+            <div id="tel-acc-rfid-table"></div>
+          </div>
+        </div>
       </div>
 
       <!-- ══════════ TELTONIKA SECURITY ══════════ -->
@@ -4439,23 +4491,23 @@ const accessories = {
 // ── Extra equipment data ─────────────────────────────────────
 const extraEquipment = {
   can: [
-    { code:'EXT-CANCTL',    name:"CAN-CONTROL",              program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:102.96, retailPrice:85.80,   spec:"Модуль зчитування CAN-даних; підключення до шини CAN" },
-    { code:'EXT-CANCTL-D',  name:"CAN-CONTROL + DTC*",       program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:118.80, retailPrice:99.00,   spec:"CAN-CONTROL з читанням кодів несправностей DTC" },
-    { code:'EXT-CANCTL-I',  name:"CAN-CONTROL + IMMO**",     program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:145.73, retailPrice:121.44,  spec:"CAN-CONTROL з функцією іммобілайзера IMMO" },
-    { code:'EXT-CANCTL-DI', name:"CAN-CONTROL + DTC + IMMO", program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:163.15, retailPrice:135.96,  spec:"CAN-CONTROL повна версія: DTC + іммобілайзер" },
-    { code:'EXT-ALC300',    name:"ALL-CAN300",                program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:137.81, retailPrice:114.84,  spec:"Універсальний CAN-зчитувач; підтримка 2600+ моделей авто та вантажівок" },
-    { code:'EXT-LVC200',    name:"LV-CAN200",                 program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:69.70,  retailPrice:58.08,   spec:"CAN зчитувач для легкових авто; підтримка 800+ моделей; RS232/RS485" },
-    { code:'EXT-LVC200D',   name:"LV-CAN200 + DTC",          program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:80.78,  retailPrice:67.32,   spec:"LV-CAN200 з читанням кодів несправностей DTC" },
-    { code:'EXT-ECAN02',    name:"ECAN02",                    program:"CAN", series:"CAN", brand:"Extra", currency:"USD", partnerPrice:23.76,  retailPrice:19.80,   spec:"Компактний адаптер CAN-шини для вантажівок Euro 6 FMS" },
+    { code:'EXT-CANCTL',    name:"CAN-CONTROL",              program:"CAN", series:"CAN", brand:"Teltonika", currency:"EUR", cost:62.0,  partnerPrice:68.2,  retailPrice:99.2,  spec:"CAN-адаптер базовий. Зчитування з CAN-шини: рівень палива, одометр, VIN, витрата, оберти, температура двигуна, стан ручного гальма.", url:"https://www.teltonika-gps.com/products/accessories/can-adapters" },
+    { code:'EXT-CANCTL-D',  name:"CAN-CONTROL + DTC*",       program:"CAN", series:"CAN", brand:"Teltonika", currency:"EUR", cost:72.0,  partnerPrice:79.2,  retailPrice:115.2, spec:"CAN-CONTROL з читанням кодів несправностей DTC. Базові CAN-параметри + OBD-діагностика. * Потребує ліцензії DTC.", url:"https://www.teltonika-gps.com/products/accessories/can-adapters" },
+    { code:'EXT-CANCTL-I',  name:"CAN-CONTROL + IMMO**",     program:"CAN", series:"CAN", brand:"Teltonika", currency:"EUR", cost:88.0,  partnerPrice:96.8,  retailPrice:140.8, spec:"CAN-CONTROL з функцією іммобілайзера: блокування запуску двигуна через CAN без врізки в проводку. ** Потребує ліцензії IMMO.", url:"https://www.teltonika-gps.com/products/accessories/can-adapters" },
+    { code:'EXT-CANCTL-DI', name:"CAN-CONTROL + DTC + IMMO", program:"CAN", series:"CAN", brand:"Teltonika", currency:"EUR", cost:99.0,  partnerPrice:108.9, retailPrice:158.4, spec:"Повна версія: базові CAN-параметри + діагностика (DTC) + іммобілайзер по CAN. Найбільш функціональна модель.", url:"https://www.teltonika-gps.com/products/accessories/can-adapters" },
+    { code:'EXT-ALC300',    name:"ALL-CAN300",                program:"CAN", series:"CAN", brand:"Teltonika", currency:"EUR", cost:83.0,  partnerPrice:91.3,  retailPrice:132.8, spec:"Розширений CAN-адаптер для всіх типів ТЗ (легкові, вантажні, автобуси, спецтехніка). Повний набір параметрів CAN-шини.", url:"https://www.teltonika-gps.com/products/accessories/can-adapters" },
+    { code:'EXT-LVC200',    name:"LV-CAN200",                 program:"CAN", series:"CAN", brand:"Teltonika", currency:"EUR", cost:42.0,  partnerPrice:46.2,  retailPrice:67.2,  spec:"Компактний CAN-адаптер для легкових авто. Рівень палива, одометр, VIN, витрата, оберти, температура двигуна, ручне гальмо.", url:"https://www.teltonika-gps.com/products/accessories/can-adapters" },
+    { code:'EXT-LVC200D',   name:"LV-CAN200 + DTC",          program:"CAN", series:"CAN", brand:"Teltonika", currency:"EUR", cost:48.0,  partnerPrice:52.8,  retailPrice:76.8,  spec:"LV-CAN200 з читанням кодів несправностей (DTC). Базові CAN-параметри + OBD-діагностика для легкових авто.", url:"https://www.teltonika-gps.com/products/accessories/can-adapters" },
+    { code:'EXT-ECAN02',    name:"ECAN02",                    program:"CAN", series:"CAN", brand:"Teltonika", currency:"EUR", cost:13.0,  partnerPrice:14.3,  retailPrice:20.8,  spec:"Безконтактний CAN-адаптер. Зчитування через ізоляцію проводів без пошкодження штатної проводки. Найпростіше підключення до CAN-шини.", url:"https://www.teltonika-gps.com/products/accessories/can-adapters" },
   ],
   sensors: [
-    { code:'EXT-EYEBCN',    name:"EYE BEACON",               program:"SENSORS", series:"SENSORS", brand:"Extra", currency:"USD", partnerPrice:23.76,  retailPrice:19.80,   spec:"BLE-маяк для відстеження активів; BLE 5.0; IP67" },
-    { code:'EXT-EYESNSR',   name:"EYE SENSOR",               program:"SENSORS", series:"SENSORS", brand:"Extra", currency:"USD", partnerPrice:30.10,  retailPrice:25.08,   spec:"BLE сенсор температури/вологості; BLE 5.0; IP67" },
+    { code:'EXT-EYEBCN',    name:"EYE BEACON",               program:"SENSORS", series:"EYE Сенсори", brand:"Teltonika", currency:"EUR", cost:14.0,  partnerPrice:15.4,  retailPrice:22.4,  spec:"BLE 4.0+ маяк (iBeacon/Eddystone). Відстеження вантажів, причепів, контейнерів, складська логістика. IP67, до 10+ років від батареї.", url:"https://www.teltonika-gps.com/products/accessories/sensors-beacons" },
+    { code:'EXT-EYESNSR',   name:"EYE SENSOR",               program:"SENSORS", series:"EYE Сенсори", brand:"Teltonika", currency:"EUR", cost:17.5,  partnerPrice:19.25, retailPrice:28.0,  spec:"BLE 4.0+ сенсор. Температура, вологість, рух (акселерометр), магнітне поле. Холодова логістика, контроль дверей рефрижераторів. IP67, до 5+ років.", url:"https://www.teltonika-gps.com/products/accessories/sensors-beacons" },
   ],
   eyeSensors: [
-    { code:'EXT-EYEBATX',   name:"EYE BEACON ATEX",          program:"EYE SENSORS", series:"EYE SENSORS", brand:"Extra", currency:"USD", partnerPrice:34.85,  retailPrice:29.04,   spec:"EYE BEACON для вибухонебезпечних зон; ATEX/IECEx сертифікований" },
-    { code:'EXT-EYESATX',   name:"EYE SENSOR ATEX",          program:"EYE SENSORS", series:"EYE SENSORS", brand:"Extra", currency:"USD", partnerPrice:41.18,  retailPrice:34.32,   spec:"EYE SENSOR для вибухонебезпечних зон; ATEX/IECEx сертифікований" },
-    { code:'EXT-EYESE12',   name:"EYE SENSOR EN12830",       program:"EYE SENSORS", series:"EYE SENSORS", brand:"Extra", currency:"USD", partnerPrice:36.43,  retailPrice:30.36,   spec:"EYE SENSOR сертифікований EN12830 для харчової промисловості" },
+    { code:'EXT-EYEBATX',   name:"EYE BEACON ATEX",          program:"EYE SENSORS", series:"EYE Сенсори ATEX", brand:"Teltonika", currency:"EUR", cost:21.0,  partnerPrice:23.1,  retailPrice:33.6,  spec:"BLE 4.0+ маяк ATEX для вибухонебезпечних зон (Ex-зони). iBeacon/Eddystone. Сертифіковано для нафтогазу та хімвиробництв. IP67, до 10+ років.", url:"https://www.teltonika-gps.com/products/accessories/sensors-beacons" },
+    { code:'EXT-EYESATX',   name:"EYE SENSOR ATEX",          program:"EYE SENSORS", series:"EYE Сенсори ATEX", brand:"Teltonika", currency:"EUR", cost:25.0,  partnerPrice:27.5,  retailPrice:40.0,  spec:"BLE 4.0+ сенсор ATEX. Температура, вологість, рух, магнітне поле. Вибухонебезпечні зони. Сертифіковано для Ex-зон. IP67, до 5+ років.", url:"https://www.teltonika-gps.com/products/accessories/sensors-beacons" },
+    { code:'EXT-EYESE12',   name:"EYE SENSOR EN12830",       program:"EYE SENSORS", series:"EYE Сенсори ATEX", brand:"Teltonika", currency:"EUR", cost:22.0,  partnerPrice:24.2,  retailPrice:35.2,  spec:"BLE 4.0+ сенсор EN12830. Моніторинг температури за стандартом EN12830 для холодової логістики. Сертифікований для харчових та фарм. вантажів. IP67.", url:"https://www.teltonika-gps.com/products/accessories/sensors-beacons" },
   ],
   rfid: [
     { code:'EXT-IBTN',   name:"Dallas iButton DS1990A",        program:"RFID", series:"RFID", brand:"Extra", currency:"USD", partnerPrice:2.50,  retailPrice:4.00,   spec:"1-Wire RFID ключ ідентифікації водія; сталь нержавіюча; IP67" },
@@ -4503,6 +4555,7 @@ function fmt(n) { return new Intl.NumberFormat('uk-UA').format(Math.round(n)); }
 const SECTION_LABELS = {
   overview:'Огляд', teltonika:'Teltonika', bitrek:'Bitrek',
   accessories:'Аксесуари та обладнання', extra:'Додаткове обладнання',
+  'tel-acc':'Аксесуари Teltonika',
   tariffs:'Тарифи', install:'Монтаж та сервіс',
   drp:'ДРП — Датчики палива', configurator:'Конфігуратор',
   navixy:'Navixy Platform',
@@ -4927,6 +4980,7 @@ function showSection(id) {
   if (id === 'other-brands') renderOtherBrands();
   if (id === 'tsec')         renderTsec();
   if (id === 'accessories')  { renderAccessories(); renderExtra(); }
+  if (id === 'tel-acc')      { renderTelAcc(); }
   if (id === 'extra')        { showSection('accessories'); return; }
   if (id === 'drp')          renderDRP();
   if (id === 'configurator') renderConfigurator();
@@ -4936,8 +4990,6 @@ function showSection(id) {
   if (id === 'navixy')       renderNavixy();
   if (id === 'kits')         { renderKits(); renderPOD(); renderPOD2(); }
 }
-
-
 
 function scrollToWikiSection(id) {
   const el = document.getElementById('wiki-' + id);
@@ -5401,12 +5453,58 @@ function renderAccessories() {
 }
 
 function renderExtra() {
-  // CAN-модулі — таблиця (партнер+РРЦ у USD/UAH, кошик)
-  document.getElementById('extra-can').innerHTML     = buildTable(extraEquipment.can, {}, true);
-  document.getElementById('extra-rfid').innerHTML    = buildTable(extraEquipment.rfid, {}, false);
+  // CAN, EYE, RFID тепер у розділі "Аксесуари Teltonika" (renderTelAcc)
+  // Тут залишаємо лише SOS/кнопки
   document.getElementById('extra-sos').innerHTML     = buildTable(extraEquipment.sos, {}, false);
-  document.getElementById('extra-sensors').innerHTML = buildTable(extraEquipment.sensors, {}, false);
-  document.getElementById('extra-eye').innerHTML     = buildTable(extraEquipment.eyeSensors, {}, false);
+}
+
+// ════════════════════════════════════════════════════════
+//  АКСЕСУАРИ TELTONIKA — окремий розділ
+// ════════════════════════════════════════════════════════
+function telAccSwitchTab(tab) {
+  const tabs   = ['can','eye','atex','rfid'];
+  const panels = { can:'can', eye:'eye', atex:'atex', rfid:'rfid' };
+
+  tabs.forEach(function(t) {
+    const btn = document.getElementById('tel-acc-tab-' + t);
+    const panel = document.getElementById('tel-acc-panel-' + t);
+    const isActive = (t === tab);
+    if (btn) {
+      btn.style.background = isActive ? '#0f8644' : 'transparent';
+      btn.style.color      = isActive ? '#fff' : 'var(--text-2)';
+      btn.style.fontWeight = isActive ? '600' : '500';
+    }
+    if (panel) panel.style.display = isActive ? '' : 'none';
+  });
+
+  // Рендер при першому відкритті вкладки
+  renderTelAccTab(tab);
+}
+
+function renderTelAccTab(tab) {
+  const role = window._fbRole || document.body.getAttribute('data-role') || 'client';
+  const isPartner = (role === 'partner' || role === 'admin');
+
+  if (tab === 'can') {
+    document.getElementById('tel-acc-can-table').innerHTML =
+      buildTable(extraEquipment.can, {}, isPartner);
+  } else if (tab === 'eye') {
+    document.getElementById('tel-acc-eye-table').innerHTML =
+      buildTable(extraEquipment.sensors, {}, isPartner);
+  } else if (tab === 'atex') {
+    document.getElementById('tel-acc-atex-table').innerHTML =
+      buildTable(extraEquipment.eyeSensors, {}, isPartner);
+  } else if (tab === 'rfid') {
+    document.getElementById('tel-acc-rfid-table').innerHTML =
+      buildTable(extraEquipment.rfid, {}, isPartner);
+  }
+}
+
+function renderTelAcc() {
+  // Рендер активної вкладки (CAN за замовчуванням)
+  const activeTab = document.querySelector('[id^="tel-acc-tab-"][style*="background: rgb(15, 134, 68)"], [id^="tel-acc-tab-"][style*="background:#0f8644"]');
+  const tab = activeTab ? activeTab.id.replace('tel-acc-tab-','') : 'can';
+  telAccSwitchTab(tab);
 }
 
 // ════════════════════════════════════════════════════════
@@ -5907,10 +6005,8 @@ function onRateChange() {
   if (id === 'other-brands') { if(typeof renderOtherBrands==='function') renderOtherBrands(); }
   if (id === 'tsec')         { if(typeof renderTsec==='function') renderTsec(); }
   if (id === 'accessories')  { renderAccessories(); renderExtra(); }
+  if (id === 'tel-acc')      { renderTelAcc(); }
   if (id === 'extra')        { showSection('accessories'); return; }
-  if (id === 'drp')          renderDRP();
-  if (id === 'configurator') renderConfigurator();
-  if (document.getElementById('pod-widget')) renderPOD();
 }
 
 
