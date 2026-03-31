@@ -693,6 +693,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
           Імпорт TSEC (31)
         </button>
+        <button class="btn btn-secondary" onclick="adminImportTeltonikaAccessories()" title="Імпортувати Аксесуари Teltonika (CAN, EYE)" style="border-color:#0f8644;color:#0f8644">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12h10"/></svg>
+          Імпорт Аксесуари (13)
+        </button>
         <button class="btn btn-secondary" onclick="adminUpdateAccessorySpecs()" title="Оновити описи EYE/CAN аксесуарів" style="border-color:#7c3aed;color:#7c3aed">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a1 1 0 00-1 1v6a1 1 0 001 1h7"/><path d="M14 8H8M11 5l3 3-3 3"/></svg>
           Оновити описи аксесуарів
@@ -2938,6 +2942,140 @@ window.adminImportTSEC = async function() {
       }
     }
     toast(added > 0 ? `Імпортовано ${added} товарів Teltonika Security ✓` : 'Всі товари вже існують');
+    loadProducts();
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+
+// ════════════════════════════════════════════════════
+// ІМПОРТ TELTONIKA ACCESSORIES (CAN, EYE, RFID)
+// ════════════════════════════════════════════════════
+window.adminImportTeltonikaAccessories = async function() {
+  if (!confirm('Імпортувати 13 аксесуарів Teltonika (CAN-адаптери, EYE сенсори) у Firebase?\nДублі пропускаються.')) return;
+
+  const DATA = [
+    // ── CAN-адаптери ──────────────────────────────────────────
+    {
+      code: 'CAN-CTRL', article: 'CAN-CONTROL',
+      name: 'CAN-CONTROL — CAN-адаптер базовий',
+      brand: 'Teltonika', series: 'CAN-адаптери', program: 'CAN Adapter',
+      currency: 'EUR', cost: 62.0, partnerPrice: 68.2, retailPrice: 99.2,
+      spec: 'CAN-адаптер для зчитування базових параметрів CAN-шини: рівень палива, одометр, VIN, витрата пального, оберти двигуна, температура двигуна, стан ручного гальма. Сумісний з трекерами Teltonika серії FMB/FMC.',
+      url: 'https://www.teltonika-gps.com/products/accessories/can-adapters', active: true
+    },
+    {
+      code: 'CAN-CTRL-D', article: 'CAN-CONTROL-DTC',
+      name: 'CAN-CONTROL + DTC — CAN-адаптер з діагностикою',
+      brand: 'Teltonika', series: 'CAN-адаптери', program: 'CAN Adapter',
+      currency: 'EUR', cost: 72.0, partnerPrice: 79.2, retailPrice: 115.2,
+      spec: 'CAN-адаптер з читанням діагностичних кодів несправностей (DTC). Рівень палива, одометр, VIN, витрата, оберти, температура двигуна + OBD-діагностика. * Потребує ліцензії DTC.',
+      url: 'https://www.teltonika-gps.com/products/accessories/can-adapters', active: true
+    },
+    {
+      code: 'CAN-CTRL-I', article: 'CAN-CONTROL-IMMO',
+      name: 'CAN-CONTROL + IMMO — CAN-адаптер з іммобілайзером',
+      brand: 'Teltonika', series: 'CAN-адаптери', program: 'CAN Adapter',
+      currency: 'EUR', cost: 88.0, partnerPrice: 96.8, retailPrice: 140.8,
+      spec: 'CAN-адаптер з функцією іммобілайзера: блокування запуску двигуна через CAN без врізки в проводку. Базові CAN-параметри + іммобілайзер. ** Потребує ліцензії IMMO.',
+      url: 'https://www.teltonika-gps.com/products/accessories/can-adapters', active: true
+    },
+    {
+      code: 'CAN-CTRL-DI', article: 'CAN-CONTROL-DTC-IMMO',
+      name: 'CAN-CONTROL + DTC + IMMO — повна версія',
+      brand: 'Teltonika', series: 'CAN-адаптери', program: 'CAN Adapter',
+      currency: 'EUR', cost: 99.0, partnerPrice: 108.9, retailPrice: 158.4,
+      spec: 'Повна версія CAN-адаптера: базові параметри CAN-шини + читання кодів несправностей (DTC) + іммобілайзер по CAN. Найбільш функціональна модель.',
+      url: 'https://www.teltonika-gps.com/products/accessories/can-adapters', active: true
+    },
+    {
+      code: 'ALLCAN300', article: 'ALL-CAN300',
+      name: 'ALL-CAN300 — розширений CAN-адаптер',
+      brand: 'Teltonika', series: 'CAN-адаптери', program: 'CAN Adapter',
+      currency: 'EUR', cost: 83.0, partnerPrice: 91.3, retailPrice: 132.8,
+      spec: 'Розширений CAN-адаптер для всіх типів транспортних засобів (легкові, вантажні, автобуси, спецтехніка). Повний набір даних CAN-шини: паливо, пробіг, VIN, витрата, оберти, температура двигуна та інші параметри.',
+      url: 'https://www.teltonika-gps.com/products/accessories/can-adapters', active: true
+    },
+    {
+      code: 'LVCAN200', article: 'LV-CAN200',
+      name: 'LV-CAN200 — CAN-адаптер для легкових авто',
+      brand: 'Teltonika', series: 'CAN-адаптери', program: 'CAN Adapter',
+      currency: 'EUR', cost: 42.0, partnerPrice: 46.2, retailPrice: 67.2,
+      spec: 'Компактний CAN-адаптер для легкових автомобілів. Зчитування базових параметрів CAN-шини: рівень палива, одометр, VIN, витрата пального, оберти двигуна, температура двигуна, стан ручного гальма.',
+      url: 'https://www.teltonika-gps.com/products/accessories/can-adapters', active: true
+    },
+    {
+      code: 'LVCAN200-D', article: 'LV-CAN200-DTC',
+      name: 'LV-CAN200 + DTC — CAN-адаптер з діагностикою',
+      brand: 'Teltonika', series: 'CAN-адаптери', program: 'CAN Adapter',
+      currency: 'EUR', cost: 48.0, partnerPrice: 52.8, retailPrice: 76.8,
+      spec: 'LV-CAN200 з додатковою функцією читання діагностичних кодів несправностей (DTC). Базові CAN-параметри + OBD-діагностика для легкових авто.',
+      url: 'https://www.teltonika-gps.com/products/accessories/can-adapters', active: true
+    },
+    {
+      code: 'ECAN02', article: 'ECAN02',
+      name: 'ECAN02 — безконтактний CAN-адаптер',
+      brand: 'Teltonika', series: 'CAN-адаптери', program: 'CAN Adapter',
+      currency: 'EUR', cost: 13.0, partnerPrice: 14.3, retailPrice: 20.8,
+      spec: 'Безконтактний CAN-адаптер. Зчитування даних через ізоляцію проводів без пошкодження штатної проводки автомобіля. Найпростіший спосіб підключення до CAN-шини.',
+      url: 'https://www.teltonika-gps.com/products/accessories/can-adapters', active: true
+    },
+
+    // ── EYE Сенсори & Маяки ───────────────────────────────────
+    {
+      code: 'EYE-BCN', article: 'EYE BEACON',
+      name: 'EYE Beacon — BLE маяк',
+      brand: 'Teltonika', series: 'EYE Сенсори', program: 'Sensors & Beacons',
+      currency: 'EUR', cost: 14.0, partnerPrice: 15.4, retailPrice: 22.4,
+      spec: 'BLE 4.0+ маяк (iBeacon/Eddystone). Відстеження вантажів, причепів, контейнерів, складська логістика. Передає унікальний ID трекеру — без дротового підключення. IP67, термін служби батареї до 10+ років.',
+      url: 'https://www.teltonika-gps.com/products/accessories/sensors-beacons', active: true
+    },
+    {
+      code: 'EYE-SNS', article: 'EYE SENSOR',
+      name: 'EYE Sensor — BLE сенсор температури/вологості',
+      brand: 'Teltonika', series: 'EYE Сенсори', program: 'Sensors & Beacons',
+      currency: 'EUR', cost: 17.5, partnerPrice: 19.25, retailPrice: 28.0,
+      spec: 'BLE 4.0+ сенсор. Вимірювання температури, вологості, руху (акселерометр), магнітного поля. Холодова логістика, контроль дверей рефрижераторів, моніторинг умов перевезення. IP67, до 5+ років роботи від батареї.',
+      url: 'https://www.teltonika-gps.com/products/accessories/sensors-beacons', active: true
+    },
+
+    // ── EYE ATEX / EN12830 ────────────────────────────────────
+    {
+      code: 'EYE-BCN-ATX', article: 'EYE BEACON ATEX',
+      name: 'EYE Beacon ATEX — BLE маяк для вибухонебезпечних зон',
+      brand: 'Teltonika', series: 'EYE Сенсори ATEX', program: 'Sensors & Beacons',
+      currency: 'EUR', cost: 21.0, partnerPrice: 23.1, retailPrice: 33.6,
+      spec: 'BLE 4.0+ маяк ATEX для вибухонебезпечних зон (Ex-зони). iBeacon/Eddystone. Сертифіковано для використання на нафтогазових об\'єктах, хімічних виробництвах. IP67, до 10+ років від батареї.',
+      url: 'https://www.teltonika-gps.com/products/accessories/sensors-beacons', active: true
+    },
+    {
+      code: 'EYE-SNS-ATX', article: 'EYE SENSOR ATEX',
+      name: 'EYE Sensor ATEX — BLE сенсор для вибухонебезпечних зон',
+      brand: 'Teltonika', series: 'EYE Сенсори ATEX', program: 'Sensors & Beacons',
+      currency: 'EUR', cost: 25.0, partnerPrice: 27.5, retailPrice: 40.0,
+      spec: 'BLE 4.0+ сенсор ATEX для вибухонебезпечних зон. Температура, вологість, рух (акселерометр), магнітне поле. Сертифіковано для Ex-зон: нафтогаз, хімія. IP67, до 5+ років від батареї.',
+      url: 'https://www.teltonika-gps.com/products/accessories/sensors-beacons', active: true
+    },
+    {
+      code: 'EYE-SNS-EN', article: 'EYE SENSOR EN12830',
+      name: 'EYE Sensor EN12830 — сенсор температури (стандарт EN)',
+      brand: 'Teltonika', series: 'EYE Сенсори ATEX', program: 'Sensors & Beacons',
+      currency: 'EUR', cost: 22.0, partnerPrice: 24.2, retailPrice: 35.2,
+      spec: 'BLE 4.0+ сенсор EN12830. Моніторинг температури відповідно до стандарту EN12830 для холодової логістики. Підходить для сертифікованого температурного контролю при перевезенні харчових продуктів і фармацевтики. IP67.',
+      url: 'https://www.teltonika-gps.com/products/accessories/sensors-beacons', active: true
+    }
+  ];
+
+  try {
+    const snap = await getDocs(collection(db, tenantRef('products')));
+    const existingCodes = new Set(snap.docs.map(d => (d.data().code || d.data().article || '').trim().toLowerCase()));
+    let added = 0;
+    for (const p of DATA) {
+      if (!existingCodes.has(p.code.toLowerCase())) {
+        await addDoc(collection(db, tenantRef('products')), { ...p, createdAt: serverTimestamp() });
+        added++;
+      }
+    }
+    toast(added > 0 ? `Імпортовано ${added} аксесуарів Teltonika ✓` : 'Всі аксесуари вже існують');
     loadProducts();
   } catch(e) { toast('Помилка: ' + e.message, 'error'); }
 };
