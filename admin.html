@@ -997,6 +997,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg>
           Додати тариф
         </button>
+        <button class="btn btn-secondary" onclick="adminUpdateTariffSpecs()" title="Оновити описи тарифів" style="border-color:#0f8644;color:#0f8644">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a1 1 0 00-1 1v6a1 1 0 001 1h7"/><path d="M14 8H8M11 5l3 3-3 3"/></svg>
+          Оновити описи тарифів
+        </button>
       </div>
       <div class="table-wrap">
         <table class="data-table">
@@ -2473,6 +2477,32 @@ window.deleteTariff = async () => {
     await deleteDoc(doc(db, tenantRef('tariffs'), _editingTariff));
     _tariffs = _tariffs.filter(t => t.id !== _editingTariff);
     renderTariffs(); closeModal('modal-tariff'); toast('Тариф видалено');
+  } catch(e) { toast('Помилка: ' + e.message, 'error'); }
+};
+
+window.adminUpdateTariffSpecs = async function() {
+  if (!confirm('Оновити описи (spec) для всіх тарифів у Firebase?')) return;
+  const SPECS = {
+    'TAR-BASE': 'Повний GPS-моніторинг без датчиків палива та CAN. Маршрути, зупинки, геозони, звіти, збереження 12 місяців.',
+    'TAR-FUEL': 'GPS-моніторинг + датчики палива (ДРП), CAN-адаптери, BLE EYE-сенсори, температурні датчики.',
+    'TAR-ROAM': 'GPS-моніторинг для транспорту за кордоном. SIM з роумінгом по всьому світу — Європа, Азія, весь світ.',
+    'TAR-PERS': 'Для персональних трекерів та мобільного додатку xGPS Tracker. Особисте авто, мотоцикл, велосипед.',
+    'TAR-HOLD': 'Заморозка роботи пристрою без блокування SIM. Відновлення — за повідомленням клієнта.',
+    'TAR-TIPS': 'Для мобільних маяків що передають координати 1+ разів на добу. Контейнери, причепи, активи.',
+    'TAR-RENT': 'Оренда GPS-трекера без купівлі обладнання. Необмежена гарантія, заміна в будь-який час.',
+  };
+  try {
+    let updated = 0;
+    for (const t of _tariffs) {
+      const spec = SPECS[t.code];
+      if (spec && t.spec !== spec) {
+        await updateDoc(doc(db, tenantRef('tariffs'), t.id), { spec, updatedAt: serverTimestamp() });
+        t.spec = spec;
+        updated++;
+      }
+    }
+    renderTariffs();
+    toast(updated > 0 ? `Оновлено описи для ${updated} тарифів ✓` : 'Описи вже актуальні');
   } catch(e) { toast('Помилка: ' + e.message, 'error'); }
 };
 
