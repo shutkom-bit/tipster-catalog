@@ -3646,7 +3646,7 @@ tr.new-row { background:rgba(37,99,235,0.03) !important; }
         <div class="page-inner">
           <div class="page-header">
             <div class="page-title">Тарифи TIPSTER</div>
-            <div class="page-subtitle">Оберіть тариф підключення SIM-карти до платформи GPS-моніторингу.</div>
+            <div class="page-subtitle">Абонентська плата за GPS-моніторинг — платформа, SIM-карта, підтримка та гарантія в одному пакеті.</div>
           </div>
           <div id="tariffs-container"></div>
         </div>
@@ -6435,37 +6435,133 @@ let TARIFFS_DATA = [];
 
 function renderTariffs() {
   if (window._tariffsRendered) return;
-  window._tariffsRendered = true;
   const c = document.getElementById('tariffs-container');
   if (!c) return;
+  if (!TARIFFS_DATA || TARIFFS_DATA.length === 0) return; // чекаємо Firebase
+  window._tariffsRendered = true;
   const simItems = accessories.sim || [];
+
+  // Детальні описи для кожного тарифу
+  const TARIFF_DETAILS = {
+    'TAR-BASE': {
+      icon: '📡',
+      tagline: 'Стандартний моніторинг транспорту',
+      what: 'Повний GPS-моніторинг у реальному часі. Включає всі базові функції платформи: маршрути, зупинки, швидкість, геозони, звіти. Без підтримки датчиків палива та CAN.',
+      includes: ['GPS моніторинг 24/7', 'Маршрути та зупинки', 'Геозони та сповіщення', 'Звіти та аналітика', 'Збереження даних 400 днів'],
+      notIncludes: ['Датчики палива / CAN', 'Роумінг за кордон']
+    },
+    'TAR-FUEL': {
+      icon: '⛽',
+      tagline: 'Моніторинг + контроль палива та датчики',
+      what: 'Всі функції базового тарифу плюс повна підтримка датчиків рівня палива, CAN-адаптерів, температурних датчиків, BLE-сенсорів та іншого додаткового обладнання.',
+      includes: ['GPS моніторинг 24/7', 'Датчики рівня палива (ДРП)', 'CAN-адаптери (пробіг, оберти, VIN)', 'BLE EYE-сенсори та маяки', 'Температурні датчики', 'Збереження даних 400 днів'],
+      notIncludes: ['Роумінг за кордон']
+    },
+    'TAR-ROAM': {
+      icon: '🌍',
+      tagline: 'Моніторинг з роумінгом по всьому світу',
+      what: 'Повний GPS-моніторинг для транспорту що працює за кордоном. SIM-карта з підтримкою роумінгу по всьому світу — Європа, Азія, весь світ. Збалансований тариф для міжнародних перевезень.',
+      includes: ['GPS моніторинг 24/7', 'Роумінг — весь світ', 'Маршрути та звіти', 'Геозони та сповіщення', 'Збереження даних 400 днів'],
+      notIncludes: ['Датчики палива / CAN']
+    },
+    'TAR-PERS': {
+      icon: '👤',
+      tagline: 'Для персональних трекерів та мобільних додатків',
+      what: 'Тариф для персональних GPS-трекерів та мобільного додатку xGPS Tracker. Ідеально для особистого авто, мотоцикла, велосипеда або відстеження людини.',
+      includes: ['Мобільний додаток xGPS Tracker', 'GPS моніторинг 24/7', 'Історія переміщень', 'Геозони та сповіщення', 'iOS та Android'],
+      notIncludes: ['Датчики палива / CAN', 'Роумінг за кордон']
+    },
+    'TAR-HOLD': {
+      icon: '⏸️',
+      tagline: 'Заморозка пристрою без блокування SIM',
+      what: 'Режим призупинення роботи трекера. Пристрій не передає дані, але SIM-карта залишається активною. Щоб відновити роботу — просто напишіть нам, і ми все увімкнемо.',
+      includes: ['SIM-карта залишається активною', 'Відновлення в будь-який момент', 'Збереження налаштувань', 'Без втрати даних'],
+      notIncludes: ['Активна передача даних', 'Звіти та моніторинг']
+    },
+    'TAR-TIPS': {
+      icon: '📍',
+      tagline: 'Моніторинг маяків з рідкісними відмітками',
+      what: 'Тариф для мобільних маяків та трекерів які передають координати 1–кілька разів на добу. Ідеально для відстеження активів, контейнерів, причепів, техніки.',
+      includes: ['Координати 1+ разів на добу', 'Збереження позицій', 'Карта активів', 'Геозони та сповіщення', 'Мінімальне споживання трафіку'],
+      notIncludes: ['Моніторинг у реальному часі', 'Датчики палива / CAN']
+    },
+    'TAR-RENT': {
+      icon: '🔑',
+      tagline: 'Оренда трекера з необмеженою гарантією',
+      what: 'Тариф включає оренду GPS-трекера — без необхідності купувати обладнання. Необмежена гарантія: заміна пристрою в будь-який час без обмежень.',
+      includes: ['Оренда GPS-трекера', 'Необмежена гарантія', 'Заміна в будь-який час', 'GPS моніторинг 24/7', 'Маршрути та звіти', 'Збереження даних 400 днів'],
+      notIncludes: ['Датчики палива / CAN', 'Роумінг за кордон']
+    },
+  };
+
+  // Спільне для всіх тарифів
+  const COMMON_INCLUDES = [
+    { icon:'🖥️', text:'Платформа TIPSTER (Navixy) — доступ з браузера' },
+    { icon:'📱', text:'Мобільний додаток iOS та Android' },
+    { icon:'💾', text:'Збереження даних на серверах 400 днів' },
+    { icon:'🔐', text:'API-ключі для підключення сторонніх додатків' },
+    { icon:'📊', text:'Fleet Live Status Dashboard' },
+    { icon:'📶', text:'SIM-карта з інтернет-трафіком' },
+    { icon:'🎓', text:'Навчання: онлайн-сесія до 2 годин' },
+    { icon:'🛡️', text:'Гарантія 24 місяці на обладнання та роботи' },
+    { icon:'🔄', text:'Підмінний фонд обладнання' },
+    { icon:'⚡', text:'Час реакції на запит до 1 години' },
+    { icon:'🤝', text:'Персональний менеджер (від 20 об\'єктів)' },
+  ];
+
   c.innerHTML = `
+    <!-- Що входить у кожен тариф -->
+    <div class="section" style="margin-bottom:32px">
+      <div class="section-title">Що включено в кожен тариф</div>
+      <div class="section-desc">Незалежно від обраного тарифу — ці послуги включені для кожного підключеного об'єкта.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:16px">
+        ${COMMON_INCLUDES.map(item => `
+          <div style="display:flex;align-items:flex-start;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+            <span style="font-size:18px;line-height:1;flex-shrink:0">${item.icon}</span>
+            <span style="font-size:13px;color:var(--text-1);line-height:1.5">${item.text}</span>
+          </div>`).join('')}
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:var(--text-3);display:flex;align-items:center;gap:6px">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="7"/><path d="M8 7v4M8 5h.01"/></svg>
+        Персональний менеджер та аналіз даних — при підключенні від 20 об'єктів
+      </div>
+    </div>
+
+    <!-- Тарифні картки -->
     <div class="section">
       <div class="section-title">Тарифи підключення TIPSTER</div>
-      <div class="section-desc">Ціни вказані з ПДВ. Натисніть на тариф щоб побачити деталі.</div>
+      <div class="section-desc">Ціни вказані з ПДВ за 1 об'єкт на місяць. Натисніть на тариф щоб побачити деталі.</div>
       <div class="tariff-grid">
-        ${TARIFFS_DATA.map(t => {
-          cartRegistry.set(t.code, { article:t.code, name:'Тариф '+t.name, spec:t.spec, _uah:t.price, note: t.price + ' ₴/міс' });
+        ${TARIFFS_DATA.filter(t => t.active !== false).map(t => {
+          const d = TARIFF_DETAILS[t.code] || {};
+          const includesList = (d.includes || (t.spec ? t.spec.split(';') : []));
+          const notList = d.notIncludes || [];
+          cartRegistry.set(t.code, { article:t.code, name:'Тариф '+t.name, spec:t.spec||'', _uah:t.price, note: t.price + ' ₴/міс' });
           return `<div class="tariff-flip" onclick="this.classList.toggle('is-flipped')">
             <div class="tariff-flip-inner">
               <div class="tariff-flip-front">
                 <div class="tariff-code">${t.code}</div>
-                <div class="tariff-name">${t.name}</div>
-                <div class="tariff-price cell-retail">${t.price} <span class="tariff-currency">₴</span><span class="tariff-period">/${t.period}</span></div>
+                <div class="tariff-name">${d.icon ? d.icon+' ' : ''}${t.name}</div>
+                <div class="tariff-price cell-retail">${t.price} <span class="tariff-currency">₴</span><span class="tariff-period">/${t.period||'міс'}</span></div>
+                ${d.tagline ? `<div style="font-size:11.5px;color:var(--text-3);margin-top:6px;line-height:1.4">${d.tagline}</div>` : ''}
                 <div class="tariff-flip-hint">Натисніть для деталей →</div>
               </div>
               <div class="tariff-flip-back" style="${t.color ? 'background:'+t.color+';border-color:'+t.color : ''}">
-                <div class="tariff-back-name">${t.name}</div>
-                <div class="tariff-back-spec">${t.spec}</div>
-                <div class="tariff-back-price cell-retail">${t.price} ₴/${t.period}</div>
-                ${t.appIos || t.appAndroid ? `<div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">
-                  ${t.appIos ? `<a href="${t.appIos}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.18);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.35)">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    App Store</a>` : ''}
-                  ${t.appAndroid ? `<a href="${t.appAndroid}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.18);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.35)">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.341L5.42 2.065a1.5 1.5 0 00-2.419 1.77l6.108 8.386-6.108 8.385a1.5 1.5 0 002.419 1.77l12.103-13.276a1.5 1.5 0 000-3.759z"/></svg>
-                    Google Play</a>` : ''}
+                <div class="tariff-back-name">${d.icon ? d.icon+' ' : ''}${t.name}</div>
+                ${d.what ? `<div style="font-size:12px;opacity:0.9;line-height:1.5;margin-bottom:10px">${d.what}</div>` : ''}
+                ${includesList.length ? `
+                <div style="margin-bottom:8px">
+                  ${includesList.map(i => `<div style="display:flex;align-items:flex-start;gap:6px;font-size:11.5px;opacity:0.95;margin-bottom:4px">
+                    <span style="color:#4ade80;flex-shrink:0;margin-top:1px">✓</span><span>${i}</span>
+                  </div>`).join('')}
                 </div>` : ''}
+                ${notList.length ? `
+                <div style="margin-bottom:10px">
+                  ${notList.map(i => `<div style="display:flex;align-items:flex-start;gap:6px;font-size:11px;opacity:0.65;margin-bottom:3px">
+                    <span style="flex-shrink:0;margin-top:1px">✕</span><span>${i}</span>
+                  </div>`).join('')}
+                </div>` : ''}
+                <div class="tariff-back-price cell-retail">${t.price} ₴/${t.period||'міс'}</div>
                 <button class="btn-add-cart tariff-back-cta cell-retail" onclick="event.stopPropagation();addToCartById('${t.code}')">+ Додати в кошик</button>
               </div>
             </div>
@@ -6473,12 +6569,30 @@ function renderTariffs() {
         }).join('')}
       </div>
     </div>
+
+    <!-- Знижки для корпоративних клієнтів -->
+    <div class="section" style="margin-top:28px">
+      <div class="section-title">Знижки для корпоративних клієнтів</div>
+      <div class="section-desc">Чим більше об'єктів — тим нижча ціна за одиницю.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:14px">
+        ${[
+          {range:'21 – 50 об\'єктів',   disc:'5%'},
+          {range:'51 – 100 об\'єктів',  disc:'10%'},
+          {range:'101 – 200 об\'єктів', disc:'15%'},
+          {range:'201 – 500 об\'єктів', disc:'20%'},
+          {range:'500+ об\'єктів',      disc:'індивідуально'},
+        ].map(r => `
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--accent);letter-spacing:-0.5px">${r.disc}</div>
+            <div style="font-size:12px;color:var(--text-2);margin-top:4px">${r.range}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+
     ${simItems.length ? `
     <div class="section" style="margin-top:28px">
       <div class="section-title">SIM-картки</div>
-      <div class="section-desc">
-        Тарифи вказані з урахуванням ПДВ. Вартість SIM-карти сплачується <strong>один раз</strong> при замовленні.
-      </div>
+      <div class="section-desc">Вартість SIM-карти сплачується <strong>один раз</strong> при замовленні.</div>
       <div class="card-grid">
         ${simItems.map(s => makeCard(s,'UAH')).join('')}
       </div>
